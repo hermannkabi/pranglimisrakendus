@@ -10,10 +10,11 @@ Vaja läheb järgmisi tehnoloogiaid:
 
 1) PHP (https://www.php.net/manual/en/install.php)
 2) Composer (https://getcomposer.org/doc/00-intro.md)
-
+3) Node.js/NPM
+   
 **Installeerimine:**
 
-1. Klooni repositoorium arvutisse
+1. _Klooni repositoorium arvutisse_
 2. composer install
 3. npm install
 4. cp .env.example .env
@@ -27,6 +28,6 @@ Ava kaks terminali instantsi (nt VS Code seest). Jooksuta ühes terminalis ühte
 2. php artisan serve
 
 
-## License
+## Litsents
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laraveli raamistik on vabavaraline projekt, mida kaitseb [MIT license](https://opensource.org/licenses/MIT).
