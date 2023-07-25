@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit&display=swap');
+
+body{
+    color: rgb(var(--text-color));
+    font-family: var(--main-font);
+    padding-inline: 16px;
+    font-size: 20px;
+    text-align: center;
+}
+
+section{
+    margin: auto;
+    padding: 8px;
+    background-color: rgb(var(--primary-btn-color),  0.05);
+    border-radius: 16px;
+    margin-block: 8px;
+    width: 50%;
+}
+
+h1, h2, h3{
+    color: rgb(var(--primary-header-color));
+    font-family: var(--header-font);
+}
+
+
+
+/* WIDGETS */
+
+/* Buttons */
+
+/* Primary button */
+button{
+    background-color: rgb(var(--primary-btn-color));
+    color: rgb(var(--primary-btn-text-color));
+    border-radius: var(--primary-btn-border-radius);
+    padding-block: 12px;
+    padding-inline: 32px;
+    font-family: "Kanit";
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 200ms;
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    margin-block: 8px;
+    margin-right: 8px;
+    transition: all 200ms;
+}
+
+button > .material-icons, button > .lds-ring{
+    margin-right: 8px;
+}
+
+button:hover{
+    background-color: rgb(56, 80, 79);
+}
+
+button:focus-visible{
+    transform: translateY(-2px);
+}
+
+button > img{
+    max-height: 20px;
+    max-width: 20px;
+    margin-right: 16px;
+}
+
+/* Secondary button */
+
+button[secondary]{
+    color: rgb(var(--primary-btn-color));
+    background-color: transparent;
+    outline: 2px solid rgb(var(--primary-btn-color));
+    outline-offset: -2px;
+}
+
+button[secondary] > .lds-ring div{
+    border-color: rgb(var(--primary-btn-color)) transparent transparent transparent;
+}
+
+button[secondary]:hover{
+    background-color: rgb(var(--primary-btn-color));
+    color: rgb(var(--primary-btn-text-color));
+}
+
+button[secondary]:hover > .lds-ring div{
+    border-color: rgb(var(--primary-btn-text-color)) transparent transparent transparent;
+}
+
+/* Links */
+
+/* Inline link */
+a{
+    color: rgb(var(--primary-btn-color));
+    box-shadow: inset 0 0 0 0 rgb(var(--primary-btn-color));
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    transition: box-shadow 400ms, color;
+    padding: 0 4px;
+}
+
+a:not([alone]):hover{
+    box-shadow: inset 0 -100px 0 0 rgb(var(--primary-btn-color), 0.9);
+    text-decoration: none;
+    color: white;
+}
+
+a[alone]{
+    display: inline-flex;
+    text-decoration: none;
+    align-items: center;
+    vertical-align: middle;
+    user-select: none;
+}
+
+a[alone] > .material-icons{
+    transition: transform 200ms;
+}
+
+a[alone]:hover > .material-icons:not(.no-anim){
+    transform: translateX(2px);
+}
+
+/* Inputs */
+
+/* Text input */
+
+input, textarea, select{
+    background-color: #d4dada;
+    color: rgba(0, 0, 0, 0.8);
+    font-family: "Kanit";
+    border: none;
+    border-radius: 12px;
+    padding-block: 16px;
+    padding-left: 8px;
+    font-size: 20px;
+    margin-inline: 4px;
+    vertical-align: middle;
+}
+
+input{
+    height: 24px;
+}
+
+textarea{
+    resize: vertical;
+    padding-top:8px;
+    height: 100px;
+    min-height: 24px;
+}
+
+select{
+    height: 56px;
+}
+
+input:focus, textarea:focus{
+    outline: 2px solid rgb(var(--primary-btn-color));
+}
+
+input:disabled, textarea:disabled{
+    opacity: 0.75;
+    color: rgb(0,0,0, 0.5);
+    cursor: not-allowed;
+}
+
+/* Number input */
+
+.number-select{
+    position: relative;
+    display: inline-block;
+}
+
+.number-select input:invalid{
+    outline-color: red;
+}
+
+.number-select input{
+    text-align: center;
+}
+
+.number-edit-btn{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) scale(1.5);
+    color: rgb(var(--primary-btn-color));
+    user-select: none;
+}
+
+.number-edit-btn.remove{
+    left: 16px;
+}
+.number-edit-btn.add{
+    right: 16px;
+}
+
+/* Select */
+
+select{
+    width: 290px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 0.65rem auto;  
+}
+
+select:after{
+    content: "X";
+}
