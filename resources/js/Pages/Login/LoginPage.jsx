@@ -1,5 +1,3 @@
-import PostComponent from "../Posts/PostComponent";
-
 export default function LoginPage(){
     return (
     <>

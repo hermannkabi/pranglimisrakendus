@@ -14,9 +14,8 @@ export default function WelcomePage({name, message}){
             <p>Siin saad proovida lihtsat vormi ja näha, kuidas front-end (React.js) back-endiga (Laravel) suhtleb</p>
             {name && message ?
             <>
-            <p>Andmed:</p>
-            <p>Nimi: {name}</p>
-            <p>Sõnum: {message}</p> 
+                <p>Nimi: <b>{name}</b></p>
+                <p>Sõnum: <b>{message}</b></p> 
             </>:
             <p>Sisesta midagi</p>
             }

@@ -2,21 +2,30 @@
 
 # Pranglimisrakendus
 
-Tere tulemast Pranglimisrakenduse repositooriumisse. Pranglimisrakendus on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja uusi tehnoloogiaid. 
+Tere tulemast Pranglimisrakenduse repositooriumisse. Pranglimisrakendus on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja uusi tehnoloogiaid.
 
-## Installatsioon
+## Kasutus
 
 Vaja läheb järgmisi tehnoloogiaid:
 
 1) PHP (https://www.php.net/manual/en/install.php)
 2) Composer (https://getcomposer.org/doc/00-intro.md)
 
-Installeerimiseks:
+**Installeerimine:**
 
 1. Klooni repositoorium arvutisse
-2. Jooksuta npm install
-3. Käivita server: npm run dev
-4. Käivita Laravel server: php artisan serve
+2. composer install
+3. npm install
+4. cp .env.example .env
+5. php artisan key:generate
+
+**Kasutamine:**
+
+Ava kaks terminali instantsi (nt VS Code seest). Jooksuta ühes terminalis ühte, teises teist käsku.
+
+1. npm run dev
+2. php artisan serve
+
 
 ## License
 
