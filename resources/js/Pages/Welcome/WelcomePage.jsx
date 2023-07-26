@@ -1,4 +1,5 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import LoginHeader from "@/Components/LoginHeader";
 import { Head } from "@inertiajs/react";
 
 export default function WelcomePage({name, message}){
@@ -6,10 +7,8 @@ export default function WelcomePage({name, message}){
         <>
             <section>
                 <Head title="Avaleht" />
-                <ApplicationLogo height="100px" />
-                <h1>Kõik on hästi!</h1>
-                <p>Oled jõudnud Pranglimisrakenduse kodulehele. Installatsioon on õnnestunud!!!</p>
-                <br /><br />
+                <LoginHeader topMargin="16px" pageName="Kõik on hästi!" description="Installatsioon on õnnestunud!!!"/>
+                <br />
                 <img height="200px" src="https://i.pinimg.com/originals/8a/d7/e2/8ad7e27c04f68d43526032f33100f0c1.gif" alt="" />
 
                 </section>
@@ -27,10 +26,8 @@ export default function WelcomePage({name, message}){
 
                 <form action={route('saveItem')} method="post">
                     <input type="hidden" name="_token" value={window.csrfToken} />
-
-
-                    <input type="text" name="name" id="" placeholder="Nimi"/><br /><br />
-                    <textarea type="text" name="message" placeholder="Sõnum" /><br /><br />
+                    <input type="text" name="name" id="" placeholder="Nimi"/><br />
+                    <textarea type="text" name="message" placeholder="Sõnum" /><br />
                     <button secondary="true" type="submit">Edasta</button>
                 </form>
             </section>

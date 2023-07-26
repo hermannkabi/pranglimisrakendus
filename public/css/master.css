@@ -14,7 +14,8 @@ section{
     background-color: rgb(var(--primary-btn-color),  0.05);
     border-radius: 16px;
     margin-block: 8px;
-    width: 50%;
+    /* That is going to cause problems */
+    width: 40%;
 }
 
 h1, h2, h3{
