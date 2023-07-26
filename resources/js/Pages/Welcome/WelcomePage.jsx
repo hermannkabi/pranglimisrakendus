@@ -11,9 +11,7 @@ export default function WelcomePage({name, message}){
                 <br />
                 <img height="200px" src="https://i.pinimg.com/originals/8a/d7/e2/8ad7e27c04f68d43526032f33100f0c1.gif" alt="" />
 
-                </section>
-
-                <br />
+            </section>
             <section>
                 <p>Siin saad proovida lihtsat vormi ja näha, kuidas front-end (React.js) back-endiga (Laravel) suhtleb</p>
                 {name && message ?
@@ -30,6 +28,9 @@ export default function WelcomePage({name, message}){
                     <textarea type="text" name="message" placeholder="Sõnum" /><br />
                     <button secondary="true" type="submit">Edasta</button>
                 </form>
+            </section>
+            <section>
+                <p>Kasutajaliidese lehe leiad <a href="/ui">siit</a></p>
             </section>
             
         </>

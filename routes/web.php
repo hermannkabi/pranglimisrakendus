@@ -20,6 +20,10 @@ Route::get('/login', function () {
     return Inertia::render('Login/LoginPage');
 })->name("login");
 
+Route::get('/ui', function () {
+    return Inertia::render('UI/UIPage');
+})->name("ui");
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

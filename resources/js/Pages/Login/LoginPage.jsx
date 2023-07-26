@@ -4,15 +4,25 @@ import "/public/css/login.css"
 import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";
 import HorizontalRule from "@/Components/HorizontalRule";
+import { useState } from "react";
+import LoadingSpinner from "@/Components/LoadingSpinner";
 
 export default function LoginPage(){
+
+    const [loading, setLoading] = useState(false);
 
     function handleSubmit(e){
         // Prevent reload
         e.preventDefault();
 
         // Show loading animation
+        setLoading(true);
 
+        //After 3 seconds, remove loading effect
+
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
     }
 
     const formChildrenStyle = {width:"100%", boxSizing:"border-box", height:"56px", margin:"8px auto"};
@@ -34,7 +44,7 @@ export default function LoginPage(){
                 <br />
                 <PasswordInput style={formChildrenStyle} placeholder="Parool" />
                 <SizedBox height="16px" />
-                <button onClick={handleSubmit} style={formChildrenStyle}>Logi sisse</button>
+                <button onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
                 <div style={{display:"flex", justifyContent:"space-evenly"}}>

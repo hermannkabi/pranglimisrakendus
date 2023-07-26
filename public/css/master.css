@@ -115,6 +115,7 @@ a[alone]{
     align-items: center;
     vertical-align: middle;
     user-select: none;
+    transition: color 200ms;
 }
 
 a[alone] > .material-icons{
@@ -126,8 +127,7 @@ a[alone]:hover > .material-icons:not(.no-anim){
 }
 
 a[alone]:hover{
-    text-decoration: underline;
-    text-decoration-color: rgb(var(--primary-btn-color));
+    color: rgb(56, 80, 79);
 }
 
 /* Inputs */
@@ -178,6 +178,10 @@ input:disabled, textarea:disabled{
 .number-select{
     position: relative;
     display: inline-block;
+}
+
+.number-select input{
+    transition: outline-color 200ms;
 }
 
 .number-select input:invalid{
