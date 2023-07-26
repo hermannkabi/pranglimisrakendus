@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleFormController;
 
 Route::get('/', function () {
-
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
 
@@ -16,6 +15,11 @@ Route::post("/handleForm", [ExampleFormController::class, "handleForm"])->name("
 Route::get("/handleForm", function (){
     return redirect()->route("welcome");
 });
+
+Route::get('/login', function () {
+    return Inertia::render('Login/LoginPage');
+})->name("login");
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

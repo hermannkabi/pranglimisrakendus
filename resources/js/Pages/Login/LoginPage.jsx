@@ -1,9 +1,46 @@
+import LoginHeader from "@/Components/LoginHeader";
+import { Head } from "@inertiajs/react";
+import "/public/css/login.css"
+import PasswordInput from "@/Components/PasswordInput";
+import SizedBox from "@/Components/SizedBox";
+import HorizontalRule from "@/Components/HorizontalRule";
+
 export default function LoginPage(){
+
+    function handleSubmit(e){
+        // Prevent reload
+        e.preventDefault();
+
+        // Show loading animation
+
+    }
+
+    const formChildrenStyle = {width:"100%", boxSizing:"border-box", height:"56px", margin:"8px auto"};
+
+    const googleLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png";
+    const msLogo = "https://img.freepik.com/free-icon/microsoft_318-566086.jpg?q=10&h=200";
+
+
     return (
-    <>
-        <h1>Login Page</h1>
-        <br />
-        <p>This is login page</p>
-    </>
+        <>
+            <Head title="Logi sisse" />
+            <LoginHeader pageName={"Logi sisse"} />
+            <br />
+            <form method="none" className="login-container">
+                <input type="hidden" name="_token" value={window.csrfToken} />
+
+
+                <input style={formChildrenStyle} type="email" placeholder="E-posti aadress"/>
+                <br />
+                <PasswordInput style={formChildrenStyle} placeholder="Parool" />
+                <SizedBox height="16px" />
+                <button onClick={handleSubmit} style={formChildrenStyle}>Logi sisse</button>
+                <a alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
+                <HorizontalRule />
+                <div style={{display:"flex", justifyContent:"space-evenly"}}>
+                    <button type="button" secondary="true"><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
+                </div>
+            </form>
+        </>
     )
 }

@@ -46,6 +46,7 @@ button{
     margin-block: 8px;
     margin-right: 8px;
     transition: all 200ms;
+    justify-content: center;
 }
 
 button > .material-icons, button > .lds-ring{
@@ -98,6 +99,7 @@ a{
     border-top-right-radius: 4px;
     transition: box-shadow 400ms, color;
     padding: 0 4px;
+    cursor: pointer;
 }
 
 a:not([alone]):hover{
@@ -122,6 +124,11 @@ a[alone]:hover > .material-icons:not(.no-anim){
     transform: translateX(2px);
 }
 
+a[alone]:hover{
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--primary-btn-color));
+}
+
 /* Inputs */
 
 /* Text input */
@@ -137,6 +144,7 @@ input, textarea, select{
     font-size: 20px;
     margin-inline: 4px;
     vertical-align: middle;
+    margin-block: 8px;
 }
 
 input{

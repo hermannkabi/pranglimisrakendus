@@ -1,0 +1,6 @@
+/* Login styles */
+
+.login-container{
+    width: max(20%, 300px);
+    margin: auto;
+}
