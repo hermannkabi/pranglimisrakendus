@@ -47,7 +47,7 @@ export default function LoginPage(){
                 <button onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
-                <div style={{display:"flex", justifyContent:"space-evenly"}}>
+                <div className="sso-btns">
                     <button type="button" secondary="true"><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
                 </div>
             </form>

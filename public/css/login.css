@@ -1,6 +1,27 @@
 /* Login styles */
+@media only screen and (max-width: 600px) {
+    .sso-btns{
+        justify-content: center !important;
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    .sso-btns > button{
+        width: 100%;
+        margin: 8px 0 !important;
+    }
+
+    .login-container{
+        width: 95% !important;
+    }
+}
 
 .login-container{
     width: max(20%, 300px);
     margin: auto;
+}
+
+.sso-btns{
+    display: flex;
+    justify-content: space-evenly;
 }
