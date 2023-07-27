@@ -1,3 +1,12 @@
+@media only screen and (max-width: 600px) {
+    .register-row{
+        display: block !important;
+    }
+    .register-row > input{
+        margin-inline: 0 !important;
+    }
+}
+
 .register-container{
     width: max(20%, 300px);
     margin: auto;
@@ -8,4 +17,10 @@
     margin-inline: 0;
     box-sizing: border-box;
     height: 56px;
+}
+
+.register-row{
+    display: flex;
+    justify-content: stretch;
+    width: 100%;
 }

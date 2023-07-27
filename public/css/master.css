@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit:wght@400;700&display=swap');
 
 body{
     color: rgb(var(--text-color));
@@ -7,6 +7,7 @@ body{
     font-size: 20px;
     text-align: center;
     min-width: 250px;
+    box-sizing: border-box;
 }
 
 section{
@@ -17,9 +18,10 @@ section{
     margin-block: 8px;
     /* That is going to cause problems */
     width: 40%;
+    box-sizing: border-box;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4{
     color: rgb(var(--primary-header-color));
     font-family: var(--header-font);
 }

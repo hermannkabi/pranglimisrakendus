@@ -30,7 +30,7 @@ export default function RegisterPage(){
             <Head title="Loo konto" />
             <LoginHeader pageName="Loo konto" />
             <form  className="register-container">
-                <div style={{display:"flex", justifyContent:"space-between", width:"100%"}}>
+                <div className="register-row">
                     <input className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" />
                     <input className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" /><br />
                 </div>

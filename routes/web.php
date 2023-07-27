@@ -6,6 +6,9 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleFormController;
 
+
+// See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
+
 Route::get('/', function () {
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
@@ -27,6 +30,10 @@ Route::get('/ui', function () {
 Route::get('/register', function () {
     return Inertia::render('Register/RegisterPage');
 })->name("ui");
+
+Route::get('/dashboard', function (){
+    return Inertia::render("Dashboard/DashboardPage");
+})->name("dashboard");
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
