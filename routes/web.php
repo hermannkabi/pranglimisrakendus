@@ -24,6 +24,9 @@ Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
 })->name("ui");
 
+Route::get('/register', function () {
+    return Inertia::render('Register/RegisterPage');
+})->name("ui");
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

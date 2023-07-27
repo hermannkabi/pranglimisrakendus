@@ -42,7 +42,7 @@ export default function LoginPage(){
 
                 <input style={formChildrenStyle} type="email" placeholder="E-posti aadress"/>
                 <br />
-                <PasswordInput style={formChildrenStyle} placeholder="Parool" />
+                <PasswordInput divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
                 <SizedBox height="16px" />
                 <button onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>

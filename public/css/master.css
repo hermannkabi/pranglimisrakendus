@@ -6,6 +6,7 @@ body{
     padding-inline: 16px;
     font-size: 20px;
     text-align: center;
+    min-width: 250px;
 }
 
 section{
@@ -48,6 +49,7 @@ button{
     margin-right: 8px;
     transition: all 200ms;
     justify-content: center;
+    text-overflow: ellipsis;
 }
 
 button > .material-icons, button > .lds-ring{
@@ -146,6 +148,7 @@ input, textarea, select{
     margin-inline: 4px;
     vertical-align: middle;
     margin-block: 8px;
+    min-width: 50px;
 }
 
 input{

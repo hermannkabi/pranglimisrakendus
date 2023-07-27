@@ -1,0 +1,11 @@
+.register-container{
+    width: max(20%, 300px);
+    margin: auto;
+}
+
+.register-container input:not(.row-input), button{
+    width: 100%;
+    margin-inline: 0;
+    box-sizing: border-box;
+    height: 56px;
+}
