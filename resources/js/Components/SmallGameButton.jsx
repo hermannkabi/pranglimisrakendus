@@ -1,9 +1,7 @@
-export default function SmallGameButton({text, all}){
+export default function SmallGameButton({icon, text, iconStyle, all}){
     return (
-        <>
-            <button className="small-btn" secondary="true" style={{outlineWidth: (all ? "3px" : "2px"), fontWeight:(all ? "bold" : "normal")}}>
-            {text}&nbsp;{all && <span className="material-icons">arrow_right_alt</span>}
-            </button>
-        </>
+        <div style={{textAlign:"start", margin:"16px 8px"}}>
+            <a href="" alone="true" >{text}</a>
+        </div>
     );
 }

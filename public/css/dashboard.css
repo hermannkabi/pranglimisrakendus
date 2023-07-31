@@ -1,4 +1,4 @@
-@media only screen and (max-width: 1450px) {
+@media only screen and (max-width: 1580px) {
     body{
         padding-inline: 8px !important;
     }
@@ -12,13 +12,16 @@
     }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1200px) {
 
 
 
     .main-column, .layout, .sidebar{
         display: block !important;
         height: auto !important;
+        width: auto !important;
+        min-height: auto !important;
+        margin-right: 0 !important;
     }
 
     section{
@@ -49,12 +52,39 @@
         display: none;
     }
 
+    .big-btns{
+        display: grid;
+        gap: 8px;
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .small-btns{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .small-btns div{
+        text-align: center !important;
+    }
 }
 
 @media only screen and (max-width: 800px){
     .stat-container{
         display: grid !important;
         grid-template-columns: repeat(1, 1fr) !important;
+    }
+
+    #horizontal-rule{
+        display: none !important;
+    }
+
+    .comps{
+        display: block !important;
+    }
+    
+    .past-comps, .future-comps{
+        text-align: center !important;
+
     }
 }
 
@@ -81,6 +111,15 @@
         padding-inline: 8px !important;
     }
 
+    .big-btns, .small-btns{
+        grid-template-columns: repeat(1, 1fr) !important;
+        gap: 0 !important;
+    }
+
+    .small-btns div{
+        text-align: start !important;
+    }
+
 }
 
 @media only screen and (max-width: 320px){
@@ -88,7 +127,6 @@
         grid-template-columns: repeat(1,1fr) !important;
     }
 }
-
 
 .layout{
     display: flex;
@@ -98,18 +136,18 @@
 .main-column{
     flex: 5;
     flex-direction: column;
-    height: calc(100vh - 60px - 8px - 8px - 8px);
+    min-height: calc(100vh - 60px - 8px - 8px - 8px);
     display: flex;
 }
 
 
 
-#game-btns, #my-comps{
+#leaderboard-section, #competitions{
     flex-grow: 1;
 }
 
 .sidebar{
-    flex: 2;
+    width: 340px;
     flex-direction: column;
     display: flex;
 }
@@ -138,6 +176,7 @@ section{
 .stat-container{
     display: flex;
     justify-content: space-evenly;
+    gap: 8px;
 }
 
 .big-game-btns{
@@ -166,7 +205,7 @@ section{
 }
 
 .big-btn-symbol{
-    font-size: 60px;
+    font-size: 40px;
     line-height: 1;
 }
 
@@ -178,4 +217,18 @@ section{
     border-radius: 8px;
     font-size: 24px;
     margin-inline: 16px;
+}
+
+.comps{
+    display: flex;
+}
+
+.past-comps{
+    text-align: start;
+    flex: 1;
+}
+
+.future-comps{
+    text-align: end;
+    flex: 1;
 }
