@@ -52,7 +52,7 @@ export default function Dashboard({auth}) {
                             <StatisticsWidget stat={42} desc="Treeningut" />
                             <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
                             <StatisticsWidget stat={"28.07.2023"} desc="Viimati aktiivne" />
-                            <StatisticsWidget stat={"9."} desc="Koht klassis " />
+                            <StatisticsWidget stat={"6."} desc="Koht klassis " />
                         </div> 
                     </section>
                     
@@ -95,7 +95,7 @@ export default function Dashboard({auth}) {
                                 const points = Math.floor(Math.random()*50)*100;
                                 return <LeaderboardRow index={index} name={name} points={points} key={uuid}/>
                             })}
-                            <LeaderboardRow player="true" index={5} name={"Eesnimi Perenimi"} points={400} />
+                            <LeaderboardRow player="true" index={5} name={"Mari Maasikas"} points={400} />
                             {Array.apply(null, Array(7)).map(function (current, index) {
                                 const eesnimed=["Aleksandr","Sergei","Vladimir","Andrei","Aleksei","Martin","Andres","Dmitri","Igor","Toomas","Viktor","Margus","J\xfcri","Roman","Oleg","Kristjan","Rein","Maksim","Urmas","Aivar","Alexander","Jaan","Marko","Nikolai","Artur","Peeter","Ivan","Tarmo","Jevgeni","Indrek","Priit","Juri","Sander","Meelis","Mihhail","Aleksander","Nikita","Andrus","Raivo","Mati","Jaanus","Pavel","Valeri","Siim","Marek","Rasmus","Mihkel","Tiit","Artjom","T\xf5nu","Olga","Irina","Jelena","Svetlana","Tatjana","Anna","Valentina","Galina","Natalja","Maria","Marina","Tiina","Katrin","Sirje","Anne","Jekaterina","Natalia","Julia","Kristina","\xdclle","Tiiu","Ene","Diana","Viktoria","Nadežda","Piret","Aleksandra","Anneli","Riina","Tamara","Laura","Niina","Kadri","Kristi","Ljudmila","Merike","Maie","Anu","Marika","Eve","Tatiana","Mare","Elena","Oksana","Kristiina","Triin","Malle","Reet","Annika","Jana"];
                                 const perenimed=["Ivanov","Tamm","Saar","Sepp","M\xe4gi","Kask","Smirnov","Kukk","Petrov","Ilves","Rebane","P\xe4rn","Vassiljev","Kuznetsov","Oja","Koppel","Luik","Kaasik","Kuusk","Raudsepp","Lepik","Karu","P\xf5der","Lepp","K\xfctt","Vaher","Pavlov","Kallas","Kivi","Mets","Kangur","Popov","L\xf5hmus","Stepanov","Liiv","Laur","Mihhailov","Kuusik","Volkov","Fjodorov","Teder","J\xf5gi","Peterson","Ots","Toom","K\xf5iv","M\xf6lder","Leppik","Sokolov","Puusepp","Raud",];

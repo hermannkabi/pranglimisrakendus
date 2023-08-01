@@ -1,0 +1,92 @@
+@media only screen and (max-width:1800px){
+    .container{
+        gap: 32px !important;
+    }
+
+    .profile, .settings{
+        width: 40% !important; 
+    }
+}
+
+@media only screen and (max-width:1300px){
+    .container{
+        gap: 16px !important;
+    }
+
+    .profile, .settings{
+        width: 50% !important; 
+    }
+}
+
+@media only screen and (max-width:1300px){
+    .container{
+        display: block !important;
+    }
+
+    .profile, .settings{
+        margin: auto !important;
+        width: 100% !important; 
+
+    }
+}
+
+@media only screen and (max-width:600px){
+    .padding-container{
+        padding-inline: 8px !important;
+    }
+
+    .mobile-block{
+        flex-wrap: wrap;
+        gap: 0 !important;
+    }
+
+    .mobile-block > *{
+        flex-basis:100% !important;
+
+    }
+}
+
+
+.container{
+    display: flex;
+    gap: 100px;
+    justify-content: space-evenly;
+}
+
+.profile, .settings{
+    width: 30%; 
+}
+
+.profile > section, .settings > section{
+    width: 100%;
+}
+
+.settings{
+    display: flex;
+}
+
+.settings > section{
+    flex-grow: 1;
+}
+
+section > h3{
+    text-align: start;
+    margin: 8px;
+}
+
+input{
+    flex: 1;
+}
+
+.number-select{
+    width: 100%;
+    display: flex;
+}
+
+.number-select > input{
+    flex: 1;
+}
+
+.padding-container{
+    padding-inline: 10%;
+}

@@ -221,6 +221,7 @@ section{
 
 .comps{
     display: flex;
+    margin-inline: 16px;
 }
 
 .past-comps{
