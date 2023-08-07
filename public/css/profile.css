@@ -1,20 +1,6 @@
-@media only screen and (max-width:1800px){
-    .container{
-        gap: 32px !important;
-    }
-
-    .profile, .settings{
-        width: 40% !important; 
-    }
-}
-
 @media only screen and (max-width:1300px){
     .container{
         gap: 16px !important;
-    }
-
-    .profile, .settings{
-        width: 50% !important; 
     }
 }
 
@@ -26,13 +12,17 @@
     .profile, .settings{
         margin: auto !important;
         width: 100% !important; 
+    }
 
+    .padding-container{
+        padding-inline: 8px !important;
     }
 }
 
-@media only screen and (max-width:600px){
-    .padding-container{
-        padding-inline: 8px !important;
+@media only screen and (max-width:800px){
+
+    .container{
+        width: 100% !important;
     }
 
     .mobile-block{
@@ -49,13 +39,11 @@
 
 .container{
     display: flex;
-    gap: 100px;
-    justify-content: space-evenly;
+    gap: 32px;
+    width: 50%;
+    margin: auto;
 }
 
-.profile, .settings{
-    width: 30%; 
-}
 
 .profile > section, .settings > section{
     width: 100%;
@@ -89,4 +77,8 @@ input{
 
 .padding-container{
     padding-inline: 10%;
+}
+
+.settings-padding{
+    padding-inline: 8px;
 }

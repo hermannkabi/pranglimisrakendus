@@ -27,17 +27,17 @@ export default function Dashboard({auth}) {
                             <h3 className='section-header'>Vali harjutusala</h3>
                         </div>
                         <div className='big-btns'>
-                            <BigGameButton symbol="×" text="Korrutamine" />
-                            <BigGameButton symbol="÷" text="Jagamine" />
-                            <BigGameButton symbol="+" text="Liitmine" />
-                            <BigGameButton symbol="-" text="Lahutamine" />
+                            <BigGameButton value="multiply" symbol="×" text="Korrutamine" />
+                            <BigGameButton value="divide" symbol="÷" text="Jagamine" />
+                            <BigGameButton value="add" symbol="+" text="Liitmine" />
+                            <BigGameButton value="subtract" symbol="-" text="Lahutamine" />
                         </div>
                         <div className='small-btns'>
-                            <SmallGameButton text="Liitlahutamine" />
-                            <SmallGameButton text="Korrujagamine" />
-                            <SmallGameButton text="Võrdlemine" />
-                            <SmallGameButton text="Lünkamine" />
-                            <SmallGameButton text="Segaarvutused" />
+                            <SmallGameButton value="addsub" text="Liitlahutamine" />
+                            <SmallGameButton value="multidiv" text="Korrujagamine" />
+                            <SmallGameButton value="compare" text="Võrdlemine" />
+                            <SmallGameButton value="gap" text="Lünkamine" />
+                            <SmallGameButton value="random" text="Segaarvutused" />
                             <SmallGameButton text="Kõik harjutused" all="true"/>
                         </div>
                     </section>

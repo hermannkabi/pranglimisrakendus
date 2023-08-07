@@ -159,7 +159,7 @@ a[alone]:hover > .material-icons:not(.no-anim){
 }
 
 a[alone]:hover{
-    color: rgb(56, 80, 79);
+    color: rgb(34, 45, 44);
 }
 
 /* Inputs */
@@ -169,6 +169,7 @@ a[alone]:hover{
 input, textarea, select{
     background-color: #d4dada;
     color: rgba(0, 0, 0, 0.8);
+    color: rgb(var(--primary-color));
     font-family: "Kanit";
     border: none;
     border-radius: 12px;

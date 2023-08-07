@@ -40,7 +40,7 @@ export default function ProfilePage(){
                     <section>
                         <h3>Seaded</h3>
                         <SizedBox height="24px" />
-                        <div className="padding-container" style={{display:'flex', flexWrap:"wrap"}}>
+                        <div className="padding-container settings-padding" style={{display:'flex', flexWrap:"wrap"}}>
                             <select style={{width:"100%"}} name="app-theme">
                                 <option selected disabled id="default">Rakenduse teema</option>
                                 <option value="light">Hele teema</option>

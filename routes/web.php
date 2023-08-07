@@ -39,4 +39,8 @@ Route::get("/profile", function (){
     return Inertia::render("Profile/ProfilePage");
 })->name("profilePage");
 
+Route::get("/preview", function (){
+    return Inertia::render("GamePreview/GamePreviewPage");
+})->name("preview");
+
 require __DIR__.'/auth.php';
