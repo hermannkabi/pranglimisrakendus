@@ -22,6 +22,7 @@ export default function LoginPage(){
 
         setTimeout(() => {
             setLoading(false);
+            window.location.href="/dashboard";
         }, 3000);
     }
 

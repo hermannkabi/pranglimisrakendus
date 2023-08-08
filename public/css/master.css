@@ -73,6 +73,13 @@ button > img{
 }
 
 /* Secondary button */
+button[red]{
+    background-color: rgba(var(--red-color), 0.75);
+}
+
+button[darkred]{
+    background-color: rgba(var(--darkred-color), 1);
+}
 
 button[secondary]{
     color: rgb(var(--primary-btn-color));
@@ -90,9 +97,30 @@ button[secondary]:hover{
     color: rgb(var(--primary-btn-text-color));
 }
 
+button[red]{
+    outline-color: rgba(var(--red-color), 0.75);
+    color: rgba(var(--red-color), 0.75);
+}
+
+button[darkred]{
+    outline-color: rgba(var(--darkred-color), 0.75);
+    color: rgba(var(--darkred-color), 0.75);
+}
+
+button[secondary][red]:hover{
+    background-color: rgba(var(--red-color), 0.75);
+}
+
+button[secondary][darkred]:hover{
+    background-color: rgba(var(--darkred-color), 0.75);
+}
+
+
 button[secondary]:hover > .lds-ring div{
     border-color: rgb(var(--primary-btn-text-color)) transparent transparent transparent;
 }
+
+
 
 /* Links */
 
@@ -131,7 +159,7 @@ a[alone]:hover > .material-icons:not(.no-anim){
 }
 
 a[alone]:hover{
-    color: rgb(56, 80, 79);
+    color: rgb(34, 45, 44);
 }
 
 /* Inputs */
@@ -141,6 +169,7 @@ a[alone]:hover{
 input, textarea, select{
     background-color: #d4dada;
     color: rgba(0, 0, 0, 0.8);
+    color: rgb(var(--primary-color));
     font-family: "Kanit";
     border: none;
     border-radius: 12px;

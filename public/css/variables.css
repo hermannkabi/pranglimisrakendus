@@ -8,4 +8,6 @@
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: 255, 255, 255;
     --primary-btn-border-radius: 12px;
+    --red-color: 239, 131, 131;
+    --darkred-color: 226, 81, 81;
 }
