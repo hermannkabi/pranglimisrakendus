@@ -1,7 +1,7 @@
 <?php
-$a = 0;
+$a = 1;
 
-while ($a <= 5){
+do {
     $x = random_int(0, 10);
     $y = random_int(0, 10);
     ?>
@@ -28,5 +28,5 @@ while ($a <= 5){
     if((int)$_POST["name"] === $x + $y){
         $a++;
     }
-}
+} while($a <= 5);
 ?>
