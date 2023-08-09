@@ -1,4 +1,5 @@
 <?php
+session_start();
 $a = 1;
 
 do {
