@@ -14,7 +14,7 @@ if(!isset($_SESSION['score'])  && !isset($_SESSION['level'])){
 $x = random_int(0,10);
 $y = random_int(0,10);
 
-
+// Stopwatch 
 function startTime(){
     $sec = 0;
     $min = 0;
@@ -97,6 +97,6 @@ if($_SESSION["score"] >= 12){
     <input type="hidden" name="x" value=<?php echo $x ?>>
     <input type="hidden" name="y" value=<?php echo $y ?>>
 
-    <input onclick="startTime()" id="answer" type="number" name='answer'><br>
+    <input onclick="startTime()" id="answer" type="number" name='answer'><br> <!-- See peaks käivitama funktsiooni "startTime -->
     <button type="submit">Vasta</button>
 </form> 
