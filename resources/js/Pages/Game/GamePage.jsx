@@ -43,6 +43,10 @@ export default function GamePage(){
 
     useEffect(()=>{
         generateRandomOperation();
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = "Kui sulged selle vahelehe, kaotad sellega käimasoleva mängu! Kas tahad sulgeda?";
+        });
     }, []);
 
     // Handles numbers, minus and comma
@@ -114,9 +118,12 @@ export default function GamePage(){
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
     }
+
+    
     
     return (
         <div>
+
             <Head title="Mäng" />
             <Navbar title="Mäng" />
 
