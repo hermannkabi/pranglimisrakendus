@@ -1,30 +1,61 @@
 import Navbar from "@/Components/Navbar";
 import NumberButton from "@/Components/NumberButton";
 import SizedBox from "@/Components/SizedBox";
+import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 export default function GamePage(){
 
     const [answer, setAnswer] = useState("");
+    const [timeOver, setTimeOver] = useState(false);
+    // How many operations have been correctly answered
+    const [operationCount, setOperationCount] = useState(0);
+    const [message, setMessage] = useState("");
 
-    const [timer, setTimer] = useState(20);
 
-    useEffect(() => {
-        const interval = setInterval(() => updateTimer(), 1000);
 
-        if(timer <= 0){
-            alert("Aeg on otsas!")
-            clearInterval(interval);
-        }
+    // Mousetrap key bindings
+    Mousetrap.bind("enter", ()=>checkAnswer());
+    Mousetrap.bind("backspace", ()=>handleRemoveClick());
+    Mousetrap.bind("-", ()=>handleMinusClick());
+    Mousetrap.bind(",", ()=>handleNumberClick(","));
 
-        return () => clearInterval(interval);
-    });
+    // Keys that behave as numbers for the handleNumberClick method
+    const numberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
-    function handleNumberClick(number){                  
+    for(const char in numberKeys){
+        Mousetrap.bind(char, ()=>handleNumberClick(char));
+    }
+
+
+    // Generate random operation
+    const [num1, setNum1] = useState(0);
+    const [num2, setNum2] = useState(0);
+
+    function generateRandomOperation(){
+        const number1 = Math.floor(Math.random()*20);
+        const number2 = Math.floor(Math.random()*20);
+
+        setNum1(number1);
+        setNum2(number2);
+    }
+
+    useEffect(()=>{
+        generateRandomOperation();
+    }, []);
+
+    // Handles numbers, minus and comma
+    function handleNumberClick(number){   
+        if(timeOver){return;}               
         // Handle click so that there will be no leading zero
         if((answer == "0" || answer == "-0") && number != ","){
             setAnswer(answer.replace("0", number.toString()));
+            return;
+        }
+
+        // Check if there is already a comma in the answer, if there is, don't do anything
+        if(number == "," && answer.includes(",")){
             return;
         }
 
@@ -40,10 +71,14 @@ export default function GamePage(){
     }
 
     function handleRemoveClick(){
+        if(timeOver){return;}               
+
         setAnswer(answer.slice(0, -1));
     }
 
     function handleMinusClick(){
+        if(timeOver){return;}               
+
         var newAnswer = answer;
         if(answer.startsWith("-")){
             newAnswer = answer.slice(1);
@@ -55,47 +90,53 @@ export default function GamePage(){
 
 
     function checkAnswer(){
-        // Currently hard-coded, but will change in the future
-        const correct = "4";
+        if(!timeOver){
+            // Currently hard-coded, but will change in the future
+            const correct = num1 + num2;
 
-        const formattedAnswer = answer.replace(",", ".");
+            const formattedAnswer = answer.replace(",", ".");
 
-        if(formattedAnswer.length <= 0){
-            return;
-        }
+            if(formattedAnswer.length <= 0){
+                return;
+            }
 
-        if(parseFloat(formattedAnswer) == parseFloat(correct)){
-            alert("Tubli!!!");
-        }else{
-            alert("Õige vastus oli "+correct);
+            if(parseFloat(formattedAnswer) == parseFloat(correct)){
+                generateRandomOperation();
+                setAnswer("");
+                setOperationCount(operationCount + 1);
+            }else{
+                alert("Õige vastus oli "+correct);
+            }
         }
     }
 
-
-    function updateTimer(){
-        const proposedNewTime = timer - 1;
-        setTimer(proposedNewTime < 0 ? 0 : proposedNewTime);
+    function onTimerFinished(){
+        setTimeOver(true);
+        setMessage("Aeg sai otsa!");
     }
-
-
+    
     return (
-        <>
+        <div>
             <Head title="Mäng" />
             <Navbar title="Mäng" />
 
             <SizedBox height="36px" />
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
+                
+                {message && <div style={{backgroundColor:"rgb(var(--primary-color), 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
+                </div>}
                 <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--primary-color), 0.05)", borderRadius:"16px", padding:"8px"}}>
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                         <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>1 <span style={{fontFamily:"Kanit", fontSize:"24px", color:"grey"}}>1</span></h2>
-                            <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>0 punkti</p>
+                            <h2 style={{marginBlock:"0"}}>{operationCount + 1} <span style={{fontFamily:"Kanit", fontSize:"24px", color:"grey"}}>1</span></h2>
+                            <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            <p style={{color:"rgb(var(--primary-color))", fontWeight:'bold', fontSize:'24px'}}>{Math.floor(timer/60) < 10 ? "0" + (Math.floor(timer/60)).toString() : Math.floor(timer/60)}:{(timer - Math.floor(timer/60) * 60) < 10 ? "0" + (timer - Math.floor(timer/60) * 60).toString() : (timer - Math.floor(timer/60) * 60)}</p>
+                            <Timer onTimerFinished={onTimerFinished} />
                         </div>
                     </div>
-                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation">2+2</span> = <span id="answer">{answer}</span></h2>
+                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation">{num1}+{num2}</span> = <span id="answer">{answer}</span></h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
                 <SizedBox height="24px" />
@@ -122,6 +163,6 @@ export default function GamePage(){
             </div>
             
 
-        </>
+        </div>
     );
 }
