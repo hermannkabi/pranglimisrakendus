@@ -13,6 +13,8 @@ export default function GamePage(){
     const [operationCount, setOperationCount] = useState(0);
     const [message, setMessage] = useState("");
 
+    let onBeforeUnloadListener;
+
 
 
     // Mousetrap key bindings
@@ -43,7 +45,7 @@ export default function GamePage(){
 
     useEffect(()=>{
         generateRandomOperation();
-        window.addEventListener('beforeunload', (event) => {
+        window.addEventListener('beforeunload', onBeforeUnloadListener = (event) => {
             event.preventDefault();
             event.returnValue = "Kui sulged selle vahelehe, kaotad sellega käimasoleva mängu! Kas tahad sulgeda?";
         });
@@ -117,6 +119,10 @@ export default function GamePage(){
     function onTimerFinished(){
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
+        setTimeout(() => {
+            window.removeEventListener('beforeunload', onBeforeUnloadListener);
+            window.location.href = route("gameEnd");
+        }, 750);
     }
 
     

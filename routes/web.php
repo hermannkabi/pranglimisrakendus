@@ -45,6 +45,10 @@ Route::get("/preview", function (){
 
 Route::get("/game", function (){
     return Inertia::render("Game/GamePage");
-});
+})->name("game");
+
+Route::get("/game/end", function (){
+    return Inertia::render("GameEnd/GameEndPage");
+})->name("gameEnd");
 
 require __DIR__.'/auth.php';

@@ -18,7 +18,7 @@ export default function Navbar({title, user}){
                 <a href={route("profilePage")} style={{all:"unset"}}>
                     <div className="profile-btn" style={{right:"0"}}>
                         <p className="name-text">{user == null ? "Mari Maasikas" : user.name}</p>
-                        <p className="school-text">Kooli Põhikool, 10.a</p>
+                        <p className="school-text">Kooli Põhikool, 9.a</p>
                     </div>
                 </a>
                
