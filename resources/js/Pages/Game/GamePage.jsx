@@ -22,6 +22,8 @@ export default function GamePage(){
     Mousetrap.bind("backspace", ()=>handleRemoveClick());
     Mousetrap.bind("-", ()=>handleMinusClick());
     Mousetrap.bind(",", ()=>handleNumberClick(","));
+    Mousetrap.bind(".", ()=>handleNumberClick(","));
+
 
     // Keys that behave as numbers for the handleNumberClick method
     const numberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -40,35 +42,36 @@ export default function GamePage(){
         if((index + 1) < operations.length){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
-            var operationString = operations[index]["operation"].toString();
+            var operationString = operations[forcedIndex ?? index + 1]["operation"].toString();
             var matches = operationString.match(regex);
+            if(matches!= null){
+                matches.forEach(function (match){
+                    var matchList = regex.exec(match);
+                    if(matchList == null) return;
+                    var numerator = parseInt(matchList[1]);
+                    var denominator = parseInt(matchList[2]);
+                    var fullPart = null;
+    
+                    if(numerator > denominator){
+                        fullPart = Math.floor(numerator / denominator);
+                        numerator -= fullPart * denominator;
+                    }
+                    operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
+                });
+            }
+            
 
-            matches.forEach(function (match){
-                var matchList = regex.exec(match);
-                if(matchList == null) return;
-                var numerator = parseInt(matchList[1]);
-                var denominator = parseInt(matchList[2]);
-                var fullPart = null;
-
-                if(numerator > denominator){
-                    fullPart = Math.floor(numerator / denominator);
-                    numerator -= fullPart * denominator;
-                }
-
-
-                operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
-            });
             setOperation(operationString);
         }else{
-            alert("Getting new operations");
+            alert("Should be getting new operations");
         }
     }
 
     // hard-coded for now, but will change soon
     var operations = [
         {
-            "operation":"2 + (8/3)",
-            "answer":"4",
+            "operation":"2 + (7/2)",
+            "answer":"5.5",
         },
         {
             "operation":"3+5",
