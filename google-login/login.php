@@ -12,7 +12,7 @@ $client->setClientId('388736580170-u85heuu01abear95nfgppjt7a75u0mov.apps.googleu
 // Enter your Client Secrect
 $client->setClientSecret('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');
 // Enter the Redirect URL
-$client->setRedirectUri('http://localhost/pranglimisrakendus/login.php');
+$client->setRedirectUri('http://localhost/pranglimisrakendus/google-login/login.php');
 // Adding those scopes which we want to get (email & profile Information)
 $client->addScope("email");
 $client->addScope("profile");
