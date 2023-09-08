@@ -256,3 +256,21 @@ select{
 select:after{
     content: "X";
 }
+
+.frac {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    letter-spacing: 0.0001em;
+    text-align: center;
+}
+.frac > span {
+    display: block;
+    padding: 0.05em;
+}
+.frac span.bottom {
+    border-top: 2px solid rgb(var(--primary-color));
+}
+.frac span.symbol {
+    display: none;
+}

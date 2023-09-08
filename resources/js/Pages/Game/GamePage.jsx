@@ -32,19 +32,64 @@ export default function GamePage(){
 
 
     // Generate random operation
-    const [num1, setNum1] = useState(0);
-    const [num2, setNum2] = useState(0);
+    const [index, setIndex] = useState(0);
+    const [operation, setOperation] = useState("");
 
-    function generateRandomOperation(){
-        const number1 = Math.floor(Math.random()*20);
-        const number2 = Math.floor(Math.random()*20);
 
-        setNum1(number1);
-        setNum2(number2);
+    function getNewOperation(forcedIndex){
+        if((index + 1) < operations.length){
+            setIndex(forcedIndex ?? index + 1);
+            var regex = /\((\d+)\/(\d+)\)$/;
+            var operationString = operations[index]["operation"].toString();
+            var matches = operationString.match(regex);
+
+            matches.forEach(function (match){
+                var matchList = regex.exec(match);
+                if(matchList == null) return;
+                var numerator = parseInt(matchList[1]);
+                var denominator = parseInt(matchList[2]);
+                var fullPart = null;
+
+                if(numerator > denominator){
+                    fullPart = Math.floor(numerator / denominator);
+                    numerator -= fullPart * denominator;
+                }
+
+
+                operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
+            });
+            setOperation(operationString);
+        }else{
+            alert("Getting new operations");
+        }
     }
 
+    // hard-coded for now, but will change soon
+    var operations = [
+        {
+            "operation":"2 + (8/3)",
+            "answer":"4",
+        },
+        {
+            "operation":"3+5",
+            "answer":"8",
+        },
+        {
+            "operation":"4+8",
+            "answer":"12",
+        },
+        {
+            "operation":"6+6",
+            "answer":"12",
+        },
+        {
+            "operation":"9+6",
+            "answer":"15",
+        },
+    ];
+
     useEffect(()=>{
-        generateRandomOperation();
+        getNewOperation(0);
         window.addEventListener('beforeunload', onBeforeUnloadListener = (event) => {
             event.preventDefault();
             event.returnValue = "Kui sulged selle vahelehe, kaotad sellega käimasoleva mängu! Kas tahad sulgeda?";
@@ -97,8 +142,7 @@ export default function GamePage(){
 
     function checkAnswer(){
         if(!timeOver){
-            // Currently hard-coded, but will change in the future
-            const correct = num1 + num2;
+            const correct = operations[index]["answer"].toString();
 
             const formattedAnswer = answer.replace(",", ".");
 
@@ -107,7 +151,7 @@ export default function GamePage(){
             }
 
             if(parseFloat(formattedAnswer) == parseFloat(correct)){
-                generateRandomOperation();
+                getNewOperation();
                 setAnswer("");
                 setOperationCount(operationCount + 1);
             }else{
@@ -149,7 +193,7 @@ export default function GamePage(){
                             <Timer onTimerFinished={onTimerFinished} />
                         </div>
                     </div>
-                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation">{num1}+{num2}</span> = <span id="answer">{answer}</span></h2>
+                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer">{answer}</span></h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
                 <SizedBox height="24px" />
