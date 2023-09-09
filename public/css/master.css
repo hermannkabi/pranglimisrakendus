@@ -274,3 +274,8 @@ select:after{
 .frac span.symbol {
     display: none;
 }
+
+.frac span.bordered{
+    outline: 2px solid rgb(var(--primary-color));
+    border-radius: 8px;
+}

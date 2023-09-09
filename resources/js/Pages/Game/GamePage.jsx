@@ -8,10 +8,12 @@ import { useEffect, useState } from "react";
 export default function GamePage(){
 
     const [answer, setAnswer] = useState("");
+    const [answerAsHtml, setAnswerAsHtml] = useState("");
     const [timeOver, setTimeOver] = useState(false);
     // How many operations have been correctly answered
     const [operationCount, setOperationCount] = useState(0);
     const [message, setMessage] = useState("");
+    const [fractionState, setFractionState] = useState("off");
 
     let onBeforeUnloadListener;
 
@@ -23,6 +25,9 @@ export default function GamePage(){
     Mousetrap.bind("-", ()=>handleMinusClick());
     Mousetrap.bind(",", ()=>handleNumberClick(","));
     Mousetrap.bind(".", ()=>handleNumberClick(","));
+    Mousetrap.bind("up", ()=>handleArrow());
+    Mousetrap.bind("down", ()=>handleArrow());
+
 
 
     // Keys that behave as numbers for the handleNumberClick method
@@ -119,6 +124,48 @@ export default function GamePage(){
             return;
         }
 
+        // If there is a fraction, ignore commas
+        if(answer.includes("(") && number == ","){
+            return;
+        }
+
+        // If there is a fraction, change it
+        if(answer.endsWith(")")){
+            var regex = /\((\d+)\/(\d+)\)/;
+            var ans = answer;
+
+            var matches = ans.match(regex);
+            if(matches != null){
+                matches.forEach(function (match){
+                    var matchList = regex.exec(match);
+                    if(matchList == null) return ans;
+                    var numerator = matchList[1].toString();
+                    var denominator = matchList[2].toString();
+
+                    if(fractionState == "up"){
+                        numerator += number.toString();
+                        
+                        if(numerator.startsWith("0") && numerator.length > 0){
+                            numerator = numerator.slice(1);
+                        }
+                    }
+
+                    if(fractionState == "down"){
+                        denominator += number.toString();
+
+                        if(denominator.startsWith("0") && denominator.length > 0){
+                            denominator = denominator.slice(1);
+                        }
+                    }
+                    
+                    ans = ans.replace(match, '('+numerator.toString()+'/'+denominator.toString()+')')
+                });
+
+                setAnswer(ans);
+            }
+
+            return;
+        }
 
         setAnswer(answer + number.toString());
         
@@ -126,7 +173,49 @@ export default function GamePage(){
 
     function handleRemoveClick(){
         if(timeOver){return;}               
+        if(answer.endsWith(")")){
+            var regex = /\((\d+)\/(\d+)\)/;
+            var ans = answer;
 
+            if(answer.includes(")")){
+                var matches = ans.match(regex);
+                if(matches != null){
+                    matches.forEach(function (match){
+                        var matchList = regex.exec(match);
+                        if(matchList == null) return;
+                        var numerator = matchList[1].toString();
+                        var denominator = matchList[2].toString();
+                    
+                        if(fractionState == "up"){
+                            numerator = numerator.slice(0, -1);
+                            if(numerator.toString().length <= 0){
+                                numerator = "0";
+                            }
+                        }else{
+                            denominator = denominator.slice(0, -1);
+                            if(denominator.toString().length <= 0){
+                                denominator = "0";
+                            }
+                        }
+
+                        if(numerator.startsWith("0") && numerator.length > 1){
+                            numerator = numerator.slice(1);
+                        }
+
+                        if(denominator.startsWith("0") && denominator.length > 1){
+                            denominator = denominator.slice(1);
+                        }
+
+                        ans = ans.replace(match, '('+numerator.toString()+'/'+denominator.toString()+')');
+                    });
+                } 
+                setAnswer(ans);
+                return;
+            }
+
+            setAnswer(answer.replace(regex, ""));
+            return;
+        }
         setAnswer(answer.slice(0, -1));
     }
 
@@ -145,13 +234,33 @@ export default function GamePage(){
 
     function checkAnswer(){
         if(!timeOver){
+
+            setFractionState("off");
+
             const correct = operations[index]["answer"].toString();
 
-            const formattedAnswer = answer.replace(",", ".");
+            var formattedAnswer = answer.replace(",", ".");
 
             if(formattedAnswer.length <= 0){
                 return;
             }
+
+            var regex = /\((\d+)\/(\d+)\)/;
+            var matches = formattedAnswer.match(regex);
+
+            if(matches != null){
+                var numerator = matches[1].toString();
+                var denominator = matches[2].toString();
+                formattedAnswer = formattedAnswer.replace(matches[0], (formattedAnswer.startsWith("-") ? "-" : "+")+((numerator/denominator)));
+            }
+
+            formattedAnswer = formattedAnswer.replace(",", ".");
+
+            formattedAnswer = formattedAnswer.replace(" ", "");
+
+            formattedAnswer = eval(formattedAnswer);
+
+            console.log(formattedAnswer);
 
             if(parseFloat(formattedAnswer) == parseFloat(correct)){
                 getNewOperation();
@@ -172,7 +281,43 @@ export default function GamePage(){
         }, 750);
     }
 
+    function handleFraction(){
+        if(answer.includes(",")){
+            return;
+        }
+        if(answer.includes("(") && answer.includes(")")){
+            setFractionState(fractionState == "down" ? "up" : "down");
+        }else{
+            setAnswer(answer + " (0/0)");
+            setFractionState("up");
+        }
+    }
+
+
+    function renderAnswer(text){
+        var regex = /\((\d+)\/(\d+)\)$/;
+        var ans = text;
+
+        var matches = ans.match(regex);
+        if(matches != null){
+            matches.forEach(function (match){
+                var matchList = regex.exec(match);
+                if(matchList == null) return ans;
+                var numerator = parseInt(matchList[1]);
+                var denominator = parseInt(matchList[2]);
+            
+                ans = ans.replace(match, ' <div class="frac"><span class="'+(fractionState == "up" ? 'bordered' : '')+'">'+numerator+'</span><span class="symbol">/</span><span class="bottom '+(fractionState == "down" ? 'bordered' : '')+'">'+denominator+'</span></div>')
+            });
+        }
+        
+        return ans;
+    }
     
+    function handleArrow(){
+        if(answer.includes(")")){
+            setFractionState(fractionState == "up" ? "down" : "up");
+        }
+    }
     
     return (
         <div>
@@ -196,7 +341,7 @@ export default function GamePage(){
                             <Timer onTimerFinished={onTimerFinished} />
                         </div>
                     </div>
-                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer">{answer}</span></h2>
+                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
                 <SizedBox height="24px" />
@@ -204,7 +349,7 @@ export default function GamePage(){
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
                     <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
-                    <NumberButton content="½" />
+                    <NumberButton content={fractionState == "up" ? "⬇" : fractionState == "down" ? "⬆" : "½"} onClick={()=>handleFraction()}/>
 
                     <NumberButton content="4" onClick={()=>handleNumberClick(4)} />
                     <NumberButton content="5" onClick={()=>handleNumberClick(5)} />
