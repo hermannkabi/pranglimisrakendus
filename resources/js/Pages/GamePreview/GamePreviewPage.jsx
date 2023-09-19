@@ -8,6 +8,10 @@ export default function GamePreviewPage(){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+    function navigateToGame(){
+        return window.location.href = "/game";
+    }
+
     return (
         <>
             <Head title="Mängu eelistused" />
@@ -47,7 +51,7 @@ export default function GamePreviewPage(){
                 <div className="start-btn">
                     <section>
                         <p style={{fontSize:"1.5rem", color:"rgb(var(--primary-color))", marginBottom:"8px"}}>Harjutusmäng</p>
-                        <button>Alusta mängu</button>
+                        <button onClick={navigateToGame}>Alusta mängu</button>
                     </section>
                 </div>
             </div>

@@ -22,6 +22,6 @@
         
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
-
+        <script src="https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js?a4098"></script> 
     </body>
 </html>
