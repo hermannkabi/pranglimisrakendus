@@ -133,9 +133,7 @@ else:
     </div>
     <div class="_container btn">
         
-        <a type="button" class="login-with-google-btn" href="<?php echo $client->createAuthUrl(); ?>">
-            Sign in with Google
-        </a>
+        <a type="button" href="<?php echo route('googleLogin') ?>">Sign in with Google</a>
     </div>
 </body>
 </html>

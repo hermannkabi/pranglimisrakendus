@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use Exception;
+class GoogleController extends Controller
+{
+    public function googlepage()
+    {
+        return socialite::driver('google')->redirect();
+    }
+
+    public function googlecallback()
+    {
+
+        try {
+      
+            $user = Socialite::driver('google')->user();
+       
+            $finduser = User::where('google_id', $user->id)->first();
+       
+            if($finduser)
+
+            {
+       
+                Auth::login($finduser);
+      
+                return redirect()->intended('home.php');
+       
+            }
+
+            else
+
+            {
+                $newUser = User::create([
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'google_id'=> $user->getId(),
+                ]);
+      
+                Auth::login($newUser);
+      
+                return redirect()->intended('home.php');
+            }
+      
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+}

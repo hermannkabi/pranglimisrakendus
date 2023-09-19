@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleFormController;
+use App\Http\Controllers\GoogleController;
 
 
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
@@ -43,4 +44,11 @@ Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
 })->name("preview");
 
+
+route::get('pranglimisrakendus/google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
+route::get('pranglimisrakendus/google-login/callback', [GoogleController::class, 'googlecallback']);
+
+
 require __DIR__.'/auth.php';
+
+
