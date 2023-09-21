@@ -49,7 +49,7 @@ export default function LoginPage(){
                 <a alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
                 <div className="sso-btns">
-                    <button type="button" secondary="true"><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
+                    <button type="button" secondary="true" onClick={()=>window.location.href = route("googleLogin")}><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
                 </div>
             </form>
         </>
