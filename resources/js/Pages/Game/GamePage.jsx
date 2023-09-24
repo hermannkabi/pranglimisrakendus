@@ -5,7 +5,7 @@ import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function GamePage(){
+export default function GamePage({data}){
 
     const [answer, setAnswer] = useState("");
     const [answerAsHtml, setAnswerAsHtml] = useState("");
@@ -44,10 +44,11 @@ export default function GamePage(){
 
 
     function getNewOperation(forcedIndex){
-        if((index + 1) < operations.length){
+        if((index + 1) < operations.data.length){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
-            var operationString = operations[forcedIndex ?? index + 1]["operation"].toString();
+            var operationString = operations.data[forcedIndex ?? index + 1].operation.toString();
+            console.log(operationString);
             var matches = operationString.match(regex);
             if(matches!= null){
                 matches.forEach(function (match){
@@ -72,29 +73,30 @@ export default function GamePage(){
         }
     }
 
-    // hard-coded for now, but will change soon
-    var operations = [
-        {
-            "operation":"2 + (7/2)",
-            "answer":"5.5",
-        },
-        {
-            "operation":"3+5",
-            "answer":"8",
-        },
-        {
-            "operation":"4+8",
-            "answer":"12",
-        },
-        {
-            "operation":"6+6",
-            "answer":"12",
-        },
-        {
-            "operation":"9+6",
-            "answer":"15",
-        },
-    ];
+    // Archaic structure, new one with Objects
+    // var operations = [
+    //     {
+    //         "operation":"2 + (7/2)",
+    //         "answer":"5.5",
+    //     },
+    //     {
+    //         "operation":"3+5",
+    //         "answer":"8",
+    //     },
+    //     {
+    //         "operation":"4+8",
+    //         "answer":"12",
+    //     },
+    //     {
+    //         "operation":"6+6",
+    //         "answer":"12",
+    //     },
+    //     {
+    //         "operation":"9+6",
+    //         "answer":"15",
+    //     },
+    // ];
+    var operations = {data};
 
     useEffect(()=>{
         getNewOperation(0);
@@ -237,7 +239,7 @@ export default function GamePage(){
 
             setFractionState("off");
 
-            const correct = operations[index]["answer"].toString();
+            const correct = operations.data[index].answer.toString();
 
             var formattedAnswer = answer.replace(",", ".");
 
@@ -338,7 +340,7 @@ export default function GamePage(){
                             <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            <Timer onTimerFinished={onTimerFinished} />
+                            {/* <Timer onTimerFinished={onTimerFinished} /> */}
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>

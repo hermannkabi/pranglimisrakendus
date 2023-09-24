@@ -11,7 +11,7 @@ Vaja läheb järgmisi tehnoloogiaid:
 1) PHP (https://www.php.net/manual/en/install.php)
 2) Composer (https://getcomposer.org/doc/00-intro.md)
 3) Node.js/NPM (https://nodejs.org/en)
-   
+
 **Installeerimine:**
 
 1. _Klooni repositoorium arvutisse_
@@ -19,6 +19,7 @@ Vaja läheb järgmisi tehnoloogiaid:
 3. npm install
 4. cp .env.example .env
 5. php artisan key:generate
+6. composer require laravel/socialite
 
 **Kasutamine:**
 
@@ -26,7 +27,6 @@ Ava kaks terminali instantsi (nt VS Code seest). Jooksuta ühes terminalis ühte
 
 1. npm run dev
 2. php artisan serve
-
 
 ## Litsents
 
