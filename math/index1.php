@@ -119,7 +119,8 @@ do {
     var_dump($loend);
 };
 
-array_Gen($x, $y);
+$liitmine= array_Gen($x, $y);
+
 ?>
 
 <form method="post">
