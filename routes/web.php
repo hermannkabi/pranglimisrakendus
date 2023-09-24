@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArrayController;
+use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -48,9 +50,7 @@ Route::get("/preview", function (){
 route::get('google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
 route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
 
-Route::get("/game", function (){
-    return Inertia::render("Game/GamePage", ["data" =>[array_Gen($GLOBALS['x'],$GLOBALS['y'])]]);
-})->name("game");
+Route::get("/game", [ArrayController::class,  'array_Gen'])->name("game");
 
 Route::get("/game/end", function (){
     return Inertia::render("GameEnd/GameEndPage");

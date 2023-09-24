@@ -8,15 +8,11 @@ if(!isset($_SESSION['score'])  && !isset($_SESSION['level'])){
     $_SESSION['level'] = 1;
 }
 
-
-
-// Generate random numbers
-$x = random_int(0,9);
-$y = random_int(1,10);
-$q = 0;
-$z = array_fill(1, 15 + $q, $x . '+'. $y = $x+$y);/* plaanin saata info arrayga */
+GLOBAL $liitmine;
     
-
+// Generate random numbers
+$x = random_int(0,9);     
+$y = random_int(1,10);
 
 // // Stopwatch 
 // function startTime(){
@@ -39,7 +35,6 @@ $z = array_fill(1, 15 + $q, $x . '+'. $y = $x+$y);/* plaanin saata info arrayga 
 // Function to verify the answer posted
 function verifyAnswer(){
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
         // Reset button click, reset score & level and exit function
         if(isset($_POST["reset"])){
             $_SESSION["score"] = 0;
@@ -109,18 +104,6 @@ if($_SESSION["score"] >= 12){
 verifyAnswer();
 
 // Array generator
-function array_Gen($var1, $var2){
-    $loend = [] ;
-    $pop = 0 ;
-do {
-    $loend[$var1 . '+' . $var2] = $var1 + $var2;
-    $pop ++;
-}while($pop <=15);
-    var_dump($loend);
-};
-
-$liitmine= array_Gen($x, $y);
-
 ?>
 
 <form method="post">
