@@ -45,8 +45,8 @@ Route::get("/preview", function (){
 })->name("preview");
 
 
-route::get('pranglimisrakendus/google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
-route::get('pranglimisrakendus/google-login/callback', [GoogleController::class, 'googlecallback']);
+route::get('google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
+route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
 
 Route::get("/game", function (){
     return Inertia::render("Game/GamePage");
