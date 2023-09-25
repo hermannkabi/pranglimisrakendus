@@ -16,16 +16,21 @@ class ArrayController extends Controller
 {
 
     public function array_Gen(){
-        $loend = [] ;
-        $pop = 0 ;
+        $loend = [];
+        $pop = 0;
+
+        $operation_count = 15;
+
         do {
+
             $x = random_int(0,9);     
             $y = random_int(1,10);    
             array_push($loend, ["operation"=>$x . '+' . $y, "answer"=>$x + $y]);
             $pop ++;
-        }while($pop <=15);
-        var_dump($loend);
-        return Inertia::render("Game/GamePage", ["data"=>$loend]);
+
+        }while($pop <= ($operation_count - 1));
+
+        return Inertia::render("Game/GamePage", ["data"=>$loend, ]);
     }
     
 };
