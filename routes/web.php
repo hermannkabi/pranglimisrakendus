@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleFormController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleController;
 
 
@@ -50,7 +51,7 @@ Route::get("/preview", function (){
 route::get('google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
 route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
 
-Route::get("/game", [ArrayController::class,  'array_Gen'])->name("game");
+Route::get("/game", [GameController::class,  'array_Gen'])->name("game");
 
 Route::get("/game/end", function (){
     return Inertia::render("GameEnd/GameEndPage");
