@@ -30,7 +30,7 @@ class ArrayController extends Controller
 
         }while($pop <= ($operation_count - 1));
 
-        return Inertia::render("Game/GamePage", ["data"=>$loend, ]);
+        return Inertia::render("Game/GamePage", ["data"=>$loend]);
     }
     
 };

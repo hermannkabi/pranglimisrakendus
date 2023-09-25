@@ -51,7 +51,6 @@ export default function LoginPage(){
                 <div className="sso-btns">
                     <button type="button" secondary="true" onClick={()=>window.location.href = route("googleLogin")}><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
                 </div>
-                <a href="<?php echo $googleURL ?>">The link to google</a>
             </form>
         </>
     )
