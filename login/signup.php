@@ -11,19 +11,19 @@ if (isset($_POST['...'])) {
     require_once 'database.php';
     require_once 'functions.php';
 
-    if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat) != false) {
+    if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result) != false) {
         echo 'Error'; // Add more inf
         exit();
     };
-    if (invalidname($name) != false) {
+    if (invalidname($name, $result) != false) {
         echo 'Error';// Add more inf
         exit();
     };
-    if (invalidemail($email) != false) {
+    if (invalidemail($email, $result) != false) {
         echo 'Error';// Add more inf
         exit();
     };
-    if (pwdMatch($pwd,  $pwdRepeat) !== false) {
+    if (pwdMatch($pwd,  $pwdRepeat, $result) !== false) {
         echo 'Error';// Add more inf
         exit();
     };
