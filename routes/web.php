@@ -51,13 +51,9 @@ Route::get("/preview", function (){
 route::get('google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
 route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
 
-<<<<<<< Updated upstream
-Route::get("/game", [GameController::class,  'array_Gen'])->name("game");
-=======
 Route::get("/game", function (){
     return Inertia::render("Game/GamePage", ["data" =>[array_Gen($GLOBALS['x'],$GLOBALS['y'])]]);
 })->name("game");
->>>>>>> Stashed changes
 
 Route::get("/game/end", function (){
     return Inertia::render("GameEnd/GameEndPage");
