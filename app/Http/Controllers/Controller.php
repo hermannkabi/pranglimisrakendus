@@ -29,7 +29,30 @@ class GameController extends Controller
             $start = microtime(true);
             array_push($loend, ["operation"=>$x . '+' . $y, "answer"=>$x + $y]);
             $pop ++;
+            
+            
 
+            //ascending level system
+            if($pop >= 0){
+                $x = random_int(0 ,9);
+                $y = random_int(1,10);
+                multyplier($x, $y, 0.5, 10);
+                }
+            if($pop >= 5){
+                $x = random_int(10 ,99);
+                $y = random_int(11,100);
+                multyplier($x, $y, 0.5, 100);
+                }
+            if($pop >= 9){
+                $x = random_int(100,999);
+                $y = random_int(101,1000);
+                multyplier($x, $y, 0.5, 1000);
+                }
+            if($pop >= 12){
+                $x = random_int(1000,9999);
+                $y = random_int(1001,10000);
+                multyplier($x, $y, 0.5, 10000);
+                }
             if ($pop == 15){
 
                 return redirect()->route('gameEnd');
