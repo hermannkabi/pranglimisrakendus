@@ -16,47 +16,64 @@ class Controller extends BaseController
 class GameController extends Controller
 {
     //Lisa "if -> liitmine do liitmine" array_Gen funktsiooniks
-    public function array_Gen(){
+    public function array_Gen($liitmine, $korrutamine, $lahutamine, $jagamine, $lünkamine){
         $loendliit = [];
         $loendkor = [];
         $loendjag = [];
         $loendlah = [];
+        $loendlünk = [];
         $pop = 0;
     
         $operation_count = 15;
         
         do {
-            //lisa "if -> array_Gen "argument" === liitmine", sama teistele ka
             //liitmine
-            $xliit= random_int(0,9);     
-            $yliit= random_int(1,10);
-            array_push($loendliit, ["operation"=>$xliit. '+' . $yliit, "answer"=>$xliit+ $yliit]);
+            if ($liitmine === True) {
+                $xliit= random_int(0,9);     
+                $yliit= random_int(1,10);
+                array_push($loendliit, ["operation"=>$xliit. '+' . $yliit, "answer"=>$xliit + $yliit]);
+            }
+            
             
             //korrutamine
-            $xkor = random_int(0,9);
-            $ykor = random_int(1,10);
-            array_push($loendkor, ["operation"=>$xkor . '*' . $ykor, "answer"=>$xkor * $ykor]);
+            if ($korrutamine === True) {
+                $xkor = random_int(0,9);
+                $ykor = random_int(1,10);
+                array_push($loendkor, ["operation"=>$xkor . '*' . $ykor, "answer"=>$xkor * $ykor]);
+            }
+            
 
             //lahutamine
-            $xlah = random_int(0,9);
-            $ylah = random_int(1,10);
-            array_push($loendlah, ["operation"=>$xlah . '-' . $ylah, "answer"=>$xlah - $ylah]);
+            if ($lahutamine === True) {
+                $xlah = random_int(0,9);
+                $ylah = random_int(1,10);
+                array_push($loendlah, ["operation"=>$xlah . '-' . $ylah, "answer"=>$xlah - $ylah]);
+            }
+            
 
             //jagamine
-            $xjag = random_int(0,9);
-            $yjag = random_int(1,10);
-            array_push($loendjag, ["operation"=>$xjag . ':' . $yjag, "answer"=>$xjag / $yjag]);
+            if ($jagamine === True) {
+                $xjag = random_int(0,9);
+                $yjag = random_int(1,10);
+                array_push($loendjag, ["operation"=>$xjag . ':' . $yjag, "answer"=>$xjag / $yjag]);
+            }
             
+            //lünkamine
+            if ($lünkamine === True){
+                $opo = 0;
+                $suvalisus = array(
+                    'Lünk',
+                    'Tavaline',
+                );
+                do{
+                    shuffle($suvalisus);
+                    array_push($loendlünk, reset($suvalisus));
+                    $opo ++;
+                } while ($opo <= $operation_count);
+            }
+        
             //ascending level system
             if($pop >= 0){
-                $xliit= random_int(0, 9);
-                $xkor= random_int(0, 9);
-                $xlah= random_int(0, 9);
-                $xjag= random_int(0, 9);
-                $yliit= random_int(1, 10);
-                $ykor= random_int(1, 10);
-                $ylah= random_int(1, 10);
-                $yjag= random_int(1, 10);
                 multyplier($xliit, $yliit, 0.5, 10);
                 multyplier($xkor, $ykor, 0.2, 10);
                 multyplier($xliit, $yliit, 0.5, 10);
@@ -114,11 +131,21 @@ class GameController extends Controller
         }while($pop <= ($operation_count - 1));
         
     
-                    //if array_Gen arg === liitmine return
-        return Inertia::render("Game/GamePage", ["data"=>$loendliit]);
-        return Inertia::render("Game/GamePage", ["data*"=>$loendkor]);
-        return Inertia::render("Game/GamePage", ["data-"=>$loendlah]);
-        return Inertia::render("Game/GamePage", ["data:"=>$loendjag]);
+        if ($liitmine === True){
+            return Inertia::render("Game/GamePage", ["data"=>$loendliit]);
+        }
+        if ($korrutamine === True){
+            return Inertia::render("Game/GamePage", ["data*"=>$loendkor]);
+        }
+        if ($lahutamine === True){
+            return Inertia::render("Game/GamePage", ["data-"=>$loendlah]);
+        }
+        if ($jagamine === True){
+            return Inertia::render("Game/GamePage", ["data:"=>$loendjag]);
+        }
+        if ($lünkamine === True){
+            return Inertia::render("Game/GamePage", ["datalünk:"=>$loendlünk]);
+        }
     }
     
 };
