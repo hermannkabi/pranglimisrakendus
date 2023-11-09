@@ -16,7 +16,7 @@ class Controller extends BaseController
 class GameController extends Controller
 {
     //Lisa "if -> liitmine do liitmine" array_Gen funktsiooniks
-    public function array_Gen($liitmine, $korrutamine, $lahutamine, $jagamine, $lünkamine){
+    public function array_Gen($tehe){
         $loendliit = [];
         $loendkor = [];
         $loendjag = [];
@@ -28,7 +28,7 @@ class GameController extends Controller
         
         do {
             //liitmine
-            if ($liitmine === True) {
+            if ($tehe === 'liitmine') {
                 $xliit= random_int(0,9);     
                 $yliit= random_int(1,10);
                 array_push($loendliit, ["operation"=>$xliit. '+' . $yliit, "answer"=>$xliit + $yliit]);
@@ -36,15 +36,15 @@ class GameController extends Controller
             
             
             //korrutamine
-            if ($korrutamine === True) {
+            if ($tehe === 'korrutamine') {
                 $xkor = random_int(0,9);
                 $ykor = random_int(1,10);
                 array_push($loendkor, ["operation"=>$xkor . '*' . $ykor, "answer"=>$xkor * $ykor]);
             }
             
 
-            //lahutamine
-            if ($lahutamine === True) {
+            //tehe
+            if ($tehe === 'lahtuamine') {
                 $xlah = random_int(0,9);
                 $ylah = random_int(1,10);
                 array_push($loendlah, ["operation"=>$xlah . '-' . $ylah, "answer"=>$xlah - $ylah]);
@@ -52,14 +52,14 @@ class GameController extends Controller
             
 
             //jagamine
-            if ($jagamine === True) {
+            if ($tehe === 'jagamine') {
                 $xjag = random_int(0,9);
                 $yjag = random_int(1,10);
                 array_push($loendjag, ["operation"=>$xjag . ':' . $yjag, "answer"=>$xjag / $yjag]);
             }
             
             //lünkamine
-            if ($lünkamine === True){
+            if ($tehe === 'lünkamine'){
                 $opo = 0;
                 $suvalisus = array(
                     'Lünk',
@@ -131,19 +131,19 @@ class GameController extends Controller
         }while($pop <= ($operation_count - 1));
         
     
-        if ($liitmine === True){
+        if ($tehe === 'liitmine'){
             return Inertia::render("Game/GamePage", ["data"=>$loendliit]);
         }
-        if ($korrutamine === True){
+        if ($tehe === 'korrutamine'){
             return Inertia::render("Game/GamePage", ["data*"=>$loendkor]);
         }
-        if ($lahutamine === True){
+        if ($tehe === 'lahutamine'){
             return Inertia::render("Game/GamePage", ["data-"=>$loendlah]);
         }
-        if ($jagamine === True){
+        if ($tehe === 'jagamine'){
             return Inertia::render("Game/GamePage", ["data:"=>$loendjag]);
         }
-        if ($lünkamine === True){
+        if ($tehe === 'lünkamine'){
             return Inertia::render("Game/GamePage", ["datalünk:"=>$loendlünk]);
         }
     }
