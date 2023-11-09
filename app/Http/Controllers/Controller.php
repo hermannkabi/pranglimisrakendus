@@ -15,7 +15,7 @@ class Controller extends BaseController
 
 class GameController extends Controller
 {
-
+    //Lisa "if -> liitmine do liitmine" array_Gen funktsiooniks
     public function array_Gen(){
         $loendliit = [];
         $loendkor = [];
@@ -26,6 +26,7 @@ class GameController extends Controller
         $operation_count = 15;
         
         do {
+            //lisa "if -> array_Gen "argument" === liitmine", sama teistele ka
             //liitmine
             $xliit= random_int(0,9);     
             $yliit= random_int(1,10);
@@ -113,7 +114,7 @@ class GameController extends Controller
         }while($pop <= ($operation_count - 1));
         
     
-
+                    //if array_Gen arg === liitmine return
         return Inertia::render("Game/GamePage", ["data"=>$loendliit]);
         return Inertia::render("Game/GamePage", ["data*"=>$loendkor]);
         return Inertia::render("Game/GamePage", ["data-"=>$loendlah]);
