@@ -52,7 +52,7 @@ route::get('google-login', [GoogleController::class, 'googlepage'])->name('googl
 route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
 
 Route::get("/game", function (){
-    return Inertia::render("Game/GamePage", ["data" =>[array_Gen()]]);//ゲムのコンろ一ラクラス、あらいのげぬ
+    return Inertia::render("Game/GamePage", ["data" =>[GameController::class, 'array_Gen']]);//ゲムのコンろ一ラクラス、あらいのげぬ
 })->name("game");
 
 Route::get("/game/end", function (){
