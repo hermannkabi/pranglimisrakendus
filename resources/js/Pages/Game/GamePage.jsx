@@ -5,7 +5,7 @@ import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function GamePage({data}){
+export default function GamePage({data, time}){
 
     const [answer, setAnswer] = useState("");
     const [answerAsHtml, setAnswerAsHtml] = useState("");
@@ -97,6 +97,7 @@ export default function GamePage({data}){
     //     },
     // ];
     var operations = {data};
+    console.log(operations);
 
     useEffect(()=>{
         getNewOperation(0);
@@ -180,6 +181,14 @@ export default function GamePage({data}){
             var ans = answer;
 
             if(answer.includes(")")){
+
+                if(answer.endsWith("(0/0)")){
+                    ans = answer.replace("(0/0)", "");
+                    setAnswer(ans);
+                    setFractionState("off");
+                    return;
+                }
+
                 var matches = ans.match(regex);
                 if(matches != null){
                     matches.forEach(function (match){
@@ -218,7 +227,7 @@ export default function GamePage({data}){
             setAnswer(answer.replace(regex, ""));
             return;
         }
-        setAnswer(answer.slice(0, -1));
+        setAnswer(answer.trimEnd().slice(0, -1));
     }
 
     function handleMinusClick(){
@@ -340,7 +349,7 @@ export default function GamePage({data}){
                             <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            {/* <Timer onTimerFinished={onTimerFinished} /> */}
+                            <Timer onTimerFinished={onTimerFinished} time={time} />
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>

@@ -15,7 +15,23 @@ class Controller extends BaseController
 
 class GameController extends Controller
 {
+
+    
+
+
     public function array_Gen($tehe){
+
+        //Muliplier for smoother transitions \\\ NEEDS WORK
+        function multyplier($var1 , $var2, $mult, $Max){
+            $var2 = round($var2 * $mult);
+            $var1 = round($var1 * $mult);
+            $mult =+ 0.2;
+            if(($var2+$var1) > $Max){
+                $var2+$var1 = 0.7 * ($var2+$var1);
+            };
+            
+        }
+
         $loendliit = [];
         $loendkor = [];
         $loendjag = [];
@@ -23,6 +39,7 @@ class GameController extends Controller
         $loendlünk = [];
         $pop = 0;
     
+        // muuda ajale tundlikuks $operation_count ja $pop ($aeg * $pop)
         $operation_count = 15;
         
         do {
@@ -38,19 +55,19 @@ class GameController extends Controller
             if ($tehe === 'korrutamine') {
                 $xkor = random_int(0,9);
                 $ykor = random_int(1,10);
-                array_push($loendkor, ["operation"=>$xkor . '*' . $ykor, "answer"=>$xkor * $ykor]);
+                array_push($loendkor, ["operation"=>$xkor . '·' . $ykor, "answer"=>$xkor * $ykor]);
             }
             
 
             //tehe
-            if ($tehe === 'lahtuamine') {
+            if ($tehe === 'lahutamine') {
                 $xlah = random_int(0,9);
                 $ylah = random_int(1,10);
                 array_push($loendlah, ["operation"=>$xlah . '-' . $ylah, "answer"=>$xlah - $ylah]);
             }
             
 
-            //jagamine
+            //jagamine, lisa korrutamise tehe ja pööra see ümber, muutes selle täisarvuliseks jagamistehteks
             if ($tehe === 'jagamine') {
                 $xjag = random_int(0,9);
                 $yjag = random_int(1,10);
@@ -69,77 +86,130 @@ class GameController extends Controller
                     array_push($loendlünk, reset($suvalisus));
                     $opo ++;
                 } while ($opo <= $operation_count);
+
+                foreach ($suvalisus as $value){
+                    if ($value === 'Lünk'){
+                        $xlünk = $value;
+                        $ylünk =  random_int(1,10);
+                    } ElseIf ($value === 'Tavaline'){
+                        $xlünk = random_int(0,9);
+                        $ylünk =  $value;
+                    } 
+                }   
+
+                $loos = random_int(1, 4);
+                if ($loos == 1){
+                    array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk, "answer"=>$xliit + $yliit]);
+                }
+                if ($loos == 2){
+                    array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk, "answer"=>$xkor * $ykor]);
+                }
+                if ($loos == 3){
+                    array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk, "answer"=>$xlah - $ylah]);
+                }
+                if ($loos == 4){
+                    array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk, "answer"=>$xjag / $yjag]);
+                }
             }
-            foreach ($suvalisus as $value){
-                if ($value === 'Lünk'){
-                    $xlünk = $value;
-                    $ylünk =  random_int(1,10);
-                } ElseIf ($value === 'Tavaline'){
-                    $xlünk = random_int(0,9);
-                    $ylünk =  $value;
-                } 
-            }
-            $loos = random_int(1, 4);
-            if ($loos == 1){
-                array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk, "answer"=>$xliit + $yliit]);
-            }
-            if ($loos == 2){
-                array_push($loendlünk, ["operation"=>$xlünk . '*' . $ylünk, "answer"=>$xkor * $ykor]);
-            }
-            if ($loos == 3){
-                array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk, "answer"=>$xlah - $ylah]);
-            }
-            if ($loos == 4){
-                array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk, "answer"=>$xjag / $yjag]);
-            }
+            
+            
             //ascending level system
             if($pop >= 0){
-                multyplier($xliit, $yliit, 0.5, 10);
-                multyplier($xkor, $ykor, 0.2, 10);
-                multyplier($xliit, $yliit, 0.5, 10);
-                multyplier($xliit, $yliit, 0.2, 10);
+                if ($tehe === 'liitmine'){
+                    $xliit= random_int(0, 9);
+                    $yliit= random_int(1, 10);
+                    multyplier($xliit, $yliit, 0.5, 10);
+                }
+                if ($tehe === 'korrutamine'){
+                    $xkor= random_int(0, 9);
+                    $ykor= random_int(1, 10);
+                    multyplier($xkor, $ykor, 0.2, 10);
+                }
+                if ($tehe === 'lahutamine'){
+                    $xlah= random_int(0, 9);
+                    $ylah= random_int(1, 10);
+                    multyplier($xlah, $ylah, 0.5, 10);
+
+                }
+                if ($tehe === 'jagamine'){
+                    $xjag= random_int(0, 9);
+                    $yjag= random_int(1, 10);
+                    multyplier($xjag, $yjag, 0.2, 10);
+                }
                 }
             if($pop >= 5){
-                $xliit= random_int(10, 99);
-                $xkor= random_int(10, 99);
-                $xlah= random_int(10, 99);
-                $xjag= random_int(10, 99);
-                $yliit= random_int(11, 100);
-                $ykor= random_int(11, 100);
-                $ylah= random_int(11, 100);
-                $yjag= random_int(11, 100);
-                multyplier($xliit, $yliit, 0.5, 100);
-                multyplier($xkor, $ykor, 0.2, 100);
-                multyplier($xliit, $yliit, 0.5, 100);
-                multyplier($xliit, $yliit, 0.2, 100);
+                if ($tehe === 'liitmine'){
+                    $xliit= random_int(10, 99);
+                    $yliit= random_int(11, 100);
+                    multyplier($xliit, $yliit, 0.5, 100);
                 }
+                if ($tehe === 'korrutamine'){
+                    $xkor= random_int(10, 99);
+                    $ykor= random_int(11, 100);
+                    multyplier($xkor, $ykor, 0.2, 100);
+                }
+                if ($tehe === 'lahutamine'){
+                    $xlah= random_int(10, 99);
+                    $ylah= random_int(11, 100);
+                    multyplier($xlah, $ylah, 0.5, 100);
+
+                }
+                if ($tehe === 'jagamine'){
+                    $xjag= random_int(10, 99);
+                    $yjag= random_int(11, 100);
+                    multyplier($xjag, $yjag, 0.2, 100);
+                }
+            }
             if($pop >= 9){
-                $xliit= random_int(100, 999);
-                $xkor= random_int(100, 999);
-                $xlah= random_int(100, 999);
-                $xjag= random_int(100, 999);
-                $yliit= random_int(101, 1000);
-                $ykor= random_int(101, 1000);
-                $ylah= random_int(101, 1000);
-                $yjag= random_int(101, 1000);
-                multyplier($xliit, $yliit, 0.5, 1000);
-                multyplier($xkor, $ykor, 0.2, 1000);
-                multyplier($xliit, $yliit, 0.5, 1000);
-                multyplier($xliit, $yliit, 0.2, 1000);
+                
+                
+                if ($tehe === 'liitmine'){
+                    $xliit= random_int(100, 999);
+                    $yliit= random_int(101, 1000);
+                    multyplier($xliit, $yliit, 0.5, 1000);
+                }
+                if ($tehe === 'korrutamine'){
+                    $xkor= random_int(100, 999);
+                    $ykor= random_int(101, 1000);
+                    multyplier($xkor, $ykor, 0.2, 1000);
+                }
+                if ($tehe === 'lahutamine'){
+                    $xlah= random_int(100, 999);
+                    $ylah= random_int(101, 1000);
+                    multyplier($xlah, $ylah, 0.5, 1000);
+
+                }
+                if ($tehe === 'jagamine'){
+                    $xjag= random_int(100, 999);
+                    $yjag= random_int(101, 1000);
+                    multyplier($xjag, $yjag, 0.2, 1000);
+                }
                 }
             if($pop >= 12){
-                $xliit= random_int(1000, 9999);
-                $xkor= random_int(1000, 9999);
-                $xlah= random_int(1000, 9999);
-                $xjag= random_int(1000, 9999);
-                $yliit= random_int(1001, 10000);
-                $ykor= random_int(1001, 10000);
-                $ylah= random_int(1001, 10000);
-                $yjag= random_int(1001, 10000);
-                multyplier($xliit, $yliit, 0.5, 10000);
-                multyplier($xkor, $ykor, 0.2, 10000);
-                multyplier($xliit, $yliit, 0.5, 10000);
-                multyplier($xliit, $yliit, 0.2, 10000);
+                if ($tehe === 'liitmine'){
+                    $xliit= random_int(1000, 9999);
+                    $yliit= random_int(1001, 10000);
+                    multyplier($xliit, $yliit, 0.5, 10000);
+                }
+                if ($tehe === 'korrutamine'){
+                    $xkor= random_int(1000, 9999);
+                    $ykor= random_int(1001, 10000);
+                    multyplier($xkor, $ykor, 0.2, 10000);
+                }
+                if ($tehe === 'lahutamine'){
+                    $xlah= random_int(1000, 9999);
+                    $ylah= random_int(1001, 10000);
+                    multyplier($xlah, $ylah, 0.5, 10000);
+
+                }
+                if ($tehe === 'jagamine'){
+                    $xjag= random_int(1000, 9999);
+                    $yjag= random_int(1001, 10000);
+                    multyplier($xjag, $yjag, 0.2, 10000);
+                }
+                
+
+
                 }
             if ($pop == 15){
 
@@ -152,19 +222,19 @@ class GameController extends Controller
         
     
         if ($tehe === 'liitmine'){
-            return Inertia::render("Game/GamePage", ["data"=>$loendliit]);
+            return $loendliit;
         }
-        if ($tehe === 'korrutamine'){
-            return Inertia::render("Game/GamePage", ["data*"=>$loendkor]);
-        }
+
         if ($tehe === 'lahutamine'){
-            return Inertia::render("Game/GamePage", ["data-"=>$loendlah]);
+            return $loendlah;
         }
+
         if ($tehe === 'jagamine'){
-            return Inertia::render("Game/GamePage", ["data:"=>$loendjag]);
+            return $loendjag;
         }
-        if ($tehe === 'lünkamine'){
-            return Inertia::render("Game/GamePage", ["datalünk"=>$loendlünk]);
+
+        if ($tehe === 'korrutamine'){
+            return $loendkor;
         }
     }
 };

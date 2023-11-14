@@ -23,5 +23,6 @@
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
         <script src="https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js?a4098"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
     </body>
 </html>

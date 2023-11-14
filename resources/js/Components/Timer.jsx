@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-export default function Timer({onTimerFinished}){
+export default function Timer({onTimerFinished, time}){
 
-    const [timer, setTimer] = useState(20);
+    const [timer, setTimer] = useState(time);
 
     var interval;
 

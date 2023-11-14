@@ -9,7 +9,14 @@ export default function GamePreviewPage(){
     const id = urlParams.get('id');
 
     function navigateToGame(){
-        return window.location.href = "/game";
+        var type = $("#game-type").val();
+        var time = parseInt($("#number").val());
+
+
+        if(type != "choose" && time != null && time > 0){
+            return window.location.href = "/game/"+type+"/"+time;
+        }
+
     }
 
     return (
@@ -20,12 +27,12 @@ export default function GamePreviewPage(){
             <div className="container">
                 <div className="preferences">
                     <section>
-                        <select defaultValue={id ?? "all"} id="game-type">
-                            <option disabled value="all"> Vali harjutusala</option>
-                            <option value="multiply">Korrutamine</option>
-                            <option value="divide">Jagamine</option>
-                            <option value="add">Liitmine</option>
-                            <option value="subtract">Lahutamine</option>
+                        <select defaultValue={id ?? "choose"} id="game-type">
+                            <option value="choose"> Vali harjutusala</option>
+                            <option value="korrutamine">Korrutamine</option>
+                            <option value="jagamine">Jagamine</option>
+                            <option value="liitmine">Liitmine</option>
+                            <option value="lahutamine">Lahutamine</option>
                             <option value="addsub">Liitlahutamine</option>
                             <option value="multidiv">Korrujagamine</option>
                             <option value="compare">Võrdlemine</option>
@@ -44,7 +51,7 @@ export default function GamePreviewPage(){
                             <option value="whole">Täisarvud</option>
                             <option value="fraction">Murdarvud</option>
                         </select>
-                        <NumberInput placeholder="Aeg" />
+                        <NumberInput placeholder="Aeg" id="number"/>
                     </section>
                 </div>
                 <SizedBox height="16px" />

@@ -6,7 +6,6 @@ import BigGameButton from '@/Components/BigGameButton';
 import SmallGameButton from '@/Components/SmallGameButton';
 import LeaderboardRow from '@/Components/LeaderboardRow';
 import CompetitionRow from '@/Components/CompetitionRow';
-import SizedBox from '@/Components/SizedBox';
 import HorizontalRule from '@/Components/HorizontalRule';
 
 export default function Dashboard({auth}) {
@@ -27,10 +26,10 @@ export default function Dashboard({auth}) {
                             <h3 className='section-header'>Vali harjutusala</h3>
                         </div>
                         <div className='big-btns'>
-                            <BigGameButton value="multiply" symbol="×" text="Korrutamine" />
-                            <BigGameButton value="divide" symbol="÷" text="Jagamine" />
-                            <BigGameButton value="add" symbol="+" text="Liitmine" />
-                            <BigGameButton value="subtract" symbol="-" text="Lahutamine" />
+                            <BigGameButton value="korrutamine" symbol="×" text="Korrutamine" />
+                            <BigGameButton value="jagamine" symbol="÷" text="Jagamine" />
+                            <BigGameButton value="liitmine" symbol="+" text="Liitmine" />
+                            <BigGameButton value="lünkamine" symbol="-" text="Lahutamine" />
                         </div>
                         <div className='small-btns'>
                             <SmallGameButton value="addsub" text="Liitlahutamine" />
