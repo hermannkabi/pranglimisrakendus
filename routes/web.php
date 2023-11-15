@@ -10,6 +10,7 @@ use App\Http\Controllers\ExampleFormController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 

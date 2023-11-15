@@ -30,7 +30,7 @@ class GameController extends Controller
                 $var2+$var1 = 0.7 * ($var2+$var1);
             }
         }
-        function multiPlier($var1 , $var2, $mult, $Max){
+        function Multiplier($var1 , $var2, $mult, $Max){
             $var2 = round($var2 * $mult);
             $var1 = round($var1 * $mult);
             $mult =+ 0.05;
@@ -155,7 +155,7 @@ class GameController extends Controller
                 if ($tehe === 'korrutamine'){
                     $xkor= random_int(10, 30);
                     $ykor= random_int(11, 31);
-                    multyplier($xkor, $ykor, 0.2, 30);
+                    Multiplier($xkor, $ykor, 0.2, 30);
                 }
                 if ($tehe === 'lahutamine'){
                     $xlah= random_int(10, 99);
