@@ -9,7 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExampleFormController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleController;
-
+use Illuminate\Http\Request;
 
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
@@ -55,7 +55,9 @@ Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
 })->name("game");
 
-Route::get("/game/end", function (){
+Route::get("/game/end", function (Request $request){
+
+    Log::debug($request->get("total"));
     return Inertia::render("GameEnd/GameEndPage");
 })->name("gameEnd");
 

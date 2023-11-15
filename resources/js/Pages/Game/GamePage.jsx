@@ -97,7 +97,22 @@ export default function GamePage({data, time}){
     //     },
     // ];
     var operations = {data};
-    console.log(operations);
+
+    // How many times the user has checked their answer
+    const [totalAnsCount, setTotalAnsCount] = useState(0);
+
+    // How many have been correct
+    const [correctCount, setCorrectCount] = useState(0);
+
+    // How long was the game (for now just the timer's amount)
+    const [timeUsed, setTimeUsed] = useState(time);
+
+    // The level of the operation last correctly answered
+    const [lastLevel, setLastLevel] = useState(1);
+
+    // Points system is currently not the best
+    const [points, setPoints] = useState(0);
+
 
     useEffect(()=>{
         getNewOperation(0);
@@ -248,6 +263,9 @@ export default function GamePage({data, time}){
 
             setFractionState("off");
 
+            // Stats
+            setTotalAnsCount(totalAnsCount + 1);
+
             const correct = operations.data[index].answer.toString();
 
             var formattedAnswer = answer.replace(",", ".");
@@ -271,24 +289,27 @@ export default function GamePage({data, time}){
 
             formattedAnswer = eval(formattedAnswer);
 
-            console.log(formattedAnswer);
-
-            if(parseFloat(formattedAnswer) == parseFloat(correct)){
+            if(parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2))){
                 getNewOperation();
                 setAnswer("");
                 setOperationCount(operationCount + 1);
+
+                // Stats
+                setCorrectCount(correctCount + 1);
+                setLastLevel(operations.data[index].level);
             }else{
                 alert("Õige vastus oli "+correct);
             }
         }
     }
 
-    function onTimerFinished(){
+    function onTimerFinished(total, correct, time){
+        alert(total);
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
         setTimeout(() => {
             window.removeEventListener('beforeunload', onBeforeUnloadListener);
-            window.location.href = route("gameEnd");
+            window.location.href = route("gameEnd") + "/?total="+total+"&correct="+correct+"&time="+time;
         }, 750);
     }
 
@@ -349,12 +370,13 @@ export default function GamePage({data, time}){
                             <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            <Timer onTimerFinished={onTimerFinished} time={time} />
+                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={10} />
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
+                <p>{totalAnsCount}</p>
                 <SizedBox height="24px" />
                 <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
