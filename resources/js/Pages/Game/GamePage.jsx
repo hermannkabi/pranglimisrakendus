@@ -370,7 +370,7 @@ export default function GamePage({data, time}){
                             <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={10} />
+                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={time} />
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>
