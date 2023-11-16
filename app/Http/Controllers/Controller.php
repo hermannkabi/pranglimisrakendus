@@ -30,13 +30,30 @@ class GameController extends Controller
                 $var2+$var1 = 0.7 * ($var2+$var1);
             }
         }
-        function Multiplier($var1 , $var2, $mult, $Max){
-            $var2 = round($var2 * $mult);
-            $var1 = round($var1 * $mult);
-            $mult =+ 0.05;
-            if(($var2+$var1) > $Max){
-                $var2+$var1 = 0.2 * ($var2+$var1);
+        function Multiplier($var1, $var2, $varmin, $varmax, $tase){
+            $full = 0;
+            if ($full >= 1){
+                $full = 0;
             }
+            $tasemearv = 5;
+            if ($tase > 1 && $tase < 4){
+                $tasemearv = 4;
+            }
+            if ($tase == 4){
+                $tasemearv = 3;
+            }
+
+            $varmin1 = (1.2 + $full) * ($varmax - $varmin);
+            $var1 = random_int($varmin + $varmin * $full,$varmin1);
+            if ($var1 >= 0.8 * $varmax){
+                $var2 = $var1 -  random_int(1,$varmin1);
+            }
+            if ($var1 <= 1.2 * $varmin){
+                $var2 = $var1 +  random_int(1, $varmin1);
+            }
+            $var2 = (1 +- 0.2) * $var1;
+            $full += ($varmax - $varmin) / $tasemearv;
+            $full += 1 / $tasemearv;
             
         }
 
@@ -129,9 +146,7 @@ class GameController extends Controller
                     multyplier($xliit, $yliit, 0.5, 10);
                 }
                 if ($tehe === 'korrutamine'){
-                    $xkor= random_int(0, 9);
-                    $ykor= random_int(1, 10);
-                    multyplier($xkor, $ykor, 0.2, 10);
+                    Multiplier($xkor, $ykor, 1, 11, 1);
                 }
                 if ($tehe === 'lahutamine'){
                     $xlah= random_int(0, 9);
@@ -153,9 +168,7 @@ class GameController extends Controller
                     multyplier($xliit, $yliit, 0.5, 100);
                 }
                 if ($tehe === 'korrutamine'){
-                    $xkor= random_int(10, 30);
-                    $ykor= random_int(11, 31);
-                    Multiplier($xkor, $ykor, 0.2, 30);
+                    Multiplier($xkor, $ykor, 10, 20, 2);
                 }
                 if ($tehe === 'lahutamine'){
                     $xlah= random_int(10, 99);
@@ -180,7 +193,7 @@ class GameController extends Controller
                 if ($tehe === 'korrutamine'){
                     $xkor= random_int(100, 999);
                     $ykor= random_int(101, 1000);
-                    multyplier($xkor, $ykor, 0.2, 1000);
+                    Multiplier($xkor, $ykor, 20, 100, 3);
                 }
                 if ($tehe === 'lahutamine'){
                     $xlah= random_int(100, 999);
@@ -205,7 +218,7 @@ class GameController extends Controller
                 if ($tehe === 'korrutamine'){
                     $xkor= random_int(1000, 9999);
                     $ykor= random_int(1001, 10000);
-                    multyplier($xkor, $ykor, 0.2, 10000);
+                    Multiplier($xkor, $ykor, 100, 1000, 4);
                 }
                 if ($tehe === 'lahutamine'){
                     $xlah= random_int(1000, 9999);
