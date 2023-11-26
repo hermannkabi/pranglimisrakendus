@@ -23,6 +23,6 @@ export default function Timer({onTimerFinished, time}){
     }, []);
 
 
-    return <p style={{color:"rgb(var(--primary-color))", fontWeight:'bold', fontSize:'24px'}}>{Math.floor(timer/60) < 10 ? "0" + (Math.floor(timer/60)).toString() : Math.floor(timer/60)}:{(timer - Math.floor(timer/60) * 60) < 10 ? "0" + (timer - Math.floor(timer/60) * 60).toString() : (timer - Math.floor(timer/60) * 60)}</p>;
+    return <p style={{color:"black", fontWeight:'bold', fontSize:'24px'}}>{Math.floor(timer/60) < 10 ? "0" + (Math.floor(timer/60)).toString() : Math.floor(timer/60)}:{(timer - Math.floor(timer/60) * 60) < 10 ? "0" + (timer - Math.floor(timer/60) * 60).toString() : (timer - Math.floor(timer/60) * 60)}</p>;
      
 }
