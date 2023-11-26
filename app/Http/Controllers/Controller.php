@@ -21,122 +21,39 @@ class GameController extends Controller
 
     public function array_Gen($tehe){
 
-        //Muliplier for smoother transitions \\\ NEEDS WORK
-        function multyplier($var1 , $var2, $mult, $Max){
-            $var2 = round($var2 * $mult);
-            $var1 = round($var1 * $mult);
-            $mult =+ $mult ** 2;
-            if(($var2+$var1) > $Max){
-                $var2+$var1 = 0.7 * ($var2+$var1);
-            }
-        }
-        function Multiplier($var1, $var2, $varmin, $varmax, $tase){
-            $full = 0;
-            if ($full >= 1){
-                $full = 0;
-            }
-            $tasemearv = 5;
-            if ($tase > 1 && $tase < 4){
-                $tasemearv = 4;
-            }
-            if ($tase == 4){
-                $tasemearv = 3;
-            }
-
-            $varmin1 = (1.2 + $full) * ($varmax - $varmin);
-            $var1 = random_int($varmin + $varmin * $full,$varmin1);
-            if ($var1 >= 0.8 * $varmax){
-                $var2 = $var1 -  random_int(1,$varmin1);
-            }
-            if ($var1 <= 1.2 * $varmin){
-                $var2 = $var1 +  random_int(1, $varmin1);
-            }
-            $var2 = (1 +- 0.2) * $var1;
-            $full += ($varmax - $varmin) / $tasemearv;
-            $full += 1 / $tasemearv;
-            
-        }
-        //Test
-        function mult($var1, $var2, $tase, $tasemearv){
-            $suurus = 10;
-            $algsuurus = 0 + $var1;
-            if ($tase == 2){
-                $suurus = 20;
-            }
-            if ($tase == 3){
-                $suurus = 100;
-                
-            }
-            if ($tase == 4){
-                $suurus = 1000;
-            }
-            $var1 += 2 * ($suurus - $algsuurus * $tasemearv) / pow($tasemearv, 2);
-            $var2 = $var1 +- 0.1*$suurus;
-            $tasemearv =- 1;
-            return $var1 && $var2 && $tasemearv;
-        }
-        function MULTI($tase, $tasemearv){
-            $suurus = 10;
-            global $xkor;
-            global $ykor;
-            $algsuurus = 0 + $xkor;
-            if ($tase == 2){
-                $suurus = 20;
-            }
-            if ($tase == 3){
-                $suurus = 100;
-                
-            }
-            if ($tase == 4){
-                $suurus = 1000;
-            }
-            $xkor += 2 * round($suurus - $algsuurus * $tasemearv) / pow($tasemearv, 2);
-            $ykor = $xkor+- 0.1*$suurus;
-            $tasemearv =- 1;
-        }
-
         $loendliit = [];
         $loendkor = [];
         $loendjag = [];
         $loendlah = [];
         $loendlünk = [];
         $pop = 0;
-
-    
-        // muuda ajale tundlikuks $operation_count ja $pop ($aeg * $pop)
-        $operation_count = 15;
+        $operation_count = 20;
+        $lisand = 0;
         
         do {
-
             $tase = 1;
 
             //liitmine
             if ($tehe === 'liitmine') {
-                $xliit= random_int(0,9);     
-                $yliit= random_int(1,10);
+                $xliit = random_int(0, 2) + $lisand;
+                $yliit = random_int(0, 3) + $lisand;
             }
-            
             
             //korrutamine
-
             if ($tehe === 'korrutamine') {
-                $xkor = random_int(0,9);
-                $ykor = random_int(1,10);
-                
+                $xkor = random_int(0, 2) + $lisand;
+                $ykor = random_int(0, 3) + $lisand;
             }
             
-
             //tehe
             if ($tehe === 'lahutamine') {
-                $xlah = random_int(0,9);
-                $ylah = random_int(1,10);
+                $xlah = random_int(0, 2) + $lisand;
+                $ylah = random_int(0, 3) + $lisand;
             }
             
-
-            //jagamine, lisa korrutamise tehe ja pööra see ümber, muutes selle täisarvuliseks jagamistehteks
             if ($tehe === 'jagamine') {
-                $xjag = random_int(0,9);
-                $yjag = random_int(1,10);
+                $xjag = random_int(0, 2) + $lisand;
+                $yjag = random_int(0, 3) + $lisand;
             }
             
             //lünkamine
@@ -180,102 +97,48 @@ class GameController extends Controller
             
             //ascending level system
             if($pop >= 0){
-                if ($tehe === 'liitmine'){
-                    multyplier($xliit, $yliit, 0.5, 10);
-                }
-                if ($tehe === 'korrutamine'){
-                    mult($xkor, $ykor, $tase, 5);
-                }
-                if ($tehe === 'lahutamine'){
-                    $xlah= random_int(1, 10);
-                    $ylah= random_int(1, 10);
-                    multyplier($xlah, $ylah, 0.5, 10);
-
-                }
-                if ($tehe === 'jagamine'){
-                    $xjag= random_int(0, 9);
-                    $yjag= random_int(1, 10);
-                    multyplier($xjag, $yjag, 0.2, 10);
-                }
-                }
+                $muutuja = 2;
+            }
             if($pop >= 5){
                 $tase = 2;
-                if ($tehe === 'liitmine'){
-                    $xliit= random_int(10, 99);
-                    $yliit= random_int(11, 100);
-                    multyplier($xliit, $yliit, 0.5, 100);
+                $lisand = 10;
+                if ($tehe === 'liitmine' or 'lahutamine'){
+                    $xkor = random_int($lisand, 5 + $lisand);
+                    $ykor = random_int($lisand, 5 + $lisand);
+                    $muutuja = 18;
                 }
-                if ($tehe === 'korrutamine'){
-                    $xkor= random_int(10, 20);
-                    $ykor= random_int(10, 20);
-                    mult($xkor, $ykor, $tase, 4);
-                }
-                if ($tehe === 'lahutamine'){
-                    $xlah= random_int(10, 99);
-                    $ylah= random_int(11, 100);
-                    multyplier($xlah, $ylah, 0.5, 100);
-
-                }
-                if ($tehe === 'jagamine'){
-                    $xjag= random_int(10, 99);
-                    $yjag= random_int(11, 100);
-                    multyplier($xjag, $yjag, 0.2, 100);
+                if ($tehe === 'korrutamine' or 'jagamine'){
+                    $xkor = random_int(10, 12) + random_int(0, 3);
+                    $xkor = random_int(10, 12) + random_int(1, 3);
                 }
             }
-            if($pop >= 9){
+            if($pop >= 10){
                 $tase = 3;
-
-                if ($tehe === 'liitmine'){
-                    $xliit= random_int(100, 999);
-                    $yliit= random_int(101, 1000);
-                    multyplier($xliit, $yliit, 0.5, 1000);
+                if ($tehe === 'liitmine' or 'lahutamine'){
+                    $xkor = random_int($lisand, 150 + $lisand);
+                    $ykor = random_int($lisand, 150 + $lisand);
+                    $muutuja = 180;
                 }
-                if ($tehe === 'korrutamine'){
-                    $xkor= random_int(20, 100);
-                    $ykor= random_int(20, 100);
-                    mult($xkor, $ykor, $tase, 3);
-                }
-                if ($tehe === 'lahutamine'){
-                    $xlah= random_int(100, 999);
-                    $ylah= random_int(101, 1000);
-                    multyplier($xlah, $ylah, 0.5, 1000);
-
-                }
-                if ($tehe === 'jagamine'){
-                    $xjag= random_int(100, 999);
-                    $yjag= random_int(101, 1000);
-                    multyplier($xjag, $yjag, 0.2, 1000);
+                if ($tehe === 'korrutamine' or 'jagamine'){
+                    $xkor = random_int($lisand, 5 + $lisand);
+                    $ykor = random_int($lisand, 5 + $lisand);
+                    $muutuja = 16;
                 }
                 }
-            if($pop >= 12){
+            if($pop >= 15){
                 $tase = 4;
-
-                if ($tehe === 'liitmine'){
-                    $xliit= random_int(1000, 9999);
-                    $yliit= random_int(1001, 10000);
-                    multyplier($xliit, $yliit, 0.5, 10000);
+                if ($tehe === 'liitmine' or 'lahutamine'){
+                    $xkor = random_int(1000 + $lisand, 1500 + $lisand);
+                    $ykor = random_int(1000 + $lisand, 1500 + $lisand);
+                    $muutuja = 1800;
                 }
-                if ($tehe === 'korrutamine'){
-                    $xkor= random_int(101, 999);
-                    $ykor= random_int(101, 999);
-                    Multiplier($xkor, $ykor, 100, 1000, 4);
+                if ($tehe === 'korrutamine' or 'jagamine'){
+                    $xkor = random_int(100 + $lisand, 250 + $lisand);
+                    $ykor = random_int(100 + $lisand, 250 + $lisand);
+                    $muutuja = 180;
                 }
-                if ($tehe === 'lahutamine'){
-                    $xlah= random_int(1000, 9999);
-                    $ylah= random_int(1001, 10000);
-                    multyplier($xlah, $ylah, 0.5, 10000);
-
                 }
-                if ($tehe === 'jagamine'){
-                    $xjag= random_int(1000, 9999);
-                    $yjag= random_int(1001, 10000);
-                    multyplier($xjag, $yjag, 0.2, 10000);
-                }
-                
-
-
-                }
-            if ($pop == 15){
+            if ($pop == 20){
 
                 return redirect()->route('gameEnd');
             
@@ -297,7 +160,7 @@ class GameController extends Controller
             if ($tehe === 'jagamine') {
                 array_push($loendjag, ["operation"=>$xjag * $yjag . ':' . $yjag, "answer"=>$xjag, "level"=>$tase]);
             }
-
+            $lisand += $muutuja;
             $pop ++;   
         }while($pop <= ($operation_count - 1));
         
@@ -319,4 +182,3 @@ class GameController extends Controller
         }
     }
 };
-
