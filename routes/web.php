@@ -40,6 +40,10 @@ Route::get('/dashboard', function (){
     return Inertia::render("Dashboard/DashboardPage");
 })->name("dashboard");
 
+Route::get('/dashboard/old', function (){
+    return Inertia::render("Dashboard/OldDashboardPage");
+})->name("dashboard-old");
+
 Route::get("/profile", function (){
     return Inertia::render("Profile/ProfilePage");
 })->name("profilePage");

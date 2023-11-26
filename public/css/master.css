@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit:wght@400;700&family=Lexend:wght@400;700&family=Lexend+Zetta:wght@400;700&display=swap');
+
+
+@media only screen and (max-width: 1000px){
+    section{
+        width: 100% !important;
+    }
+}
 
 body{
     color: rgb(var(--text-color));
@@ -121,6 +128,23 @@ button[secondary]:hover > .lds-ring div{
 }
 
 
+/* Custom buttons */
+.big-btn{
+    background-color:rgb(var(--primary-color));
+    color:white;
+    border-radius:4px;
+    height:70px;
+    padding:8px 16px;
+    margin:8px;
+    display:inline-block;
+    cursor:pointer;
+    user-select: none;
+    transition: background-color 100ms;
+}
+
+.big-btn:hover{
+    background-color: #243939;
+}
 
 /* Links */
 
@@ -170,7 +194,7 @@ input, textarea, select{
     background-color: #d4dada;
     color: rgba(0, 0, 0, 0.8);
     color: rgb(var(--primary-color));
-    font-family: "Kanit";
+    font-family: "Lexend";
     border: none;
     border-radius: 12px;
     padding-block: 16px;
