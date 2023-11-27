@@ -25,7 +25,7 @@ export default function ProfilePage(){
                     <input type="text" placeholder="E-posti aadress" value="mari.maasikas@koolikool.edu.ee" disabled/>
                     <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Kooli Põhikool" disabled/>
-                        <input type="text" placeholder="Klass" value="10.a klass" style={{minWidth:'100px'}} disabled/>
+                        <input type="text" placeholder="Klass" value="9.a klass" style={{minWidth:'100px'}} disabled/>
                     </div>
                     <input type="text" placeholder="Unikaalne kasutaja-ID (UUID)" value={crypto.randomUUID()} disabled />
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>

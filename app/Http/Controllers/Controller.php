@@ -53,21 +53,17 @@ class GameController extends Controller
             
             //lünkamine
             if ($tehe === 'lünkamine'){
-                $opo = 0;
-                $suvalisus = array(
-                    'Lünk',
-                    'Tavaline',
-                );
 
-                foreach ($suvalisus as $value){
-                    if ($value === 'Lünk'){
-                        $xlünk = $value;
-                        $ylünk =  random_int(1,10);
-                    } ElseIf ($value === 'Tavaline'){
-                        $xlünk = random_int(1,9);
-                        $ylünk =  "Lünk";
-                    } 
-                }   
+                $jarjekord = rand(1, 2);
+
+                if ($jarjekord === 1){
+                    $xlünk = "Lünk";
+                    $ylünk =  random_int(1,10);
+                } else{
+                    $xlünk = random_int(1,9);
+                    $ylünk =  "Lünk";
+                } 
+
 
                 $loos = random_int(1, 4);
                 if ($loos == 1){
@@ -77,7 +73,7 @@ class GameController extends Controller
                     array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $xkor * $ykor, "answer"=>$xkor * $ykor / (is_string($xlünk) ? $ylünk : $xlünk)]);
                 }
                 if ($loos == 3){
-                    array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk . " = " . $xlah - $ylah, "answer"=>$ylah - $xlah + (is_string($xlünk) ? $ylünk : $xlünk)]);
+                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $ylah - $xlah, "answer"=>($ylünk == "Lünk" ? $ylah - $xlah + $xlünk : $ylünk - ($ylah - $xlah))]);
                 }
                 if ($loos == 4){
                     array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $xjag / $yjag, "answer"=>$xjag / $yjag * (is_string($xlünk) ? $ylünk : $xlünk)]);
