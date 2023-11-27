@@ -1,6 +1,7 @@
 import Navbar from "@/Components/Navbar";
 import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
+import SizedBox from "@/Components/SizedBox";
 
 export default function GameEndPage(){
 
@@ -16,13 +17,12 @@ export default function GameEndPage(){
         <>
             <Head title="Lõpeta mäng" />
             <Navbar title="Lõpeta mäng" />
+            <SizedBox height={36} />
 
             <div className="container">
                 {/* Greeting */}
-                <section>
-                    <h1 style={{marginBottom: 0}}>{title}</h1>
-                    <p style={{marginTop: "4px"}}>Siin on sinu statistika</p>
-                </section>
+                <h2 style={{marginBottom: 0}}>{title}</h2>
+
                 {/* Stats */}
                 <section>
                     <div className="stat-container">

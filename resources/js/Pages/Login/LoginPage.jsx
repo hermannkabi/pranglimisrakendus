@@ -46,7 +46,7 @@ export default function LoginPage(){
                 <PasswordInput divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
                 <SizedBox height="16px" />
                 <button onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
-                <a onClick={()=>window.location.href = route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
+                <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
                 <div className="sso-btns">
                     <button type="button" secondary="true" onClick={()=>window.location.href = route("googleLogin")}><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
