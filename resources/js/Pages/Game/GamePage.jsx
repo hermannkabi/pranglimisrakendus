@@ -48,7 +48,7 @@ export default function GamePage({data, time}){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
             var operationString = operations.data[forcedIndex ?? index + 1].operation.toString();
-            console.log(operationString);
+
             var matches = operationString.match(regex);
             if(matches!= null){
                 matches.forEach(function (match){
@@ -280,14 +280,19 @@ export default function GamePage({data, time}){
             if(matches != null){
                 var numerator = matches[1].toString();
                 var denominator = matches[2].toString();
-                formattedAnswer = formattedAnswer.replace(matches[0], (formattedAnswer.startsWith("-") ? "-" : "+")+((numerator/denominator)));
+                formattedAnswer = formattedAnswer.replace(matches[0], "+"+((numerator/denominator)));
             }
 
             formattedAnswer = formattedAnswer.replace(",", ".");
 
             formattedAnswer = formattedAnswer.replace(" ", "");
 
+            if(formattedAnswer.startsWith("-")){
+                formattedAnswer = "-("+formattedAnswer.slice(1)+")";
+            }
+
             formattedAnswer = eval(formattedAnswer);
+
 
             if(parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2))){
                 getNewOperation();
@@ -298,13 +303,12 @@ export default function GamePage({data, time}){
                 setCorrectCount(correctCount + 1);
                 setLastLevel(operations.data[index].level);
             }else{
-                alert("Õige vastus oli "+correct);
+                alert("DEBUG:Õige vastus oli "+correct);
             }
         }
     }
 
     function onTimerFinished(total, correct, time){
-        alert(total);
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
         setTimeout(() => {
@@ -360,14 +364,14 @@ export default function GamePage({data, time}){
             <SizedBox height="36px" />
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
-                {message && <div style={{backgroundColor:"rgb(var(--primary-color), 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
-                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--primary-color), 0.05)", borderRadius:"16px", padding:"8px"}}>
+                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                         <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>{operationCount + 1} <span style={{fontFamily:"Kanit", fontSize:"24px", color:"grey"}}>1</span></h2>
-                            <p style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
+                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>1</span></h2>
+                            <p style={{marginBlock:"0", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
                             <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={time} />
@@ -376,7 +380,6 @@ export default function GamePage({data, time}){
                     <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
-                <p>{totalAnsCount}</p>
                 <SizedBox height="24px" />
                 <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />

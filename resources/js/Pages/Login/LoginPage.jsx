@@ -28,7 +28,7 @@ export default function LoginPage(){
 
     const formChildrenStyle = {width:"100%", boxSizing:"border-box", height:"56px", margin:"8px auto"};
 
-    const googleLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png";
+    const googleLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png";
     const msLogo = "https://img.freepik.com/free-icon/microsoft_318-566086.jpg?q=10&h=200";
 
 

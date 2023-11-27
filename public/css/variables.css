@@ -1,10 +1,10 @@
 :root{
     --text-color: 0, 0, 0;
-    --main-font: "Kanit", sans-serif;
-    --header-font: "Dela Gothic One", serif;
+    --main-font: "Lexend", sans-serif;
+    --header-font: "Lexend", serif;
     /* Colors */
-    --primary-color: 70, 99, 98;
-    --primary-header-color: var(--primary-color);
+    --primary-color: 53, 81, 80;
+    --primary-header-color: 0, 0, 0;
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: 255, 255, 255;
     --primary-btn-border-radius: 12px;
