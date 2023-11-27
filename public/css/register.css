@@ -23,4 +23,10 @@
     display: flex;
     justify-content: stretch;
     width: 100%;
+    box-sizing: border-box;
+}
+
+.row-input{
+    /* minus padding */
+    width: calc(100% - 8px);
 }
