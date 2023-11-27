@@ -14,6 +14,8 @@ export default function GamePage({data, time}){
     const [operationCount, setOperationCount] = useState(0);
     const [message, setMessage] = useState("");
     const [fractionState, setFractionState] = useState("off");
+    const [isGap, setIsGap] = useState(false);
+
 
     let onBeforeUnloadListener;
 
@@ -65,9 +67,9 @@ export default function GamePage({data, time}){
                     operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
                 });
             }
-            
 
-            setOperation(operationString);
+            setIsGap(operations.data[forcedIndex ?? index + 1].operation.includes("Lünk"));
+            setOperation(operationString.replaceAll(".", ","));
         }else{
             alert("Should be getting new operations");
         }
@@ -346,7 +348,7 @@ export default function GamePage({data, time}){
             });
         }
         
-        return ans;
+        return ans === "" ? "_" : ans;
     }
     
     function handleArrow(){
@@ -354,6 +356,8 @@ export default function GamePage({data, time}){
             setFractionState(fractionState == "up" ? "down" : "up");
         }
     }
+
+
     
     return (
         <div>
@@ -377,7 +381,7 @@ export default function GamePage({data, time}){
                             <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={time} />
                         </div>
                     </div>
-                    <h2 style={{overflowWrap:'anywhere'}}> <span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></h2>
+                    <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
                 </div>
                 <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
                 <SizedBox height="24px" />
