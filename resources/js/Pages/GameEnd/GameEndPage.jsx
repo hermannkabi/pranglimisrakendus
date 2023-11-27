@@ -7,6 +7,11 @@ export default function GameEndPage(){
 
     const statNameStyle = {color:'gray', marginBlock: "0"};
 
+    const greetings = ["Hästi tehtud!", "Väga tubli!", "Suurepärane!", "Tubli töö!"];
+
+    var title = greetings[Math.floor(Math.random() * greetings.length)];
+
+
     return (
         <>
             <Head title="Lõpeta mäng" />
@@ -15,7 +20,7 @@ export default function GameEndPage(){
             <div className="container">
                 {/* Greeting */}
                 <section>
-                    <h1 style={{marginBottom: 0}}>Hästi tehtud!</h1>
+                    <h1 style={{marginBottom: 0}}>{title}</h1>
                     <p style={{marginTop: "4px"}}>Siin on sinu statistika</p>
                 </section>
                 {/* Stats */}

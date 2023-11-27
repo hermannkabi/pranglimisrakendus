@@ -16,6 +16,12 @@ export default function GamePage({data, time}){
     const [fractionState, setFractionState] = useState("off");
     const [isGap, setIsGap] = useState(false);
 
+    const [skippedAmount, setSkippedAmount] = useState(0);
+
+
+    // How many can be skipped
+    const maxSkip = 3;
+
 
     let onBeforeUnloadListener;
 
@@ -99,7 +105,6 @@ export default function GamePage({data, time}){
     //     },
     // ];
     var operations = {data};
-    console.log(operations);
 
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
@@ -359,6 +364,14 @@ export default function GamePage({data, time}){
     }
 
 
+    function skipOperation(){
+        if(skippedAmount < maxSkip){
+            getNewOperation();
+            setSkippedAmount(skippedAmount +1);    
+        }
+    }
+
+
     
     return (
         <div>
@@ -382,9 +395,9 @@ export default function GamePage({data, time}){
                             <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={time} />
                         </div>
                     </div>
-                    <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
+                    <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
                 </div>
-                <a style={{color:"grey", marginLeft:"auto"}} alone="" href="">Jäta vahele (3) {"\u00A0"} <span className="material-icons">fast_forward</span></a>
+                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span className="material-icons">fast_forward</span></a> : null}
                 <SizedBox height="24px" />
                 <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
