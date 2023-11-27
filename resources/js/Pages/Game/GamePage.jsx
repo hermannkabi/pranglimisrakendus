@@ -99,6 +99,7 @@ export default function GamePage({data, time}){
     //     },
     // ];
     var operations = {data};
+    console.log(operations);
 
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
@@ -348,7 +349,7 @@ export default function GamePage({data, time}){
             });
         }
         
-        return ans === "" ? "_" : ans;
+        return ans === "" ? (isGap ? "_" : "") : ans;
     }
     
     function handleArrow(){
