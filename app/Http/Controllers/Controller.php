@@ -70,13 +70,13 @@ class GameController extends Controller
                     array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $xliit + $yliit, "answer"=>$xliit + $yliit - (is_string($xlünk) ? $ylünk : $xlünk)]);
                 }
                 if ($loos == 2){
-                    array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $xkor * $ykor, "answer"=>$xkor * $ykor / (is_string($xlünk) ? $ylünk : $xlünk)]);
+                    array_push($loendlünk, ["operation"=>($ylünk == "Lünk" ? $xkor . '·' . $ylünk . " = " . $xkor * $ykor : $xlünk . '·' . $ykor . " = " . $xkor*$ykor), "answer"=>($xlünk == "Lünk" ? $xkor : $ykor)]);
                 }
                 if ($loos == 3){
                     array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $ylah - $xlah, "answer"=>($ylünk == "Lünk" ? $ylah - $xlah + $xlünk : $ylünk - ($ylah - $xlah))]);
                 }
                 if ($loos == 4){
-                    array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $xjag / $yjag, "answer"=>$xjag / $yjag * (is_string($xlünk) ? $ylünk : $xlünk)]);
+                    array_push($loendlünk, ["operation"=>($ylünk == "Lünk" ? $xjag * $yjag . ':' . $ylünk . " = " . $xjag : $xlünk . ':' . $ylünk . " = " . $xjag), "answer"=>($xlünk == "Lünk" ? $xjag*$ylünk : $yjag)]);
                 }
             }
             
