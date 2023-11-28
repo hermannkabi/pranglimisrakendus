@@ -11,7 +11,8 @@
     }
 
     .stat-container{
-        width: 75% !important;
+        width: 100% !important;
+        margin: 0 !important;
     }
 
 }
@@ -30,6 +31,7 @@
 @media only screen and (max-width: 475px){
     .stat-container{
         width: 100% !important;
+        margin: 0 !important;
     }
     .stat-row{
         margin-inline: 16px !important;
@@ -47,13 +49,12 @@
     flex-direction: row;
     justify-content: space-evenly;
     gap: 32px;
-    margin-inline: 64px;
+    margin-inline: 24px;
     margin-block: 16px;
 }
 
 .stat-container{
-    width: 50%;
-    margin: auto;
+    margin: 16px;
 }
 
 .stat-row{

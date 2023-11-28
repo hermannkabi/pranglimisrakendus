@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function NumberInput(props){
 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(props.defaultValue);
 
     function increment(){
         if(isNaN(value) || value.length == 0){

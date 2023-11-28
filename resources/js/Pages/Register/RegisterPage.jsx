@@ -22,6 +22,7 @@ export default function RegisterPage(){
 
         setTimeout(() => {
             setLoading(false);
+            window.location.href = route("dashboard");
         }, 3000);
     }
 
