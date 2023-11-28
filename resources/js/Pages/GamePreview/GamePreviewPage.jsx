@@ -36,7 +36,7 @@ export default function GamePreviewPage(){
                             <option value="addsub">Liitlahutamine</option>
                             <option value="multidiv">Korrujagamine</option>
                             <option value="compare">Võrdlemine</option>
-                            <option value="gap">Lünkamine</option>
+                            <option value="lünkamine">Lünkamine</option>
                             <option value="random">Segaarvutused</option>
                         </select>
                         
