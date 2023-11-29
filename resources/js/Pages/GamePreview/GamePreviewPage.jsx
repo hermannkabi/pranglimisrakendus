@@ -3,15 +3,33 @@ import { Head } from "@inertiajs/react";
 import "/public/css/preview.css";
 import NumberInput from "@/Components/NumberInput";
 import SizedBox from "@/Components/SizedBox";
+import { useState } from "react";
 
 export default function GamePreviewPage(){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+    const [message, setMessage] = useState();
+
     function navigateToGame(){
+        setMessage();
         var type = $("#game-type").val();
         var time = parseInt($("#number").val());
+        
+        if(type == "choose"){
+            setMessage("Palun vali harjutusala");
+            return;
+        }
+        
+        if(isNaN(time)){
+            setMessage("Palun sisesta aeg, kui palju soovid harjutada");
+            return; 
+        }
 
+        if(time <= 0){
+            setMessage("Aeg peab olema suurem nullist");
+            return;
+        }
 
         if(type != "choose" && time != null && time > 0){
             return window.location.href = "/game/"+type+"/"+time;
@@ -26,6 +44,9 @@ export default function GamePreviewPage(){
 
             <h2>Mängu eelvaade</h2>
             <div className="container">
+                {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
+                </div>}
                 <div className="preferences">
                     <section>
                         <select defaultValue={id ?? "choose"} id="game-type">
