@@ -60,12 +60,6 @@ Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
 })->name("game");
 
-Route::get("/game/end", function (Request $request){
-
-    Log::debug($request->get("total"));
-    return Inertia::render("GameEnd/GameEndPage");
-})->name("gameEnd");
-
 require __DIR__.'/auth.php';
 
 
