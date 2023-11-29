@@ -304,3 +304,18 @@ select:after{
     outline: 2px solid rgb(var(--primary-color));
     border-radius: 8px;
 }
+
+
+/* Point animation */
+.point-span{
+    display: none;
+    color: green;
+    position: absolute;
+    z-index: 1000;
+    transform: translateY(-64px);
+    transition:transform 400ms ease-in-out;
+}
+
+.point-span.red{
+    color: rgb(var(--red-color));
+}

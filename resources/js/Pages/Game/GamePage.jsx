@@ -15,16 +15,12 @@ export default function GamePage({data, time}){
     const [message, setMessage] = useState("");
     const [fractionState, setFractionState] = useState("off");
     const [isGap, setIsGap] = useState(false);
-
     const [skippedAmount, setSkippedAmount] = useState(0);
-
+    const [level, setLevel] = useState(1);
+    
 
     // How many can be skipped
     const maxSkip = 3;
-
-
-    let onBeforeUnloadListener;
-
 
 
     // Mousetrap key bindings
@@ -56,6 +52,7 @@ export default function GamePage({data, time}){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
             var operationString = operations.data[forcedIndex ?? index + 1].operation.toString();
+            setLevel(operations.data[forcedIndex ?? index + 1].level)
 
             var matches = operationString.match(regex);
             if(matches!= null){
@@ -80,30 +77,6 @@ export default function GamePage({data, time}){
             alert("Should be getting new operations");
         }
     }
-
-    // Archaic structure, new one with Objects
-    // var operations = [
-    //     {
-    //         "operation":"2 + (7/2)",
-    //         "answer":"5.5",
-    //     },
-    //     {
-    //         "operation":"3+5",
-    //         "answer":"8",
-    //     },
-    //     {
-    //         "operation":"4+8",
-    //         "answer":"12",
-    //     },
-    //     {
-    //         "operation":"6+6",
-    //         "answer":"12",
-    //     },
-    //     {
-    //         "operation":"9+6",
-    //         "answer":"15",
-    //     },
-    // ];
 
     if(data == null){
         return (
@@ -132,11 +105,12 @@ export default function GamePage({data, time}){
 
 
     useEffect(()=>{
+        setInterval(() => {
+            const pointsLostPerSec = 3;
+    
+            setPoints(points=>Math.max(0, points - pointsLostPerSec));
+        }, 1000);
         getNewOperation(0);
-        window.addEventListener('beforeunload', onBeforeUnloadListener = (event) => {
-            event.preventDefault();
-            event.returnValue = "Kui sulged selle vahelehe, kaotad sellega käimasoleva mängu! Kas tahad sulgeda?";
-        });
     }, []);
 
     // Handles numbers, minus and comma
@@ -312,25 +286,44 @@ export default function GamePage({data, time}){
 
 
             if(parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2))){
-                getNewOperation();
-                setAnswer("");
-                setOperationCount(operationCount + 1);
+
+                var basePoints = 100*(operations.data[index].level ?? 1);
+                // Animation
+                $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
+                $(".point-span").css("transform", "translateY(0)");
+                setTimeout(() => {
+                    $(".point-span").fadeOut(100);
+                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                }, 400);
 
                 // Stats
                 setCorrectCount(correctCount + 1);
                 setLastLevel(operations.data[index].level);
+                setPoints(points => points + basePoints);
             }else{
-                alert("DEBUG:Õige vastus oli "+correct);
+                // Animation
+                $(".point-span").addClass("red").text("-"+(points <= 100 ? points : "100")).fadeIn(100);
+                $(".point-span").css("transform", "translateY(0)");
+                setTimeout(() => {
+                    $(".point-span").fadeOut(100);
+                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                }, 400);
+
+                setPoints(Math.max(0, points - 100));
             }
+
+            getNewOperation();
+            setAnswer("");
+            setOperationCount(operationCount + 1);
+
         }
     }
 
-    function onTimerFinished(total, correct, time){
+    function onTimerFinished(){
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
         setTimeout(() => {
-            window.removeEventListener('beforeunload', onBeforeUnloadListener);
-            window.location.href = route("gameEnd") + "/?total="+total+"&correct="+correct+"&time="+time;
+            window.location.href = route("gameEnd") + "/?total="+totalAnsCount+"&correct="+correctCount+"&time="+time;
         }, 750);
     }
 
@@ -381,6 +374,14 @@ export default function GamePage({data, time}){
     }
 
 
+    function cancelGame(){
+        // Maybe I need to clear localstorage etc here??
+
+        window.location.href = route("dashboard");
+    }
+
+
+    
     
     return (
         <div>
@@ -394,11 +395,14 @@ export default function GamePage({data, time}){
                 {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
+                <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
+
                 <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                         <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>1</span></h2>
-                            <p style={{marginBlock:"0", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
+                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{level}</span></h2>
+                            <span className="point-span">+100</span>
+                            <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
                             <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={Math.max(time, 60)} />
