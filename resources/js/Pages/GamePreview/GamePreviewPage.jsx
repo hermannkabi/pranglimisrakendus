@@ -24,7 +24,7 @@ export default function GamePreviewPage(){
             <Head title="Mängu eelistused" />
             <Navbar title="Mängu eelistused" />
 
-            <h2>Eelistused</h2>
+            <h2>Mängu eelvaade</h2>
             <div className="container">
                 <div className="preferences">
                     <section>
@@ -40,7 +40,6 @@ export default function GamePreviewPage(){
                             <option value="lünkamine">Lünkamine</option>
                             <option value="random">Segaarvutused</option>
                         </select>
-                        
                         <select name="" id="">
                             <option disabled selected>Vali mängurežiim</option>
                             <option value="normal">Tavamäng</option>
@@ -52,7 +51,7 @@ export default function GamePreviewPage(){
                             <option value="whole">Täisarvud</option>
                             <option value="fraction">Murdarvud</option>
                         </select>
-                        <NumberInput placeholder="Aeg" id="number" defaultValue={1}/>
+                        <NumberInput placeholder="Aeg (min)" id="number"/>
                     </section>
                 </div>
                 <SizedBox height="16px" />

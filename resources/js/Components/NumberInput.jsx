@@ -6,7 +6,7 @@ export default function NumberInput(props){
 
     function increment(){
         if(isNaN(value) || value.length == 0){
-            setValue(0);
+            setValue(1);
             return;
         }
         setValue(parseInt(value) + 1);

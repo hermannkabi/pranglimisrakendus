@@ -4,6 +4,7 @@ import SizedBox from "@/Components/SizedBox";
 import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import GameEndPage from "../GameEnd/GameEndPage";
 
 export default function GamePage({data, time}){
 
@@ -17,6 +18,8 @@ export default function GamePage({data, time}){
     const [isGap, setIsGap] = useState(false);
     const [skippedAmount, setSkippedAmount] = useState(0);
     const [level, setLevel] = useState(1);
+    const [showResults, setShowResults] = useState(false);
+
     
 
     // How many can be skipped
@@ -48,6 +51,7 @@ export default function GamePage({data, time}){
 
 
     function getNewOperation(forcedIndex){
+        setShowResults(false);
         if((index + 1) < operations.data.length){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
@@ -103,9 +107,11 @@ export default function GamePage({data, time}){
     // Points system is currently not the best
     const [points, setPoints] = useState(0);
 
+    var pointsInterval;
 
     useEffect(()=>{
-        setInterval(() => {
+        setShowResults(false);
+        pointsInterval = setInterval(() => {
             const pointsLostPerSec = 3;
     
             setPoints(points=>Math.max(0, points - pointsLostPerSec));
@@ -320,10 +326,12 @@ export default function GamePage({data, time}){
     }
 
     function onTimerFinished(){
+        // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
+        clearInterval(pointsInterval);
         setTimeout(() => {
-            window.location.href = route("gameEnd") + "/?total="+totalAnsCount+"&correct="+correctCount+"&time="+time;
+            setShowResults(true);
         }, 750);
     }
 
@@ -383,7 +391,7 @@ export default function GamePage({data, time}){
 
     
     
-    return (
+    return !showResults ? (
         <div>
 
             <Head title="Mäng" />
@@ -405,7 +413,7 @@ export default function GamePage({data, time}){
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>
-                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={Math.max(time, 60)} />
+                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={Math.max(Math.round(time), 10)} />
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
@@ -436,5 +444,5 @@ export default function GamePage({data, time}){
             
 
         </div>
-    );
+    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={time} lastLevel={lastLevel} />;
 }
