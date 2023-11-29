@@ -27,7 +27,6 @@ class GameController extends Controller
         $loendlah = [];
         $loendlünk = [];
         $pop = 0;
-        $operation_count = 20;
         $lisand = 1;
         $xkontroll = 0;
         $ykontroll = 0;
@@ -202,7 +201,7 @@ class GameController extends Controller
                 }
                 }
             
-            if ($pop == 20){
+            if ($pop == 21){
 
                 return redirect()->route('gameEnd');
             
@@ -226,7 +225,7 @@ class GameController extends Controller
             }
             $lisand += $muutuja;
             $pop ++;   
-        }while($pop <= ($operation_count - 1));
+        }while($pop <= 20);
         
     
         if ($tehe === 'liitmine'){
@@ -403,6 +402,11 @@ class GameController extends Controller
                 $y = random_int($min += $add, 18000 + $add);
             }
             
+            if ($count == 26){
+
+                return redirect()->route('gameEnd');
+            
+            }
             if ($mis === 'liitmine'){
                 array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
             }
@@ -571,6 +575,12 @@ class GameController extends Controller
                 $x = random_int($min += $add, 1800 + $add);
                 $y = random_int($min += $add, 1800 + $add);
 
+            }
+
+            if ($count == 26){
+
+                return redirect()->route('gameEnd');
+            
             }
             if ($level === 'korrutamine') {
                 array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
