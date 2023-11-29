@@ -11,7 +11,7 @@ export default function WelcomePage({name, message}){
                 <LoginHeader topMargin="16px" pageName="Pranglimisrakendus" description="Installatsioon on õnnestunud!!!"/>
                 <br />
                 <div>
-                    <a href="/login">Login</a>
+                    <a href="/dashboard">Dashboard</a>
                     &nbsp;
                     <a href="/ui">UI</a>
                 </div>

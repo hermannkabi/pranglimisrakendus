@@ -207,6 +207,10 @@ input, textarea, select{
     min-width: 50px;
 }
 
+option{
+    font-family: var(--main-font), sans-serif;
+}
+
 input{
     height: 24px;
 }
