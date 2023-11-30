@@ -49,6 +49,7 @@ export default function GamePage({data, time}){
     // Generate random operation
     const [index, setIndex] = useState(0);
     const [operation, setOperation] = useState("");
+    const [operationLevel, setOperationLevel] = useState(1);
 
 
     function getNewOperation(forcedIndex){
@@ -56,6 +57,7 @@ export default function GamePage({data, time}){
             setIndex(forcedIndex ?? index + 1);
             var regex = /\((\d+)\/(\d+)\)$/;
             var operationString = operations.data[forcedIndex ?? index + 1].operation.toString();
+            setOperationLevel(operations.data[forcedIndex ?? index + 1].level);
 
             var matches = operationString.match(regex);
             if(matches!= null){
@@ -376,7 +378,8 @@ export default function GamePage({data, time}){
     function skipOperation(){
         if(skippedAmount < maxSkip){
             getNewOperation();
-            setSkippedAmount(skippedAmount +1);    
+            setSkippedAmount(skippedAmount +1);
+            setAnswer("");    
         }
     }
 
@@ -397,7 +400,7 @@ export default function GamePage({data, time}){
                 <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                         <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>1</span></h2>
+                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{operationLevel}</span></h2>
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{operationCount * 100} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}}>

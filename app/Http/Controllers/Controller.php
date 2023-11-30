@@ -57,6 +57,8 @@ class GameController extends Controller
             //lünkamine
             if ($tehe === 'lünkamine'){
 
+                $tase = ($pop % 5) + 1;
+
                 $jarjekord = rand(1, 2);
 
                 if ($jarjekord === 1){
@@ -73,7 +75,7 @@ class GameController extends Controller
                     } else {
                         $xlünk = $xliit;
                     }
-                    array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $xliit + $yliit, "answer"=>$xliit + $yliit - (is_string($xlünk) ? $ylünk : $xlünk)]);
+                    array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $xliit + $yliit, "answer"=>$xliit + $yliit - (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$tase]);
                 }
                 if ($loos == 2){
                     if ($xlünk = 'Lünk'){
@@ -81,7 +83,7 @@ class GameController extends Controller
                     } else {
                         $xlünk = $xkor;
                     }
-                    array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $xkor * $ykor, "answer"=>$xkor * $ykor / (is_string($xlünk) ? $ylünk : $xlünk)]);
+                    array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $xkor * $ykor, "answer"=>$xkor * $ykor / (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$tase]);
                 }
                 if ($loos == 3){
                     if ($xlünk = 'Lünk'){
@@ -89,15 +91,15 @@ class GameController extends Controller
                     } else {
                         $xlünk = $xlah;
                     }
-                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $ylah - $xlah, "answer"=>($ylünk == "Lünk" ? $ylah - $xlah + $xlünk : $ylünk - ($ylah - $xlah))]);
+                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $ylah - $xlah, "answer"=>($ylünk == "Lünk" ? $ylah - $xlah + $xlünk : $ylünk - ($ylah - $xlah)), "level"=>$tase]);
                 }
                 if ($loos == 4){
                     if ($xlünk = 'Lünk'){
                         $ylünk = $yjag;
-                        array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $xjag, "answer"=>$xjag * $yjag]);
+                        array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $xjag, "answer"=>$xjag * $yjag, "level"=>$tase]);
                     } else {
                         $xlünk = $xjag;
-                        array_push($loendlünk, ["operation"=>$xlünk * $yjag . ':' . $ylünk . " = " . $xjag, "answer"=>$yjag]);
+                        array_push($loendlünk, ["operation"=>$xlünk * $yjag . ':' . $ylünk . " = " . $xjag, "answer"=>$yjag, "level"=>$tase]);
                     }
                 }
             
@@ -108,8 +110,8 @@ class GameController extends Controller
             if($pop >= 0){
                 if ($tehe === 'liitmine' or 'lahutamine'){
                     do {
-                        $xliit = $xlah = random_int($lisand, $lisand + 2);
-                        $yliit = $ylah = random_int($lisand, $lisand + 2);
+                        $xliit = $xlah = random_int($lisand -2, $lisand + 2);
+                        $yliit = $ylah = random_int($lisand -2, $lisand + 2);
                      } while ($xlah == $xkontroll or $ylah == $ykontroll);
                      $xkontroll = $xlah;
                      $ykontroll = $ylah;
@@ -226,6 +228,7 @@ class GameController extends Controller
             }
             $lisand += $muutuja;
             $pop ++;   
+
         }while($pop <= ($operation_count - 1));
         
     
