@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 
-export default function GameEndPage({correct, total, points, time, lastLevel}){
+export default function GameEndPage({correct, total, points, time, lastLevel, log}){
 
 
     const statNameStyle = {color:'gray', marginBlock: "0"};
@@ -53,12 +53,24 @@ export default function GameEndPage({correct, total, points, time, lastLevel}){
     }
     
 
-
     return (
         <>
             <Head title="Lõpeta mäng" />
             <Navbar title="Lõpeta mäng" />
             <SizedBox height={36} />
+
+            <div onClick={()=>$(".grayed-bg").fadeOut(200)} className="grayed-bg" hidden>
+                <section className="dialog" >
+                    {log.map(function (op, i){
+                        return (
+                            <div>
+                                <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation}</b></h3>
+                                <span style={{display:"block"}}>Vastus: <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span>
+                            </div>
+                        );
+                    })}
+                </section>
+            </div>
 
             <div className="container">
                 {/* Greeting */}
@@ -87,6 +99,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel}){
                             <p style={statNameStyle}><b>PUNKTE</b></p>
                             <h3 style={{marginBlock:0}}>{points}</h3>
                         </div>
+
+                        <a alone="" onClick={()=>$(".grayed-bg").fadeIn(200)}>▼ Vaata täpset tulemust</a>
                     </div>
 
                 </section>

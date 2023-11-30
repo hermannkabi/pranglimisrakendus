@@ -111,6 +111,8 @@ export default function GamePage({data, time}){
     const [timeElapsed, setTimeElapsed] = useState(0);
 
     var pointsInterval = useRef(null);
+    var operationLog = useRef([]);
+
 
     useEffect(()=>{
         setShowResults(false);
@@ -294,7 +296,9 @@ export default function GamePage({data, time}){
             formattedAnswer = eval(formattedAnswer);
 
 
-            if(parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2))){
+            var isCorrect = parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2));
+
+            if(isCorrect){
 
                 var basePoints = 100*(operations.data[index].level ?? 1);
                 // Animation
@@ -320,6 +324,13 @@ export default function GamePage({data, time}){
 
                 setPoints(Math.max(0, points - 100));
             }
+
+            operationLog.current.push({
+                "operation":operations.data[index].operation,
+                "correct":correct,
+                "answer":parseFloat(parseFloat(formattedAnswer).toFixed(2)),
+                "isCorrect":isCorrect
+            });
 
             getNewOperation();
             setAnswer("");
@@ -451,5 +462,5 @@ export default function GamePage({data, time}){
             
 
         </div>
-    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} />;
+    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} />;
 }
