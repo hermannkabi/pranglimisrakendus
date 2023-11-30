@@ -93,6 +93,8 @@ export default function GamePage({data, time}){
 
     var operations = {data};
 
+    console.log(operations);
+
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
 
