@@ -3,7 +3,7 @@ import NumberButton from "@/Components/NumberButton";
 import SizedBox from "@/Components/SizedBox";
 import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
 
 export default function GamePage({data, time}){
@@ -48,7 +48,6 @@ export default function GamePage({data, time}){
     // Generate random operation
     const [index, setIndex] = useState(0);
     const [operation, setOperation] = useState("");
-    const [operationLevel, setOperationLevel] = useState(1);
 
 
     function getNewOperation(forcedIndex){
@@ -79,7 +78,7 @@ export default function GamePage({data, time}){
             setIsGap(operations.data[forcedIndex ?? index + 1].operation.includes("Lünk"));
             setOperation(operationString.replaceAll(".", ","));
         }else{
-            alert("Should be getting new operations");
+            onTimerFinished();
         }
     }
 
@@ -92,8 +91,6 @@ export default function GamePage({data, time}){
     }
 
     var operations = {data};
-
-    console.log(operations);
 
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
@@ -110,13 +107,16 @@ export default function GamePage({data, time}){
     // Points system is currently not the best
     const [points, setPoints] = useState(0);
 
-    var pointsInterval;
+
+    const [timeElapsed, setTimeElapsed] = useState(0);
+
+    var pointsInterval = useRef(null);
 
     useEffect(()=>{
         setShowResults(false);
-        pointsInterval = setInterval(() => {
+        pointsInterval.current = setInterval(() => {
             const pointsLostPerSec = 3;
-    
+            console.log("points");
             setPoints(points=>Math.max(0, points - pointsLostPerSec));
         }, 1000);
         getNewOperation(0);
@@ -332,7 +332,8 @@ export default function GamePage({data, time}){
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
         setTimeOver(true);
         setMessage("Aeg sai otsa!");
-        clearInterval(pointsInterval);
+        clearInterval(pointsInterval.current);
+        pointsInterval.current = null;
         setTimeout(() => {
             setShowResults(true);
         }, 750);
@@ -381,18 +382,20 @@ export default function GamePage({data, time}){
         if(skippedAmount < maxSkip){
             getNewOperation();
             setSkippedAmount(skippedAmount +1);
-            setAnswer("");    
+            setAnswer("");
+            setFractionState("off");    
         }
     }
 
 
     function cancelGame(){
-        // Maybe I need to clear localstorage etc here??
 
         window.location.href = route("dashboard");
     }
 
-
+    function getCurrentTime(timeLeft){
+        setTimeElapsed(time - timeLeft);
+    }
     
     
     return !showResults ? (
@@ -416,8 +419,8 @@ export default function GamePage({data, time}){
                             <span className="point-span">+100</span>
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
-                        <div style={{textAlign:'end'}}>
-                            <Timer onTimerFinished={()=>onTimerFinished(totalAnsCount, correctCount, timeUsed)} time={Math.max(Math.round(time), 10)} />
+                        <div style={{textAlign:'end'}} id="timer-div">
+                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
@@ -448,5 +451,5 @@ export default function GamePage({data, time}){
             
 
         </div>
-    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={time} lastLevel={lastLevel} />;
+    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} />;
 }

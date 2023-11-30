@@ -4,6 +4,7 @@ import "/public/css/preview.css";
 import NumberInput from "@/Components/NumberInput";
 import SizedBox from "@/Components/SizedBox";
 import { useState } from "react";
+import CheckboxTile from "@/Components/CheckboxTile";
 
 export default function GamePreviewPage(){
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,7 +16,20 @@ export default function GamePreviewPage(){
         setMessage();
         var type = $("#game-type").val();
         var time = parseInt($("#number").val());
-        
+
+        var levels = [];
+
+        $("input[type='checkbox']").each(function (){
+            if($(this).is(":checked")){
+                levels.push($(this).attr("level"));
+            }
+        });
+
+        if(levels.length <= 0){
+            setMessage("Palun vali vähemalt üks tase");
+            return;
+        }
+
         if(type == "choose"){
             setMessage("Palun vali harjutusala");
             return;
@@ -32,7 +46,7 @@ export default function GamePreviewPage(){
         }
 
         if(type != "choose" && time != null && time > 0){
-            return window.location.href = "/game/"+type+"/"+time;
+            return window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time;
         }
 
     }
@@ -72,6 +86,15 @@ export default function GamePreviewPage(){
                             <option value="whole">Täisarvud</option>
                             <option value="fraction">Murdarvud</option>
                         </select>
+                        
+                        <div style={{textAlign:"start"}}>
+                        <CheckboxTile level={"1"} />
+                        <CheckboxTile level={"2"} />
+                        <CheckboxTile level={"3"} />
+                        <CheckboxTile level={"4"} />
+                        <CheckboxTile level={"5"} />
+                        </div>
+
                         <NumberInput placeholder="Aeg (min)" id="number"/>
                     </section>
                 </div>

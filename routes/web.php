@@ -63,7 +63,7 @@ Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
 Route::get("/game/{level}/{mis}/{aeg}", function ($level, $mis, $aeg){
     
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level)), "time"=>60*$aeg]);
-})->name("game");
+})->name("gameNew");
 
 require __DIR__.'/auth.php';
 

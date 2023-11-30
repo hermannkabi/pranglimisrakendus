@@ -629,6 +629,5 @@ class GameController extends Controller
             return app('App\Http\Controllers\GameController')->korjag($tasemed[0], $tehe);
         }
 
-        return [["tehe"=>$tehe, "tasemed"=>$tasemed]];
     }
 }
