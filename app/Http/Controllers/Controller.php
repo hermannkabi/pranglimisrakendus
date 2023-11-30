@@ -785,7 +785,6 @@ class GameController extends Controller
 
 
 
-
     public function wrapper($tehe, $tasemed){
         $lugeja = 0;
         for ($lugeja; $lugeja <= count($tasemed);$lugeja ++){
@@ -797,9 +796,6 @@ class GameController extends Controller
                 return app('App\Http\Controllers\GameController')->korjag($tasemed[0 + $lugeja], $tehe);
             }
         }
-
-        
-        
 
     }
 }
