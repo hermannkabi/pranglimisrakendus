@@ -3,14 +3,55 @@ import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 
-export default function GameEndPage(){
+export default function GameEndPage({correct, total, points, time, lastLevel}){
 
 
     const statNameStyle = {color:'gray', marginBlock: "0"};
 
+
+
+    var accuracy = total == 0 ? 0 : Math.round(correct/total*100);
+
+    function getHumanReadableTime(){
+        if(time < 60){
+            return Math.round(time) + " s";
+        }else if(time%60 == 0){
+            return time/60 + " min";
+        }else{
+
+            return Math.floor(time/60) + " min " + (time%60) +" s";
+        }
+    }
+
+
     const greetings = ["Hästi tehtud!", "Väga tubli!", "Suurepärane!", "Tubli töö!"];
 
-    var title = greetings[Math.floor(Math.random() * greetings.length)];
+    const greetingsHighAccuracy = ["Väga täpne!", "Täpne kui kellavärk!", "Sa ei eksi!"];
+
+    const greetingsPerfectAccuracy = ["Sa ei eksi kunagi!", "Eksimatu!", "Imeline!", "Perfektne täpsus!"];
+
+    const greetingsLowPoints = ["Pole hullu!", "Harjutamine teeb meistriks!", "Järgmine kord paremini!", "Tubli, et proovisid!"];
+
+    function getTitle(greetingList){
+        return greetingList[Math.floor(Math.random() * greetingList.length)]
+    }
+
+    var title;
+
+
+    // Greeting algoritms
+
+    if(accuracy == 100){
+        title = getTitle(greetingsPerfectAccuracy);
+    }else if(accuracy >= 90){
+        title = getTitle(greetingsHighAccuracy);
+    }else if(total*100 > points){
+        // If your average points are lower than 100 (minimum level base points), it was probably not your best...
+        title = getTitle(greetingsLowPoints);
+    }else{
+        title = getTitle(greetings);
+    }
+    
 
 
     return (
@@ -28,23 +69,23 @@ export default function GameEndPage(){
                     <div className="stat-container">
                         <div className="stat-row">
                             <p style={statNameStyle}>KULUNUD AEG</p>
-                            <h3 style={{marginBlock:0}}>20s</h3>
+                            <h3 style={{marginBlock:0}}>{getHumanReadableTime()}</h3>
                         </div>
                         <div className="stat-row">
                             <p style={statNameStyle}>TEHETE ARV</p>
-                            <h3 style={{marginBlock:0}}>12</h3>
+                            <h3 style={{marginBlock:0}}>{total}</h3>
                         </div>
-                        <div className="stat-row">
+                        {lastLevel && <div className="stat-row">
                             <p style={statNameStyle}>VIIMANE TASE</p>
-                            <h3 style={{marginBlock:0}}>3</h3>
-                        </div>
+                            <h3 style={{marginBlock:0}}>{lastLevel ?? "N/A"}</h3>
+                        </div>}
                         <div className="stat-row">
                             <p style={statNameStyle}>VASTAMISTÄPSUS</p>
-                            <h3 style={{marginBlock:0}}>75%</h3>
+                            <h3 style={{marginBlock:0}}>{accuracy.toString().replace(".", ",")}%</h3>
                         </div>
                         <div className="stat-row">
                             <p style={statNameStyle}><b>PUNKTE</b></p>
-                            <h3 style={{marginBlock:0}}>1200</h3>
+                            <h3 style={{marginBlock:0}}>{points}</h3>
                         </div>
                     </div>
 
@@ -52,7 +93,7 @@ export default function GameEndPage(){
                 {/* Buttons */}
                 <section>
                     <div className="btn-container">
-                        <button onClick={()=>history.back()} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
+                        <button onClick={()=>location.reload()} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
                         <button onClick={()=>window.location.href = route("dashboard")} style={{flex:'1'}}>Edasi</button>
                     </div>
                 </section>

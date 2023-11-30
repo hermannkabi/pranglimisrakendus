@@ -44,9 +44,9 @@ button{
     background-color: rgb(var(--primary-btn-color));
     color: rgb(var(--primary-btn-text-color));
     border-radius: var(--primary-btn-border-radius);
-    padding-block: 12px;
+    padding-block: 14px;
     padding-inline: 32px;
-    font-family: "Kanit";
+    font-family: var(--main-font);
     font-size: 20px;
     border: none;
     cursor: pointer;
@@ -207,6 +207,10 @@ input, textarea, select{
     min-width: 50px;
 }
 
+option{
+    font-family: var(--main-font), sans-serif;
+}
+
 input{
     height: 24px;
 }
@@ -303,4 +307,19 @@ select:after{
 .frac span.bordered{
     outline: 2px solid rgb(var(--primary-color));
     border-radius: 8px;
+}
+
+
+/* Point animation */
+.point-span{
+    display: none;
+    color: green;
+    position: absolute;
+    z-index: 1000;
+    transform: translateY(-64px);
+    transition:transform 400ms ease-in-out;
+}
+
+.point-span.red{
+    color: rgb(var(--red-color));
 }
