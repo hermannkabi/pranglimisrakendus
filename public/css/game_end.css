@@ -68,3 +68,18 @@
 section{
     margin-block: 16px;
 }
+
+.grayed-bg{
+    width: 100vw;
+    z-index: 999;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.dialog{
+    z-index: 1000;
+    margin: auto;
+    border-radius: 16px;
+}
