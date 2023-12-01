@@ -787,7 +787,7 @@ class GameController extends Controller
 
     public function wrapper($tehe, $tasemed){
         $lugeja = 0;
-        for ($lugeja; $lugeja <= count($tasemed);$lugeja ++){
+        for ($lugeja; $lugeja < count($tasemed);$lugeja ++){
             if($tehe == "liitmine" or $tehe == "lahutamine"){
                 return app('App\Http\Controllers\GameController')->liitlah($tasemed[0 + $lugeja], $tehe);
             }
