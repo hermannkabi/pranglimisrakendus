@@ -3,12 +3,10 @@ import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 
+
 export default function GameEndPage({correct, total, points, time, lastLevel, log}){
 
-
     const statNameStyle = {color:'gray', marginBlock: "0"};
-
-
 
     var accuracy = total == 0 ? 0 : Math.round(correct/total*100);
 
@@ -59,18 +57,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
             <Navbar title="Lõpeta mäng" />
             <SizedBox height={36} />
 
-            <div onClick={()=>$(".grayed-bg").fadeOut(200)} className="grayed-bg" hidden>
-                <section className="dialog" >
-                    {log.map(function (op, i){
-                        return (
-                            <div>
-                                <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation}</b></h3>
-                                <span style={{display:"block"}}>Vastus: <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span>
-                            </div>
-                        );
-                    })}
-                </section>
-            </div>
+            
 
             <div className="container">
                 {/* Greeting */}
@@ -100,7 +87,18 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                             <h3 style={{marginBlock:0}}>{points}</h3>
                         </div>
 
-                        <a alone="" onClick={()=>$(".grayed-bg").fadeIn(200)}>▼ Vaata täpset tulemust</a>
+                        <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Vaata täpset tulemust</a>
+
+                        <div className="ss" hidden>
+                            {log.map(function (op, i){
+                                return (
+                                    <div key={i}>
+                                        <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation}</b></h3>
+                                        <span style={{display:"block"}}>Vastus: <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                 </section>

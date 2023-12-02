@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function Timer({onTimerFinished, time, cancel, getCurrentTime}){
+export default function Timer({onTimerFinished, time, cancel, getCurrentTime, onTick}){
 
     const [timer, setTimer] = useState(time);
 
@@ -13,6 +13,7 @@ export default function Timer({onTimerFinished, time, cancel, getCurrentTime}){
                 onTimerFinished();
             }
             getCurrentTime(actualTime - 1 >= 0 ? actualTime - 1 : 0);
+            onTick();
             return actualTime - 1 >= 0 ? actualTime - 1 : 0;
         });
     }

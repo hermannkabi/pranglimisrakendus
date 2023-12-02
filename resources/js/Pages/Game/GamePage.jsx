@@ -52,11 +52,11 @@ export default function GamePage({data, time}){
 
     function getNewOperation(forcedIndex){
         setShowResults(false);
-        if((index + 1) < operations.data.length){
-            setIndex(forcedIndex ?? index + 1);
+        if((forcedIndex ?? (index + 1)) < operations.data[currentLevel.current].length){
+            setIndex(forcedIndex ?? (index + 1));
             var regex = /\((\d+)\/(\d+)\)$/;
-            var operationString = operations.data[forcedIndex ?? index + 1].operation.toString();
-            setLevel(operations.data[forcedIndex ?? index + 1].level)
+            var operationString = operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation.toString();
+            setLevel(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level)
 
             var matches = operationString.match(regex);
             if(matches!= null){
@@ -75,10 +75,24 @@ export default function GamePage({data, time}){
                 });
             }
 
-            setIsGap(operations.data[forcedIndex ?? index + 1].operation.includes("Lünk"));
+            setIsGap(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.includes("Lünk"));
             setOperation(operationString.replaceAll(".", ","));
         }else{
-            onTimerFinished();
+
+            // Get the index of the current level in levels
+            var ind = levels.findIndex((lvl) => lvl==currentLevel.current);
+
+            if((ind + 1) < levels.length){
+                // Set the operationlist further
+                currentLevel.current = (levels[ind + 1]);
+                setIndex(0);
+                setAnswer("");
+                getNewOperation(0);
+            }else{
+                // End of everything
+                onTimerFinished(true);                
+            }
+
         }
     }
 
@@ -92,14 +106,14 @@ export default function GamePage({data, time}){
 
     var operations = {data};
 
+    var levels = Object.keys(operations.data);
+
+
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
 
     // How many have been correct
     const [correctCount, setCorrectCount] = useState(0);
-
-    // How long was the game (for now just the timer's amount)
-    const [timeUsed, setTimeUsed] = useState(time);
 
     // The level of the operation last correctly answered
     const [lastLevel, setLastLevel] = useState(1);
@@ -107,20 +121,23 @@ export default function GamePage({data, time}){
     // Points system is currently not the best
     const [points, setPoints] = useState(0);
 
-
     const [timeElapsed, setTimeElapsed] = useState(0);
 
-    var pointsInterval = useRef(null);
     var operationLog = useRef([]);
+
+    var currentLevel = useRef(levels[0]);
+
+    
+
+
+    function handleTimerTick(){
+        const pointsLostPerSec = 3;
+        setPoints(points=>Math.max(0, points - pointsLostPerSec));
+    }
 
 
     useEffect(()=>{
         setShowResults(false);
-        pointsInterval.current = setInterval(() => {
-            const pointsLostPerSec = 3;
-            console.log("points");
-            setPoints(points=>Math.max(0, points - pointsLostPerSec));
-        }, 1000);
         getNewOperation(0);
     }, []);
 
@@ -268,7 +285,7 @@ export default function GamePage({data, time}){
             // Stats
             setTotalAnsCount(totalAnsCount + 1);
 
-            const correct = operations.data[index].answer.toString();
+            const correct = operations.data[currentLevel.current][index].answer.toString();
 
             var formattedAnswer = answer.replace(",", ".");
 
@@ -300,7 +317,7 @@ export default function GamePage({data, time}){
 
             if(isCorrect){
 
-                var basePoints = 100*(operations.data[index].level ?? 1);
+                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1);
                 // Animation
                 $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
                 $(".point-span").css("transform", "translateY(0)");
@@ -311,7 +328,7 @@ export default function GamePage({data, time}){
 
                 // Stats
                 setCorrectCount(correctCount + 1);
-                setLastLevel(operations.data[index].level);
+                setLastLevel(operations.data[currentLevel.current][index].level);
                 setPoints(points => points + basePoints);
             }else{
                 // Animation
@@ -326,25 +343,23 @@ export default function GamePage({data, time}){
             }
 
             operationLog.current.push({
-                "operation":operations.data[index].operation,
+                "operation":operations.data[currentLevel.current][index].operation,
                 "correct":correct,
                 "answer":parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect
             });
 
-            getNewOperation();
             setAnswer("");
             setOperationCount(operationCount + 1);
+            getNewOperation();
 
         }
     }
 
-    function onTimerFinished(){
+    function onTimerFinished(endedBefore){
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
         setTimeOver(true);
-        setMessage("Aeg sai otsa!");
-        clearInterval(pointsInterval.current);
-        pointsInterval.current = null;
+        setMessage(endedBefore ? "Tehted said otsa!" : "Aeg sai otsa!");
         setTimeout(() => {
             setShowResults(true);
         }, 750);
@@ -431,7 +446,7 @@ export default function GamePage({data, time}){
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer onTick={handleTimerTick} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
                     <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>

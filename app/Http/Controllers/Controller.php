@@ -294,13 +294,13 @@ class GameController extends Controller
                 if ($mis === 'mõlemad'){
                     $random  = random_int(1, 2);
                     if ($random == 1){
-                        array_push($aray, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
                     } else {
                         array_push($array, ["operation"=>$x + $y . '-' . $y, "answer"=>$x, "level"=>$level]);
                     }
                 }
                 $count ++;
-            }while ($count >= 25);
+            }while ($count <= 25);
             
             
         } 
@@ -340,7 +340,7 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count >= 25);
+            } while ($count <= 25);
             
         }
         if ($level === '3'){
@@ -379,7 +379,7 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count >= 25);
+            } while ($count <= 25);
             
         }
         if ($level === '4'){
@@ -418,7 +418,7 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count >= 25);
+            } while ($count <= 25);
             
         }
         if ($level === '5'){
@@ -457,7 +457,7 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count >= 25);
+            } while ($count <= 25);
             
         }
 
@@ -726,7 +726,7 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count >= 25);
+            } while ($count <= 25);
             
         }
 
@@ -786,16 +786,18 @@ class GameController extends Controller
 
 
     public function wrapper($tehe, $tasemed){
-        $lugeja = 0;
-        for ($lugeja; $lugeja < count($tasemed);$lugeja ++){
+        $loend = [];
+
+        for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
             if($tehe == "liitmine" or $tehe == "lahutamine"){
-                return app('App\Http\Controllers\GameController')->liitlah($tasemed[0 + $lugeja], $tehe);
+                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe);
             }
 
             if($tehe == "korrutamine" or $tehe == "jagamine"){
-                return app('App\Http\Controllers\GameController')->korjag($tasemed[0 + $lugeja], $tehe);
+                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe);
             }
         }
 
+        return $loend;
     }
 }
