@@ -461,6 +461,9 @@ export default function GamePage({data, time}){
             // Get a new operation and set the default answer to it
             setAnswer("");
             getNewOperation();
+        }else{
+            // If timer is over, show detailed resutls
+            setShowResults(true);
         }
     }
 
@@ -507,7 +510,7 @@ export default function GamePage({data, time}){
     
     // Skips an operation if skippedAmount is less than maxSkip
     function skipOperation(){
-        if(skippedAmount < maxSkip){
+        if(skippedAmount < maxSkip && !timeOver){
             getNewOperation();
             setSkippedAmount(skippedAmount +1);
             setAnswer("");

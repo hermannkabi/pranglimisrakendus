@@ -6,10 +6,13 @@ import SizedBox from "@/Components/SizedBox";
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log}){
 
+    // Style of the description of the statistic
     const statNameStyle = {color:'gray', marginBlock: "0"};
 
+    // Percentage of correctly answered operations
     var accuracy = total == 0 ? 0 : Math.round(correct/total*100);
 
+    // Returns a string of human readable time (e.g. 1 min 30 sec)
     function getHumanReadableTime(){
         if(time < 60){
             return Math.round(time) + " s";
@@ -22,14 +25,20 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     }
 
 
+    // Default greetings
     const greetings = ["Hästi tehtud!", "Väga tubli!", "Suurepärane!", "Tubli töö!"];
 
+    // Greetings for high accuracy
     const greetingsHighAccuracy = ["Väga täpne!", "Täpne kui kellavärk!", "Sa ei eksi!"];
 
+    // Greetings for 100% accuracy
     const greetingsPerfectAccuracy = ["Sa ei eksi kunagi!", "Eksimatu!", "Imeline!", "Perfektne täpsus!"];
 
+    // Greetings for low points
+    // If your average points are lower than 100 (minimum level base points), it was probably not your best...
     const greetingsLowPoints = ["Pole hullu!", "Harjutamine teeb meistriks!", "Järgmine kord paremini!", "Tubli, et proovisid!"];
 
+    // Get a random title from the list of greetings
     function getTitle(greetingList){
         return greetingList[Math.floor(Math.random() * greetingList.length)]
     }
@@ -37,14 +46,12 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     var title;
 
 
-    // Greeting algoritms
-
+    // Greeting algorithm
     if(accuracy == 100){
         title = getTitle(greetingsPerfectAccuracy);
     }else if(accuracy >= 90){
         title = getTitle(greetingsHighAccuracy);
     }else if(total*100 > points){
-        // If your average points are lower than 100 (minimum level base points), it was probably not your best...
         title = getTitle(greetingsLowPoints);
     }else{
         title = getTitle(greetings);
@@ -87,8 +94,10 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                             <h3 style={{marginBlock:0}}>{points}</h3>
                         </div>
 
+                        {/* Detailed results toggle */}
                         <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Vaata täpset tulemust</a>
 
+                        {/* Detailed resuls div */}
                         <div className="ss" hidden>
                             {log.map(function (op, i){
                                 return (
@@ -99,9 +108,11 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                                 );
                             })}
                         </div>
+
                     </div>
 
                 </section>
+                
                 {/* Buttons */}
                 <section>
                     <div className="btn-container">
