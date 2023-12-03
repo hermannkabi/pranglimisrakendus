@@ -94,8 +94,8 @@ export default function GamePage({data, time}){
         if((forcedIndex ?? (index + 1)) < (levels.length == 1 ? operations.data[currentLevel.current].length : Math.min(operationsPerLevel, operations.data[currentLevel.current].length))){
             
             // Sets state
-            setOperationCount(operationCount + 1);
             setIndex(forcedIndex ?? (index + 1));
+
 
             // Basic operation data
             var regex = /\((\d+)\/(\d+)\)$/;
@@ -459,6 +459,7 @@ export default function GamePage({data, time}){
 
 
             // Get a new operation and set the default answer to it
+            setOperationCount(operation => operation + 1);
             setAnswer("");
             getNewOperation();
         }else{

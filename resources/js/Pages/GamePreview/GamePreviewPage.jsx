@@ -63,6 +63,7 @@ export default function GamePreviewPage(){
                 </div>}
                 <div className="preferences">
                     <section>
+
                         <select defaultValue={id ?? "choose"} id="game-type">
                             <option value="choose"> Vali harjutusala</option>
                             <option value="korrutamine">Korrutamine</option>
@@ -75,27 +76,33 @@ export default function GamePreviewPage(){
                             <option value="lünkamine">Lünkamine</option>
                             <option value="random">Segaarvutused</option>
                         </select>
+
                         <select name="" id="">
                             <option disabled selected>Vali mängurežiim</option>
                             <option value="normal">Tavamäng</option>
                             <option value="sprint">Sprint</option>
                         </select>
+
                         <select name="" id="">
                             <option disabled selected>Vali arvuhulk</option>
                             <option value="natural">Naturaalarvud</option>
                             <option value="whole">Täisarvud</option>
                             <option value="fraction">Murdarvud</option>
                         </select>
-                        
-                        <div style={{textAlign:"start"}}>
-                        <CheckboxTile level={"1"} />
-                        <CheckboxTile level={"2"} />
-                        <CheckboxTile level={"3"} />
-                        <CheckboxTile level={"4"} />
-                        <CheckboxTile level={"5"} />
-                        </div>
 
                         <NumberInput placeholder="Aeg (min)" id="number"/>
+
+                        <a alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
+                        <div hidden className="more">
+                            <SizedBox height={16} />
+                            <div style={{textAlign:"start"}}>
+                                <CheckboxTile level={"1"} />
+                                <CheckboxTile level={"2"} />
+                                <CheckboxTile level={"3"} />
+                                <CheckboxTile level={"4"} />
+                                <CheckboxTile level={"5"} />
+                            </div>
+                        </div>
                     </section>
                 </div>
                 <SizedBox height="16px" />
