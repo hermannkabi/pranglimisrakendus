@@ -783,7 +783,254 @@ class GameController extends Controller
 
     }
 
+    public function võrdlemine($level){
+        $array = [];
+        $array2 = [];
+        $x = 0;
+        $y = 0;
+        $tase = 1;
+        $count = 0;
+        $min = 0;
+        $max = 0;
+        $add = 0;
+        $xold = 0;
+        $yold = 0;
+        $check = 0;
 
+        if ($level === '1'){
+            do{
+                $x = random_int(0, 9);
+                $y = random_int(1, 10);
+                if ($x == $y){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $x = random_int(0, 9);
+                            $y = random_int(1, 10);
+                        } while ($x != $y);
+                    }
+                }
+                if ($x == $xold or $y == $yold){
+                    do{
+                        $x = random_int(0, 9);
+                        $y = random_int(1, 10);
+                    } while ($x != $xold or $y != $yold);
+                }
+                $xold = $x;
+                $yold = $y;
+                
+                uuesti:
+                $random  = random_int(1, 4);
+                if ($random == 1){
+                    $proov1 = $x * $y;
+                    $võrd = 1;
+                }
+                if ($random == 2){
+                    $proov1 = $x * $y / $x;
+                    $võrd = 2;
+                }
+                if ($random == 3){
+                    $proov1 = $x + $y - $x;
+                    $võrd = 3;
+                }
+                if ($random == 4) {
+                    $proov1 = $x + $y;
+                    $võrd = 4;
+                }
+                $random  = random_int(1, 4);
+                if ($random == 1 && $võrd != 1){
+                    $proov2 = $x * $y;
+                    
+                }
+                if ($random == 2 && $võrd != 2){
+                    $proov2 = $x * $y / $y;
+                    
+                }
+                if ($random == 3 && $võrd != 3){
+                    $proov2 = $x + $y - $y;
+                   
+                }
+                if ($random == 4 && $võrd != 4) {
+                    $proov2 = $x + $y;
+                   
+                }
+                
+                if ($proov1 > $proov2){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                    } 
+                    if ($random == 2){
+                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                    }
+                }
+                if ($proov2 > $proov1){
+
+                } else {
+                    goto uuesti;
+                }
+
+                $count ++;
+            } while ($count <= 25);
+            
+        }
+        if ($level === '2'){
+            do{
+                $x = random_int(10, 19);
+                $y = random_int(11, 20);
+                if ($x == $y){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $x = random_int(10, 19);
+                            $y = random_int(11, 20);
+                        } while ($x != $y);
+                    }
+                }
+                if ($x == $xold or $y == $yold){
+                    do{
+                        $x = random_int(10, 19);
+                        $y = random_int(11, 20);
+                    } while ($x != $xold or $y != $yold);
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                    } else {
+                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                    }
+                }
+                $count ++;
+            } while ($count <= 25);
+            
+        }
+        if ($level === '3'){
+            do {
+                $x = random_int(20, 99);
+                $y = random_int(21, 100);
+                if ($x == $y){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $x = random_int(20, 99);
+                            $y = random_int(21, 100);
+                        } while ($x != $y);
+                    }
+                }
+                if ($x == $xold or $y == $yold){
+                    do{
+                        $x = random_int(20, 99);
+                        $y = random_int(21, 100);
+                    } while ($x != $xold or $y != $yold);
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                    } else {
+                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                    }
+                }
+                $count ++;
+            } while ($count <= 25);
+            
+        }
+        if ($level === '4'){
+            do {
+                $x = random_int(100, 999);
+                $y = random_int(101, 1000);
+                if ($x == $y){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $x = random_int(100, 999);
+                            $y = random_int(101, 1000);
+                        } while ($x != $y);
+                    }
+                }
+                if ($x == $xold or $y == $yold){
+                    do{
+                        $x = random_int(100, 999);
+                        $y = random_int(101, 1000);
+                    } while ($x != $xold or $y != $yold);
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                    } else {
+                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                    }
+                }
+                $count ++;
+            } while ($count <= 25);
+            
+        }
+        if ($level === '5'){
+            do {
+                $x = random_int(1000, 9999);
+                $y = random_int(1001, 10000);
+                if ($x == $y){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $x = random_int(1000, 9999);
+                            $y = random_int(1001, 10000);
+                        } while ($x != $y);
+                    }
+                }
+                if ($x == $xold or $y == $yold){
+                    do{
+                        $x = random_int(1000, 9999);
+                        $y = random_int(1001, 10000);
+                    } while ($x != $xold or $y != $yold);
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                    } else {
+                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                    }
+                }
+                $count ++;
+            } while ($count <= 25);
+            
+        }
+    }
 
     public function wrapper($tehe, $tasemed){
         $loend = [];
