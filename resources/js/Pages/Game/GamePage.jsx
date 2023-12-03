@@ -8,25 +8,54 @@ import GameEndPage from "../GameEnd/GameEndPage";
 
 export default function GamePage({data, time}){
 
-    const [answer, setAnswer] = useState("");
-    const [answerAsHtml, setAnswerAsHtml] = useState("");
-    const [timeOver, setTimeOver] = useState(false);
-    // How many operations have been correctly answered
-    const [operationCount, setOperationCount] = useState(0);
-    const [message, setMessage] = useState("");
-    const [fractionState, setFractionState] = useState("off");
-    const [isGap, setIsGap] = useState(false);
-    const [skippedAmount, setSkippedAmount] = useState(0);
-    const [level, setLevel] = useState(1);
-    const [showResults, setShowResults] = useState(false);
-
-    
+    // CONSTANTS
 
     // How many can be skipped
     const maxSkip = 3;
 
+    // How many points are lost every second
+    // Should this be different?
+    const pointsLostPerSec = 3;
 
-    // Mousetrap key bindings
+    // If there are multiple levels chosen, the app shows this amount of operations per level
+    // If there is only one, it currently uses all operations in this level
+    const operationsPerLevel = 10;
+
+
+    // STATE
+
+    // The answer of the user
+    const [answer, setAnswer] = useState("");
+    const [answerAsHtml, setAnswerAsHtml] = useState("");
+
+    // Is the time over?
+    const [timeOver, setTimeOver] = useState(false);
+
+    // How many operations have been correctly answered
+    const [operationCount, setOperationCount] = useState(0);
+
+    // Message to show on the top part of the page
+    const [message, setMessage] = useState("");
+
+    // Is the fraction visible and if so, is focus in the numerator or denominator
+    const [fractionState, setFractionState] = useState("off");
+
+    // Is the operation of the type 'gap' (lünkamine)
+    const [isGap, setIsGap] = useState(false);
+
+    // How many operations have been skipped
+    // If you skip an operation, the operation count etc won't go up
+    const [skippedAmount, setSkippedAmount] = useState(0);
+
+    // The level of the current operation
+    const [level, setLevel] = useState(1);
+
+    // Whether the game page is visible, or the results page
+    const [showResults, setShowResults] = useState(false);
+    
+
+    // MOUSETRAP KEY BINDINGS
+
     Mousetrap.bind("enter", ()=>checkAnswer());
     Mousetrap.bind("backspace", ()=>handleRemoveClick());
     Mousetrap.bind("-", ()=>handleMinusClick());
@@ -38,6 +67,7 @@ export default function GamePage({data, time}){
 
 
     // Keys that behave as numbers for the handleNumberClick method
+
     const numberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
     for(const char in numberKeys){
@@ -45,19 +75,37 @@ export default function GamePage({data, time}){
     }
 
 
-    // Generate random operation
+    // The index of the operation (used together with currentLevel)
     const [index, setIndex] = useState(0);
+
+    // The operation string that's shown on the screen
     const [operation, setOperation] = useState("");
 
 
+    // Gets a new operation of (index + 1) or forcedIndex, if it exists
+    // If the level is completed (operationsPerLevel), goes to the next level
+    // If the operation is the last one in the last level, ends the round
     function getNewOperation(forcedIndex){
+        // Ensure game page is visible
         setShowResults(false);
-        if((forcedIndex ?? (index + 1)) < operations.data[currentLevel.current].length){
+
+        // How many operations to do per level
+        // This code may be updated in the future to reflect dynamic levels (when the user is unable to complete a level, they may come back to the previous ones)
+        if((forcedIndex ?? (index + 1)) < (levels.length == 1 ? operations.data[currentLevel.current].length : Math.min(operationsPerLevel, operations.data[currentLevel.current].length))){
+            
+            // Sets state
+            setOperationCount(operationCount + 1);
             setIndex(forcedIndex ?? (index + 1));
+
+            // Basic operation data
             var regex = /\((\d+)\/(\d+)\)$/;
             var operationString = operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation.toString();
+
+            // Sets level of the new operation
             setLevel(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level)
 
+
+            // Handle fraction rendering
             var matches = operationString.match(regex);
             if(matches!= null){
                 matches.forEach(function (match){
@@ -75,39 +123,56 @@ export default function GamePage({data, time}){
                 });
             }
 
+            // Check if operation is of type 'gap'
             setIsGap(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.includes("Lünk"));
+
+            // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
         }else{
+            // The current level has ended
 
             // Get the index of the current level in levels
             var ind = levels.findIndex((lvl) => lvl==currentLevel.current);
 
+            // Check if a higher level exists
             if((ind + 1) < levels.length){
+
                 // Set the operationlist further
                 currentLevel.current = (levels[ind + 1]);
                 setIndex(0);
                 setAnswer("");
                 getNewOperation(0);
+
             }else{
-                // End of everything
+
+                // Ends the round
+                // The true attribute states that the operations have ended, not the time (more accurate message)
                 onTimerFinished(true);                
             }
 
         }
     }
 
-    if(data == null){
+
+    // If data is unusable, show a basic error screen
+    if(data == null || data.length <= 0){
         return (
         <>
             <h1>Viga!</h1>
-            <p>Sellist mängutüüpi ei leitud</p>
+            <p>{data == null ? "Sellist mängutüüpi ei leitud" : "Tekkis viga!"}</p>
         </>)
     }
 
+
+    // The most important variable of this view
+    // The data is a Map with keys of levels and values of arrays including the operation, answer, level etc
     var operations = {data};
 
+    // A list of levels that have been requested by the user
     var levels = Object.keys(operations.data);
 
+
+    // STATISTICS STATE
 
     // How many times the user has checked their answer
     const [totalAnsCount, setTotalAnsCount] = useState(0);
@@ -118,28 +183,33 @@ export default function GamePage({data, time}){
     // The level of the operation last correctly answered
     const [lastLevel, setLastLevel] = useState(1);
 
-    // Points system is currently not the best
+    // Points system currently takes into account the level of the operation and the time elapsed
     const [points, setPoints] = useState(0);
 
+    // How many seconds have elapsed since the start of the game
     const [timeElapsed, setTimeElapsed] = useState(0);
 
+    // A list of objects that include data about operations that have been answered, such as:
+    // the operation itself, the user's answer, the correct answer, whether the answer was correct
     var operationLog = useRef([]);
 
+    // Current level that operations are taken from
     var currentLevel = useRef(levels[0]);
 
-    
 
-
+    // Every time the timer is updated (1Hz), this method is called
+    // Lose a certain amount of points per second
     function handleTimerTick(){
-        const pointsLostPerSec = 3;
         setPoints(points=>Math.max(0, points - pointsLostPerSec));
     }
 
 
+    // This function is called once when the page is first loaded
     useEffect(()=>{
         setShowResults(false);
         getNewOperation(0);
     }, []);
+
 
     // Handles numbers, minus and comma
     function handleNumberClick(number){   
@@ -166,7 +236,7 @@ export default function GamePage({data, time}){
             return;
         }
 
-        // If there is a fraction, change it
+        // If there is a fraction, change it (add a number to either the numerator or the denominator)
         if(answer.endsWith(")")){
             var regex = /\((\d+)\/(\d+)\)/;
             var ans = answer;
@@ -208,14 +278,18 @@ export default function GamePage({data, time}){
         
     }
 
+
+    // Handles the remove button click and the backspace character press
     function handleRemoveClick(){
-        if(timeOver){return;}               
+        if(timeOver){return;}
+
         if(answer.endsWith(")")){
             var regex = /\((\d+)\/(\d+)\)/;
             var ans = answer;
 
             if(answer.includes(")")){
 
+                // If the answer has an empty fraction, delete the whole fraction
                 if(answer.endsWith("(0/0)")){
                     ans = answer.replace("(0/0)", "");
                     setAnswer(ans);
@@ -264,6 +338,9 @@ export default function GamePage({data, time}){
         setAnswer(answer.trimEnd().slice(0, -1));
     }
 
+
+    // Handles the minus click and minus character press
+    // Toggles between negative and positive
     function handleMinusClick(){
         if(timeOver){return;}               
 
@@ -277,22 +354,48 @@ export default function GamePage({data, time}){
     }
 
 
+    // Called when the fraction button is clicked
+    function handleFraction(){
+        if(answer.includes(",")){
+            return;
+        }
+        if(answer.includes("(") && answer.includes(")")){
+            setFractionState(fractionState == "down" ? "up" : "down");
+        }else{
+            setAnswer(answer + " (0/0)");
+            setFractionState("up");
+        }
+    }
+
+
+    // Handles the keyboard arrow keys
+    function handleArrow(){
+        if(answer.includes(")")){
+            setFractionState(fractionState == "up" ? "down" : "up");
+        }
+    }
+
+
+    // Checks if the answer is correct
     function checkAnswer(){
         if(!timeOver){
-
-            setFractionState("off");
-
-            // Stats
-            setTotalAnsCount(totalAnsCount + 1);
 
             const correct = operations.data[currentLevel.current][index].answer.toString();
 
             var formattedAnswer = answer.replace(",", ".");
 
+            // Don't continue if the answer is empty
             if(formattedAnswer.length <= 0){
                 return;
             }
 
+            // Remove the fraction so that when the next operation appears, a fraction is not shown by default
+            setFractionState("off");
+
+            // Total answer count is increased
+            setTotalAnsCount(totalAnsCount + 1);
+
+            // Handle fraction
             var regex = /\((\d+)\/(\d+)\)/;
             var matches = formattedAnswer.match(regex);
 
@@ -310,15 +413,18 @@ export default function GamePage({data, time}){
                 formattedAnswer = "-("+formattedAnswer.slice(1)+")";
             }
 
+            // At last, evaluate the string
             formattedAnswer = eval(formattedAnswer);
 
-
+            // Is the answer correct
             var isCorrect = parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2));
 
             if(isCorrect){
 
+                // 100 points per level (e.g. level 3 gets 300 points)
                 var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1);
-                // Animation
+
+                // A floating point count animation
                 $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
                 $(".point-span").css("transform", "translateY(0)");
                 setTimeout(() => {
@@ -326,13 +432,14 @@ export default function GamePage({data, time}){
                     $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
                 }, 400);
 
-                // Stats
+                // Correct answer stats go here
                 setCorrectCount(correctCount + 1);
                 setLastLevel(operations.data[currentLevel.current][index].level);
                 setPoints(points => points + basePoints);
             }else{
-                // Animation
-                $(".point-span").addClass("red").text("-"+(points <= 100 ? points : "100")).fadeIn(100);
+                // Decreasing points animation
+                // If points is zero, don't show anything
+                $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
                 $(".point-span").css("transform", "translateY(0)");
                 setTimeout(() => {
                     $(".point-span").fadeOut(100);
@@ -342,6 +449,7 @@ export default function GamePage({data, time}){
                 setPoints(Math.max(0, points - 100));
             }
 
+            // Add data to the list of operations that have been answered
             operationLog.current.push({
                 "operation":operations.data[currentLevel.current][index].operation,
                 "correct":correct,
@@ -349,35 +457,34 @@ export default function GamePage({data, time}){
                 "isCorrect":isCorrect
             });
 
-            setAnswer("");
-            setOperationCount(operationCount + 1);
-            getNewOperation();
 
+            // Get a new operation and set the default answer to it
+            setAnswer("");
+            getNewOperation();
         }
     }
 
+
+    // A function that is called:
+    // 1. When the timer ends
+    // 2. When the operations run out (then with endedBefore = true)
     function onTimerFinished(endedBefore){
+
+        // IMPORTANT!!!
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
+
         setTimeOver(true);
         setMessage(endedBefore ? "Tehted said otsa!" : "Aeg sai otsa!");
+
+        // Wait for a moment before rendering the results page
         setTimeout(() => {
             setShowResults(true);
         }, 750);
     }
 
-    function handleFraction(){
-        if(answer.includes(",")){
-            return;
-        }
-        if(answer.includes("(") && answer.includes(")")){
-            setFractionState(fractionState == "down" ? "up" : "down");
-        }else{
-            setAnswer(answer + " (0/0)");
-            setFractionState("up");
-        }
-    }
 
-
+    // Renders tge answer
+    // Basically deals with fractions and gaps if the operation type is 'gap'
     function renderAnswer(text){
         var regex = /\((\d+)\/(\d+)\)$/;
         var ans = text;
@@ -396,14 +503,9 @@ export default function GamePage({data, time}){
         
         return ans === "" ? (isGap ? "_" : "") : ans;
     }
+
     
-    function handleArrow(){
-        if(answer.includes(")")){
-            setFractionState(fractionState == "up" ? "down" : "up");
-        }
-    }
-
-
+    // Skips an operation if skippedAmount is less than maxSkip
     function skipOperation(){
         if(skippedAmount < maxSkip){
             getNewOperation();
@@ -414,11 +516,13 @@ export default function GamePage({data, time}){
     }
 
 
+    // If the cancel button is pressed, redirect to dashboard
     function cancelGame(){
-
         window.location.href = route("dashboard");
     }
 
+
+    // How many seconds have elapsed since the start of game
     function getCurrentTime(timeLeft){
         setTimeElapsed(time - timeLeft);
     }
@@ -433,26 +537,42 @@ export default function GamePage({data, time}){
             <SizedBox height="36px" />
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
+                {/* Message on top of the page */}
                 {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
+
+                {/* Cancel button */}
                 <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
 
+                {/* A backgrounded section containing all the data */}
                 <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
+
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
+
+                        {/* Current operation number & level, total points etc. */}
                         <div style={{textAlign:"start"}}>
                             <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{level}</span></h2>
                             <span className="point-span">+100</span>
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
+
+                        {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
                             {!timeOver && <Timer onTick={handleTimerTick} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
+
+                    {/* The operation data  and answer*/}
                     <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
                 </div>
+
+                {/* Skip button */}
                 {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span className="material-icons">fast_forward</span></a> : null}
+                
                 <SizedBox height="24px" />
+                
+                {/* On-screen keyboard */}
                 <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
