@@ -53,57 +53,6 @@ class GameController extends Controller
             $yjag = random_int($lisand, $lisand + 2);
             
             
-            //lünkamine
-            if ($tehe === 'lünkamine'){
-
-                $tase = ($pop % 5) + 1;
-
-                $jarjekord = rand(1, 2);
-
-                if ($jarjekord === 1){
-                    $xlünk = "Lünk";
-                } else{
-                    $ylünk =  "Lünk";
-                } 
-
-
-                $loos = random_int(1, 4);
-                if ($loos == 1){
-                    if ($xlünk = 'Lünk'){
-                        $ylünk = $yliit;
-                    } else {
-                        $xlünk = $xliit;
-                    }
-                    array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $xliit + $yliit, "answer"=>$xliit + $yliit - (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$tase]);
-                }
-                if ($loos == 2){
-                    if ($xlünk = 'Lünk'){
-                        $ylünk = $ykor;
-                    } else {
-                        $xlünk = $xkor;
-                    }
-                    array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $xkor * $ykor, "answer"=>$xkor * $ykor / (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$tase]);
-                }
-                if ($loos == 3){
-                    if ($xlünk = 'Lünk'){
-                        $ylünk = $ylah;
-                    } else {
-                        $xlünk = $xlah;
-                    }
-                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $ylah - $xlah, "answer"=>($ylünk == "Lünk" ? $ylah - $xlah + $xlünk : $ylünk - ($ylah - $xlah)), "level"=>$tase]);
-                }
-                if ($loos == 4){
-                    if ($xlünk = 'Lünk'){
-                        $ylünk = $yjag;
-                        array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $xjag, "answer"=>$xjag * $yjag, "level"=>$tase]);
-                    } else {
-                        $xlünk = $xjag;
-                        array_push($loendlünk, ["operation"=>$xlünk * $yjag . ':' . $ylünk . " = " . $xjag, "answer"=>$yjag, "level"=>$tase]);
-                    }
-                }
-            
-            }
-            
             
             //ascending level system
             if($pop >= 0){
@@ -463,7 +412,7 @@ class GameController extends Controller
 
         // Ascending levels
         
-        if ($level === 'a'){
+        if ($level === 'all'){
             do{
 
                 $x = random_int($add, 2 + $add);
@@ -732,32 +681,32 @@ class GameController extends Controller
 
         koik:
         //Ascending levels
-        if ($level === '1' && $level === '2' && $level === '3' && $level === '4' && $level === '5'){
+        if ($level === 'all'){
             do {
-                $x = random_int($min += $add, 2 + $add);
-                $y = random_int($min += $add, 2 + $add);
+                $x = random_int($min + $add, 2 + $add);
+                $y = random_int($min + $add, 2 + $add);
                 if ($count >= 5){
                     $tase = 2;
                 }
                 if ($count >= 10){ 
                     $tase = 3;
                     $max = 100;
-                    $x = random_int($min += $add, 16 + $add);
-                    $y = random_int($min += $add, 16 + $add);
+                    $x = random_int($min + $add, 16 + $add);
+                    $y = random_int($min + $add, 16 + $add);
 
                 }
                 if ($count >= 15){ 
                     $tase = 4;
                     $max = 1000;
-                    $x = random_int($min += $add, 180 + $add);
-                    $y = random_int($min += $add, 180 + $add);
+                    $x = random_int($min + $add, 180 + $add);
+                    $y = random_int($min + $add, 180 + $add);
 
                 }
                 if ($count >= 20){ 
                     $tase = 5;
                     $max = 10000;
-                    $x = random_int($min += $add, 1800 + $add);
-                    $y = random_int($min += $add, 1800 + $add);
+                    $x = random_int($min + $add, 1800 + $add);
+                    $y = random_int($min + $add, 1800 + $add);
 
                 }
                 if ($mis === 'korrutamine') {
@@ -782,6 +731,129 @@ class GameController extends Controller
         return $array;
 
     }
+    //lünkamine
+    public function lünkamine($level){
+
+        $defaultMaxLiit = ["1"=>10, "2"=>100, "3"=>1000, "4"=>10000, "5"=>100000];
+        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>100, "4"=>1000, "5"=>10000];
+
+
+        $add = 1;
+        $add2 = 1;
+        $count = 0;
+        $loendlünk = [];
+        $max = $defaultMaxLiit[$level];
+        $max2 = $defaultMaxKor[$level];
+
+        do{
+            $add += $max/10;
+            $add2 += $max2/10;
+            
+            $jarjekord = rand(1, 2);
+
+            if ($jarjekord === 1){
+                $xlünk = "Lünk";
+            } else{
+                $ylünk =  "Lünk";
+            } 
+
+
+            $loos = random_int(1, 4);
+            if ($loos % 2 == 1){
+                if ($level == "1"){
+                       
+                    $x = random_int($add, 2 + $add);
+                    $y = random_int($add, 2 + $add); 
+                }
+                if ($level == "2"){
+                    $x = random_int($add, 9 + $add);
+                    $y = random_int($add, 9 + $add);
+                }
+                if ($level == "3"){
+                   
+                    $x = random_int($add, 90 + $add);
+                    $y = random_int($add, 90 + $add);
+                }
+                if ($level == "4"){
+                    
+                    $x = random_int($add, 900 + $add);
+                    $y = random_int($add, 900 + $add);
+                }
+                if ($level == "5"){
+                  
+                    $x = random_int($add, 9000 + $add);
+                    $y = random_int($add, 9000 + $add);
+                }
+            }
+            if ($loos % 2 == 0){
+                if ($level == "1"){
+                   
+                    $x = random_int($add2, 2 + $add2);
+                    $y = random_int($add2, 2 + $add2);
+                }
+                if ($level == "2"){
+                
+                    $x = random_int($add2, 2 + $add2);
+                    $y = random_int($add2, 2 + $add2);
+                }
+                if ($level == "3"){
+                 
+                    $x = random_int($add2, 8 + $add2);
+                    $y = random_int($add2, 8 + $add2);
+                }
+                if ($level == "4"){
+                
+                    $x = random_int($add2, 90 + $add2);
+                    $y = random_int($add2, 90 + $add2);
+                }
+                if ($level == "5"){
+                   
+                    $x = random_int($add2, 900 + $add2);
+                    $y = random_int($add2, 900 + $add2);
+                }
+
+            }
+            if ($loos == 1){
+                if ($xlünk = 'Lünk'){
+                    $ylünk = $y;
+                } else {
+                    $xlünk = $x;
+                }
+                array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $x + $y, "answer"=>$x + $y - (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
+            }
+            if ($loos == 2){
+                if ($xlünk = 'Lünk'){
+                    $ylünk = $y;
+                } else {
+                    $xlünk = $x;
+                }
+                array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $x * $y, "answer"=>$x * $y / (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
+            }
+            if ($loos == 3){
+                if ($xlünk = 'Lünk'){
+                    $ylünk = $y;
+                } else {
+                    $xlünk = $x;
+                }
+                if ($y > $x){
+                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $y - $x, "answer"=>($ylünk == "Lünk" ? $y - $x + $xlünk : $ylünk - ($y - $x)), "level"=>$level]);
+                }else{
+                    array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk . " = " . $x - $y, "answer"=>($ylünk == "Lünk" ? $x - $y + $xlünk : $ylünk - ($y - $x)), "level"=>$level]);
+                }
+            }
+            if ($loos == 4){
+                if ($xlünk = 'Lünk'){
+                    $ylünk = $y;
+                    array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $x, "answer"=>$x * $y, "level"=>$level]);
+                } else {
+                    $xlünk = $x;
+                    array_push($loendlünk, ["operation"=>$xlünk * $y . ':' . $ylünk . " = " . $x, "answer"=>$y, "level"=>$level]);
+                }
+            }
+            $count ++;
+        }while ($count < 10);
+        return $loendlünk;
+    }
 
     public function võrdlemine($level){
         $array = [];
@@ -796,6 +868,7 @@ class GameController extends Controller
         $xold = 0;
         $yold = 0;
         $check = 0;
+        
 
         if ($level === '1'){
             do{
@@ -824,44 +897,60 @@ class GameController extends Controller
                 if ($random == 1){
                     $proov1 = $x * $y;
                     $võrd = 1;
+                    $Garl = '·';
                 }
                 if ($random == 2){
                     $proov1 = $x * $y / $x;
                     $võrd = 2;
+                    $Garl = ':';
                 }
                 if ($random == 3){
                     $proov1 = $x + $y - $x;
                     $võrd = 3;
+                    $Garl = '+';
                 }
                 if ($random == 4) {
                     $proov1 = $x + $y;
                     $võrd = 4;
+                    $Garl = '-';
                 }
                 $random  = random_int(1, 4);
                 if ($random == 1 && $võrd != 1){
                     $proov2 = $x * $y;
+                    $Garl = '·';
+                    
                     
                 }
                 if ($random == 2 && $võrd != 2){
                     $proov2 = $x * $y / $y;
+                    $Garl = ':';
+                    $kaspar = 3;
                     
                 }
                 if ($random == 3 && $võrd != 3){
                     $proov2 = $x + $y - $y;
+                    $Garl = '-';
+                    $kaspar = 4;
                    
                 }
                 if ($random == 4 && $võrd != 4) {
                     $proov2 = $x + $y;
+                    $Garl = '+';
                    
                 }
                 
                 if ($proov1 > $proov2){
                     $random  = random_int(1, 2);
                     if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                    } 
-                    if ($random == 2){
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "answer"=> 2, "level"=>$level]);
+                    } else {
+                        if ($kaspar == 3){
+                            array_push($array, ["operation"=>$x * $y . $Garl . $y, "answer"=>$x, "level"=>$level]);
+                        }
+                        if ($kaspar == 4){
+                            array_push($array, ["operation"=>$x + $y . $Garl . $y, "answer"=>$x, "level"=>$level]);
+                        }
+                        
                     }
                 }
                 if ($proov2 > $proov1){
@@ -1043,6 +1132,11 @@ class GameController extends Controller
             if($tehe == "korrutamine" or $tehe == "jagamine"){
                 $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe);
             }
+
+            if($tehe == "lünkamine"){
+                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja]);
+            }
+
         }
 
         return $loend;
