@@ -92,9 +92,10 @@ export default function GamePreviewPage(){
 
                         <NumberInput placeholder="Aeg (min)" id="number"/>
 
+                        <SizedBox height={16} />
                         <a alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
+                        <SizedBox height={16} />
                         <div hidden className="more">
-                            <SizedBox height={16} />
                             <div style={{textAlign:"start"}}>
                                 <CheckboxTile level={"1"} />
                                 <CheckboxTile level={"2"} />

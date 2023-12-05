@@ -95,14 +95,14 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
 
                         {/* Detailed results toggle */}
-                        <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Vaata täpset tulemust</a>
+                        {total > 0 && <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Täpne ülevaade</a>}
 
                         {/* Detailed resuls div */}
                         <div className="ss" hidden>
                             {log.map(function (op, i){
                                 return (
                                     <div key={i}>
-                                        <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation}</b></h3>
+                                        <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation.replace("Lünk", " _ ")}</b></h3>
                                         <span style={{display:"block"}}>Vastus: <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span>
                                     </div>
                                 );

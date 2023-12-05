@@ -147,7 +147,7 @@ export default function GamePage({data, time}){
 
                 // Ends the round
                 // The true attribute states that the operations have ended, not the time (more accurate message)
-                onTimerFinished(true);                
+                onTimerFinished("Tehted said otsa!");                
             }
 
         }
@@ -474,13 +474,13 @@ export default function GamePage({data, time}){
     // A function that is called:
     // 1. When the timer ends
     // 2. When the operations run out (then with endedBefore = true)
-    function onTimerFinished(endedBefore){
+    function onTimerFinished(message){
 
         // IMPORTANT!!!
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
 
         setTimeOver(true);
-        setMessage(endedBefore ? "Tehted said otsa!" : "Aeg sai otsa!");
+        setMessage(message ?? "Aeg sai otsa!");
 
         // Wait for a moment before rendering the results page
         setTimeout(() => {
@@ -523,8 +523,10 @@ export default function GamePage({data, time}){
 
 
     // If the cancel button is pressed, redirect to dashboard
+    // Alternatively, navigate to the results page
     function cancelGame(){
-        window.location.href = route("dashboard");
+        // window.location.href = route("dashboard");
+        onTimerFinished("Mäng on katkestatud!");
     }
 
 

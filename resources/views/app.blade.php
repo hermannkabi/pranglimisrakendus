@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title inertia>{{ config('app.name', 'Pranglimisrakendus') }}</title>
+        <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="{{ URL::asset('css/master.css') }}">
