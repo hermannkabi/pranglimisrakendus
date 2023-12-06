@@ -61,8 +61,11 @@ export default function GamePage({data, time}){
     Mousetrap.bind("-", ()=>handleMinusClick());
     Mousetrap.bind(",", ()=>handleNumberClick(","));
     Mousetrap.bind(".", ()=>handleNumberClick(","));
-    Mousetrap.bind("up", ()=>handleArrow());
-    Mousetrap.bind("down", ()=>handleArrow());
+    Mousetrap.bind("up", ()=>handleArrow("up"));
+    Mousetrap.bind("down", ()=>handleArrow("down"));
+    Mousetrap.bind("left", ()=>handleArrow("left"));
+    Mousetrap.bind("right", ()=>handleArrow("right"));
+
 
 
 
@@ -82,6 +85,15 @@ export default function GamePage({data, time}){
     const [operation, setOperation] = useState("");
 
 
+    // Compare operation type state
+    const [compare, setCompare] = useState(false);
+
+    // Two operation states instead of one for compare type
+    const [operation1, setOperation1] = useState("");
+    const [operation2, setOperation2] = useState("");
+
+
+
     // Gets a new operation of (index + 1) or forcedIndex, if it exists
     // If the level is completed (operationsPerLevel), goes to the next level
     // If the operation is the last one in the last level, ends the round
@@ -96,6 +108,12 @@ export default function GamePage({data, time}){
             // Sets state
             setIndex(forcedIndex ?? (index + 1));
 
+            // Check for võrdlemine here (it has a different syntax with two operations instead of one)
+            if(!("operation" in operations.data[currentLevel.current][forcedIndex ?? (index + 1)])){
+                setCompare(true);
+
+                return;
+            }
 
             // Basic operation data
             var regex = /\((\d+)\/(\d+)\)$/;
@@ -371,10 +389,42 @@ export default function GamePage({data, time}){
 
 
     // Handles the keyboard arrow keys
-    function handleArrow(){
+    // Checks if the type is compare, if so, handles that
+    function handleArrow(type){
+
+        if(compare){
+            if(type=="left"){
+                handleLeftGreaterThan();
+            }else if (type=="right"){
+                handleLeftLessThan();
+            }else{
+                handleEqual();
+            }
+
+            return;
+        }
+
         if(answer.includes(")")){
             setFractionState(fractionState == "up" ? "down" : "up");
         }
+    }
+
+
+    // Functions for type compare
+
+    // The operation on the left is greater than the right operation
+    function handleLeftGreaterThan(){
+        alert("Vasak on suurem!!!");
+    }
+
+    // The operation on the left is less than the right operation
+    function handleLeftLessThan(){
+        alert("Vasak on väiksem!");
+    }
+
+    // The two operations are equal
+    function handleEqual(){
+        alert("Mõlemad on võrdsed!!!");
     }
 
 
@@ -572,7 +622,8 @@ export default function GamePage({data, time}){
                     </div>
 
                     {/* The operation data  and answer*/}
-                    <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>
+                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span>_</span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
+                    {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
@@ -581,7 +632,7 @@ export default function GamePage({data, time}){
                 <SizedBox height="24px" />
                 
                 {/* On-screen keyboard */}
-                <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
+                {!compare && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
                     <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
@@ -600,7 +651,14 @@ export default function GamePage({data, time}){
                     <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="⌫" onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
                     <NumberButton backgroundColor="#466362" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="✓" onClick={checkAnswer} />
-                </div>
+                </div>}
+
+               {/* Compare type on screen keyboard */}
+               {compare && <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', width:'fit-content', margin:"auto"}}>
+                    <NumberButton content=">" onClick={()=>handleLeftGreaterThan()} />
+                    <NumberButton content="=" onClick={()=>handleEqual()} />
+                    <NumberButton content="<" onClick={()=>handleLeftLessThan()} />
+                </div>}
             </div>
             
 
