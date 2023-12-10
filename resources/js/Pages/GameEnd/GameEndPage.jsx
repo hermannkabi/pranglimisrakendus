@@ -45,7 +45,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
     var title;
 
-
     // Greeting algorithm
     if(accuracy == 100){
         title = getTitle(greetingsPerfectAccuracy);
@@ -55,6 +54,17 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         title = getTitle(greetingsLowPoints);
     }else{
         title = getTitle(greetings);
+    }
+
+
+    // Returns the correct HTML string for the gap type
+    function gapHtml(op){
+
+        if(!op.isCorrect){
+            return op.operation.replace("Lünk", ` <span class='correct'>`+op.correct+`</span> <span class='underline incorrect'>`+op.answer+`</span> `)
+        }
+
+        return op.operation.replace("Lünk", `<span class='underline correct'>`+op.answer+`</span>`)
     }
     
 
@@ -102,8 +112,9 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                             {log.map(function (op, i){
                                 return (
                                     <div key={i}>
-                                        <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation.replace("Lünk", " _ ")}</b></h3>
-                                        <span style={{display:"block"}}>Vastus: <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span>
+
+                                        {op.operation.includes("Lünk") && <h3 style={{color:'gray', marginBottom:"0"}}><span dangerouslySetInnerHTML={{"__html":gapHtml(op)}}></span></h3>}
+                                        {!op.operation.includes("Lünk") && <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation} =</b> <span> <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through", textDecorationThickness:"4px"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span></h3>  }  
                                     </div>
                                 );
                             })}
@@ -124,3 +135,5 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         </>
     );
 }
+
+

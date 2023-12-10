@@ -171,9 +171,6 @@ export default function GamePage({data, time}){
     // A list of levels that have been requested by the user
     var levels = Object.keys(operations.data);
 
-    console.log(operations);
-
-
     // STATISTICS STATE
 
     // How many times the user has checked their answer

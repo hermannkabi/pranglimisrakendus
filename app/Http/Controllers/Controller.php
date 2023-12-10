@@ -746,6 +746,10 @@ class GameController extends Controller
         $max2 = $defaultMaxKor[$level];
 
         do{
+
+            $xlünk = 0;
+            $ylünk = 0;
+
             $add += $max/10;
             $add2 += $max2/10;
             
@@ -814,7 +818,7 @@ class GameController extends Controller
 
             }
             if ($loos == 1){
-                if ($xlünk = 'Lünk'){
+                if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
                     $xlünk = $x;
@@ -822,7 +826,7 @@ class GameController extends Controller
                 array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $x + $y, "answer"=>$x + $y - (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
             }
             if ($loos == 2){
-                if ($xlünk = 'Lünk'){
+                if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
                     $xlünk = $x;
@@ -830,19 +834,19 @@ class GameController extends Controller
                 array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $x * $y, "answer"=>$x * $y / (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
             }
             if ($loos == 3){
-                if ($xlünk = 'Lünk'){
+                if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
                     $xlünk = $x;
                 }
                 if ($y > $x){
-                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $y - $x, "answer"=>($ylünk == "Lünk" ? $y - $x + $xlünk : $ylünk - ($y - $x)), "level"=>$level]);
+                    array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $y - $x, "answer"=>($ylünk == "Lünk" ? $y : $x), "level"=>$level]);
                 }else{
-                    array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk . " = " . $x - $y, "answer"=>($ylünk == "Lünk" ? $x - $y + $xlünk : $ylünk - ($y - $x)), "level"=>$level]);
+                    array_push($loendlünk, ["operation"=>$xlünk . '-' . $ylünk . " = " . $x - $y, "answer"=>($ylünk == "Lünk" ? $y : $x), "level"=>$level]);
                 }
             }
             if ($loos == 4){
-                if ($xlünk = 'Lünk'){
+                if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                     array_push($loendlünk, ["operation"=>$xlünk . ':' . $ylünk . " = " . $x, "answer"=>$x * $y, "level"=>$level]);
                 } else {

@@ -83,3 +83,20 @@ section{
     margin: auto;
     border-radius: 16px;
 }
+
+.underline{
+    text-decoration: underline;
+    text-decoration-thickness: 4px;
+
+}
+
+.correct{
+    color: green;
+}
+
+.incorrect{
+    color: red;
+    text-decoration: underline line-through;
+    text-decoration-thickness: 4px;
+
+}
