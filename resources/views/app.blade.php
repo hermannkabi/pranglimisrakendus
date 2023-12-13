@@ -8,10 +8,10 @@
         <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="{{ URL::asset('css/master.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/spinner.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/variables.css') }}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
         <!-- Scripts -->
         @routes
