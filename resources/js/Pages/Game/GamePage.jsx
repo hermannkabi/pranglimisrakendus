@@ -15,7 +15,7 @@ export default function GamePage({data, time}){
 
     // How many points are lost every second
     // Should this be different?
-    const pointsLostPerSec = 3;
+    const pointsLostPerSec = 2;
 
     // If there are multiple levels chosen, the app shows this amount of operations per level
     // If there is only one, it currently uses all operations in this level
@@ -146,6 +146,7 @@ export default function GamePage({data, time}){
 
             // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
+            setDtStartedLast(Date.now())
         }else{
             // The current level has ended
 
@@ -206,19 +207,15 @@ export default function GamePage({data, time}){
     // How many seconds have elapsed since the start of the game
     const [timeElapsed, setTimeElapsed] = useState(0);
 
+    // The datetime of the moment where the current operation was started
+    const [dtStartedLast, setDtStartedLast] = useState(Date.now());
+
     // A list of objects that include data about operations that have been answered, such as:
     // the operation itself, the user's answer, the correct answer, whether the answer was correct
     var operationLog = useRef([]);
 
     // Current level that operations are taken from
     var currentLevel = useRef(levels[0]);
-
-
-    // Every time the timer is updated (1Hz), this method is called
-    // Lose a certain amount of points per second
-    function handleTimerTick(){
-        setPoints(points=>Math.max(0, points - pointsLostPerSec));
-    }
 
 
     // This function is called once when the page is first loaded
@@ -470,8 +467,10 @@ export default function GamePage({data, time}){
 
             if(isCorrect){
 
+                var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000)
+
                 // 100 points per level (e.g. level 3 gets 300 points)
-                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1);
+                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1) - pointsLost;
 
                 // A floating point count animation
                 $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
@@ -614,7 +613,7 @@ export default function GamePage({data, time}){
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer onTick={handleTimerTick} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
 
