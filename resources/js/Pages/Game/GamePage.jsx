@@ -15,7 +15,7 @@ export default function GamePage({data, time}){
 
     // How many points are lost every second
     // Should this be different?
-    const pointsLostPerSec = 3;
+    const pointsLostPerSec = 2;
 
     // If there are multiple levels chosen, the app shows this amount of operations per level
     // If there is only one, it currently uses all operations in this level
@@ -111,6 +111,8 @@ export default function GamePage({data, time}){
             // Check for võrdlemine here (it has a different syntax with two operations instead of one)
             if(!("operation" in operations.data[currentLevel.current][forcedIndex ?? (index + 1)])){
                 setCompare(true);
+                setOperation1(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].op1);
+                setOperation2(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].op2);
 
                 return;
             }
@@ -146,6 +148,7 @@ export default function GamePage({data, time}){
 
             // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
+            setDtStartedLast(Date.now())
         }else{
             // The current level has ended
 
@@ -185,6 +188,15 @@ export default function GamePage({data, time}){
     // The most important variable of this view
     // The data is a Map with keys of levels and values of arrays including the operation, answer, level etc
     var operations = {data};
+    // var operations = {
+    //     data:{
+    //         1:[
+    //             {"op1":"3+4", "op2":"2+6", "answer":"r"},
+    //             {"op1":"1+1", "op2":"1+0", "answer":"l"},
+    //             {"op1":"5+5", "op2":"4+6", "answer":"e"},
+    //         ]
+    //     }
+    // };
 
     // A list of levels that have been requested by the user
     var levels = Object.keys(operations.data);
@@ -206,19 +218,15 @@ export default function GamePage({data, time}){
     // How many seconds have elapsed since the start of the game
     const [timeElapsed, setTimeElapsed] = useState(0);
 
+    // The datetime of the moment where the current operation was started
+    const [dtStartedLast, setDtStartedLast] = useState(Date.now());
+
     // A list of objects that include data about operations that have been answered, such as:
     // the operation itself, the user's answer, the correct answer, whether the answer was correct
     var operationLog = useRef([]);
 
     // Current level that operations are taken from
     var currentLevel = useRef(levels[0]);
-
-
-    // Every time the timer is updated (1Hz), this method is called
-    // Lose a certain amount of points per second
-    function handleTimerTick(){
-        setPoints(points=>Math.max(0, points - pointsLostPerSec));
-    }
 
 
     // This function is called once when the page is first loaded
@@ -426,7 +434,7 @@ export default function GamePage({data, time}){
 
 
     // Checks if the answer is correct
-    function checkAnswer(){
+    function checkAnswer(forceTrue){
         if(!timeOver){
 
             const correct = operations.data[currentLevel.current][index].answer.toString();
@@ -470,8 +478,10 @@ export default function GamePage({data, time}){
 
             if(isCorrect){
 
+                var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000)
+
                 // 100 points per level (e.g. level 3 gets 300 points)
-                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1);
+                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1) - pointsLost;
 
                 // A floating point count animation
                 $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
@@ -614,12 +624,12 @@ export default function GamePage({data, time}){
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer onTick={handleTimerTick} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
 
                     {/* The operation data  and answer*/}
-                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span>_</span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
+                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> _ </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 

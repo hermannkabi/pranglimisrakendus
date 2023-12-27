@@ -15,6 +15,8 @@ export default function WelcomePage({name, message}){
                     &nbsp;
                     <a href="/ui">UI</a>
                 </div>
+                <br /><br />
+                <p style={{fontSize:"0.75rem"}}>13.12.2023.1</p>
             </div>
         </div>
     )
