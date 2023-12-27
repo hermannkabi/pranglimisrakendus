@@ -317,7 +317,7 @@ class GameController extends Controller
                     array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
                 }
                 if ($mis === 'lahutamine') {
-                    array_push($attay, ["operation"=>$x + $y . '-' . $y, "answer"=>$x, "level"=>$level]);
+                    array_push($array, ["operation"=>$x + $y . '-' . $y, "answer"=>$x, "level"=>$level]);
                 }
                 if ($mis === 'mõlemad'){
                     $random  = random_int(1, 2);
@@ -871,12 +871,14 @@ class GameController extends Controller
         $add = 0;
         $xold = 0;
         $yold = 0;
+        $xjagold = 0;
+        $yjagold = 0;
         $check = 0;
         
 
         if ($level === '1'){
             do{
-                $x = random_int(0, 9);
+                $x = random_int(1, 9);
                 $y = random_int(1, 10);
                 if ($x == $y){
                     $check ++;
@@ -1034,6 +1036,8 @@ class GameController extends Controller
             do{
                 $x = random_int(10, 19);
                 $y = random_int(11, 20);
+                $xjag = random_int(1, 10);
+                $yjag = random_int(1, 10);
                 if ($x == $y){
                     $check ++;
                     if ($check == 2){
@@ -1051,24 +1055,213 @@ class GameController extends Controller
                 }
                 $xold = $x;
                 $yold = $y;
-                if ($mis === 'korrutamine') {
-                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                }
-                if ($mis === 'jagamine') {
-                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                if ($xjag == $yjag){
+                    $check ++;
+                    if ($check == 2){
+                        do{
+                            $xjag = random_int(1, 10);
+                            $yjag = random_int(1, 10);
+                        } while ($xjag != $yjag);
                     }
                 }
+                if ($xjag == $xjagold or $yjag == $yjagold){
+                    do{
+                        $xjag = random_int(10, 19);
+                        $yjag = random_int(11, 20);
+                    } while ($xjag != $jagxold or $yjag != $yjagold);
+                }
+                $xjagold = $xjag;
+                $yjagold = $yjag;
+                
+                "uuesti:";
+                $random  = random_int(1, 4);
+                $ettearvamatu = random_int(1,4);
+                if ($ettearvamatu == 1){
+                    $Metsa = '+';
+                    $proov1 = $x;
+                    $proov2 = $y;
+                    if ($random == 1){
+                        $proov1 += $xjag * $yjag;
+                        $võrd = 1;
+                        $Garl = '·';
+                    }
+                    if ($random == 2){
+                        $proov1 += $x * $y / $x;
+                        $võrd = 2;
+                        $Garl = ':';
+                    }
+                    if ($random == 3){
+                        $proov1 += $x + $y - $x;
+                        $võrd = 3;
+                        $Garl = '-';
+                    }
+                    if ($random == 4) {
+                        $proov1 += $x + $y;
+                        $võrd = 4;
+                        $Garl = '+';
+                    }
+                }
+                if ($ettearvamatu == 2){
+                    $Metsa = '-';
+                }
+                if ($ettearvamatu == 3){
+                    $Metsa = '*';
+                    if ($random == 1){
+                        $proov1 *= $xjag * $yjag;
+                        $võrd = 1;
+                        $Garl = '·';
+                    }
+                    if ($random == 2){
+                        $proov1 *= $x * $y / $x;
+                        $võrd = 2;
+                        $Garl = ':';
+                    }
+                    if ($random == 3){
+                        $proov1 *= $x + $y - $x;
+                        $võrd = 3;
+                        $Garl = '-';
+                    }
+                    if ($random == 4) {
+                        $proov1 *= $x + $y;
+                        $võrd = 4;
+                        $Garl = '+';
+                    }
+                }
+                if ($ettearvamatu == 4){
+                    $Metsa = ':';
+                    if ($random == 1){
+                        $proov1 /= $xjag * $yjag;
+                        $võrd = 1;
+                        $Garl = '·';
+                    }
+                    if ($random == 2){
+                        $proov1 += $x * $y / $x;
+                        $võrd = 2;
+                        $Garl = ':';
+                    }
+                    if ($random == 3){
+                        $proov1 += $x + $y - $x;
+                        $võrd = 3;
+                        $Garl = '-';
+                    }
+                    if ($random == 4) {
+                        $proov1 += $x + $y;
+                        $võrd = 4;
+                        $Garl = '+';
+                    }
+                }
+                
+                $x1 = $x;
+                $y1 = $y;
+                $random  = random_int(1, 4);
+                if ($random == 1 && $võrd != 1){
+                    $proov2 += $x * $y;
+                    $Garl = '·';
+                    
+                    
+                }
+                if ($random == 2 && $võrd != 2){
+                    $proov2 += $x1 * $y1 / $y1;
+                    $Garl = ':';
+                    $kaspar = 3;
+                    
+                }
+                if ($random == 3 && $võrd != 3){
+                    $proov2 += $x1 + $y1 - $y1;
+                    $Garl = '-';
+                    $kaspar = 4;
+                   
+                }
+                if ($random == 4 && $võrd != 4) {
+                    $proov2 += $x1 + $y1;
+                    $Garl = '+';
+                   
+                }
+                
+                if ($proov1 > $proov2){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        //liitkorrutamine
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "operation2"=>$x1 . $Garl . $y1, "answer"=> "left", "level"=>$level]);
+                    } else {
+                        //jagamise ja lahutamise variatsioonid
+                        if ($võrd == 3 and $kaspar == 3){
+                            $suvaline = random_int(1,2);
+                            //lahutamine ja jagamine
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"left", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"right", "level"=>$level]);
+                            }
+                        }
+                        //jagamine ja liitkorrutamine
+                        if ($võrd != 3 && $võrd != 2 && $kaspar == 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"left", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x . $Garl . $y,"answer"=>"right", "level"=>$level]);
+                            }
+                        }
+                        //lahutamine ja liitkorrutamine
+                        if ($võrd == 3 && $kaspar != 3 && $kaspar != 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 . $Garl . $y1,"answer"=>"left", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"right", "level"=>$level]);
+                            }
+                        } else {
+                            //goto uuesti;
+                        }
+                        
+                    }
+                }
+                if ($proov2 > $proov1){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        //liitkorrutamine
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "operation2"=>$x1 . $Garl . $y1, "answer"=> "right", "level"=>$level]);
+                    } else {
+                        //jagamise ja lahutamise variatsioonid
+                        if ($võrd == 3 and $kaspar == 3){
+                            $suvaline = random_int(1,2);
+                            //lahutamine ja jagamine
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"right", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"left", "level"=>$level]);
+                            }
+                        }
+                        //jagamine ja liitkorrutamine
+                        if ($võrd != 3 && $võrd != 2 && $kaspar == 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"right", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x . $Garl . $y,"answer"=>"left", "level"=>$level]);
+                            }
+                        }
+                        //lahutamine ja liitkorrutamine
+                        if ($võrd == 3 && $kaspar != 3 && $kaspar != 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 . $Garl . $y1,"answer"=>"right", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"left", "level"=>$level]);
+                            }
+                        } else {
+                            //goto uuesti;
+                        }
+                        
+                    }
+                } else {
+                    //goto uuesti;
+                }
+
                 $count ++;
-            } while ($count <= 25);
+            } while ($count <= 10);
             
-        }
         if ($level === '3'){
             do {
                 $x = random_int(20, 99);
@@ -1186,6 +1379,7 @@ class GameController extends Controller
             } while ($count <= 25);
             
         }
+    }   
     }
 
     public function wrapper($tehe, $tasemed){
