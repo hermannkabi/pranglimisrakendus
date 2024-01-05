@@ -1696,16 +1696,16 @@ class GameController extends Controller
     }   
     }
 
-    public function wrapper($tehe, $tasemed){
+    public function wrapper($tehe, $tasemed, $tüüp){
         $loend = [];
 
         for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
             if($tehe == "liitmine" or $tehe == "lahutamine"){
-                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe);
+                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe, $tüüp);
             }
 
             if($tehe == "korrutamine" or $tehe == "jagamine"){
-                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe);
+                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe, $tüüp);
             }
 
             if($tehe == "lünkamine"){

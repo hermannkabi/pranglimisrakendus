@@ -32,15 +32,16 @@ export default function RegisterPage(){
             <LoginHeader pageName="Loo konto" />
             <form  className="register-container">
                 <div className="register-row">
-                    <input className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" />
-                    <input className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" /><br />
+                    <input name="name" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" />
+                    <input name="famname" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" /><br />
                 </div>
-                <input type="text" placeholder="E-posti aadress" /><br />
-                <input type="text" placeholder="Kooli pääsukood" /><br />
-                <PasswordInput divstyle={{width:"100%"}} placeholder="Parool" /><br />
-                <PasswordInput divstyle={{width:"100%"}} placeholder="Korda parooli" />
+                <input name="email" type="text" placeholder="E-posti aadress" /><br />
+                <input name="class" type="text" placeholder="Klass (nt 140.a)" /><br />
+                <input name="adminpsw" type="text" placeholder="Kooli pääsukood" /><br />
+                <PasswordInput name="pwd" divstyle={{width:"100%"}} placeholder="Parool" /><br />
+                <PasswordInput name="pwdrepeat" divstyle={{width:"100%"}} placeholder="Korda parooli" />
                 <SizedBox height="16px" />
-                <button onClick={handleRegister} type="submit">{loading && <LoadingSpinner />} Loo konto</button>
+                <button name="registration" onClick={handleRegister} type="submit">{loading && <LoadingSpinner />} Loo konto</button>
             </form>
 
 

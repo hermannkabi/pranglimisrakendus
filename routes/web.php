@@ -60,9 +60,9 @@ Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
 })->name("game");
 
-Route::get("/game/{level}/{mis}/{aeg}", function ($level, $mis, $aeg){
+Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     
-    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level)), "time"=>60*$aeg]);
+    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp), "time"=>60*$aeg]);
 })->name("gameNew");
 
 require __DIR__.'/auth.php';
