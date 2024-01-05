@@ -15,6 +15,10 @@ export default function GamePreviewPage(){
     function navigateToGame(){
         setMessage();
         var type = $("#game-type").val();
+
+        // Natural, whole or fraction
+        var numberType = $("#number-type").val();
+
         var time = parseInt($("#number").val());
 
         var levels = [];
@@ -45,8 +49,13 @@ export default function GamePreviewPage(){
             return;
         }
 
+        if(numberType == null){
+            setMessage("Palun vali arvuhulk");
+            return;
+        }
+
         if(type != "choose" && time != null && time > 0){
-            return window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time;
+            return window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time+"/"+numberType;
         }
 
     }
@@ -70,11 +79,11 @@ export default function GamePreviewPage(){
                             <option value="jagamine">Jagamine</option>
                             <option value="liitmine">Liitmine</option>
                             <option value="lahutamine">Lahutamine</option>
-                            <option value="addsub">Liitlahutamine</option>
-                            <option value="multidiv">Korrujagamine</option>
-                            <option value="compare">Võrdlemine</option>
+                            <option value="liitlahutamine">Liitlahutamine</option>
+                            <option value="korrujagamine">Korrujagamine</option>
+                            <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
-                            <option value="random">Segaarvutused</option>
+                            <option value="sega">Segaarvutused</option>
                         </select>
 
                         <select name="" id="">
@@ -83,11 +92,11 @@ export default function GamePreviewPage(){
                             <option value="sprint">Sprint</option>
                         </select>
 
-                        <select name="" id="">
+                        <select name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
-                            <option value="natural">Naturaalarvud</option>
-                            <option value="whole">Täisarvud</option>
-                            <option value="fraction">Murdarvud</option>
+                            <option value="naturaal">Naturaalarvud</option>
+                            <option value="täis">Täisarvud</option>
+                            <option value="murd">Murdarvud</option>
                         </select>
 
                         <NumberInput placeholder="Aeg (min)" id="number"/>

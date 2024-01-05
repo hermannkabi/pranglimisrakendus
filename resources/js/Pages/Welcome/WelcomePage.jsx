@@ -13,10 +13,10 @@ export default function WelcomePage({name, message}){
                 <div>
                     <a href="/dashboard">Dashboard</a>
                     &nbsp;
-                    <a href="/ui">UI</a>
+                    <a href="/register">Register</a>
                 </div>
                 <br /><br />
-                <p style={{fontSize:"0.75rem"}}>13.12.2023.1</p>
+                <p style={{fontSize:"0.75rem"}}>05.01.2024.1</p>
             </div>
         </div>
     )

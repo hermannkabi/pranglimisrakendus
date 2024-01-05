@@ -1700,11 +1700,22 @@ class GameController extends Controller
         $loend = [];
 
         for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
-            if($tehe == "liitmine" or $tehe == "lahutamine"){
+            if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
+
+                if($tehe == "liitlahutamine"){
+                    $tehe = "mõlemad";
+                }
+
+
                 $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe, $tüüp);
             }
 
-            if($tehe == "korrutamine" or $tehe == "jagamine"){
+            if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
+
+                if($tehe == "korrujagamine"){
+                    $tehe = "mõlemad";
+                }
+
                 $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe, $tüüp);
             }
 
