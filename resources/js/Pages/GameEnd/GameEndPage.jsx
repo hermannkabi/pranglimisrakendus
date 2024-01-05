@@ -66,7 +66,17 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
         return op.operation.replace("Lünk", `<span class='underline correct'>`+op.answer+`</span>`)
     }
+
+    function dateToString(date){
+        return (date.getDate() + 1 < 9 ? "0" : "") + date.getDate().toString() + "." + (date.getMonth() + 1 < 9 ? "0" : "") + (date.getMonth() + 1).toString() + "." + date.getFullYear();
+    }
     
+    function saveGame(){
+
+        window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
+
+        window.location.href = route("dashboard");
+    }
 
     return (
         <>
@@ -128,7 +138,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 <section>
                     <div className="btn-container">
                         <button onClick={()=>location.reload()} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
-                        <button onClick={()=>window.location.href = route("dashboard")} style={{flex:'1'}}>Edasi</button>
+                        <button onClick={saveGame} style={{flex:'1'}}>Edasi</button>
                     </div>
                 </section>
             </div>
