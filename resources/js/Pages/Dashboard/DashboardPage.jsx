@@ -22,7 +22,7 @@ export default function Dashboard({auth}) {
                 </div>
                 <StatisticsWidget stat={42} desc="Treeningut" />
                 <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
-                <StatisticsWidget stat={"28.07.2023"} desc="Viimati aktiivne" />
+                <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
                 <StatisticsWidget stat={"6."} desc="Koht klassis " />
             </section>
 

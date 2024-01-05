@@ -43,8 +43,6 @@ export default function RegisterPage(){
                 <SizedBox height="16px" />
                 <button name="registration" onClick={handleRegister} type="submit">{loading && <LoadingSpinner />} Loo konto</button>
             </form>
-
-
         </>
     )
 }
