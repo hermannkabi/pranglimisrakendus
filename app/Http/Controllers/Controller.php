@@ -16,187 +16,6 @@ class Controller extends BaseController
 class GameController extends Controller
 {
 
-    
-
-
-    public function array_Gen($tehe){
-
-        $loendliit = [];
-        $loendkor = [];
-        $loendjag = [];
-        $loendlah = [];
-        $loendlünk = [];
-        $pop = 0;
-        $lisand = 1;
-        $xkontroll = 0;
-        $ykontroll = 0;
-        
-        do {
-            $tase = 1;
-
-            //liitmine
-            $xliit = random_int($lisand, $lisand + 2);
-            $yliit = random_int($lisand, $lisand + 2);
-            
-            
-            //korrutamine
-            $xkor = random_int($lisand, $lisand + 2);
-            $ykor = random_int($lisand, $lisand + 2);
-            
-            
-            //lahutamine
-            $xlah = random_int($lisand, $lisand + 2);
-            $ylah = random_int($lisand, $lisand + 2);
-            
-            //jagamine (ei tohi == 0)
-            $xjag = random_int($lisand, $lisand + 2);
-            $yjag = random_int($lisand, $lisand + 2);
-            
-            
-            
-            //ascending level system
-            if($pop >= 0){
-                if ($tehe === 'liitmine' or 'lahutamine'){
-                    do {
-                        $xliit = $xlah = random_int($lisand -2, $lisand + 2);
-                        $yliit = $ylah = random_int($lisand -2, $lisand + 2);
-                     } while ($xlah == $xkontroll or $ylah == $ykontroll);
-                     $xkontroll = $xlah;
-                     $ykontroll = $ylah;
-                }
-                if ($tehe === 'korrutamine' or 'jagamine'){
-                    do {
-                        $xkor = $xjag = random_int($lisand, $lisand + 2);
-                        $ykor = $yjag = random_int($lisand, $lisand + 2);
-                    } while ($xkor == $xkontroll or $ykor == $ykontroll);
-                    $xkontroll = $xkor;
-                    $ykontroll = $ykor;
-                $muutuja = 2;
-                }
-            }
-            if($pop >= 5){
-                $tase = 2;
-                if ($lisand < 10){
-                    $lisand = 10;
-                }
-                if ($tehe === 'liitmine' or 'lahutamine'){
-                    $xliit = $xlah= random_int($lisand, 5 + $lisand);
-                    $yliit = $ylah= random_int($lisand, 5 + $lisand);
-                    do {
-                       $xliit = $xlah = random_int($lisand - 2, $lisand + 7);
-                       $yliit = $ylah = random_int($lisand - 2, $lisand + 7);
-                    } while ($xlah == $xkontroll or $ylah == $ykontroll);
-                    $xkontroll = $xlah;
-                    $ykontroll = $ylah;
-                    $muutuja = 18;
-                }
-                if ($tehe === 'korrutamine' or 'jagamine'){
-                    if ($pop == 6 && $lisand > 14){
-                        $lisand = 14;
-                        $xkor = $xjag = random_int($lisand - 2, $lisand);
-                        $ykor = $yjag = random_int($lisand - 2, $lisand);
-                    }
-                    $xkor = $xjag = random_int($lisand, $lisand + 2);
-                    $ykor = $yjag = random_int($lisand, $lisand + 2);
-                    do {
-                        $xkor = $xjag = random_int($lisand, $lisand + 2);
-                        $ykor = $yjag = random_int($lisand, $lisand + 2);
-                    } while ($xkor == $xkontroll or $ykor == $ykontroll);
-                    $xkontroll = $xkor;
-                    $ykontroll = $ykor;
-                    $muutuja = 2;
-                }
-            }
-            if($pop >= 10){
-                $tase = 3;
-                if ($tehe === 'liitmine' or 'lahutamine'){
-                    if ($lisand < 100){
-                        $lisand = 100;
-                    }
-                    $xliit = $xlah =  random_int($lisand, 59 + $lisand);
-                    $yliit = $ylah =  random_int($lisand, 59 + $lisand);
-                    do {
-                        $xliit = $xlah =  random_int($lisand, 59 + $lisand);
-                        $yliit = $ylah =  random_int($lisand, 59 + $lisand);
-                    } while ($xliit == $xkontroll or $ylah == $ykontroll);
-                    $xkontroll = $xliit;
-                    $ykontroll = $yliit;
-                    $muutuja = 180;
-                }
-                if ($tehe === 'korrutamine' or 'jagamine'){
-                    if ($lisand < 20){
-                        $lisand = 20;
-                    }
-                    $xkor = $xjag = random_int($lisand - 9, $lisand + 9);
-                    $ykor = $yjag = random_int($lisand - 9, $lisand + 9);
-                    do {
-                        $xkor = $xjag = random_int(random_int($lisand - 9, $lisand), random_int($lisand, $lisand + 9));
-                        $ykor = $yjag = random_int(random_int($lisand - 9, $lisand), random_int($lisand, $lisand + 9));
-                    } while ($xkor == $xkontroll or $ykor == $ykontroll && $xkor = $ykor);
-                    $xkontroll = $xkor;
-                    $ykontroll = $ykor;
-                    $muutuja = 16;
-                }
-                }
-            if($pop >= 15){
-                $tase = 4;
-                if ($tehe === 'liitmine' or 'lahutamine'){
-                    $xliit = $xlah = random_int(1000 + $lisand, 1500 + $lisand);
-                    $yliit = $ylah = random_int(1000 + $lisand, 1500 + $lisand);
-                    $muutuja = 1800;
-                }
-                if ($tehe === 'korrutamine' or 'jagamine'){
-                    $xkor = $xjag = random_int(100 + $lisand, 250 + $lisand);
-                    $ykor = $yjag = random_int(100 + $lisand, 250 + $lisand);
-                    $muutuja = 180;
-                }
-                }
-            
-
-            if ($tehe === 'liitmine') {
-                array_push($loendliit, ["operation"=>$xliit. '+' . $yliit, "answer"=>$xliit + $yliit, "level"=>$tase]);
-            }
-
-            if ($tehe === 'lahutamine') {
-                array_push($loendlah, ["operation"=>$xlah + $ylah . '-' . $ylah, "answer"=>$xlah, "level"=>$tase]);
-            }
-
-            if ($tehe === 'korrutamine') {
-                array_push($loendkor, ["operation"=>$xkor . '·' . $ykor, "answer"=>$xkor * $ykor, "level"=>$tase]);
-
-            }
-
-            if ($tehe === 'jagamine') {
-                array_push($loendjag, ["operation"=>$xjag * $yjag . ':' . $yjag, "answer"=>$xjag, "level"=>$tase]);
-            }
-            $lisand += $muutuja;
-            $pop ++;   
-        }while($pop <= 20);
-        
-    
-        if ($tehe === 'liitmine'){
-            return $loendliit;
-        }
-
-        if ($tehe === 'lahutamine'){
-            return $loendlah;
-        }
-
-        if ($tehe === 'jagamine'){
-            return $loendjag;
-        }
-
-        if ($tehe === 'korrutamine'){
-            return $loendkor;
-        }
-
-        if ($tehe === 'lünkamine'){
-            return $loendlünk;
-        }
-    }
-
-
-
     //Addition and Substraction
     public function liitlah($level, $mis, $tüüp){
         $array = [];
@@ -224,14 +43,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1, 5) + random_int(1, 9)/10;
                                 $y = random_int(1, 5) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1, 5) + random_int(1, 9)/10;
                             $y = random_int(1, 5) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -263,14 +82,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(6, 10) + random_int(1, 9)/10;
                                 $y = random_int(6, 10) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(6, 10) + random_int(1, 9)/10;
                             $y = random_int(6, 10) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -302,14 +121,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(10, 30) + random_int(1, 9)/10;
                                 $y = random_int(11, 29) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(10, 30) + random_int(1, 9)/10;
                             $y = random_int(11, 29) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -341,14 +160,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(30, 100) + random_int(1, 9)/10;
                                 $y = random_int(29, 100) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(30, 100) + random_int(1, 9)/10;
                             $y = random_int(29, 99) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -380,14 +199,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(100, 500) + random_int(1, 99)/100;
                                 $y = random_int(101, 499) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(100, 500) + random_int(1, 99)/100;
                             $y = random_int(101, 499) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -419,14 +238,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(500, 1000) + random_int(1, 99)/100;
                                 $y = random_int(500, 1000) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(500, 1000) + random_int(1, 99)/100;
                             $y = random_int(500, 1000) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -458,14 +277,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1000, 10000) + random_int(1, 99)/100;
                                 $y = random_int(1000, 10000) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1000, 10000) + random_int(1, 99)/100;
                             $y = random_int(1000, 10000) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -497,14 +316,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(10000, 100000) + random_int(1, 999)/1000;
                                 $y = random_int(10000, 100000) + random_int(1, 999)/1000;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(10000, 100000) + random_int(1, 999)/1000;
                             $y = random_int(10000, 100000) + random_int(1, 999)/1000;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -596,14 +415,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-5, 5);
                                 $y = random_int(-5, 5);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-5, 5);
                             $y = random_int(-5, 5);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     
                     $xold = $x;
@@ -637,14 +456,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-10, -6) or random_int(6, 10);
                                 $y = random_int(-10, -6) or random_int(6, 10);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-10, -6) or random_int(6, 10);
                             $y = random_int(-10, -6) or random_int(6, 10);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -676,14 +495,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-30, -10) or random_int(10, 30);
                                 $y = random_int(-30, -10) or random_int(10, 30);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-30, -10) or random_int(10, 30);
                             $y = random_int(-30, -10) or random_int(10, 30);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -715,14 +534,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-100, -30) or random_int(30, 100);
                                 $y = random_int(-100, -30) or random_int(30, 100);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-100, -30) or random_int(30, 100);
                             $y = random_int(-100, -30) or random_int(30, 100);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -754,14 +573,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-500, -100) or random_int(100,500);
                                 $y = random_int(-500, -100) or random_int(100,500);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-500, -100) or random_int(100,500);
                             $y = random_int(-500, -100) or random_int(100,500);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -793,14 +612,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(500, 1000) or random_int(-1000,-500);
                                 $y = random_int(500, 1000) or random_int(-1000,-500);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(500, 1000) or random_int(-1000,-500);
                             $y = random_int(500, 1000) or random_int(-1000,-500);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -832,14 +651,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1000, 10000) or random_int(-10000,-1000);
                                 $y = random_int(1000, 10000) or random_int(-10000,-1000);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1000, 10000) or random_int(-10000,-1000);
                             $y = random_int(1000, 10000) or random_int(-10000,-1000);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -871,14 +690,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(10000, 100000) or random_int(-100000,-10000);
                                 $y = random_int(10000, 100000) or random_int(-100000,-10000);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(10000, 100000) or random_int(-100000,-10000);
                             $y = random_int(10000, 100000) or random_int(-100000,-10000);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -971,14 +790,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(1, 5);
                             $y = random_int(1, 5);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(1, 5);
                         $y = random_int(1, 5);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1011,14 +830,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(5, 10);
                             $y = random_int(5, 10);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(5, 10);
                         $y = random_int(5, 10);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y; 
@@ -1050,14 +869,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(10, 30);
                             $y = random_int(10, 30);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(10, 30);
                         $y = random_int(10, 30);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y; 
@@ -1089,14 +908,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(30, 100);
                             $y = random_int(30, 100);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(30, 100);
                         $y = random_int(30, 100);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1128,14 +947,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(100, 500);
                             $y = random_int(100, 500);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(100, 500);
                         $y = random_int(100, 500);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1226,14 +1045,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(500, 1000);
                             $y = random_int(500, 1000);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(500, 1000);
                         $y = random_int(500, 1000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1265,14 +1084,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(1000, 10000);
                             $y = random_int(1000, 10000);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(1000, 10000);
                         $y = random_int(1000, 10000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1304,14 +1123,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(10000, 100000);
                             $y = random_int(10000, 100000);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(10000, 100000);
                         $y = random_int(10000, 100000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -1364,14 +1183,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1, 5) + random_int(1, 9)/10;
                                 $y = random_int(1, 5) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1, 5) + random_int(1, 9)/10;
                             $y = random_int(1, 5) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     
                     $xold = $x;
@@ -1405,14 +1224,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1, 5) + random_int(1, 9)/10;
                                 $y = random_int(6, 10) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1, 5) + random_int(1, 9)/10;
                             $y = random_int(6, 10) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1444,14 +1263,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(6, 10) + random_int(1, 9)/10;
                                 $y = random_int(6, 10) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(6, 10) + random_int(1, 9)/10;
                             $y = random_int(6, 10) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1483,14 +1302,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(1, 10) + random_int(1, 9)/10;
                                 $y = random_int(11, 20) + random_int(1, 9)/10;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(1, 10) + random_int(1, 9)/10;
                             $y = random_int(11, 20) + random_int(1, 9)/10;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1522,14 +1341,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(2, 10) + random_int(1, 99)/100;
                                 $y = random_int(101, 500) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(2, 10) + random_int(1, 99)/100;
                             $y = random_int(101, 500) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1571,14 +1390,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(11, 20) + random_int(1, 99)/100;
                                 $y = random_int(21, 30) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(11, 20) + random_int(1, 99)/100;
                             $y = random_int(21, 30) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1610,14 +1429,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(11, 30) + random_int(1, 99)/100;
                                 $y = random_int(31, 100) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(11, 30) + random_int(1, 99)/100;
                             $y = random_int(31, 100) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1649,14 +1468,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(31, 100) + random_int(1, 99)/100;
                                 $y = random_int(31, 100) + random_int(1, 99)/100;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(31, 100) + random_int(1, 99)/100;
                             $y = random_int(31, 100) + random_int(1, 99)/100;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1688,14 +1507,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(101, 1000) + random_int(1, 999)/1000;
                                 $y = random_int(101, 1000) + random_int(1, 999)/1000;
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(101, 1000) + random_int(1, 999)/1000;
                             $y = random_int(101, 1000) + random_int(1, 999)/1000;
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1823,14 +1642,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-5, 5);
                                 $y = random_int(-5, 5);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-5, 5);
                             $y = random_int(-5, 5);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     
                     $xold = $x;
@@ -1864,14 +1683,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-5, 5);
                                 $y = random_int(-10, -6) or random_int(6, 10);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-5, 5);
                             $y = random_int(-10, -6) or random_int(6, 10);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1903,14 +1722,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-10, -6) or random_int(6, 10);
                                 $y = random_int(-10, -6) or random_int(6, 10);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-10, -6) or random_int(6, 10);
                             $y = random_int(-10, -6) or random_int(6, 10);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1942,14 +1761,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(-10, -6) or random_int(6, 10);
                                 $y = random_int(-20, -11) or random_int(11, 20);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(-10, -6) or random_int(6, 10);
                             $y = random_int(-20, -11) or random_int(11, 20);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -1981,14 +1800,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(2, 10) or random_int(-10,-2);
                                 $y = random_int(101, 500) or random_int(-500,-101);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(2, 10) or random_int(-10,-2);
                             $y = random_int(101, 500) or random_int(-500,-101);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -2030,14 +1849,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(11, 20) or random_int(-20,-11);
                                 $y = random_int(21, 30) or random_int(-30,-21);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(11, 20) or random_int(-20,-11);
                             $y = random_int(21, 30) or random_int(-30,-21);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -2069,14 +1888,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(11, 30) or random_int(-30,-11);
                                 $y = random_int(31, 100) or random_int(-100,-31);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(11, 30) or random_int(-30,-11);
                             $y = random_int(31, 100) or random_int(-100,-31);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -2108,14 +1927,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(31, 100) or random_int(-100,-31);
                                 $y = random_int(31, 100) or random_int(-100,-31);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(31, 100) or random_int(-100,-31);
                             $y = random_int(31, 100) or random_int(-100,-31);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -2147,14 +1966,14 @@ class GameController extends Controller
                             do{
                                 $x = random_int(101, 1000) or random_int(-1000,-101);
                                 $y = random_int(101, 1000) or random_int(-1000,-101);
-                            } while ($x != $y);
+                            } while ($x != $y && $x != $yold && $y != $xold);
                         }
                     }
                     if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(101, 1000) or random_int(-1000,-101);
                             $y = random_int(101, 1000) or random_int(-1000,-101);
-                        } while ($x != $xold or $y != $yold && $x == $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
                     $xold = $x;
                     $yold = $y;
@@ -2281,14 +2100,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(1, 5);
                             $y = random_int(1, 5);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(1, 5);
                         $y = random_int(1, 5);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 
                 $xold = $x;
@@ -2322,14 +2141,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(1, 5);
                             $y = random_int(6, 10);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(1, 5);
                         $y = random_int(6, 10);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2361,14 +2180,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(6, 10);
                             $y = random_int(6, 10);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(6, 10);
                         $y = random_int(6, 10);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2400,14 +2219,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(1, 10);
                             $y = random_int(11, 20);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(1, 10);
                         $y = random_int(11, 20);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2439,14 +2258,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(2, 10);
                             $y = random_int(101, 500);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(2, 10);
                         $y = random_int(101, 500);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2488,14 +2307,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(11, 20);
                             $y = random_int(21, 30);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(11, 20);
                         $y = random_int(21, 30);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2527,14 +2346,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(11, 30);
                             $y = random_int(31, 100);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(11, 30);
                         $y = random_int(31, 100);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2566,14 +2385,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(31, 100);
                             $y = random_int(31, 100);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(31, 100);
                         $y = random_int(31, 100);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2605,14 +2424,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(101, 1000);
                             $y = random_int(101, 1000);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(101, 1000);
                         $y = random_int(101, 1000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -2720,10 +2539,13 @@ class GameController extends Controller
     //lünkamine
     public function lünkamine($level){
 
-        $defaultMaxLiit = ["1"=>10, "2"=>100, "3"=>1000, "4"=>10000, "5"=>100000];
-        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>100, "4"=>1000, "5"=>10000];
+        $defaultMaxLiit = ["1"=>10, "2"=>30, "3"=>100, "4"=>500, "5"=>1000];
+        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000];
 
-
+        $x = 0;
+        $y = 0;
+        $xold = 0;
+        $yold = 0;
         $add = 1;
         $add2 = 1;
         $count = 0;
@@ -2731,6 +2553,7 @@ class GameController extends Controller
         $max = $defaultMaxLiit[$level];
         $max2 = $defaultMaxKor[$level];
 
+        //Ascending levels
         do{
 
             $xlünk = 0;
@@ -2845,7 +2668,7 @@ class GameController extends Controller
         return $loendlünk;
     }
 
-    public function võrdlemine($level){
+    public function võrdlemine($level, $mis){
         $array = [];
         $array2 = [];
         $x = 0;
@@ -2872,14 +2695,14 @@ class GameController extends Controller
                         do{
                             $x = random_int(0, 9);
                             $y = random_int(1, 10);
-                        } while ($x != $y);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
                         $x = random_int(0, 9);
                         $y = random_int(1, 10);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -3013,31 +2836,69 @@ class GameController extends Controller
                 } else {
                     goto uuesti;
                 }
-
+                if ($proov2 == $proov1){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        //liitkorrutamine
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "operation2"=>$x1 . $Garl . $y1, "answer"=> "equal", "level"=>$level]);
+                    } else {
+                        //jagamise ja lahutamise variatsioonid
+                        if ($võrd == 3 and $kaspar == 3){
+                            $suvaline = random_int(1,2);
+                            //lahutamine ja jagamine
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        }
+                        //jagamine ja liitkorrutamine
+                        if ($võrd != 3 && $võrd != 2 && $kaspar == 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        }
+                        //lahutamine ja liitkorrutamine
+                        if ($võrd == 3 && $kaspar != 3 && $kaspar != 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        } else {
+                            goto uuesti;
+                        }
+                        
+                    }
+                }
                 $count ++;
             } while ($count <= 10);
             
         }
         if ($level === '2'){
             do{
-                $x = random_int(10, 19);
-                $y = random_int(11, 20);
-                $xjag = random_int(1, 10);
-                $yjag = random_int(1, 10);
+                $x = random_int(10, 29);
+                $y = random_int(11, 30);
+                $xjag = random_int(2, 5);
+                $yjag = random_int(6, 10);
                 if ($x == $y){
                     $check ++;
                     if ($check == 2){
                         do{
-                            $x = random_int(10, 19);
-                            $y = random_int(11, 20);
-                        } while ($x != $y);
+                            $x = random_int(10, 29);
+                            $y = random_int(10, 29);
+                        } while ($x != $y && $x != $yold && $y != $xold);
                     }
                 }
                 if ($x == $xold or $y == $yold){
                     do{
-                        $x = random_int(10, 19);
-                        $y = random_int(11, 20);
-                    } while ($x != $xold or $y != $yold && $x == $y);
+                        $x = random_int(10, 29);
+                        $y = random_int(10, 29);
+                    } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                 }
                 $xold = $x;
                 $yold = $y;
@@ -3045,16 +2906,16 @@ class GameController extends Controller
                     $check ++;
                     if ($check == 2){
                         do{
-                            $xjag = random_int(1, 10);
-                            $yjag = random_int(1, 10);
+                            $xjag = random_int(2, 5);
+                            $yjag = random_int(6, 10);
                         } while ($xjag != $yjag);
                     }
                 }
                 if ($xjag == $xjagold or $yjag == $yjagold){
                     do{
-                        $xjag = random_int(10, 19);
-                        $yjag = random_int(11, 20);
-                    } while ($xjag != $jagxold or $yjag != $yjagold);
+                        $xjag = random_int(2, 5);
+                        $yjag = random_int(6, 10);
+                    } while ($xjag != $xjagold or $yjag != $yjagold);
                 }
                 $xjagold = $xjag;
                 $yjagold = $yjag;
@@ -3072,7 +2933,7 @@ class GameController extends Controller
                         $Garl = '·';
                     }
                     if ($random == 2){
-                        $proov1 += $x * $y / $x;
+                        $proov1 += $xjag * $yjag / $xjag;
                         $võrd = 2;
                         $Garl = ':';
                     }
@@ -3098,7 +2959,7 @@ class GameController extends Controller
                         $Garl = '·';
                     }
                     if ($random == 2){
-                        $proov1 *= $x * $y / $x;
+                        $proov1 *= $xjag * $yjag / $xjag;
                         $võrd = 2;
                         $Garl = ':';
                     }
@@ -3121,7 +2982,7 @@ class GameController extends Controller
                         $Garl = '·';
                     }
                     if ($random == 2){
-                        $proov1 += $x * $y / $x;
+                        $proov1 += $xjag * $yjag / $xjag;
                         $võrd = 2;
                         $Garl = ':';
                     }
@@ -3141,13 +3002,11 @@ class GameController extends Controller
                 $y1 = $y;
                 $random  = random_int(1, 4);
                 if ($random == 1 && $võrd != 1){
-                    $proov2 += $x * $y;
+                    $proov2 += $xjag * $yjag;
                     $Garl = '·';
-                    
-                    
                 }
                 if ($random == 2 && $võrd != 2){
-                    $proov2 += $x1 * $y1 / $y1;
+                    $proov2 += $xjag * $yjag / $yjag;
                     $Garl = ':';
                     $kaspar = 3;
                     
@@ -3244,128 +3103,88 @@ class GameController extends Controller
                 } else {
                     //goto uuesti;
                 }
+                if ($proov1 == $proov2){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        //liitkorrutamine
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "operation2"=>$x1 . $Garl . $y1, "answer"=> "equal", "level"=>$level]);
+                    } else {
+                        //jagamise ja lahutamise variatsioonid
+                        if ($võrd == 3 and $kaspar == 3){
+                            $suvaline = random_int(1,2);
+                            //lahutamine ja jagamine
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        }
+                        //jagamine ja liitkorrutamine
+                        if ($võrd != 3 && $võrd != 2 && $kaspar == 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x . $Garl . $y, "operation2"=>$x1 * $y1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 * $y1 . $Garl . $y1, "operation2"=>$x . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        }
+                        //lahutamine ja liitkorrutamine
+                        if ($võrd == 3 && $kaspar != 3 && $kaspar != 4){
+                            $suvaline = random_int(1,2);
+                            if ($suvaline == 1) {
+                                array_push($array, ["operation"=>$x + $y . $Garl . $y, "operation2"=>$x1 . $Garl . $y1,"answer"=>"equal", "level"=>$level]);
+                            } else {
+                                array_push($array, ["operation"=>$x1 . $Garl . $y1, "operation2"=>$x + $y . $Garl . $y,"answer"=>"equal", "level"=>$level]);
+                            }
+                        } else {
+                            //goto uuesti;
+                        }
+                    }
+                }
 
                 $count ++;
             } while ($count <= 10);
             
-        if ($level === '3'){
-            do {
-                $x = random_int(20, 99);
-                $y = random_int(21, 100);
-                if ($x == $y){
-                    $check ++;
-                    if ($check == 2){
+            if ($level === '3'){
+                do {
+                    $x = random_int(20, 99);
+                    $y = random_int(21, 100);
+                    if ($x == $y){
+                        $check ++;
+                        if ($check == 2){
+                            do{
+                                $x = random_int(20, 99);
+                                $y = random_int(21, 100);
+                            } while ($x != $y && $x != $yold && $y != $xold);
+                        }
+                    }
+                    if ($x == $xold or $y == $yold){
                         do{
                             $x = random_int(20, 99);
                             $y = random_int(21, 100);
-                        } while ($x != $y);
+                        } while ($x != $xold && $y != $yold && $x == $y && $x != $yold && $y != $xold);
                     }
-                }
-                if ($x == $xold or $y == $yold){
-                    do{
-                        $x = random_int(20, 99);
-                        $y = random_int(21, 100);
-                    } while ($x != $xold or $y != $yold && $x == $y);
-                }
-                $xold = $x;
-                $yold = $y;
-                if ($mis === 'korrutamine') {
-                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                }
-                if ($mis === 'jagamine') {
-                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
+                    $xold = $x;
+                    $yold = $y;
+                    if ($mis === 'korrutamine') {
                         array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                    } else {
+                    }
+                    if ($mis === 'jagamine') {
                         array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
                     }
-                }
-                $count ++;
-            } while ($count <= 25);
-            
-        }
-        if ($level === '4'){
-            do {
-                $x = random_int(100, 999);
-                $y = random_int(101, 1000);
-                if ($x == $y){
-                    $check ++;
-                    if ($check == 2){
-                        do{
-                            $x = random_int(100, 999);
-                            $y = random_int(101, 1000);
-                        } while ($x != $y);
+                    if ($mis === 'mõlemad'){
+                        $random  = random_int(1, 2);
+                        if ($random == 1){
+                            array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
+                        } else {
+                            array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
+                        }
                     }
-                }
-                if ($x == $xold or $y == $yold){
-                    do{
-                        $x = random_int(100, 999);
-                        $y = random_int(101, 1000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
-                }
-                $xold = $x;
-                $yold = $y;
-                if ($mis === 'korrutamine') {
-                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                }
-                if ($mis === 'jagamine') {
-                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                    }
-                }
-                $count ++;
-            } while ($count <= 25);
-            
-        }
-        if ($level === '5'){
-            do {
-                $x = random_int(1000, 9999);
-                $y = random_int(1001, 10000);
-                if ($x == $y){
-                    $check ++;
-                    if ($check == 2){
-                        do{
-                            $x = random_int(1000, 9999);
-                            $y = random_int(1001, 10000);
-                        } while ($x != $y);
-                    }
-                }
-                if ($x == $xold or $y == $yold){
-                    do{
-                        $x = random_int(1000, 9999);
-                        $y = random_int(1001, 10000);
-                    } while ($x != $xold or $y != $yold && $x == $y);
-                }
-                $xold = $x;
-                $yold = $y;
-                if ($mis === 'korrutamine') {
-                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                }
-                if ($mis === 'jagamine') {
-                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$level]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$level]);
-                    }
-                }
-                $count ++;
-            } while ($count <= 25);
-            
-        }
-    }   
+                    $count ++;
+                } while ($count <= 10);
+                
+            }
+        }  
     }
 
     public function wrapper($tehe, $tasemed, $tüüp){
