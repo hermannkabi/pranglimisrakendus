@@ -36,8 +36,8 @@ Route::get('/register', function () {
     return Inertia::render('Register/RegisterPage');
 })->name("register");
 
-Route::post('/register', function () {
-    if (isset($_POST['registration'])) {
+Route::post('/register', function () {    
+    if (isset($_POST['name'])) {
 
         $name = $_POST['name'];
         $famname = $_POST['famname'];
@@ -45,32 +45,34 @@ Route::post('/register', function () {
         $class = $_POST['class'];
         $pwd = $_POST['pwd'];
         $pwdRepeat = $_POST['pwdrepeat'];
-    
-        require_once '../login/database.php';
+
+        return Inertia::render('Register/RegisterPage', ["message"=>"Tere, ".$name.". See teade kinnitab info jõudmist back-endi"]);
+
         require_once '../login/functions.php';
+        require_once '../login/database.php';
 
-        if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result, $famname) != false) {
-            return Inertia::render('Register/RegisterPage', ["message"=>"Midagi on puudu!"]);
+        if (emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat)) {
+            return Inertia::render('Register/RegisterPage', ["message"=>"Mõni väli on jäänud täitmata!"]);
         };
-
-        if (invalidname($name, $result) != false) {
-            echo 'Error';// Add more inf
+        if (invalidname($name)) {
+            return Inertia::render('Register/RegisterPage', ["message"=>"Nimi ei ole korrektselt vormistatud!"]);
         };
-        if (invalidemail($email, $result) != false) {
-            echo 'Error';// Add more inf
+        if (invalidemail($email)) {
+            return Inertia::render('Register/RegisterPage', ["message"=>"E-posti aadress ei ole korrektselt vormistatud!"]);
         };
-        if (pwdMatch($pwd,  $pwdRepeat, $result) !== false) {
-            echo 'Error';// Add more inf
+        if (pwdNoMatch($pwd,  $pwdRepeat)) {
+            return Inertia::render('Register/RegisterPage', ["message"=>"Paroolid ei kattu!"]);
         };
         if (nameExists($conn, $name, $email) != false) {
-            echo 'Error';// Add more inf
+            return Inertia::render('Register/RegisterPage', ["message"=>"Sellise e-postiga kasutaja on juba loodud!"]);
         };
+
+        // Validation checks completed
         createUser($conn, $name, $email, $class, $pwd);
     } else {
-        echo 'Error';// Add more in
+        return Inertia::render('Register/RegisterPage', ["message"=>"Midagi läks valesti!"]);
     }
-    return Inertia::render('Register/RegisterPage');
-})->name("register");
+})->name("registerPost");
 
 Route::get('/dashboard', function (){
     return Inertia::render("Dashboard/DashboardPage");

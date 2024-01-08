@@ -1,40 +1,19 @@
 <?php
 
-function emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result) {
-    
-    if (empty($name) || empty($email) || empty($class) || empty($pwd) || empty($pwdRepeat)) {
-        $result = true;
-    } else {
-        $result = false;
-    };
-    return $result;
+function emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat) {
+    return empty($name) || empty($email) || empty($class) || empty($pwd) || empty($pwdRepeat);
 };
 
-function invalidname($name, $result) {
-    if (!preg_match("/^[a-zA-ZõäöüÕÄÖÜ]*$/", $name)) {
-        $result = true;
-    } else {
-        $result = false;
-    };
-    return $result;
+function invalidname($name) {
+    return !preg_match('/^[A-Za-z\s\-]+$/', $name);
 };
 
-function invalidemail($email, $result) {
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $result = true;
-    } else {
-        $result = false;
-    };
-    return $result;
+function invalidemail($email) {
+    return !filter_var($email, FILTER_VALIDATE_EMAIL);
 };
 
-function  pwdMatch($pwd,  $pwdRepeat, $result) {
-    if ($pwd !== $pwdRepeat) {
-        $result = true;
-    } else {
-        $result = false;
-    };
-    return $result;
+function  pwdNoMatch($pwd,  $pwdRepeat) {
+    return $pwd !== $pwdRepeat;
 };
 
 function  nameExists($conn, $name, $email) {
