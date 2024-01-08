@@ -43,18 +43,16 @@ Route::post('/register', function () {
         $famname = $_POST['famname'];
         $email = $_POST['email'];
         $class = $_POST['class'];
-        $adminpsw = $_POST['adminpsw'];
         $pwd = $_POST['pwd'];
         $pwdRepeat = $_POST['pwdrepeat'];
     
         require_once '../login/database.php';
         require_once '../login/functions.php';
-    
-        if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result, $famname, $adminpsw) != false) {
-            echo 'Error'; // Add more inf
-            return Inertia::render('Register/RegisterPage', ["message"=>"Midagi on puudu!"]);
 
+        if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result, $famname) != false) {
+            return Inertia::render('Register/RegisterPage', ["message"=>"Midagi on puudu!"]);
         };
+
         if (invalidname($name, $result) != false) {
             echo 'Error';// Add more inf
         };
