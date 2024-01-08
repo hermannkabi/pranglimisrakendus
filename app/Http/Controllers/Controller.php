@@ -725,6 +725,7 @@ class GameController extends Controller
                     again3:
                     $x = random_int($add - 1, 1 + $add);
                     $y = random_int($add - 1, 1 + $add);
+                    $tase = 1;
                     if ($count >= 5){
                         $tase = 2;
                     }
@@ -759,17 +760,17 @@ class GameController extends Controller
                     $xold = $x;
                     $yold = $y;
                     if ($mis === 'liitmine'){
-                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                     }
                     if ($mis === 'lahutamine'){
-                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                     }
                     if ($mis === 'mõlemad'){
                         $random  = random_int(1, 2);
                         if ($random == 1){
-                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                         } else {
-                            array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                            array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                         }
                     }
                     $add += $max / 5;
@@ -985,6 +986,8 @@ class GameController extends Controller
                 again4:
                 $x = random_int($add, 1 + $add);
                 $y = random_int($add, 1 + $add);
+
+                $tase = 1;
                 if ($count >= 5){
                     $tase = 2;
                 }
@@ -1018,17 +1021,17 @@ class GameController extends Controller
                 $xold = $x;
                 $yold = $y;
                 if ($mis === 'liitmine'){
-                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                 }
                 if ($mis === 'lahutamine'){
-                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                 }
                 if ($mis === 'mõlemad'){
                     $random  = random_int(1, 2);
                     if ($random == 1){
-                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                     } else {
-                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                     }
                 }
                 $add += $max/5;
@@ -1165,7 +1168,9 @@ class GameController extends Controller
         $count = 0;
         $min = 0;
         $max = 0;
+        $max2 = 0;
         $add = 0;
+        $add2 = 0;
         $xold = 0;
         $yold = 0;
         $check = 0;
@@ -2481,9 +2486,8 @@ class GameController extends Controller
                     };
                     $tase = 4;
                     $max = 10;
-                    $max2 = 20;
                     $x = random_int($add, 1 + $add);
-                    $y = random_int($add2, 2 + $add2);
+                    $y = random_int($add, 1 + $add);
                     $add2 += $max2 / 5;
 
                 }
@@ -2550,8 +2554,8 @@ class GameController extends Controller
         $add2 = 1;
         $count = 0;
         $loendlünk = [];
-        $max = $defaultMaxLiit[$level];
-        $max2 = $defaultMaxKor[$level];
+        $max = $defaultMaxLiit[$tase];
+        $max2 = $defaultMaxKor[$tase];
 
         //Ascending levels
         do{

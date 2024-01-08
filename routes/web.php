@@ -36,6 +36,44 @@ Route::get('/register', function () {
     return Inertia::render('Register/RegisterPage');
 })->name("register");
 
+Route::post('/register', function () {
+    if (isset($_POST['registration'])) {
+
+        $name = $_POST['name'];
+        $famname = $_POST['famname'];
+        $email = $_POST['email'];
+        $class = $_POST['class'];
+        $adminpsw = $_POST['adminpsw'];
+        $pwd = $_POST['pwd'];
+        $pwdRepeat = $_POST['pwdrepeat'];
+    
+        require_once '../login/database.php';
+        require_once '../login/functions.php';
+    
+        if (emptyInputSignup($name, $email, $class, $pwd, $pwdRepeat, $result, $famname, $adminpsw) != false) {
+            echo 'Error'; // Add more inf
+            return Inertia::render('Register/RegisterPage', ["message"=>"Midagi on puudu!"]);
+
+        };
+        if (invalidname($name, $result) != false) {
+            echo 'Error';// Add more inf
+        };
+        if (invalidemail($email, $result) != false) {
+            echo 'Error';// Add more inf
+        };
+        if (pwdMatch($pwd,  $pwdRepeat, $result) !== false) {
+            echo 'Error';// Add more inf
+        };
+        if (nameExists($conn, $name, $email) != false) {
+            echo 'Error';// Add more inf
+        };
+        createUser($conn, $name, $email, $class, $pwd);
+    } else {
+        echo 'Error';// Add more in
+    }
+    return Inertia::render('Register/RegisterPage');
+})->name("register");
+
 Route::get('/dashboard', function (){
     return Inertia::render("Dashboard/DashboardPage");
 })->name("dashboard");

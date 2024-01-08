@@ -188,6 +188,8 @@ export default function GamePage({data, time}){
     // The most important variable of this view
     // The data is a Map with keys of levels and values of arrays including the operation, answer, level etc
     var operations = {data};
+
+    console.log(operations);
     // var operations = {
     //     data:{
     //         1:[
