@@ -3189,6 +3189,31 @@ class GameController extends Controller
 
     public function wrapper($tehe, $tasemed, $tüüp){
         $loend = [];
+        $koik = $tasemed == [1, 2, 3, 4, 5];
+        if ($koik){
+            if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
+
+                if($tehe == "liitlahutamine"){
+                    $tehe = "mõlemad";
+                }
+
+
+                $loend[0] = app('App\Http\Controllers\GameController')->liitlah('all', $tehe, $tüüp);
+            }
+
+            if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
+
+                if($tehe == "korrujagamine"){
+                    $tehe = "mõlemad";
+                }
+
+                $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp);
+            }
+
+            if($tehe == "lünkamine"){
+                $loend[0] = app('App\Http\Controllers\GameController')->lünkamine("all");
+            }
+        }
 
         for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
             if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
