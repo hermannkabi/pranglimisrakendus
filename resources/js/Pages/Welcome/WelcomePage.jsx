@@ -16,7 +16,7 @@ export default function WelcomePage({name, message}){
                     <a href="/register">Register</a>
                 </div>
                 <br /><br />
-                <p style={{fontSize:"0.75rem"}}>05.01.2024.1</p>
+                <p style={{fontSize:"0.75rem"}}>09.01.2024.1</p>
             </div>
         </div>
     )

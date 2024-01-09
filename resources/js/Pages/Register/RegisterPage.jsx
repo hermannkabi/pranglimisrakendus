@@ -63,8 +63,6 @@ export default function RegisterPage({message}){
             e.preventDefault();
             trySendData(e);
         }
-
-
     });
 
     return (

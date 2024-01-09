@@ -13,15 +13,13 @@ class Controller extends BaseController
     use AuthorizesRequests, ValidatesRequests;
 };
 
-class GameController extends Controller
+
+// VAJADUSEL MUUDA NIME
+class BackupGameController extends Controller
 {
-
-    // KONSTANDID:
-
 
     // Esialgu 1206-realine funktsioon
     // Vaatame, kui palju vähemaks võtta annab
-    // Üritame kirjutada võimalikult DRY koodi
 
     //Addition and Substraction
     public function liitlah($level, $mis, $tüüp){
@@ -39,8 +37,6 @@ class GameController extends Controller
         $kontroll = 0;
 
         //Specific levels - Fractions
-
-        // Konstant
         if ($tüüp === "fraction"){
 
             // Funktsionaalseks
@@ -52,8 +48,6 @@ class GameController extends Controller
 
             if ($level === '1'){
                 do{
-
-                    // Kas jääbki kümnendmurd
                     $x = random_int(1, 5) + random_int(1, 9)/10;
                     $y = random_int(1, 5) + random_int(1, 9)/10;
                     if ($x == $y){
@@ -111,7 +105,6 @@ class GameController extends Controller
                     $count ++;
 
                     // Konstandid faili algusesse
-                    // Range võrratus pigem?
                 } while ($count <= 25); 
             }
 
@@ -1262,7 +1255,6 @@ class GameController extends Controller
 
 
             // Ka siin saab (vist) sedasama funktsiooni üsna edukalt kasutada
-            // Ja teisi mõtteid (nt mõlema osas)
             if ($level === '1'){
                 do{
                     $x = random_int(1, 5) + random_int(1, 9)/10;
@@ -1302,8 +1294,8 @@ class GameController extends Controller
                     }
                     $count ++;
                 } while ($count <= 25);
+                
             }
-
             if ($level === '2'){
                 do{
                     $x = random_int(1, 5) + random_int(1, 9)/10;
@@ -1720,10 +1712,6 @@ class GameController extends Controller
             }
             return $array;
         }
-
-
-        // Siin ka naturaal- ja täisarvud valet pidi
-
         //Specific levels - Natural numbers
         if ($tüüp === "natural"){
             if ($level === '1'){
@@ -2183,9 +2171,6 @@ class GameController extends Controller
             }
             return $array;
         }
-
-
-
         //Specific levels - Integers
         if ($level === '1'){
             do{
@@ -2469,10 +2454,9 @@ class GameController extends Controller
                     }
                 }
                 $count ++;
-            } while ($count <= 25);    
+            } while ($count <= 25);
+            
         }
-
-
         if ($level === '!?'){
             do {
                 $x = random_int(31, 100);
@@ -2633,9 +2617,6 @@ class GameController extends Controller
         }
         return $array;
     }
-
-
-
     //lünkamine
     public function lünkamine($level){
 
@@ -2664,7 +2645,6 @@ class GameController extends Controller
             
             $jarjekord = rand(1, 2);
 
-            // Ternary
             if ($jarjekord === 1){
                 $xlünk = "Lünk";
             } else{
@@ -2673,9 +2653,6 @@ class GameController extends Controller
 
 
             $loos = random_int(1, 4);
-
-
-            // Selle võiks kindlasti Mapiks teha
             if ($loos % 2 == 1){
                 if ($level == "1"){
                        
@@ -2731,7 +2708,6 @@ class GameController extends Controller
 
             }
             if ($loos == 1){
-                // Ternary
                 if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
@@ -2740,7 +2716,6 @@ class GameController extends Controller
                 array_push($loendlünk, ["operation"=>$xlünk . '+' . $ylünk . " = " . $x + $y, "answer"=>$x + $y - (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
             }
             if ($loos == 2){
-                // Ternary
                 if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
@@ -2749,13 +2724,11 @@ class GameController extends Controller
                 array_push($loendlünk, ["operation"=>$xlünk . '·' . $ylünk . " = " . $x * $y, "answer"=>$x * $y / (is_string($xlünk) ? $ylünk : $xlünk), "level"=>$level]);
             }
             if ($loos == 3){
-                // Ternary
                 if ($xlünk == 'Lünk'){
                     $ylünk = $y;
                 } else {
                     $xlünk = $x;
                 }
-
                 if ($y > $x){
                     array_push($loendlünk, ["operation"=>$ylünk . '-' . $xlünk . " = " . $y - $x, "answer"=>($ylünk == "Lünk" ? $y : $x), "level"=>$level]);
                 }else{
@@ -2772,8 +2745,6 @@ class GameController extends Controller
                 }
             }
             $count ++;
-
-            // Konstant
         }while ($count < 10);
         return $loendlünk;
     }
@@ -3297,16 +3268,12 @@ class GameController extends Controller
         }  
     }
 
-
-
-
     public function wrapper($tehe, $tasemed, $tüüp){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
         if ($koik){
 
             // Funktsionaalseks (DRY)
-            // See on copy paste ju
             if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
 
                 if($tehe == "liitlahutamine"){
