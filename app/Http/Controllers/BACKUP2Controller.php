@@ -13,7 +13,8 @@ class Controller extends BaseController
     use AuthorizesRequests, ValidatesRequests;
 };
 
-class GameController extends Controller
+//Change if necessary
+class Backup2GameController extends Controller
 {
 
     // KONSTANDID:
@@ -23,8 +24,6 @@ class GameController extends Controller
     const BOTH = "mõlemad";
     const LIITMINE = "liitmine";
     const LAHUTAMINE = "lahutamine";
-    const KORRUTAMINE = "korrutamine";
-    const JAGAMINE = "jagamine";
     //....
 
 
@@ -76,7 +75,7 @@ class GameController extends Controller
             }
 
             if ($uusmis === $opnames[1]){
-                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=>$x + $y. $opsymbs[1] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
 
@@ -1061,21 +1060,6 @@ class GameController extends Controller
             } while ($count <= 25);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Ascending levels
         
         if ($level === 'all'){
@@ -1281,33 +1265,6 @@ class GameController extends Controller
         $yold = 0;
         $check = 0;
         $kontroll = 0;
-
-        $opnames = [GameController::KORRUTAMINE, GameController::JAGAMINE];
-        $opsymbs= ["·", ":"];
-
-        $xvalues = [
-            "1"=>[
-                "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
-            ],
-        ];
-
-        $yvalues = [
-            "1"=>[
-                "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(1, 5);},
-            ],
-        ];
-
-        if($level != "all"){
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-        }
         
         //Specific levels - Fractions
         if ($tüüp === "fraction"){
@@ -2893,17 +2850,12 @@ class GameController extends Controller
                 }
                 $x1 = $x;
                 $y1 = $y;
-
                 $random  = random_int(1, 4);
-
-                // $suva = [
-                //     1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y]}
-                // ]
-
-
                 if ($random == 1 && $võrd != 1){
                     $proov2 = $x * $y;
                     $Garl = '·';
+                    
+                    
                 }
                 if ($random == 2 && $võrd != 2){
                     $proov2 = $x1 * $y1 / $y1;
@@ -2922,21 +2874,12 @@ class GameController extends Controller
                     $Garl = '+';
                    
                 }
-
-
-                // $esimene = $suva[1]($x, $y);
-                // $teine = $suva[1]($x, $y);
-
-                // $vastus = $esimene["ans"] > $teine["ans"] ? "left" : ($esimene["ans"] == $teine["ans"] ? "c" : "right");
-
-                // array_push($array, ["operation1"=>$esimene["op"] "operation2"=>$teine["op"], "answer"=> "left", "level"=>$level]);
-
                 
                 if ($proov1 > $proov2){
                     $random  = random_int(1, 2);
                     if ($random == 1){
                         //liitkorrutamine
-                        array_push($array, ["operation1"=>$suva[1]($x, $y)["op"] ,"operation2"=>$x1 . $Garl . $y1, "answer"=> "left", "level"=>$level]);
+                        array_push($array, ["operation1"=>$x . $Garl . $y, "operation2"=>$x1 . $Garl . $y1, "answer"=> "left", "level"=>$level]);
                     } else {
                         //jagamise ja lahutamise variatsioonid
                         if ($võrd == 3 and $kaspar == 3){

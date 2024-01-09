@@ -36,6 +36,7 @@ Route::get('/register', function () {
     return Inertia::render('Register/RegisterPage');
 })->name("register");
 
+//MySQL database
 Route::post('/register', function () {    
     if (isset($_POST['name'])) {
 

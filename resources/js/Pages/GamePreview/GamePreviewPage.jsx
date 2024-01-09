@@ -94,9 +94,9 @@ export default function GamePreviewPage(){
 
                         <select name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
-                            <option value="naturaal">Naturaalarvud</option>
-                            <option value="täis">Täisarvud</option>
-                            <option value="murd">Murdarvud</option>
+                            <option value="natural">Naturaalarvud</option>
+                            <option value="integer">Täisarvud</option>
+                            <option value="fraction">Murdarvud</option>
                         </select>
 
                         <NumberInput placeholder="Aeg (min)" id="number"/>
