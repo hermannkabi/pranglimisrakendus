@@ -7,9 +7,18 @@ export default function NumberInput(props){
     function increment(){
         if(isNaN(value) || value.length == 0){
             setValue(1);
+
+            if(props.onChange != null){
+                props.onChange(1);
+            }
             return;
         }
         setValue(parseInt(value) + 1);
+
+
+        if(props.onChange != null){
+            props.onChange(parseInt(value) + 1);
+        }
     }
 
     function decrement(){
@@ -18,10 +27,16 @@ export default function NumberInput(props){
             return;
         }
         setValue(parseInt(value) - 1);
+
+
+        if(props.onChange != null){
+            props.onChange(parseInt(value) - 1);
+        }
     }
 
     function handleChange(e){
         setValue(e.target.value);
+
     }
 
     return (

@@ -473,17 +473,17 @@ class GameController extends Controller
                     $xold = $x;
                     $yold = $y;
                     if ($mis === 'liitmine'){
-                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                        array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                     }
                     if ($mis === 'lahutamine'){
-                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                     }
                     if ($mis === 'mõlemad'){
                         $random  = random_int(1, 2);
                         if ($random == 1){
-                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$level]);
+                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                         } else {
-                            array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$level]);
+                            array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                         }
                     }
                     $add += $max/5;
@@ -2702,8 +2702,8 @@ class GameController extends Controller
         $add2 = 1;
         $count = 0;
         $loendlünk = [];
-        $max = $defaultMaxLiit[$tase];
-        $max2 = $defaultMaxKor[$tase];
+        $max = $defaultMaxLiit[$level];
+        $max2 = $defaultMaxKor[$level];
 
         //Ascending levels
         do{
@@ -2716,13 +2716,7 @@ class GameController extends Controller
             
             $jarjekord = rand(1, 2);
 
-            // Ternary
-            if ($jarjekord === 1){
-                $xlünk = "Lünk";
-            } else{
-                $ylünk =  "Lünk";
-            } 
-
+            $jarjekord === 1 ? $xlünk = "Lünk" : $ylünk =  "Lünk";
 
             $loos = random_int(1, 4);
 
@@ -3390,10 +3384,6 @@ class GameController extends Controller
                 }
 
                 $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp);
-            }
-
-            if($tehe == "lünkamine"){
-                $loend[0] = app('App\Http\Controllers\GameController')->lünkamine("all");
             }
         }
 

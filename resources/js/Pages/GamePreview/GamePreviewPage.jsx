@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/preview.css";
 import NumberInput from "@/Components/NumberInput";
 import SizedBox from "@/Components/SizedBox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
 
 export default function GamePreviewPage(){
@@ -11,6 +11,12 @@ export default function GamePreviewPage(){
     const id = urlParams.get('id');
 
     const [message, setMessage] = useState();
+
+    // This function is called once when the page is first loaded
+    useEffect(()=>{
+        // Whether or not the type select is shown
+        showNumberType(true);
+    }, []);
 
     function navigateToGame(){
         setMessage();
@@ -60,6 +66,36 @@ export default function GamePreviewPage(){
 
     }
 
+
+    function getParams(timeVal){
+        return "?id="+$("#game-type").val() + "&time=" + (timeVal != null && Number.isInteger(timeVal) ? timeVal : $("#number").val()) + "&type="+($("#number-type").val() ?? ""); 
+    }
+
+    function onTimeChange(val){
+        window.history.replaceState(null, null, getParams(val));    
+    }
+
+    function showNumberType(instant){
+        // These types are not dependent on this
+        if(["lünkamine", "võrdlemine"].includes($("#game-type").val())){
+            $("#number-type").slideUp(instant ? 0 :100);
+        }else{
+            $("#number-type").slideDown(instant ? 0 :100);
+        }
+    }
+
+    $("#game-type").change(function (){
+        window.history.replaceState(null, null, getParams());   
+        
+        showNumberType(false);
+    });
+
+    $("#number-type").change(function (){
+        window.history.replaceState(null, null, getParams());    
+    });
+
+    $("#number").change(onTimeChange);
+
     return (
         <>
             <Head title="Mängu eelistused" />
@@ -92,14 +128,14 @@ export default function GamePreviewPage(){
                             <option value="sprint">Sprint</option>
                         </select>
 
-                        <select name="" id="number-type">
+                        <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
                             <option value="natural">Naturaalarvud</option>
                             <option value="integer">Täisarvud</option>
                             <option value="fraction">Murdarvud</option>
                         </select>
 
-                        <NumberInput placeholder="Aeg (min)" id="number"/>
+                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? ""}/>
 
                         <SizedBox height={16} />
                         <a alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
@@ -111,6 +147,9 @@ export default function GamePreviewPage(){
                                 <CheckboxTile level={"3"} />
                                 <CheckboxTile level={"4"} />
                                 <CheckboxTile level={"5"} />
+                                {/* <br /><br />
+                                <CheckboxTile level={"★ 1"} levelChar={"A"} />
+                                <CheckboxTile level={"★ 2"} levelChar={"B"} /> */}
                             </div>
                         </div>
                     </section>
