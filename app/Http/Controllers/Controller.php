@@ -255,7 +255,7 @@ class GameController extends Controller
 
         
     
-        //Ascending levels
+        //Ascending levels -- Fraction
         if ($level === 'all' && $tüüp == "fraction"){
             do {
                 again2:
@@ -317,7 +317,7 @@ class GameController extends Controller
 
 
 
-        //Ascending levels
+        //Ascending levels -- Integer
         if ($level === 'all' && $tüüp === 'integer'){
             do {
                 again3:
@@ -398,7 +398,7 @@ class GameController extends Controller
         }
 
 
-        // Ascending levels
+        // Ascending levels -- Natural
         
         if ($level === 'all' && $tüüp ==='natural'){
             do{
