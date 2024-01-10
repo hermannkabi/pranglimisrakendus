@@ -101,6 +101,7 @@ class GameController extends Controller
         $min = 0;
         $max = 10;
         $add = 0;
+        $add2 = 0;
         $xold = 0;
         $yold = 0;
         $check = 0;
@@ -119,37 +120,52 @@ class GameController extends Controller
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];
+                },
             ],
             "3"=>[
                 "natural"=>function (){return random_int(11, 30);},
                 "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-30, -11), random_int(11, 30)];
+                    return $randints[array_rand($randints)];},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(31, 100);},
                 "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){ 
+                    $randints = [random_int(-100, -31), random_int(31, 100)];
+                    return $randints[array_rand($randints)];},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
                 "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){ 
+                    $randints = [random_int(-500, -101), random_int(101, 500)];
+                    return $randints[array_rand($randints)];},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(501, 1000);},
                 "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000, -501), random_int(501, 1000)];
+                    return $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(1000, 10000);},
                 "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){ 
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(10000, 100000);},
                 "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
+                    return $randints[array_rand($randints)];},
             ],
             
         ];
@@ -158,7 +174,57 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
                 "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(1, 5);},
+                "integer"=>function (){return random_int(-5, 5);},
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(6, 10);},
+                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(11, 30);},
+                "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-30, -11), random_int(11, 30)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(31, 100);},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
+                "integer"=>function (){ 
+                    $randints = [random_int(-100, -31), random_int(31, 100)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(101, 500);},
+                "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
+                "integer"=>function (){ 
+                    $randints = [random_int(-500, -101), random_int(101, 500)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(501, 1000);},
+                "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-1000, -501), random_int(501, 1000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(1000, 10000);},
+                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
+                "integer"=>function (){ 
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(10000, 100000);},
+                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
+                    return $randints[array_rand($randints)];},
             ],
         ];
 
@@ -173,74 +239,10 @@ class GameController extends Controller
              return $returnData["array"];
         }
 
-        // Konstant
-        if ($tüüp === "fraction"){
-
-            // Funktsionaalseks
-            // Üldine kuju nt:
-            // generateOp(x, y, xold, yold, ans, op, level){}
-            // x ja y oleksid siis nt funktsioonid??
-
-            // Pmst if laused saaks ka Mapiks teha
-
-            if ($level === '1'){
-                // $returnData = GameController::generateOp(function (){
-                //     return random_int(1, 5) + random_int(1, 9)/10;
-                //  }, function (){
-                //     random_int(1, 5) + random_int(1, 9)/10;
-                //  }, function ($num1, $num2, $mis){
-                //     return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-                //  }, $opnames, $opsymbs, $level);
-
-                //  return $returnData["array"];
-            }
-
-
-            if ($level === '2'){
-                
-                $x = random_int(6, 10) + random_int(1, 9)/10;
-                $y = random_int(6, 10) + random_int(1, 9)/10;
-            }
-            if ($level === '3'){
-                
-                $x = random_int(10, 30) + random_int(1, 9)/10;
-                $y = random_int(11, 29) + random_int(1, 9)/10;
-                    
-            }
-            if ($level === '4'){
         
-                $x = random_int(30, 100) + random_int(1, 9)/10;
-                $y = random_int(29, 99) + random_int(1, 9)/10;
-            }
-            if ($level === '5'){
-                
-                $x = random_int(100, 500) + random_int(1, 99)/100;
-                $y = random_int(101, 499) + random_int(1, 99)/100;
-                       
-            }
-
-            if ($level === '?'){
-                
-                $x = random_int(500, 1000) + random_int(1, 99)/100;
-                $y = random_int(500, 1000) + random_int(1, 99)/100;
-                       
-            }
-
-            if ($level === '!?'){
-
-                $x = random_int(1000, 10000) + random_int(1, 99)/100;
-                $y = random_int(1000, 10000) + random_int(1, 99)/100;
-                    
-            }
-            if ($level === '!'){
-                
-                $x = random_int(10000, 100000) + random_int(1, 999)/1000;
-                $y = random_int(10000, 100000) + random_int(1, 999)/1000;
-                    
-                
-            }
+        
             //Ascending levels
-            if ($level === 'all'){
+            if ($level === 'all' && $tüüp == "fraction"){
                 do {
                     again2:
                     $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
@@ -295,122 +297,43 @@ class GameController extends Controller
                     $add += $max/5;
                     $count ++;
                 }while ($count <= 25);
+
+                return $array;
             }
 
 
-            return $array;
-        }
-
-
-        // Naturaalarvude puhul täpselt samamoodi
-
-        //Specific levels - Whole numbers
-        if ($tüüp === "integer"){
-            if ($level === '1'){
-                $returnData = GameController::generateOp(function (){
-                   return random_int(-5, 5);
-                }, function (){
-                   return random_int(1, 5);
-                }, $mis, function ($num1, $num2, $mis){
-                   return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-                }, $opnames, $opsymbs, $level);
-
-                return $returnData["array"];
-            }
-
-
-            if ($level === '2'){
-
-                $jarl = [random_int(-10, -6), random_int(6, 10)];
-
-                $x = $jarl[array_rand($jarl)];
-                $y = $jarl[array_rand($jarl)];
-                
-                $returnData = GameController::generateOp(function (){
-                    return random_int(-5, 5);
-                    }, function (){
-                    return random_int(1, 5);
-                    }, $mis, function ($num1, $num2, $mis){
-                    return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-                    }, $opnames, $opsymbs, $level);
     
-                    return $returnData["array"];
-                
-                
-            }
-            if ($level === '3'){
-               
-                $x = random_int(-30, -10) or random_int(10, 30);
-                $y = random_int(-30, -10) or random_int(10, 30);
-                    
-                
-            }
-            if ($level === '4'){
-            
-                $x = random_int(-100, -30) or random_int(30, 100);
-                $y = random_int(-100, -30) or random_int(30, 100);
-                    
-                
-            }
-            if ($level === '5'){
-        
-                $x = random_int(-500, -100) or random_int(100,500);
-                $y = random_int(-500, -100) or random_int(100,500);
-                    
-                
-            }
-            if ($level === '?'){
-                
-                $x = random_int(500, 1000) or random_int(-1000,-500);
-                $y = random_int(500, 1000) or random_int(-1000,-500);
-                    
-                
-            }
-            if ($level === '!?'){
-                
-                $x = random_int(1000, 10000) or random_int(-10000,-1000);
-                $y = random_int(1000, 10000) or random_int(-10000,-1000);
-                    
-                
-            }
-            if ($level === '!'){
-
-                $x = random_int(10000, 100000) or random_int(-100000,-10000);
-                $y = random_int(10000, 100000) or random_int(-100000,-10000);
-                    
-                
-            }
-
-
             //Ascending levels
-            if ($level === 'all'){
+            if ($level === 'all' && $tüüp === 'integer'){
                 do {
                     again3:
-                    $x = random_int($add - 1, 1 + $add);
-                    $y = random_int($add - 1, 1 + $add);
+                    $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+                    $x = $jarl[array_rand($jarl)];
+                    $y = $jarl[array_rand($jarl)];
                     $tase = 1;
-
                     if ($count >= 5){
                         $tase = 2;
                     }
                     if ($count >= 10){ 
                         $tase = 3;
                         $max = 30;
-                        $x = random_int($add - 4, 4 + $add);
-                        $y = random_int($add - 4, 4 + $add);
+                        $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
+                        $x = $jarl[array_rand($jarl)];
+                        $y = $jarl[array_rand($jarl)];
                     }
                     if ($count >= 15){ 
                         $tase = 4;
                         $max = 100;
-                        $x = random_int($add - 14, 14 + $add);
-                        $y = random_int($add - 14, 14 + $add);
-    
+                        $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
+                        $x = $jarl[array_rand($jarl)];
+                        $y = $jarl[array_rand($jarl)];
                     }
                     if ($count >= 20){ 
                         $tase = 5;
                         $max = 500;
-                        $x = random_int($add - 80, 80 + $add);
-                        $y = random_int($add - 80, 80 + $add);
+                        $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
+                        $x = $jarl[array_rand($jarl)];
+                        $y = $jarl[array_rand($jarl)];
                     }
                     if ($x == $y){
                         $kontroll ++;
@@ -442,96 +365,18 @@ class GameController extends Controller
                     }
 
                     $add += $max / 5;
+                    $add2 -= $max / 5;
                     $count ++;
                 
                 } while ($count < GameController::OPERATION_COUNT);
-            }
-
-
             return $array;
-        }
 
-
-        // Ikka needsamad mõtted
-        //Specific levels - Natural numbers
-        if ($level === '1'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(1, 5);
-             }, function (){
-                return random_int(1, 5);
-             }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-        } 
-
-        if ($level === '2'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(6, 10);
-             }, function (){
-                return random_int(6, 10);
-             }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-            
-        }
-        if ($level === '3'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(10, 30);
-             }, function (){
-                return random_int(10, 30);
-             }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-            
-        }
-        if ($level === '4'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(31, 100);
-             }, function (){
-                return random_int(31, 100);
-             }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-            
-        }
-        if ($level === '5'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(101, 500);
-             }, function (){
-                return random_int(101, 500);
-             }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
-
-             return $returnData["array"];
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }
 
 
         // Ascending levels
         
-        if ($level === 'all'){
+        if ($level === 'all' && $tüüp ==='natural'){
             do{
                 again4:
                 $x = random_int($add, 1 + $add);
@@ -591,29 +436,7 @@ class GameController extends Controller
                 $add += $max/5;
                 $count ++;
             }while ($count <= 25);
-        }
-
-
-        if ($level === '?'){
-            
-            $x = random_int(500, 1000);
-            $y = random_int(500, 1000);
-                
-            
-        }
-        if ($level === '!?'){
-            
-            $x = random_int(1000, 10000);
-            $y = random_int(1000, 10000);
-                
-            
-        }
-        if ($level === '!'){
-            
-            $x = random_int(10000, 100000);
-            $y = random_int(10000, 100000);
-        }        
-                
+        }            
     }
 
 
@@ -621,22 +444,30 @@ class GameController extends Controller
 
     public function korjag($level, $mis, $tüüp){
         $array = [];
+        $xjarl = [];
+        $yjarl = [];
         $x = 0;
         $y = 0;
         $tase = 1;
         $count = 0;
         $min = 0;
-        $max = 0;
-        $max2 = 0;
-        $add = 0;
-        $add2 = 0;
+        $xmax = 0;
+        $xmax2 = 0;
+        $ymax = 0;
+        $ymax2 = 0;
+        $xadd = 0;
+        $yadd = 0;
+        $xadd2 = 0;
+        $yadd2 = 0;
         $xold = 0;
         $yold = 0;
         $check = 0;
         $kontroll = 0;
 
+
         $opnames = [GameController::KORRUTAMINE, GameController::JAGAMINE];
         $opsymbs= ["·", ":"];
+
 
         $xvalues = [
             "1"=>[
@@ -652,37 +483,51 @@ class GameController extends Controller
             "3"=>[
                 "natural"=>function (){return random_int(2, 10);},
                 "fraction"=>function (){return random_int(1, 10) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -2), random_int(2, 10)];
+                    return $randints[array_rand($randints)];},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(2, 10);},
                 "fraction"=>function (){return random_int(2, 10) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -2), random_int(2, 10)];
+                    return $randints[array_rand($randints)];},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){return random_int(11, 20) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "fraction"=>function (){return random_int(11, 20) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-20, -11), random_int(11, 20)];
+                    return $randints[array_rand($randints)];},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){return random_int(11, 20) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "fraction"=>function (){return random_int(11, 20) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-20, -11), random_int(11, 20)];
+                    return $randints[array_rand($randints)];},
             ],
             "A"=>[
-                "natural"=>function (){return random_int(11, 30);},
-                "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "natural"=>function (){return random_int(21, 30);},
+                "fraction"=>function (){return random_int(21, 30) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-30, -21), random_int(21, 30)];
+                    return $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 999)/1000;},
+                "integer"=>function (){
+                    $randints = [random_int(-100, -31), random_int(31, 100)];
+                    return $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(101, 1000);},
-                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 999)/1000;},
+                "integer"=>function (){
+                    $randints = [random_int(-1000, -101), random_int(101, 1000)];
+                    return $randints[array_rand($randints)];},
             ],
             
         ];
@@ -691,7 +536,64 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
                 "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
-                "integer"=>function (){return random_int(1, 5);},
+                "integer"=>function (){return random_int(-5, 5);},
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(6, 10);},
+                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(6, 10);},
+                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(11, 20);},
+                "fraction"=>function (){return random_int(11, 20) + random_int(1, 9)/10;},
+                "integer"=>function (){
+                    $randints = [random_int(-20, -11), random_int(11, 20)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(101, 500);},
+                "fraction"=>function (){return random_int(101, 500) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-500, -101), random_int(101, 500)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "6"=>[
+                "natural"=>function (){return random_int(21, 30);},
+                "fraction"=>function (){return random_int(21, 30) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-30, -21), random_int(21, 30)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(21, 30);},
+                "fraction"=>function (){return random_int(21, 30) + random_int(1, 99)/100;},
+                "integer"=>function (){
+                    $randints = [random_int(-30, -21), random_int(21, 30)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(31, 100);},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 999)/1000;},
+                "integer"=>function (){
+                    $randints = [random_int(-100, -31), random_int(31, 100)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(31, 100);},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 999)/1000;},
+                "integer"=>function (){
+                    $randints = [random_int(-100, -31), random_int(31, 100)];
+                    return $randints[array_rand($randints)];},
             ],
         ];
 
@@ -703,77 +605,9 @@ class GameController extends Controller
              return $returnData["array"];
         }
         
-        //Specific levels - Fractions
-        if ($tüüp === "fraction"){
-
-
-            // Ka siin saab (vist) sedasama funktsiooni üsna edukalt kasutada
-            // Ja teisi mõtteid (nt mõlema osas)
-            if ($level === '1'){
-                
-                $x = random_int(1, 5) + random_int(1, 9)/10;
-                $y = random_int(1, 5) + random_int(1, 9)/10;
-                    
-            }
-
-            if ($level === '2'){
-                
-                $x = random_int(1, 5) + random_int(1, 9)/10;
-                $y = random_int(6, 10) + random_int(1, 9)/10;
-                    
-                
-            }
-            if ($level === '3'){
-                
-                $x = random_int(6, 10) + random_int(1, 9)/10;
-                $y = random_int(6, 10) + random_int(1, 9)/10;
-                    
-                
-            }
-            if ($level === '4'){
-                
-                $x = random_int(1, 10) + random_int(1, 9)/10;
-                $y = random_int(11, 20) + random_int(1, 9)/10;
-                    
-                
-            }
-            if ($level === '5'){
-               
-                $x = random_int(2, 10) + random_int(1, 99)/100;
-                $y = random_int(101, 500) + random_int(1, 99)/100;
-                    
-                
-            }
-            if ($level === '6'){
-                
-                $x = random_int(11, 20) + random_int(1, 99)/100;
-                $y = random_int(21, 30) + random_int(1, 99)/100;
-                    
-                
-            }
-            if ($level === '?'){
-                
-                $x = random_int(11, 30) + random_int(1, 99)/100;
-                $y = random_int(31, 100) + random_int(1, 99)/100;
-                    
-                
-            }
-            if ($level === '!?'){
-                
-                $x = random_int(31, 100) + random_int(1, 99)/100;
-                $y = random_int(31, 100) + random_int(1, 99)/100;
-                    
-                
-            }
-            if ($level === '!'){
-
-                $x = random_int(101, 1000) + random_int(1, 999)/1000;
-                $y = random_int(101, 1000) + random_int(1, 999)/1000;
-                    
-                
-            }
-            //Ascending levels
-            if ($level === 'all'){
+        
+            //Ascending levels -- Fraction
+            if ($level === 'all' && $tüüp === 'fraction'){
                 do {
                     again1:
                     $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
@@ -863,147 +697,89 @@ class GameController extends Controller
                     $count ++;
                 
                 } while ($count <= 30);
+                return $array;
             }
-            return $array;
-        }
-
-
-    
-
-        //Specific levels - Integers 
-        if ($tüüp === "integer"){
-            if ($level === '1'){
-                
-                $returnData = GameController::generateOp(function (){
-                    return random_int(-5, 5);
-                }, function (){
-                    return random_int(-5, 5);
-                }, $mis, function ($num1, $num2, $mis){
-                    return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-                }, $opnames, $opsymbs, $level);
-
-                return $returnData["array"];
-                
-            }
-            if ($level === '2'){
-                $returnData = GameController::generateOp(function (){
-                    return random_int(-5, 5);
-                }, function (){
-                    return random_int(-5, 5);
-                }, $mis, function ($num1, $num2, $mis){
-                    return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-                }, $opnames, $opsymbs, $level);
-
-                return $returnData["array"];
-            }
-            if ($level === '3'){
-                
-                $x = random_int(-10, -6) or random_int(6, 10);
-                $y = random_int(-10, -6) or random_int(6, 10);
-                    
-                
-            }
-            if ($level === '4'){
-               
-                $x = random_int(-10, -6) or random_int(6, 10);
-                $y = random_int(-20, -11) or random_int(11, 20);
-                    
-                
-            }
-            if ($level === '5'){
-                
-                $x = random_int(2, 10) or random_int(-10,-2);
-                $y = random_int(101, 500) or random_int(-500,-101);
-                    
-                
-            }
-            if ($level === '6'){
-                
-                $x = random_int(11, 20) or random_int(-20,-11);
-                $y = random_int(21, 30) or random_int(-30,-21);
-                    
-                
-            }
-            if ($level === '?'){
-                
-                $x = random_int(11, 30) or random_int(-30,-11);
-                $y = random_int(31, 100) or random_int(-100,-31);
-                    
-                
-            }
-            if ($level === '!?'){
-
-                $x = random_int(31, 100) or random_int(-100,-31);
-                $y = random_int(31, 100) or random_int(-100,-31);
-                    
-                
-            }
-            if ($level === '!'){
-                
-                $x = random_int(101, 1000) or random_int(-1000,-101);
-                $y = random_int(101, 1000) or random_int(-1000,-101);
-                    
-                
-            }
-            //Ascending levels
-            if ($level === 'all'){
+            
+        
+            //Ascending levels -- Integer
+            if ($level === 'all' && $tüüp === 'integer'){
                 do {
                     again:
-                    $x = random_int($add - 1, 1 + $add);
-                    $y = random_int($add - 1, 1 + $add);
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2, $xadd + 2)];
+                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2, $yadd + 2)];
+                    $x = $xjarl[array_rand($xjarl)];
+                    $y = $yjarl[array_rand($yjarl)];
                     if ($count >= 5){
-                        $x = random_int($add - 5, $add - 4);
+                        if ($check != 1){
+                            $xadd = 1;
+                            $yadd = 6;
+                            $check = 1;
+                        };
+                        $ymax = 10;
+                        $xmax = 5;
+                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 1), random_int($xadd - 1, $xadd + 2)];
+                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 1), random_int($yadd - 1, $yadd + 2)];
+                        $x = $xjarl[array_rand($xjarl)];
                         $tase = 2;
                     }
                     if ($count >= 10){ 
                         if ($check != 1){
-                            $add = 6;
+                            $xadd = $yadd = 6;
                             $check = 1;
                         };
                         $tase = 3;
-                        $max = 10;
-                        $x = random_int($add - 1, 1 + $add);
-                        $y = random_int($add - 1, 1 + $add);
+                        $xmax = $ymax = 10;
+                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                        $x = $xjarl[array_rand($xjarl)];
+                        $y = $xjarl[array_rand($xjarl)];
                     }
                     if ($count >= 15){ 
                         if ($check != 1){
-                            $add = 6;
-                            $add2 = 10;
+                            $yadd = 11;
+                            $xadd = 2;
                             $check = 1;
                         };
                         $tase = 4;
-                        $max = 10;
-                        $max2 = 20;
-                        $x = random_int($add - 1, 1 + $add);
-                        $y = random_int($add2 - 2, 2 + $add2);
-                        $add2 += $max2 / 5;
+                        $xmax = 10;
+                        $ymax = 20;
+                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                        $x = $xjarl[array_rand($xjarl)];
+                        $y = $yjarl[array_rand($yjarl)];
+                        
     
                     }
                     if ($count >= 20){ 
                         if ($check != 1){
-                            $add = 2;
-                            $add2 = 101;
+                            $xadd = 2;
+                            $yadd = 101;
                             $check = 1;
                         };
                         $tase = 5;
-                        $max = 10;
-                        $max2 = 500;
-                        $x = random_int($add - 2, 2 + $add);
-                        $y = random_int($add2 - 100, 100 + $add2);
-                        $add2 += $max2 / 5;
+                        $xmax = 10;
+                        $ymax = 500;
+                        
+                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                        $x = $xjarl[array_rand($xjarl)];
+                        $y = $yjarl[array_rand($yjarl)];
+                        
                     }
                     if ($count >= 25){ 
                         if ($check != 1){
-                            $add = 11;
-                            $add2 = 21;
+                            $xadd = 11;
+                            $yadd = 21;
                             $check = 1;
                         };
                         $tase = 6;
-                        $max = 20;
-                        $max2 = 30;
-                        $x = random_int($add - 2, 2 + $add);
-                        $y = random_int($add2 - 2, 2 + $add2);
-                        $add2 += $max2 / 5;
+                        $xmax = 20;
+                        $ymax = 500;
+                        
+                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                        $x = $xjarl[array_rand($xjarl)];
+                        $y = $yjarl[array_rand($yjarl)];
+                        
                     }
                     if ($x == $y){
                         $kontroll ++;
@@ -1031,132 +807,22 @@ class GameController extends Controller
                         }
                     }
                     
-                    $add += $max / 5;
+                    $xadd += $xmax / 5;
+                    $xadd2 = gmp_neg($xadd);
+                    $yadd += $ymax / 5;
+                    $yadd2 = gmp_neg($yadd);
     
                     $count ++;
                 
                 } while ($count <= 30);
+                return $array;
             }
-            return $array;
-        }
-
-
-
-        //Specific levels - Naturals
-        if ($level === '1'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(1, 5);
-            }, function (){
-                return random_int(1, 5);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-                
             
-        }
-        if ($level === '2'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(1, 5);
-            }, function (){
-                return random_int(6, 10);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
+        
 
-            return $returnData["array"];
-            
-        }
-        if ($level === '3'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(6, 10);
-            }, function (){
-                return random_int(6, 10);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
-        if ($level === '4'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(2, 10);
-            }, function (){
-                return random_int(11, 20);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
-        if ($level === '5'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(2, 10);
-            }, function (){
-                return random_int(101, 500);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
-        if ($level === '6'){
-            
-            $returnData = GameController::generateOp(function (){
-                return random_int(11, 20);
-            }, function (){
-                return random_int(21, 30);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
-        if ($level === '?'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(11, 30);
-            }, function (){
-                return random_int(31, 100);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"]; 
-        }
-
-
-        if ($level === '!?'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(31, 1000);
-            }, function (){
-                return random_int(31, 1000);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
-        if ($level === '!'){
-            $returnData = GameController::generateOp(function (){
-                return random_int(101, 1000);
-            }, function (){
-                return random_int(101, 1000);
-            }, $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-            }, $opnames, $opsymbs, $level);
-
-            return $returnData["array"];
-            
-        }
         koik:
-        //Ascending levels
-        if ($level === 'all'){
+        //Ascending levels -- Natural
+        if ($level === 'all' && $tüüp === 'natural'){
             do {
                 $x = random_int($add, 1 + $add);
                 $y = random_int($add, 1 + $add);
@@ -1176,15 +842,15 @@ class GameController extends Controller
                 }
                 if ($count >= 15){ 
                     if ($check != 1){
-                        $add = 6;
-                        $add2 = 10;
+                        $add = 2;
+                        $add2 = 11;
                         $check = 1;
                     };
                     $tase = 4;
                     $max = 10;
-                    $x = random_int($add, 1 + $add);
-                    $y = random_int($add, 1 + $add);
-                    $add2 += $max2 / 5;
+                    $max2 = 20;
+                    $x = random_int($add, 2 + $add);
+                    $y = random_int($add2, 2 + $add2);
 
                 }
                 if ($count >= 20){ 
@@ -1197,8 +863,8 @@ class GameController extends Controller
                     $max = 10;
                     $max2 = 500;
                     $x = random_int($add, 2 + $add);
-                    $y = random_int($add2, 100 + $add2);
-                    $add2 += $max2 / 5;
+                    $y = random_int($add2, 80 + $add2);
+                  
                 }
                 if ($count >= 25){ 
                     if ($check != 1){
@@ -1211,7 +877,7 @@ class GameController extends Controller
                     $max2 = 30;
                     $x = random_int($add, 2 + $add);
                     $y = random_int($add2, 2 + $add2);
-                    $add2 += $max2 / 5;
+                    
                 }
                 if ($mis === 'korrutamine') {
                     array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
@@ -1229,12 +895,14 @@ class GameController extends Controller
                 }
                 
                 $add += $max / 5;
+                $add2 += $max2 / 5;
 
                 $count ++;
             
             } while ($count <= 30);
+            return $array;
         }
-        return $array;
+        
     }
 
 
@@ -1266,7 +934,6 @@ class GameController extends Controller
             $add2 += $max2/10;
             
             $jarjekord = rand(1, 2);
-
             $jarjekord === 1 ? $xlünk = "Lünk" : $ylünk =  "Lünk";
 
             $loos = random_int(1, 4);
