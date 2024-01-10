@@ -232,11 +232,25 @@ class GameController extends Controller
         //Specific levels
 
         if($level != "all"){
+            if ($yvalues < 0){
+                next($opsymbs);
+                $yvalues = gmp_neg($yvalues);
+                if (GameController::LIITMINE == True){
+                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
+                        return $num1 - $num2;
+                     }, $opnames, $opsymbs, $level);
+                } else {
+                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
+                        return $num1 + $num2;
+                     }, $opnames, $opsymbs, $level);
+                }
+            } else {
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
              }, $opnames, $opsymbs, $level);
 
              return $returnData["array"];
+            }
         }
 
         
@@ -358,10 +372,20 @@ class GameController extends Controller
                     }
                     
                     if ($uusmis === 'liitmine'){
+                        if ($y < 0){
+                            $y = gmp_neg($y);
+                            array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
+                        } else {
                         array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
+                        }
                     }
                     if ($uusmis === 'lahutamine'){
+                        if ($y < 0){
+                            $y = gmp_neg($y);
+                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                        } else{
                         array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                        }
                     }
 
                     $add += $max / 5;
@@ -444,8 +468,6 @@ class GameController extends Controller
 
     public function korjag($level, $mis, $tüüp){
         $array = [];
-        $xjarl = [];
-        $yjarl = [];
         $x = 0;
         $y = 0;
         $tase = 1;
