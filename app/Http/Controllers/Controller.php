@@ -181,52 +181,37 @@ class GameController extends Controller
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-10, -6), random_int(6, 10)];
-                    return $randints[array_rand($randints)];
-                },
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(6, 10);},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(11, 30);},
                 "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-30, -11), random_int(11, 30)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(11, 30);},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(31, 100);},
                 "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-100, -31), random_int(31, 100)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(31, 100);},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
                 "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-500, -101), random_int(101, 500)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(101, 500);},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(501, 1000);},
                 "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-1000, -501), random_int(501, 1000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(501, 1000);},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(1000, 10000);},
                 "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(1000, 10000);},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(10000, 100000);},
                 "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(10000, 100000);},
             ],
         ];
 
