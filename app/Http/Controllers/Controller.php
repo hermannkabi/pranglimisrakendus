@@ -234,7 +234,7 @@ class GameController extends Controller
         if($level != "all"){
             if ($yvalues < 0){
                 next($opsymbs);
-                $yvalues = gmp_neg($yvalues);
+                $yvalues = -$yvalues;
                 if (GameController::LIITMINE == True){
                     $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                         return $num1 - $num2;
@@ -373,7 +373,7 @@ class GameController extends Controller
                     
                     if ($uusmis === 'liitmine'){
                         if ($y < 0){
-                            $y = gmp_neg($y);
+                            $y = -$y;
                             array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
                         } else {
                         array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
@@ -381,7 +381,7 @@ class GameController extends Controller
                     }
                     if ($uusmis === 'lahutamine'){
                         if ($y < 0){
-                            $y = gmp_neg($y);
+                            $y = -$y;
                             array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                         } else{
                         array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
@@ -479,6 +479,7 @@ class GameController extends Controller
         $xmax2 = 0;
         $ymax = 0;
         $ymax2 = 0;
+        $add = 0;
         $xadd = 0;
         $yadd = 0;
         $xadd2 = 0;
