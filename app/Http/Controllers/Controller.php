@@ -234,25 +234,11 @@ class GameController extends Controller
         //Specific levels
 
         if($level != "all"){
-            if ($yvalues < 0){
-                next($opsymbs);
-                $yvalues = -$yvalues;
-                if (GameController::LIITMINE == True){
-                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return 2*$num1 - $num2 + 12;
-                     }, $opnames, $opsymbs, $level);
-                } else {
-                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return 2*$num1 + $num2 + 12;
-                     }, $opnames, $opsymbs, $level);
-                }
-            } else {
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
              }, $opnames, $opsymbs, $level);
 
              return $returnData["array"];
-            }
         }
 
         
