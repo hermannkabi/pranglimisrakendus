@@ -605,7 +605,7 @@ export default function GamePage({data, time}){
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
                 {/* Message on top of the page */}
-                {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
 
@@ -613,7 +613,7 @@ export default function GamePage({data, time}){
                 <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
 
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
+                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"16px", padding:"8px"}}>
 
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
 
@@ -626,7 +626,7 @@ export default function GamePage({data, time}){
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
 

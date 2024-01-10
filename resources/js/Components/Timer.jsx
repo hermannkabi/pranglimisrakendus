@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function Timer({onTimerFinished, time, cancel, getCurrentTime}){
+export default function Timer({onTimerFinished, time, cancel, getCurrentTime, visible=true}){
 
     const [timer, setTimer] = useState(time);
 
@@ -34,6 +34,6 @@ export default function Timer({onTimerFinished, time, cancel, getCurrentTime}){
     }
 
 
-    return <p style={{color:"black", fontWeight:'bold', fontSize:'24px'}}>{Math.floor(timer/60) < 10 ? "0" + (Math.floor(timer/60)).toString() : Math.floor(timer/60)}:{(timer - Math.floor(timer/60) * 60) < 10 ? "0" + (timer - Math.floor(timer/60) * 60).toString() : (timer - Math.floor(timer/60) * 60)}</p>;
+    return <p style={{fontWeight:'bold', fontSize:'24px', visibility: visible ? "visible" : "hidden"}}>{Math.floor(timer/60) < 10 ? "0" + (Math.floor(timer/60)).toString() : Math.floor(timer/60)}:{(timer - Math.floor(timer/60) * 60) < 10 ? "0" + (timer - Math.floor(timer/60) * 60).toString() : (timer - Math.floor(timer/60) * 60)}</p>;
      
 }

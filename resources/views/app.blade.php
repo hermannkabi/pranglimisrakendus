@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
 
         <!-- Scripts -->
         @routes
@@ -19,11 +19,18 @@
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" >
         
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
-        <script src="https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js?a4098"></script> 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+        <script src="{{ URL::asset('js/mousetrap.js') }}"></script> 
+        <script src="{{ URL::asset('js/jquery.js') }}"></script> 
+        <script>
+            if(window.localStorage.getItem("app-theme") == "dark"){
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }else{
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        </script>
     </body>
 </html>

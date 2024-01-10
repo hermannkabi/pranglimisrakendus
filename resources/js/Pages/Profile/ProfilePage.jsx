@@ -6,6 +6,37 @@ import NumberInput from "@/Components/NumberInput";
 
 
 export default function ProfilePage(){
+
+    function saveSettings(){
+        var appTheme = $("#app-theme").val();
+        var timerVisibility = $("#timer-visibility").val();
+        var defaultTime = $("#default-time").val();
+
+
+        // App theme
+        if(appTheme != null){
+            window.localStorage.setItem("app-theme", appTheme);
+            document.documentElement.setAttribute('data-theme', appTheme);
+        }
+
+
+        // Timer visibility
+        if(timerVisibility != null){
+            window.localStorage.setItem("timer-visibility", timerVisibility);
+        }
+
+        // Default time
+        if(timerVisibility != null){
+            window.localStorage.setItem("default-time", defaultTime);
+        }
+
+        $("#save-btn").text("Seaded salvestatud!");
+
+        setTimeout(() => {
+            $("#save-btn").text("Salvesta seaded");   
+        }, 1000);
+    }
+
     return (
         <>
             <Head title="Profiil" />
@@ -19,24 +50,24 @@ export default function ProfilePage(){
                     <h3 className="section-header">Seaded</h3>
                 </div>
                 <div className="padding-container settings-padding" style={{display:'flex', flexWrap:"wrap"}}>
-                    <select style={{width:"100%"}} name="app-theme">
-                        <option selected disabled id="default">Rakenduse teema</option>
+                    <select style={{width:"100%"}} name="app-theme" id="app-theme" defaultValue={window.localStorage.getItem("app-theme") ?? "default"}>
+                        <option value="default" selected disabled id="default">Rakenduse teema</option>
                         <option value="light">Hele teema</option>
                         <option value="dark">Tume teema</option>
                     </select>
-                    <select style={{width:"100%"}} name="app-theme">
-                        <option selected disabled id="default">Taimeri nähtavus</option>
-                        <option value="light">Taimer nähtav</option>
-                        <option value="dark">Taimer peidetud</option>
+                    <select style={{width:"100%"}} name="timer-visibility" id="timer-visibility" defaultValue={window.localStorage.getItem("timer-visibility") ?? "default"}> 
+                        <option value="default" selected disabled id="default">Taimeri nähtavus</option>
+                        <option value="visible">Taimer nähtav</option>
+                        <option value="hidden">Taimer peidetud</option>
                     </select>
-                    <select style={{width:"100%"}} name="app-theme">
+                    <select style={{width:"100%"}} name="game-type" id="game-type">
                         <option selected disabled id="default">Vaikimisi mängurežiim</option>
-                        <option value="light">Kiiruspõhine</option>
-                        <option value="dark">Tehete arvu põhine</option>
+                        <option value="speed">Kiiruspõhine</option>
+                        <option value="count">Tehete arvu põhine</option>
                     </select>
-                    <NumberInput placeholder="Vaikimisi aeg (min)"/>
+                    <NumberInput placeholder="Vaikimisi aeg (min)" id="default-time" defaultValue={window.localStorage.getItem("default-time") ?? ""} />
                     <SizedBox height="32px" />
-                    <button style={{flex:'1', marginInline:"4px"}}>Salvesta seaded</button>
+                    <button style={{flex:'1', marginInline:"4px"}} onClick={saveSettings} id="save-btn">Salvesta seaded</button>
                 </div>
             </section>
             <section>
@@ -51,9 +82,8 @@ export default function ProfilePage(){
                     <input type="text" placeholder="E-posti aadress" value="mari.maasikas@koolikool.edu.ee" disabled/>
                     <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Kooli Põhikool" disabled/>
-                        <input type="text" placeholder="Klass" value="9.a klass" style={{minWidth:'100px'}} disabled/>
+                        <input type="text" placeholder="Klass" value="140.a" style={{minWidth:'100px'}} disabled/>
                     </div>
-                    <input type="text" placeholder="Unikaalne kasutaja-ID (UUID)" value={crypto.randomUUID()} disabled />
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>
                         <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("login")}>Logi välja</button>
