@@ -93,6 +93,15 @@ export default function GamePage({data, time}){
     const [operation2, setOperation2] = useState("");
 
 
+    // A function to determine the number of operations to show at this level
+    function numberOfOperations(lastLevel){
+        if(levels.length == 1 || lastLevel){
+            return operations.data[currentLevel.current].length;
+        }else{
+            return Math.min(operationsPerLevel, operations.data[currentLevel.current].length);
+        }
+    }
+
 
     // Gets a new operation of (index + 1) or forcedIndex, if it exists
     // If the level is completed (operationsPerLevel), goes to the next level
@@ -101,9 +110,12 @@ export default function GamePage({data, time}){
         // Ensure game page is visible
         setShowResults(false);
 
+        // If the current level is the last one, do everything from there
+        var isLastLevel = levels[levels.length - 1] == currentLevel.current;
+
         // How many operations to do per level
         // This code may be updated in the future to reflect dynamic levels (when the user is unable to complete a level, they may come back to the previous ones)
-        if((forcedIndex ?? (index + 1)) < (levels.length == 1 ? operations.data[currentLevel.current].length : Math.min(operationsPerLevel, operations.data[currentLevel.current].length))){
+        if((forcedIndex ?? (index + 1)) < numberOfOperations(isLastLevel)){
             
             // Sets state
             setIndex(forcedIndex ?? (index + 1));
