@@ -71,12 +71,14 @@ class GameController extends Controller
                 $uusmis = $opnames[array_rand($opnames)];
             }
 
+            // Liitmine ja korrutamine
             if ($uusmis === $opnames[0]){
-                array_push($array, ["operation"=>$x. $opsymbs[0] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=>$x. $opsymbs[0] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
+            // Lahutamine ja jagamine
             if ($uusmis === $opnames[1]){
-                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
 
@@ -237,11 +239,11 @@ class GameController extends Controller
                 $yvalues = -$yvalues;
                 if (GameController::LIITMINE == True){
                     $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return $num1 - $num2;
+                        return 2*$num1 - $num2 + 12;
                      }, $opnames, $opsymbs, $level);
                 } else {
                     $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return $num1 + $num2;
+                        return 2*$num1 + $num2 + 12;
                      }, $opnames, $opsymbs, $level);
                 }
             } else {
