@@ -832,9 +832,9 @@ class GameController extends Controller
                 }
                 
                 $xadd += $xmax / 5;
-                $xadd2 = gmp_neg($xadd);
+                $xadd2 = -$xadd;
                 $yadd += $ymax / 5;
-                $yadd2 = gmp_neg($yadd);
+                $yadd2 = -$yadd;
 
                 $count ++;
             

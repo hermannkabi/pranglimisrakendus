@@ -56,15 +56,20 @@ export default function RegisterPage({message}){
         $(".register-container").submit();
     }
 
+
+    function nameToEmail(name){
+        return name.toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u").replace("š", "s").replace("ž", "z");
+    }
+
     function generateEmail(){
         const host = "@real.edu.ee";
 
         var email = "";
 
         if($("#name").val().length > 0 && $("#famname").val().length > 0){
-            var emailName = $("#name").val().toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u");
+            var emailName = nameToEmail($("#name").val());
 
-            var emailFamName = $("#famname").val().toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u");
+            var emailFamName = nameToEmail($("#famname").val());
 
             email = emailName + "." + emailFamName + host;
         }
@@ -81,7 +86,7 @@ export default function RegisterPage({message}){
         }
     });
 
-    $("#name, #famname").change(generateEmail);
+    $("#name, #famname").on("input", generateEmail);
 
     return (
         <>
@@ -100,7 +105,7 @@ export default function RegisterPage({message}){
                         <input id="famname" name="famname" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
                     </div>
                     <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
-                    <input pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="class" type="text" placeholder="Klass (nt 140.a)" required/><br />
+                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="class" type="text" placeholder="Klass (nt 140.a)" required/><br />
                     <PasswordInput name="pwd" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
                     <PasswordInput name="pwdrepeat" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
                     <SizedBox height="16px" />
