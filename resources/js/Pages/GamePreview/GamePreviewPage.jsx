@@ -103,7 +103,7 @@ export default function GamePreviewPage(){
 
             <h2>Mängu eelvaade</h2>
             <div className="container">
-                {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
                 <div className="preferences">
@@ -132,10 +132,10 @@ export default function GamePreviewPage(){
                             <option disabled selected>Vali arvuhulk</option>
                             <option value="natural">Naturaalarvud</option>
                             <option value="integer">Täisarvud</option>
-                            <option value="fraction">Murdarvud</option>
+                            <option value="fraction">Kümnendmurrud</option>
                         </select>
 
-                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? ""}/>
+                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? window.localStorage.getItem("default-time") : "")}/>
 
                         <SizedBox height={16} />
                         <a alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>

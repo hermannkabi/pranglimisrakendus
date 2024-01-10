@@ -254,118 +254,118 @@ class GameController extends Controller
         }
 
         
-        
-            //Ascending levels
-            if ($level === 'all' && $tüüp == "fraction"){
-                do {
-                    again2:
-                    $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    if ($count >= 5){
-                        $tase = 2;
-                    }
-                    if ($count >= 10){
-                        $tase = 3;
-                        $max = 30;
-                        $x = random_int($add, 4 + $add) + random_int(1, 9)/10;
-                        $y = random_int($add, 4 + $add) + random_int(1, 9)/10;
-                    }
-                    if ($count >= 15){
-                        $tase = 4;
-                        $max = 100;
-                        $x = random_int($add, 14 + $add) + random_int(1, 99)/100;
-                        $y = random_int($add, 14 + $add) + random_int(1, 99)/100;
-                    }
-                    if ($count >= 20){
-                        $tase = 5;
-                        $max = 500;
-                        $x = random_int($add, 80 + $add) + random_int(1, 99)/100;
-                        $y = random_int($add, 80 + $add) + random_int(1, 99)/100;
-                    }
-                    if ($x == $y){
-                        $kontroll ++;
-                        if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
-                            goto again2;
-                        }
-                    }
-                    if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
-                        // Kas see töötab?
+    
+        //Ascending levels
+        if ($level === 'all' && $tüüp == "fraction"){
+            do {
+                again2:
+                $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                if ($count >= 5){
+                    $tase = 2;
+                }
+                if ($count >= 10){
+                    $tase = 3;
+                    $max = 30;
+                    $x = random_int($add, 4 + $add) + random_int(1, 9)/10;
+                    $y = random_int($add, 4 + $add) + random_int(1, 9)/10;
+                }
+                if ($count >= 15){
+                    $tase = 4;
+                    $max = 100;
+                    $x = random_int($add, 14 + $add) + random_int(1, 99)/100;
+                    $y = random_int($add, 14 + $add) + random_int(1, 99)/100;
+                }
+                if ($count >= 20){
+                    $tase = 5;
+                    $max = 500;
+                    $x = random_int($add, 80 + $add) + random_int(1, 99)/100;
+                    $y = random_int($add, 80 + $add) + random_int(1, 99)/100;
+                }
+                if ($x == $y){
+                    $kontroll ++;
+                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
                         goto again2;
                     }
-                    $xold = $x;
-                    $yold = $y;
-                    if ($mis === 'liitmine'){
+                }
+                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                    // Kas see töötab?
+                    goto again2;
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'liitmine'){
+                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
+                }
+                if ($mis === 'lahutamine'){
+                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
+                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                    } else {
                         array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                     }
-                    if ($mis === 'lahutamine'){
-                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
-                    }
-                    if ($mis === 'mõlemad'){
-                        $random  = random_int(1, 2);
-                        if ($random == 1){
-                            array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
-                        } else {
-                            array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
-                        }
-                    }
-                    $add += $max/5;
-                    $count ++;
-                }while ($count <= 25);
+                }
+                $add += $max/5;
+                $count ++;
+            }while ($count < GameController::OPERATION_COUNT);
 
-                return $array;
-            }
+            return $array;
+        }
 
 
-    
-            //Ascending levels
-            if ($level === 'all' && $tüüp === 'integer'){
-                do {
-                    again3:
-                    $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+
+        //Ascending levels
+        if ($level === 'all' && $tüüp === 'integer'){
+            do {
+                again3:
+                $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+                $x = $jarl[array_rand($jarl)];
+                $y = $jarl[array_rand($jarl)];
+                $tase = 1;
+                if ($count >= 5){
+                    $tase = 2;
+                }
+                if ($count >= 10){ 
+                    $tase = 3;
+                    $max = 30;
+                    $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
-                    $tase = 1;
-                    if ($count >= 5){
-                        $tase = 2;
-                    }
-                    if ($count >= 10){ 
-                        $tase = 3;
-                        $max = 30;
-                        $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
-                        $x = $jarl[array_rand($jarl)];
-                        $y = $jarl[array_rand($jarl)];
-                    }
-                    if ($count >= 15){ 
-                        $tase = 4;
-                        $max = 100;
-                        $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
-                        $x = $jarl[array_rand($jarl)];
-                        $y = $jarl[array_rand($jarl)];
-                    }
-                    if ($count >= 20){ 
-                        $tase = 5;
-                        $max = 500;
-                        $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
-                        $x = $jarl[array_rand($jarl)];
-                        $y = $jarl[array_rand($jarl)];
-                    }
-                    if ($x == $y){
-                        $kontroll ++;
-                        if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
-                            goto again3;
-                        }
-                    }
-
-
-                    if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                }
+                if ($count >= 15){ 
+                    $tase = 4;
+                    $max = 100;
+                    $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
+                    $x = $jarl[array_rand($jarl)];
+                    $y = $jarl[array_rand($jarl)];
+                }
+                if ($count >= 20){ 
+                    $tase = 5;
+                    $max = 500;
+                    $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
+                    $x = $jarl[array_rand($jarl)];
+                    $y = $jarl[array_rand($jarl)];
+                }
+                if ($x == $y){
+                    $kontroll ++;
+                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
                         goto again3;
                     }
+                }
 
 
-                    $xold = $x;
-                    $yold = $y;
+                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                    goto again3;
+                }
 
-                    $uusmis = $mis;
+
+                $xold = $x;
+                $yold = $y;
+
+                $uusmis = $mis;
 
                     if($mis == "mõlemad"){
                         $uusmis = $opnames[array_rand($opnames)];
@@ -388,14 +388,14 @@ class GameController extends Controller
                         }
                     }
 
-                    $add += $max / 5;
-                    $add2 -= $max / 5;
-                    $count ++;
-                
-                } while ($count < GameController::OPERATION_COUNT);
-            return $array;
+                $add += $max / 5;
+                $add2 -= $max / 5;
+                $count ++;
+            
+            } while ($count < GameController::OPERATION_COUNT);
 
-            }
+            return $array;
+        }
 
 
         // Ascending levels
@@ -459,7 +459,9 @@ class GameController extends Controller
                 }
                 $add += $max/5;
                 $count ++;
-            }while ($count <= 25);
+            }while ($count < GameController::OPERATION_COUNT);
+
+            return $array;
         }            
     }
 
@@ -627,218 +629,217 @@ class GameController extends Controller
              return $returnData["array"];
         }
         
-        
-            //Ascending levels -- Fraction
-            if ($level === 'all' && $tüüp === 'fraction'){
-                do {
-                    again1:
+        //Ascending levels -- Fraction
+        if ($level === 'all' && $tüüp === 'fraction'){
+            do {
+                again1:
+                $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                if ($count >= 5){
+                    $x = random_int($add - 5, $add - 4) + random_int(1, 9)/10;
+                    $tase = 2;
+                }
+                if ($count >= 10){ 
+                    if ($check != 1){
+                        $add = 6;
+                        $check = 1;
+                    };
+                    $tase = 3;
+                    $max = 10;
                     $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
                     $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    if ($count >= 5){
-                        $x = random_int($add - 5, $add - 4) + random_int(1, 9)/10;
-                        $tase = 2;
-                    }
-                    if ($count >= 10){ 
-                        if ($check != 1){
-                            $add = 6;
-                            $check = 1;
-                        };
-                        $tase = 3;
-                        $max = 10;
-                        $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                        $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    }
-                    if ($count >= 15){ 
-                        if ($check != 1){
-                            $add = 6;
-                            $add2 = 10;
-                            $check = 1;
-                        };
-                        $tase = 4;
-                        $max = 10;
-                        $max2 = 20;
-                        $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                        $y = random_int($add2, 2 + $add2) + random_int(1, 9)/10;
-                        $add2 += $max2 / 5;
-    
-                    }
-                    if ($count >= 20){ 
-                        if ($check != 1){
-                            $add = 2;
-                            $add2 = 101;
-                            $check = 1;
-                        };
-                        $tase = 5;
-                        $max = 10;
-                        $max2 = 500;
-                        $x = random_int($add, 2 + $add) + random_int(1, 99)/100;
-                        $y = random_int($add2, 100 + $add2) + random_int(1, 99)/100;
-                        $add2 += $max2 / 5;
-                    }
-                    if ($count >= 25){ 
-                        if ($check != 1){
-                            $add = 11;
-                            $add2 = 21;
-                            $check = 1;
-                        };
-                        $tase = 6;
-                        $max = 20;
-                        $max2 = 30;
-                        $x = random_int($add, 2 + $add) + random_int(1, 99)/100;
-                        $y = random_int($add2, 2 + $add2) + random_int(1, 99)/100;
-                        $add2 += $max2 / 5;
-                    }
-                    if ($x == $y){
-                        $kontroll ++;
-                        if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
-                            goto again1;
-                        }
-                    }
-                    if ($x == $xold or $y == $yold){
+                }
+                if ($count >= 15){ 
+                    if ($check != 1){
+                        $add = 6;
+                        $add2 = 10;
+                        $check = 1;
+                    };
+                    $tase = 4;
+                    $max = 10;
+                    $max2 = 20;
+                    $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                    $y = random_int($add2, 2 + $add2) + random_int(1, 9)/10;
+                    $add2 += $max2 / 5;
+
+                }
+                if ($count >= 20){ 
+                    if ($check != 1){
+                        $add = 2;
+                        $add2 = 101;
+                        $check = 1;
+                    };
+                    $tase = 5;
+                    $max = 10;
+                    $max2 = 500;
+                    $x = random_int($add, 2 + $add) + random_int(1, 99)/100;
+                    $y = random_int($add2, 100 + $add2) + random_int(1, 99)/100;
+                    $add2 += $max2 / 5;
+                }
+                if ($count >= 25){ 
+                    if ($check != 1){
+                        $add = 11;
+                        $add2 = 21;
+                        $check = 1;
+                    };
+                    $tase = 6;
+                    $max = 20;
+                    $max2 = 30;
+                    $x = random_int($add, 2 + $add) + random_int(1, 99)/100;
+                    $y = random_int($add2, 2 + $add2) + random_int(1, 99)/100;
+                    $add2 += $max2 / 5;
+                }
+                if ($x == $y){
+                    $kontroll ++;
+                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
                         goto again1;
                     }
-                    $xold = $x;
-                    $yold = $y;
-                    if ($mis === 'korrutamine') {
+                }
+                if ($x == $xold or $y == $yold){
+                    goto again1;
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
                         array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                    }
-                    if ($mis === 'jagamine') {
+                    } else {
                         array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
                     }
-                    if ($mis === 'mõlemad'){
-                        $random  = random_int(1, 2);
-                        if ($random == 1){
-                            array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                        } else {
-                            array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                        }
-                    }
-                    
-                    $add += $max / 5;
-    
-                    $count ++;
+                }
                 
-                } while ($count <= 30);
-                return $array;
-            }
+                $add += $max / 5;
+
+                $count ++;
+            
+            } while ($count <= 30);
+            return $array;
+        }
             
         
-            //Ascending levels -- Integer
-            if ($level === 'all' && $tüüp === 'integer'){
-                do {
-                    again:
-                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2, $xadd + 2)];
-                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2, $yadd + 2)];
+        //Ascending levels -- Integer
+        if ($level === 'all' && $tüüp === 'integer'){
+            do {
+                again:
+                $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2, $xadd + 2)];
+                $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2, $yadd + 2)];
+                $x = $xjarl[array_rand($xjarl)];
+                $y = $yjarl[array_rand($yjarl)];
+                if ($count >= 5){
+                    if ($check != 1){
+                        $xadd = 1;
+                        $yadd = 6;
+                        $check = 1;
+                    };
+                    $ymax = 10;
+                    $xmax = 5;
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 1), random_int($xadd - 1, $xadd + 2)];
+                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 1), random_int($yadd - 1, $yadd + 2)];
+                    $x = $xjarl[array_rand($xjarl)];
+                    $tase = 2;
+                }
+                if ($count >= 10){ 
+                    if ($check != 1){
+                        $xadd = $yadd = 6;
+                        $check = 1;
+                    };
+                    $tase = 3;
+                    $xmax = $ymax = 10;
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                    $x = $xjarl[array_rand($xjarl)];
+                    $y = $xjarl[array_rand($xjarl)];
+                }
+                if ($count >= 15){ 
+                    if ($check != 1){
+                        $yadd = 11;
+                        $xadd = 2;
+                        $check = 1;
+                    };
+                    $tase = 4;
+                    $xmax = 10;
+                    $ymax = 20;
+                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
                     $x = $xjarl[array_rand($xjarl)];
                     $y = $yjarl[array_rand($yjarl)];
-                    if ($count >= 5){
-                        if ($check != 1){
-                            $xadd = 1;
-                            $yadd = 6;
-                            $check = 1;
-                        };
-                        $ymax = 10;
-                        $xmax = 5;
-                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 1), random_int($xadd - 1, $xadd + 2)];
-                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 1), random_int($yadd - 1, $yadd + 2)];
-                        $x = $xjarl[array_rand($xjarl)];
-                        $tase = 2;
-                    }
-                    if ($count >= 10){ 
-                        if ($check != 1){
-                            $xadd = $yadd = 6;
-                            $check = 1;
-                        };
-                        $tase = 3;
-                        $xmax = $ymax = 10;
-                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
-                        $x = $xjarl[array_rand($xjarl)];
-                        $y = $xjarl[array_rand($xjarl)];
-                    }
-                    if ($count >= 15){ 
-                        if ($check != 1){
-                            $yadd = 11;
-                            $xadd = 2;
-                            $check = 1;
-                        };
-                        $tase = 4;
-                        $xmax = 10;
-                        $ymax = 20;
-                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
-                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
-                        $x = $xjarl[array_rand($xjarl)];
-                        $y = $yjarl[array_rand($yjarl)];
-                        
-    
-                    }
-                    if ($count >= 20){ 
-                        if ($check != 1){
-                            $xadd = 2;
-                            $yadd = 101;
-                            $check = 1;
-                        };
-                        $tase = 5;
-                        $xmax = 10;
-                        $ymax = 500;
-                        
-                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
-                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
-                        $x = $xjarl[array_rand($xjarl)];
-                        $y = $yjarl[array_rand($yjarl)];
-                        
-                    }
-                    if ($count >= 25){ 
-                        if ($check != 1){
-                            $xadd = 11;
-                            $yadd = 21;
-                            $check = 1;
-                        };
-                        $tase = 6;
-                        $xmax = 20;
-                        $ymax = 500;
-                        
-                        $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
-                        $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
-                        $x = $xjarl[array_rand($xjarl)];
-                        $y = $yjarl[array_rand($yjarl)];
-                        
-                    }
-                    if ($x == $y){
-                        $kontroll ++;
-                        if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
-                            goto again;
-                        }
-                    }
-                    if ($x == $xold or $y == $yold){
+                    
+
+                }
+                if ($count >= 20){ 
+                    if ($check != 1){
+                        $xadd = 2;
+                        $yadd = 101;
+                        $check = 1;
+                    };
+                    $tase = 5;
+                    $xmax = 10;
+                    $ymax = 500;
+                    
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                    $x = $xjarl[array_rand($xjarl)];
+                    $y = $yjarl[array_rand($yjarl)];
+                    
+                }
+                if ($count >= 25){ 
+                    if ($check != 1){
+                        $xadd = 11;
+                        $yadd = 21;
+                        $check = 1;
+                    };
+                    $tase = 6;
+                    $xmax = 20;
+                    $ymax = 500;
+                    
+                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
+                    $x = $xjarl[array_rand($xjarl)];
+                    $y = $yjarl[array_rand($yjarl)];
+                    
+                }
+                if ($x == $y){
+                    $kontroll ++;
+                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
                         goto again;
                     }
-                    $xold = $x;
-                    $yold = $y;
-                    if ($mis === 'korrutamine') {
+                }
+                if ($x == $xold or $y == $yold){
+                    goto again;
+                }
+                $xold = $x;
+                $yold = $y;
+                if ($mis === 'korrutamine') {
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
+                }
+                if ($mis === 'jagamine') {
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
+                }
+                if ($mis === 'mõlemad'){
+                    $random  = random_int(1, 2);
+                    if ($random == 1){
                         array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                    }
-                    if ($mis === 'jagamine') {
+                    } else {
                         array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
                     }
-                    if ($mis === 'mõlemad'){
-                        $random  = random_int(1, 2);
-                        if ($random == 1){
-                            array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                        } else {
-                            array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                        }
-                    }
-                    
-                    $xadd += $xmax / 5;
-                    $xadd2 = gmp_neg($xadd);
-                    $yadd += $ymax / 5;
-                    $yadd2 = gmp_neg($yadd);
-    
-                    $count ++;
+                }
                 
-                } while ($count <= 30);
-                return $array;
-            }
+                $xadd += $xmax / 5;
+                $xadd2 = gmp_neg($xadd);
+                $yadd += $ymax / 5;
+                $yadd2 = gmp_neg($yadd);
+
+                $count ++;
+            
+            } while ($count <= 30);
+            return $array;
+        }
             
         
 
@@ -922,6 +923,8 @@ class GameController extends Controller
                 $count ++;
             
             } while ($count <= 30);
+
+
             return $array;
         }
         
@@ -1625,34 +1628,33 @@ class GameController extends Controller
 
                 $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp);
             }
-        }
-
-        for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
-            if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
-
-                if($tehe == "liitlahutamine"){
-                    $tehe = "mõlemad";
+        }else{
+            for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
+                if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
+    
+                    if($tehe == "liitlahutamine"){
+                        $tehe = "mõlemad";
+                    }
+    
+    
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe, $tüüp);
                 }
-
-
-                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe, $tüüp);
-            }
-
-            if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
-
-                if($tehe == "korrujagamine"){
-                    $tehe = "mõlemad";
+    
+                if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
+    
+                    if($tehe == "korrujagamine"){
+                        $tehe = "mõlemad";
+                    }
+    
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe, $tüüp);
                 }
-
-                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe, $tüüp);
+    
+                if($tehe == "lünkamine"){
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja]);
+                }
+    
             }
-
-            if($tehe == "lünkamine"){
-                $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja]);
-            }
-
         }
-
         return $loend;
     }
 }

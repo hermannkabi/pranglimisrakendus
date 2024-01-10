@@ -56,6 +56,22 @@ export default function RegisterPage({message}){
         $(".register-container").submit();
     }
 
+    function generateEmail(){
+        const host = "@real.edu.ee";
+
+        var email = "";
+
+        if($("#name").val().length > 0 && $("#famname").val().length > 0){
+            var emailName = $("#name").val().toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u");
+
+            var emailFamName = $("#famname").val().toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u");
+
+            email = emailName + "." + emailFamName + host;
+        }
+
+        $("#email").val(email);
+    }
+
 
     $(".register-container").submit(function (e){
         setLoading(true);
@@ -65,6 +81,8 @@ export default function RegisterPage({message}){
         }
     });
 
+    $("#name, #famname").change(generateEmail);
+
     return (
         <>
 
@@ -72,16 +90,16 @@ export default function RegisterPage({message}){
             <LoginHeader pageName="Loo konto" />
             
             <div className="container">
-                {errorMessage && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {errorMessage && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errorMessage}</p>
                 </div>}
                 <form method="post" action={route("registerPost")}  className="register-container">
                     <input type="hidden" name="_token" value={window.csrfToken} />
                     <div className="register-row">
-                        <input name="name" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
-                        <input name="famname" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
+                        <input id="name" name="name" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
+                        <input id="famname" name="famname" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
                     </div>
-                    <input name="email" type="email" placeholder="E-posti aadress" required/><br />
+                    <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
                     <input pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="class" type="text" placeholder="Klass (nt 140.a)" required/><br />
                     <PasswordInput name="pwd" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
                     <PasswordInput name="pwdrepeat" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>

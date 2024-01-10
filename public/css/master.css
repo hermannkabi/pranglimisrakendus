@@ -1,5 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kanit:wght@400;700&family=Lexend:wght@400;700&family=Lexend+Zetta:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Lexend+Zetta:wght@400;700&display=swap'); */
+@font-face{
+    font-family: "Lexend";
+    font-weight: normal;
+    src: url("fonts/Lexend-Regular.ttf");
+}
 
+@font-face{
+    font-family: "Lexend";
+    font-weight: bold;
+    src: url("fonts/Lexend-Bold.ttf");
+}
+
+@font-face{
+    font-family: "Lexend Zetta";
+    font-weight: normal;
+    src: url("fonts/LexendZetta-Regular.ttf");
+}
+
+@font-face{
+    font-family: "Lexend Zetta";
+    font-weight: bold;
+    src: url("fonts/LexendZetta-Bold.ttf");
+}
 
 @media only screen and (max-width: 1000px){
     section{
@@ -15,12 +37,14 @@ body{
     text-align: center;
     min-width: 250px;
     box-sizing: border-box;
+    background-color: rgb(var(--background-color));
+    transition: background-color 100ms;
 }
 
 section{
     margin: auto;
     padding: 8px;
-    background-color: rgb(var(--primary-btn-color),  0.05);
+    background-color: rgb(var(--section-color),  var(--section-transparency));
     border-radius: 16px;
     margin-block: 8px;
     /* That is going to cause problems */
@@ -143,7 +167,7 @@ button[secondary]:hover > .lds-ring div{
 }
 
 .big-btn:hover{
-    background-color: #243939;
+    background-color: rgb(var(--btn-hover-color));
 }
 
 /* Links */
@@ -183,7 +207,7 @@ a[alone]:hover > .material-icons:not(.no-anim){
 }
 
 a[alone]:hover{
-    color: rgb(34, 45, 44);
+    color: rgb(var(--btn-hover-color));
 }
 
 /* Inputs */
@@ -191,7 +215,7 @@ a[alone]:hover{
 /* Text input */
 
 input, textarea, select{
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(var(--input-color),0.1);
     color: rgb(var(--primary-color));
     color: rgba(0, 0, 0, 0.8);
 
@@ -213,6 +237,7 @@ option{
 
 input{
     height: 24px;
+    color: var(--text-color);
 }
 
 textarea{
@@ -224,6 +249,7 @@ textarea{
 
 select{
     height: 56px;
+    color: var(--text-color);
 }
 
 input:focus, textarea:focus{
@@ -232,7 +258,7 @@ input:focus, textarea:focus{
 
 input:disabled, textarea:disabled{
     opacity: 0.75;
-    color: rgb(0,0,0, 0.5);
+    color: rgb(169,169,169, 0.5);
     cursor: not-allowed;
 }
 
@@ -284,7 +310,8 @@ input[type="checkbox"]:focus{
 select{
     width: 290px;
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    /* background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); */
+    background-image: var(--select-arrow);
     background-repeat: no-repeat;
     background-position: right 0.7rem top 50%;
     background-size: 0.65rem auto;  
@@ -292,6 +319,7 @@ select{
 
 select:after{
     content: "X";
+    color: var(--text-color);
 }
 
 .frac {
@@ -325,7 +353,7 @@ select:after{
     position: absolute;
     z-index: 1000;
     transform: translateY(-64px);
-    transition:transform 400ms ease-in-out;
+    transition:transform 400ms ease-in-out, scale 200ms ease-in-out;
 }
 
 .point-span.red{

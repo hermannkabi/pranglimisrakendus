@@ -93,6 +93,15 @@ export default function GamePage({data, time}){
     const [operation2, setOperation2] = useState("");
 
 
+    // A function to determine the number of operations to show at this level
+    function numberOfOperations(lastLevel){
+        if(levels.length == 1 || lastLevel){
+            return operations.data[currentLevel.current].length;
+        }else{
+            return Math.min(operationsPerLevel, operations.data[currentLevel.current].length);
+        }
+    }
+
 
     // Gets a new operation of (index + 1) or forcedIndex, if it exists
     // If the level is completed (operationsPerLevel), goes to the next level
@@ -101,9 +110,12 @@ export default function GamePage({data, time}){
         // Ensure game page is visible
         setShowResults(false);
 
+        // If the current level is the last one, do everything from there
+        var isLastLevel = levels[levels.length - 1] == currentLevel.current;
+
         // How many operations to do per level
         // This code may be updated in the future to reflect dynamic levels (when the user is unable to complete a level, they may come back to the previous ones)
-        if((forcedIndex ?? (index + 1)) < (levels.length == 1 ? operations.data[currentLevel.current].length : Math.min(operationsPerLevel, operations.data[currentLevel.current].length))){
+        if((forcedIndex ?? (index + 1)) < numberOfOperations(isLastLevel)){
             
             // Sets state
             setIndex(forcedIndex ?? (index + 1));
@@ -605,7 +617,7 @@ export default function GamePage({data, time}){
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
                 {/* Message on top of the page */}
-                {message && <div style={{backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
 
@@ -613,7 +625,7 @@ export default function GamePage({data, time}){
                 <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
 
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(0,0,0, 0.05)", borderRadius:"16px", padding:"8px"}}>
+                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"16px", padding:"8px"}}>
 
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
 
@@ -626,7 +638,7 @@ export default function GamePage({data, time}){
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
 

@@ -34,6 +34,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     // Greetings for 100% accuracy
     const greetingsPerfectAccuracy = ["Sa ei eksi kunagi!", "Eksimatu!", "Imeline!", "Perfektne täpsus!"];
 
+    const greetingsMedPoints = ["Päris hästi!", "Hea mäng!", "Sa oled tubli!", "Hea tulemus!"];
+
     // Greetings for low points
     // If your average points are lower than 100 (minimum level base points), it was probably not your best...
     const greetingsLowPoints = ["Pole hullu!", "Harjutamine teeb meistriks!", "Järgmine kord paremini!", "Tubli, et proovisid!"];
@@ -50,6 +52,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         title = getTitle(greetingsPerfectAccuracy);
     }else if(accuracy >= 90){
         title = getTitle(greetingsHighAccuracy);
+    }else if(accuracy >= 80){
+        title = getTitle(greetingsMedPoints);
     }else if(total*100 > points){
         title = getTitle(greetingsLowPoints);
     }else{
