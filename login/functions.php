@@ -4,8 +4,9 @@ function emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat) {
     return empty($name) || empty($famname) || empty($email) || empty($class) || empty($pwd) || empty($pwdRepeat);
 };
 
-function invalidname($name) {
+function invalidname($name, $famname) {
     return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $name);
+    return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $famname);
 };
 
 function invalidemail($email) {
