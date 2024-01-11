@@ -37,7 +37,7 @@ function  nameExists($conn, $name, $email) {
 };
 
 function  createUser($conn, $name, $famname, $email, $class, $pwd) {
-    $sql = "INSERT INTO users (usersName, usersFamName, usersClass, usersEmail, usersPwd) VALUES (?, ?, ?, ?);";
+    $sql = "INSERT INTO users (usersName, usersFamName, usersClass, usersEmail, usersPwd) VALUES (?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         echo 'Error';
