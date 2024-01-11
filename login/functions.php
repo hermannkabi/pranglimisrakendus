@@ -5,7 +5,7 @@ function emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat) {
 };
 
 function invalidname($name) {
-    return !preg_match('/^[A-Za-z\s\-]+$/', $name);
+    return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $name);
 };
 
 function invalidemail($email) {
