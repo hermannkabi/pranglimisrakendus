@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
 Route::get('/', function () {
-    return Inertia::render('Welcome/WelcomePage');
+    return Inertia::render('Login/LoginPage');
 })->name("welcome");
 
 Route::post("/handleForm", [ExampleFormController::class, "handleForm"])->name("saveItem");
