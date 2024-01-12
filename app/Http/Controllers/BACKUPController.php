@@ -2631,8 +2631,8 @@ class BackupGameController extends Controller
         $add2 = 1;
         $count = 0;
         $loendlünk = [];
-        $max = $defaultMaxLiit[$tase];
-        $max2 = $defaultMaxKor[$tase];
+        $max = $defaultMaxLiit[$level];
+        $max2 = $defaultMaxKor[$level];
 
         //Ascending levels
         do{

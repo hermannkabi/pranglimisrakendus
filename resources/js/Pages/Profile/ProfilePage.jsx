@@ -12,9 +12,16 @@ export default function ProfilePage(){
         var timerVisibility = $("#timer-visibility").val();
         var defaultTime = $("#default-time").val();
 
+        // If any of the settings was changed
+        // Used to show/not show the done icon
+        var changedSomething = false;
+
 
         // App theme
         if(appTheme != null){
+            if(appTheme != window.localStorage.getItem("app-theme")){
+                changedSomething = true;
+            }
             window.localStorage.setItem("app-theme", appTheme);
             document.documentElement.setAttribute('data-theme', appTheme);
         }
@@ -22,19 +29,29 @@ export default function ProfilePage(){
 
         // Timer visibility
         if(timerVisibility != null){
+            if(timerVisibility != window.localStorage.getItem("timer-visibility")){
+                changedSomething = true;
+            }
             window.localStorage.setItem("timer-visibility", timerVisibility);
         }
 
         // Default time
-        if(timerVisibility != null){
+        if(defaultTime != null){
+            if(defaultTime != window.localStorage.getItem("default-time")){
+                changedSomething = true;
+            }
             window.localStorage.setItem("default-time", defaultTime);
         }
 
-        $("#save-btn").text("Seaded salvestatud!");
+        if(changedSomething){
+            $("#save-btn .save-icon").show();
+            $("#save-btn .text").text("");
 
-        setTimeout(() => {
-            $("#save-btn").text("Salvesta seaded");   
-        }, 1000);
+            setTimeout(() => {
+                $("#save-btn .save-icon").hide();   
+                $("#save-btn .text").text("Salvesta seaded");
+            }, 1500);
+        }
     }
 
     return (
@@ -67,7 +84,7 @@ export default function ProfilePage(){
                     </select>
                     <NumberInput placeholder="Vaikimisi aeg (min)" id="default-time" defaultValue={window.localStorage.getItem("default-time") ?? ""} />
                     <SizedBox height="32px" />
-                    <button style={{flex:'1', marginInline:"4px"}} onClick={saveSettings} id="save-btn">Salvesta seaded</button>
+                    <button style={{flex:'1', marginInline:"4px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
                 </div>
             </section>
             <section>

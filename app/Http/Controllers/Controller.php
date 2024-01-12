@@ -71,12 +71,14 @@ class GameController extends Controller
                 $uusmis = $opnames[array_rand($opnames)];
             }
 
+            // Liitmine ja korrutamine
             if ($uusmis === $opnames[0]){
-                array_push($array, ["operation"=>$x. $opsymbs[0] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=>$x. $opsymbs[0] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
+            // Lahutamine ja jagamine
             if ($uusmis === $opnames[1]){
-                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . $y, "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
 
@@ -179,52 +181,37 @@ class GameController extends Controller
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-10, -6), random_int(6, 10)];
-                    return $randints[array_rand($randints)];
-                },
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(6, 10);},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(11, 30);},
                 "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-30, -11), random_int(11, 30)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(11, 30);},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(31, 100);},
                 "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-100, -31), random_int(31, 100)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(31, 100);},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
                 "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-500, -101), random_int(101, 500)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(101, 500);},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(501, 1000);},
                 "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-1000, -501), random_int(501, 1000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(501, 1000);},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(1000, 10000);},
                 "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(1000, 10000);},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(10000, 100000);},
                 "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
-                "integer"=>function (){
-                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
-                    return $randints[array_rand($randints)];},
+                "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(10000, 100000);},
             ],
         ];
 
@@ -232,25 +219,11 @@ class GameController extends Controller
         //Specific levels
 
         if($level != "all"){
-            if ($yvalues < 0){
-                next($opsymbs);
-                $yvalues = gmp_neg($yvalues);
-                if (GameController::LIITMINE == True){
-                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return $num1 - $num2;
-                     }, $opnames, $opsymbs, $level);
-                } else {
-                    $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                        return $num1 + $num2;
-                     }, $opnames, $opsymbs, $level);
-                }
-            } else {
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
              }, $opnames, $opsymbs, $level);
 
              return $returnData["array"];
-            }
         }
 
         
@@ -373,7 +346,7 @@ class GameController extends Controller
                     
                     if ($uusmis === 'liitmine'){
                         if ($y < 0){
-                            $y = gmp_neg($y);
+                            $y = -$y;
                             array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
                         } else {
                         array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
@@ -381,7 +354,7 @@ class GameController extends Controller
                     }
                     if ($uusmis === 'lahutamine'){
                         if ($y < 0){
-                            $y = gmp_neg($y);
+                            $y = -$y;
                             array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                         } else{
                         array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
@@ -479,6 +452,7 @@ class GameController extends Controller
         $xmax2 = 0;
         $ymax = 0;
         $ymax2 = 0;
+        $add = 0;
         $xadd = 0;
         $yadd = 0;
         $xadd2 = 0;
@@ -831,9 +805,9 @@ class GameController extends Controller
                 }
                 
                 $xadd += $xmax / 5;
-                $xadd2 = gmp_neg($xadd);
+                $xadd2 = -$xadd;
                 $yadd += $ymax / 5;
-                $yadd2 = gmp_neg($yadd);
+                $yadd2 = -$yadd;
 
                 $count ++;
             
