@@ -1,13 +1,16 @@
 <?php
 
+//Sigup Functions
 function emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat) {
     return empty($name) || empty($famname) || empty($email) || empty($class) || empty($pwd) || empty($pwdRepeat);
 };
 
-function invalidname($name, $famname) {
+function invalidname($name) {
     return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $name);
-    return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $famname);
 };
+function invalidfamname($famname){
+    return !preg_match('/^[A-Za-zÕÜÖÄõüöäžŽšŠ\s\-]+$/', $famname);
+}
 
 function invalidemail($email) {
     return !filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -53,3 +56,24 @@ function  createUser($conn, $name, $famname, $email, $class, $pwd) {
     echo 'Success';
     exit();
 };
+
+//Login functions
+function emptyLogin($name, $famname, $pwd) {
+    return empty($name) || empty($famname) || empty($pwd);
+};
+
+function loginUser($conn, $name, $famname, $pwd){
+    $nameExists = nameExists($conn, $name, $email);
+
+    if ($nameExists === false){
+        //add more inf
+        exit();
+    }
+
+    $pwdHashed = $nameExists["usersPwd"];
+    $checkPwd = password_verify($pwd, $pwdHashed);
+
+    if ($checkPwd === false) {
+        # code...
+    }
+}
