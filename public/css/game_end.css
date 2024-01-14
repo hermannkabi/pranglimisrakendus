@@ -26,6 +26,11 @@
     .container > section{
         width: 100%;
     }
+
+    .detailed-container{
+        grid-template-columns: repeat(1, 1fr) !important;
+        gap: 4px !important;
+    }
 }
 
 @media only screen and (max-width: 475px){
@@ -99,4 +104,11 @@ section{
     text-decoration: underline line-through;
     text-decoration-thickness: 4px;
 
+}
+
+
+.detailed-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
 }

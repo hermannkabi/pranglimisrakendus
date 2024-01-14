@@ -669,9 +669,9 @@ export default function GamePage({data, time}){
                     <NumberButton content="9" onClick={()=>handleNumberClick(9)} />
                     <NumberButton content="," onClick={()=>handleNumberClick(",")} />
 
-                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="⌫" onClick={handleRemoveClick} />
+                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
-                    <NumberButton backgroundColor="#466362" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="✓" onClick={checkAnswer} />
+                    <NumberButton backgroundColor="#466362" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="check" icon={true} onClick={checkAnswer} />
                 </div>}
 
                {/* Compare type on screen keyboard */}
