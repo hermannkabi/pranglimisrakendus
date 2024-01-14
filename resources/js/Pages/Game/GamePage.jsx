@@ -189,10 +189,11 @@ export default function GamePage({data, time}){
 
     // If data is unusable, show a basic error screen
     if(data == null || data.length <= 0){
+        console.log(data);
         return (
         <>
             <h1>Viga!</h1>
-            <p>{data == null ? "Sellist mängutüüpi ei leitud" : "Tekkis viga!"}</p>
+            <p>{data == null ? "Sellist mängutüüpi ei leitud" : "Data on tühi!"}</p>
         </>)
     }
 
