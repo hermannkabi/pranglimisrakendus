@@ -12,7 +12,7 @@
 */
 
 $app = new Illuminate\Foundation\Application(
-    dirname(__DIR__ . "../public") ?? $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*

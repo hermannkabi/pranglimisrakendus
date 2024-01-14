@@ -359,3 +359,7 @@ select:after{
 .point-span.red{
     color: rgb(var(--red-color));
 }
+
+.frac span{
+    user-select: none;
+}

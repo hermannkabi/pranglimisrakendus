@@ -574,7 +574,7 @@ export default function GamePage({data, time}){
                 var numerator = parseInt(matchList[1]);
                 var denominator = parseInt(matchList[2]);
             
-                ans = ans.replace(match, ' <div class="frac"><span class="'+(fractionState == "up" ? 'bordered' : '')+'">'+numerator+'</span><span class="symbol">/</span><span class="bottom '+(fractionState == "down" ? 'bordered' : '')+'">'+denominator+'</span></div>')
+                ans = ans.replace(match, ' <div class="frac"><span class="top '+(fractionState == "up" ? 'bordered' : '')+'">'+numerator+'</span><span class="symbol">/</span><span class="bottom '+(fractionState == "down" ? 'bordered' : '')+'">'+denominator+'</span></div>')
             });
         }
         
@@ -606,6 +606,10 @@ export default function GamePage({data, time}){
         setTimeElapsed(time - timeLeft);
     }
     
+
+    $(".frac .top, .frac .bottom").click(function (){
+        setFractionState($(this).hasClass("top") ? "up" : "down");
+    });
     
     return !showResults ? (
         <div>
@@ -657,7 +661,7 @@ export default function GamePage({data, time}){
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
                     <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
-                    <NumberButton content={fractionState == "up" ? "⬇" : fractionState == "down" ? "⬆" : "½"} onClick={()=>handleFraction()}/>
+                    <NumberButton content={fractionState == "up" ? "arrow_downward" : fractionState == "down" ? "arrow_upward" : "½"} icon={fractionState == "up" || fractionState == "down"} onClick={()=>handleFraction()}/>
 
                     <NumberButton content="4" onClick={()=>handleNumberClick(4)} />
                     <NumberButton content="5" onClick={()=>handleNumberClick(5)} />
@@ -669,9 +673,9 @@ export default function GamePage({data, time}){
                     <NumberButton content="9" onClick={()=>handleNumberClick(9)} />
                     <NumberButton content="," onClick={()=>handleNumberClick(",")} />
 
-                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="⌫" onClick={handleRemoveClick} />
+                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
-                    <NumberButton backgroundColor="#466362" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="✓" onClick={checkAnswer} />
+                    <NumberButton backgroundColor="#466362" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="check" icon={true} onClick={checkAnswer} />
                 </div>}
 
                {/* Compare type on screen keyboard */}

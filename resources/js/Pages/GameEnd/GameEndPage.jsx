@@ -2,6 +2,7 @@ import Navbar from "@/Components/Navbar";
 import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
+import OperationWidget from "@/Components/OperationWidget";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log}){
@@ -60,17 +61,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         title = getTitle(greetings);
     }
 
-
-    // Returns the correct HTML string for the gap type
-    function gapHtml(op){
-
-        if(!op.isCorrect){
-            return op.operation.replace("Lünk", ` <span class='correct'>`+op.correct+`</span> <span class='underline incorrect'>`+op.answer+`</span> `)
-        }
-
-        return op.operation.replace("Lünk", `<span class='underline correct'>`+op.answer+`</span>`)
-    }
-
     function dateToString(date){
         return (date.getDate() + 1 < 9 ? "0" : "") + date.getDate().toString() + "." + (date.getMonth() + 1 < 9 ? "0" : "") + (date.getMonth() + 1).toString() + "." + date.getFullYear();
     }
@@ -122,18 +112,17 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         {total > 0 && <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Täpne ülevaade</a>}
 
                         {/* Detailed resuls div */}
-                        <div className="ss" hidden>
-                            {log.map(function (op, i){
-                                return (
-                                    <div key={i}>
-
-                                        {op.operation.includes("Lünk") && <h3 style={{color:'gray', marginBottom:"0"}}><span dangerouslySetInnerHTML={{"__html":gapHtml(op)}}></span></h3>}
-                                        {!op.operation.includes("Lünk") && <h3 style={{color:'gray', marginBottom:"0"}}><b>{op.operation} =</b> <span> <span style={{color:op.isCorrect ? "green" : "red", textDecoration:op.isCorrect ? "none" : "line-through", textDecorationThickness:"4px"}}>{op.answer}</span> {!op.isCorrect && <span style={{color:'green'}}>{op.correct}</span>}</span></h3>  }  
-                                    </div>
-                                );
-                            })}
+                        {/* Updated looks from 14.01.2024 */}
+                        <div className="ss" style={{display:"none"}}>
+                            <SizedBox height={16} />
+                            <div className="detailed-container">
+                                {log.map(function (op, i){
+                                    return (
+                                        <OperationWidget op={op} key={i} />
+                                    );
+                                })}
+                            </div>
                         </div>
-
                     </div>
 
                 </section>
