@@ -1109,30 +1109,12 @@ class GameController extends Controller
 
                 $suva = [
                 1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];}
+                2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];}
+                3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];}
+                4=>function($x, $y){return ["op"=> $x + $y. "-" . $y, "ans"=>$x];}
                 ];
 
-
-                if ($random == 1 && $võrd != 1){
-                    $proov2 = $x * $y;
-                    $Garl = '·';
-                }
-                if ($random == 2 && $võrd != 2){
-                    $proov2 = $x1 * $y1 / $y1;
-                    $Garl = ':';
-                    $kaspar = 3;
-                    
-                }
-                if ($random == 3 && $võrd != 3){
-                    $proov2 = $x1 + $y1 - $y1;
-                    $Garl = '-';
-                    $kaspar = 4;
-                   
-                }
-                if ($random == 4 && $võrd != 4) {
-                    $proov2 = $x1 + $y1;
-                    $Garl = '+';
-                   
-                }
+                
 
 
                 // $esimene = $suva[1]($x, $y);

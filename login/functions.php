@@ -75,5 +75,11 @@ function loginUser($conn, $name, $famname, $pwd){
 
     if ($checkPwd === false) {
         # code...
+    } elseif ($checkPwd === true) {
+        session_start();
+        $_SESSION['userid'] = $nameExists["usersId"];
+        $_SESSION['username'] = $nameExists["usersName"];
+        $_SESSION['userfamname'] = $nameExists["usersFamName"];
+        $_SESSION['userclass'] = $nameExists["usersClass"];
     }
 }
