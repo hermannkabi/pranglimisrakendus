@@ -116,12 +116,12 @@ class GameController extends Controller
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1, 5) + 0.5;},
                 "integer"=>function (){return random_int(-5, 5);},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(6, 10) + 0.5;},
                 "integer"=>function (){
                     $randints = [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];
@@ -129,7 +129,7 @@ class GameController extends Controller
             ],
             "3"=>[
                 "natural"=>function (){return random_int(11, 30);},
-                "fraction"=>function (){return random_int(11, 30) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(11, 30) + 0.5;},
                 "integer"=>function (){
                     $randints = [random_int(-30, -11), random_int(11, 30)];
                     return $randints[array_rand($randints)];},
@@ -143,28 +143,28 @@ class GameController extends Controller
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
-                "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(101, 500) + random_int(1, 99)/100;},
                 "integer"=>function (){ 
                     $randints = [random_int(-500, -101), random_int(101, 500)];
                     return $randints[array_rand($randints)];},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(501, 1000);},
-                "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(501, 1000) + random_int(1, 99)/100;},
                 "integer"=>function (){
                     $randints = [random_int(-1000, -501), random_int(501, 1000)];
                     return $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(1000, 10000);},
-                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 99)/100;},
                 "integer"=>function (){ 
                     $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
                     return $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(10000, 100000);},
-                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 999)/1000;},
                 "integer"=>function (){
                     $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
                     return $randints[array_rand($randints)];},
@@ -175,12 +175,12 @@ class GameController extends Controller
         $yvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1, 5);},
                 "integer"=>function (){return random_int(-5, 5);},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(6, 10) + 0.5;},
                 "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(6, 10);},
             ],
             "3"=>[
@@ -195,22 +195,22 @@ class GameController extends Controller
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
-                "fraction"=>function (){return random_int(101, 500) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(101, 500) + random_int(1, 99)/100;},
                 "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(101, 500);},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(501, 1000);},
-                "fraction"=>function (){return random_int(501, 1000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(501, 1000) + random_int(1, 99)/100;},
                 "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(501, 1000);},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(1000, 10000);},
-                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 99)/100;},
                 "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(1000, 10000);},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(10000, 100000);},
-                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 999)/1000;},
                 "integer"=>function (){return (random_int(0, 1) == 1 ? -1 : 1) * random_int(10000, 100000);},
             ],
         ];
@@ -232,9 +232,11 @@ class GameController extends Controller
         if ($level === 'all' && $tüüp == "fraction"){
             do {
                 again2:
-                $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                $x = random_int($add, 1 + $add) + 0.5;
+                $y = random_int($add, 1 + $add);
                 if ($count >= 5){
+                    $x = random_int($add, 1 + $add) + 0.5;
+                    $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
                     $tase = 2;
                 }
                 if ($count >= 10){
@@ -448,11 +450,13 @@ class GameController extends Controller
         $tase = 1;
         $count = 0;
         $min = 0;
+        $max = 0;
         $xmax = 0;
         $xmax2 = 0;
         $ymax = 0;
         $ymax2 = 0;
         $add = 0;
+        $add2 = 0;
         $xadd = 0;
         $yadd = 0;
         $xadd2 = 0;
@@ -470,17 +474,17 @@ class GameController extends Controller
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1, 5)/10;},
                 "integer"=>function (){return random_int(-5, 5);},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(6, 9);},
                 "integer"=>function (){return random_int(-5, 5);},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(2, 10);},
-                "fraction"=>function (){return random_int(1, 10) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1, 5) + 0.5;},
                 "integer"=>function (){
                     $randints = [random_int(-10, -2), random_int(2, 10)];
                     return $randints[array_rand($randints)];},
@@ -494,14 +498,14 @@ class GameController extends Controller
             ],
             "5"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){return random_int(11, 20) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(20, 30) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-20, -11), random_int(11, 20)];
                     return $randints[array_rand($randints)];},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){return random_int(11, 20) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-20, -11), random_int(11, 20)];
                     return $randints[array_rand($randints)];},
@@ -533,12 +537,12 @@ class GameController extends Controller
         $yvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                "fraction"=>function (){return random_int(1, 5) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(1, 5)/10;},
                 "integer"=>function (){return random_int(-5, 5);},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(6, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];
@@ -546,28 +550,28 @@ class GameController extends Controller
             ],
             "3"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){return random_int(6, 10) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(6, 10);},
                 "integer"=>function (){
                     $randints = [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){return random_int(11, 20) + random_int(1, 9)/10;},
+                "fraction"=>function (){return random_int(2, 10);},
                 "integer"=>function (){
                     $randints = [random_int(-20, -11), random_int(11, 20)];
                     return $randints[array_rand($randints)];},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
-                "fraction"=>function (){return random_int(101, 500) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(10, 20) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-500, -101), random_int(101, 500)];
                     return $randints[array_rand($randints)];},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(21, 30);},
-                "fraction"=>function (){return random_int(21, 30) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(21, 30) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-30, -21), random_int(21, 30)];
                     return $randints[array_rand($randints)];},
@@ -607,10 +611,13 @@ class GameController extends Controller
         if ($level === 'all' && $tüüp === 'fraction'){
             do {
                 again1:
-                $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                $x = random_int($add, 1 + $add) + 0.5;
+                $y = random_int($add, 1 + $add);
+                $max = 3;
                 if ($count >= 5){
-                    $x = random_int($add - 5, $add - 4) + random_int(1, 9)/10;
+                    $x = random_int($add, 1 + $add) + 0.5;
+                    $y = random_int($add, 1 + $add);
+                    $max = 5;
                     $tase = 2;
                 }
                 if ($count >= 10){ 
@@ -621,7 +628,7 @@ class GameController extends Controller
                     $tase = 3;
                     $max = 10;
                     $x = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
+                    $y = random_int($add, 1 + $add);
                 }
                 if ($count >= 15){ 
                     if ($check != 1){
