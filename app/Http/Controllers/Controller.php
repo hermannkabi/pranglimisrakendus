@@ -1108,13 +1108,13 @@ class GameController extends Controller
                 $random  = random_int(1, 4);
 
                 $suva = [
-                1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];}
-                2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];}
-                3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];}
+                1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];},
+                2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];},
+                3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];},
                 4=>function($x, $y){return ["op"=> $x + $y. "-" . $y, "ans"=>$x];}
                 ];
 
-                
+
 
 
                 // $esimene = $suva[1]($x, $y);
