@@ -83,7 +83,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
             <div className="container">
                 {/* Greeting */}
                 <h2 style={{marginBottom: 0}}>{title}</h2>
-
                 {/* Stats */}
                 <section>
                     <div className="stat-container">
@@ -97,7 +96,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
                         {lastLevel && <div className="stat-row">
                             <p style={statNameStyle}>VIIMANE TASE</p>
-                            <h3 style={{marginBlock:0}}>{lastLevel ?? "N/A"}</h3>
+                            <h3 style={{marginBlock:0}}>{lastLevel.toString().replace("A", "★ 1").replace("B", "★ 2").replace("C", "★ 3") ?? "N/A"}</h3>
                         </div>}
                         <div className="stat-row">
                             <p style={statNameStyle}>VASTAMISTÄPSUS</p>
