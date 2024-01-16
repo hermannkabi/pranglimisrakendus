@@ -114,13 +114,13 @@ export default function ProfilePage(){
                         </div>
                     </div>
 
-                    <div style={{width:"100%"}}>
+                    {/* <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Vaikimisi mängurežiim</p>
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
                             <RadioChoice icon="tag" text="Tehete arvu põhine" selected={countGameMode} onClick={()=>setCountGameMode(true)} />
                             <RadioChoice icon="speed" text="Kiiruspõhine" selected={!countGameMode} onClick={()=>setCountGameMode(false)} />
                         </div>
-                    </div>
+                    </div> */}
 
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Vaikimisi aeg</p>
