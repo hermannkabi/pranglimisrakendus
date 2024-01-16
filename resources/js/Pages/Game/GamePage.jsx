@@ -22,6 +22,9 @@ export default function GamePage({data, time}){
     const operationsPerLevel = 10;
 
 
+    const showAnimation = window.localStorage.getItem("points-animation") != "off";
+
+
     // STATE
 
     // The answer of the user
@@ -506,12 +509,15 @@ export default function GamePage({data, time}){
                 var basePoints = 100*level - pointsLost;
 
                 // A floating point count animation
-                $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
-                $(".point-span").css("transform", "translateY(0)");
-                setTimeout(() => {
-                    $(".point-span").fadeOut(100);
-                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
-                }, 400);
+                if(showAnimation){
+                    $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
+                    $(".point-span").css("transform", "translateY(0)");
+                    setTimeout(() => {
+                        $(".point-span").fadeOut(100);
+                        $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                    }, 400);
+                }
+                
 
                 // Correct answer stats go here
                 setCorrectCount(correctCount + 1);
@@ -520,12 +526,14 @@ export default function GamePage({data, time}){
             }else{
                 // Decreasing points animation
                 // If points is zero, don't show anything
-                $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
-                $(".point-span").css("transform", "translateY(0)");
-                setTimeout(() => {
-                    $(".point-span").fadeOut(100);
-                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
-                }, 400);
+                if(showAnimation){
+                    $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
+                    $(".point-span").css("transform", "translateY(0)");
+                    setTimeout(() => {
+                        $(".point-span").fadeOut(100);
+                        $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                    }, 400);
+                }
 
                 setPoints(Math.max(0, points - 100));
             }

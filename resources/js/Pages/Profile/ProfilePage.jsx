@@ -13,12 +13,14 @@ export default function ProfilePage(){
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
+    const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
 
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
         var isCountGameMode = window.localStorage.getItem("game-mode") != "speed";
+        var isPointsAnimation = window.localStorage.getItem("points-animation") != "off";
 
         var defaultTime = $("#default-time-val").val();
 
@@ -40,6 +42,12 @@ export default function ProfilePage(){
         if(isTimerVisible != timerVisible){
             changedSomething = true;
             window.localStorage.setItem("timer-visibility", timerVisible ? "visible" : "hidden");
+        }
+
+        // Points animation
+        if(isPointsAnimation != pointsAnimation){
+            changedSomething = true;
+            window.localStorage.setItem("points-animation", pointsAnimation ? "on" : "off");
         }
 
         // Game mode
@@ -95,6 +103,14 @@ export default function ProfilePage(){
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
                             <RadioChoice icon="timer" text="Taimer nähtav" selected={timerVisible} onClick={()=>setTimerVisible(true)} />
                             <RadioChoice icon="timer_off" text="Taimer peidetud" selected={!timerVisible} onClick={()=>setTimerVisible(false)} />
+                        </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Punktianimatsioon</p>
+                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
+                            <RadioChoice icon="visibility" text="Näita" selected={pointsAnimation} onClick={()=>setPointsAnimation(true)} />
+                            <RadioChoice icon="visibility_off" text="Peida" selected={!pointsAnimation} onClick={()=>setPointsAnimation(false)} />
                         </div>
                     </div>
 
