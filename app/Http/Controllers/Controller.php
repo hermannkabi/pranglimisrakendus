@@ -30,7 +30,7 @@ class GameController extends Controller
 
     //Op1 = liitmine, korrutamine
     //Op2 = lahutamine, jagamine
-    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level){
+    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $aeg){
 
         $array = [];
         $check = 0;
@@ -83,7 +83,7 @@ class GameController extends Controller
 
 
             $count ++;
-        } while ($count < GameController::OPERATION_COUNT);
+        } while ($count < GameController::OPERATION_COUNT*$aeg);
 
         return ["array"=>$array];
     }
@@ -94,7 +94,7 @@ class GameController extends Controller
     // Üritame kirjutada võimalikult DRY koodi
 
     //Addition and Substraction
-    public function liitlah($level, $mis, $tüüp){
+    public function liitlah($level, $mis, $tüüp, $aeg){
         $array = [];
         $x = 0;
         $y = 0;
@@ -221,7 +221,7 @@ class GameController extends Controller
         if($level != "all"){
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
+             }, $opnames, $opsymbs, $level, $aeg);
 
              return $returnData["array"];
         }
@@ -1557,7 +1557,7 @@ class GameController extends Controller
                         }
                     }
                     $count ++;
-                } while ($count <= 10);
+                } while ($count < 10);
                 
             }
         }  
@@ -1566,7 +1566,7 @@ class GameController extends Controller
 
 
 
-    public function wrapper($tehe, $tasemed, $tüüp){
+    public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
         if ($koik and $tehe != "lünkamine"){
@@ -1580,7 +1580,7 @@ class GameController extends Controller
                 }
 
 
-                $loend[0] = app('App\Http\Controllers\GameController')->liitlah('all', $tehe, $tüüp);
+                $loend[0] = app('App\Http\Controllers\GameController')->liitlah('all', $tehe, $tüüp, $aeg);
             }
 
             if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
@@ -1594,7 +1594,7 @@ class GameController extends Controller
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){    
