@@ -35,11 +35,18 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     // Greetings for 100% accuracy
     const greetingsPerfectAccuracy = ["Sa ei eksi kunagi!", "Eksimatu!", "Imeline!", "Perfektne täpsus!"];
 
+    // Greetings for 0% accuracy
+    const greetingsZeroAccuracy = ["Nojah siis!", "Enam halvemini ei saagi!", "Käid ikka Reaalis?", "Ikka üsna kehv!"];
+
+
     const greetingsMedPoints = ["Päris hästi!", "Hea mäng!", "Sa oled tubli!", "Hea tulemus!"];
 
     // Greetings for low points
     // If your average points are lower than 100 (minimum level base points), it was probably not your best...
     const greetingsLowPoints = ["Pole hullu!", "Harjutamine teeb meistriks!", "Järgmine kord paremini!", "Tubli, et proovisid!"];
+
+
+
 
     // Get a random title from the list of greetings
     function getTitle(greetingList){
@@ -55,6 +62,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         title = getTitle(greetingsHighAccuracy);
     }else if(accuracy >= 80){
         title = getTitle(greetingsMedPoints);
+    }else if(accuracy == 0){
+        title = getTitle(greetingsZeroAccuracy);
     }else if(total*100 > points){
         title = getTitle(greetingsLowPoints);
     }else{

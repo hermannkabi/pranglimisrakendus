@@ -193,7 +193,6 @@ export default function GamePreviewPage(){
                             <option value="normal">Tavamäng</option>
                             <option value="sprint">Sprint</option>
                         </select>
-
                         <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
                             <option value="natural">Naturaalarvud</option>
@@ -201,7 +200,7 @@ export default function GamePreviewPage(){
                             <option value="fraction">Kümnendmurrud</option>
                         </select>
 
-                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? window.localStorage.getItem("default-time") : "")}/>
+                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
 
                         {levels.length > 0 && <SizedBox height={16} />}
                         <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>

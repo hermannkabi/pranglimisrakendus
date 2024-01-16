@@ -30,7 +30,7 @@ class GameController extends Controller
 
     //Op1 = liitmine, korrutamine
     //Op2 = lahutamine, jagamine
-    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $aeg){
+    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $aeg=1){
 
         $array = [];
         $check = 0;

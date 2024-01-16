@@ -3,14 +3,24 @@ import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import SizedBox from "@/Components/SizedBox";
 import NumberInput from "@/Components/NumberInput";
+import RadioChoice from "@/Components/RadioChoice";
+import { useState } from "react";
+import NumberChoice from "@/Components/NumberChoice";
 
 
 export default function ProfilePage(){
 
+    const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
+    const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
+    const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
+
+
     function saveSettings(){
-        var appTheme = $("#app-theme").val();
-        var timerVisibility = $("#timer-visibility").val();
-        var defaultTime = $("#default-time").val();
+        var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
+        var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
+        var isCountGameMode = window.localStorage.getItem("game-mode") != "speed";
+
+        var defaultTime = $("#default-time-val").val();
 
         // If any of the settings was changed
         // Used to show/not show the done icon
@@ -18,22 +28,27 @@ export default function ProfilePage(){
 
 
         // App theme
-        if(appTheme != null){
-            if(appTheme != window.localStorage.getItem("app-theme")){
-                changedSomething = true;
-            }
-            window.localStorage.setItem("app-theme", appTheme);
-            document.documentElement.setAttribute('data-theme', appTheme);
+        if(lightTheme != isLightTheme){
+            changedSomething = true;
+            window.localStorage.setItem("app-theme", lightTheme ? "light" : "dark");
+            document.documentElement.setAttribute('data-theme', lightTheme ? "light" : "dark");
         }
+
 
 
         // Timer visibility
-        if(timerVisibility != null){
-            if(timerVisibility != window.localStorage.getItem("timer-visibility")){
-                changedSomething = true;
-            }
-            window.localStorage.setItem("timer-visibility", timerVisibility);
+        if(isTimerVisible != timerVisible){
+            changedSomething = true;
+            window.localStorage.setItem("timer-visibility", timerVisible ? "visible" : "hidden");
         }
+
+        // Game mode
+        if(isCountGameMode != countGameMode){
+            changedSomething = true;
+            window.localStorage.setItem("game-mode", countGameMode ? "count" : "speed");
+        }
+
+
 
         // Default time
         if(defaultTime != null){
@@ -67,24 +82,36 @@ export default function ProfilePage(){
                     <h3 className="section-header">Seaded</h3>
                 </div>
                 <div className="padding-container settings-padding" style={{display:'flex', flexWrap:"wrap"}}>
-                    <select style={{width:"100%"}} name="app-theme" id="app-theme" defaultValue={window.localStorage.getItem("app-theme") ?? "default"}>
-                        <option value="default" selected disabled id="default">Rakenduse teema</option>
-                        <option value="light">Hele teema</option>
-                        <option value="dark">Tume teema</option>
-                    </select>
-                    <select style={{width:"100%"}} name="timer-visibility" id="timer-visibility" defaultValue={window.localStorage.getItem("timer-visibility") ?? "default"}> 
-                        <option value="default" selected disabled id="default">Taimeri nähtavus</option>
-                        <option value="visible">Taimer nähtav</option>
-                        <option value="hidden">Taimer peidetud</option>
-                    </select>
-                    <select style={{width:"100%"}} name="game-type" id="game-type">
-                        <option selected disabled id="default">Vaikimisi mängurežiim</option>
-                        <option value="speed">Kiiruspõhine</option>
-                        <option value="count">Tehete arvu põhine</option>
-                    </select>
-                    <NumberInput placeholder="Vaikimisi aeg (min)" id="default-time" defaultValue={window.localStorage.getItem("default-time") ?? ""} />
-                    <SizedBox height="32px" />
-                    <button style={{flex:'1', marginInline:"4px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Rakenduse teema</p>
+                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>                       
+                            <RadioChoice icon="light_mode" text="Hele teema" selected={lightTheme} onClick={()=>setLightTheme(true)} />
+                            <RadioChoice icon="dark_mode" text="Tume teema" selected={!lightTheme} onClick={()=>setLightTheme(false)} />
+                        </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Taimeri nähtavus</p>
+                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
+                            <RadioChoice icon="timer" text="Taimer nähtav" selected={timerVisible} onClick={()=>setTimerVisible(true)} />
+                            <RadioChoice icon="timer_off" text="Taimer peidetud" selected={!timerVisible} onClick={()=>setTimerVisible(false)} />
+                        </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Vaikimisi mängurežiim</p>
+                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
+                            <RadioChoice icon="tag" text="Tehete arvu põhine" selected={countGameMode} onClick={()=>setCountGameMode(true)} />
+                            <RadioChoice icon="speed" text="Kiiruspõhine" selected={!countGameMode} onClick={()=>setCountGameMode(false)} />
+                        </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Vaikimisi aeg</p>
+                        <NumberChoice id="default-time-val" defaultValue={parseInt(window.localStorage.getItem("default-time"))} />
+                    </div>
+                    
+                    <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
                 </div>
             </section>
             <section>
