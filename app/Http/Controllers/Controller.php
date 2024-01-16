@@ -916,7 +916,7 @@ class GameController extends Controller
     //lünkamine
     public function lünkamine($level){
 
-        $defaultMaxLiit = ["1"=>10, "2"=>30, "3"=>100, "4"=>500, "5"=>1000];
+        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000];
         $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000];
 
         $x = 0;
@@ -936,70 +936,41 @@ class GameController extends Controller
             $xlünk = 0;
             $ylünk = 0;
 
-            $add += $max/10;
-            $add2 += $max2/10;
+            // $add += $max/10;
+            // $add2 += $max2/10;
             
             $jarjekord = rand(1, 2);
             $jarjekord === 1 ? $xlünk = "Lünk" : $ylünk =  "Lünk";
 
             $loos = random_int(1, 4);
 
+            $arvud_liitlah = [
+                "1"=>function ($add){return random_int($add, 2 + $add);},
+                "2"=>function ($add){return random_int($add, 9 + $add);},
+                "3"=>function ($add){return random_int($add, 90 + $add);},
+                "4"=>function ($add){return random_int($add, 900 + $add);},
+                "5"=>function ($add){return random_int($add, 9000 + $add);},
+            ];
 
-            // Selle võiks kindlasti Mapiks teha
-            if ($loos % 2 == 1){
-                if ($level == "1"){
-                       
-                    $x = random_int($add, 2 + $add);
-                    $y = random_int($add, 2 + $add); 
-                }
-                if ($level == "2"){
-                    $x = random_int($add, 9 + $add);
-                    $y = random_int($add, 9 + $add);
-                }
-                if ($level == "3"){
-                   
-                    $x = random_int($add, 90 + $add);
-                    $y = random_int($add, 90 + $add);
-                }
-                if ($level == "4"){
-                    
-                    $x = random_int($add, 900 + $add);
-                    $y = random_int($add, 900 + $add);
-                }
-                if ($level == "5"){
-                  
-                    $x = random_int($add, 9000 + $add);
-                    $y = random_int($add, 9000 + $add);
-                }   
-            }
-            if ($loos % 2 == 0){
-                if ($level == "1"){
-                   
-                    $x = random_int($add2, 2 + $add2);
-                    $y = random_int($add2, 2 + $add2);
-                }
-                if ($level == "2"){
-                
-                    $x = random_int($add2, 2 + $add2);
-                    $y = random_int($add2, 2 + $add2);
-                }
-                if ($level == "3"){
-                 
-                    $x = random_int($add2, 8 + $add2);
-                    $y = random_int($add2, 8 + $add2);
-                }
-                if ($level == "4"){
-                
-                    $x = random_int($add2, 90 + $add2);
-                    $y = random_int($add2, 90 + $add2);
-                }
-                if ($level == "5"){
-                   
-                    $x = random_int($add2, 900 + $add2);
-                    $y = random_int($add2, 900 + $add2);
-                }
+            $arvud_korjag_x = [
+                "1"=>function ($add){return random_int($add, 4 + $add);},
+                "2"=>function ($add){return random_int($add, 4 + $add);},
+                "3"=>function ($add){return random_int($add + 5, 9 + $add);},
+                "4"=>function ($add){return random_int($add + 1, 9 + $add);},
+                "5"=>function ($add){return random_int($add + 1, 8 + $add);},
 
-            }
+            ];
+            $arvud_korjag_y = [
+                "1"=>function ($add){return random_int($add, 4 + $add);},
+                "2"=>function ($add){return random_int($add + 5, 9 + $add);},
+                "3"=>function ($add){return random_int($add+ 5, 9 + $add);},
+                "4"=>function ($add){return random_int($add + 10, 19 + $add);},
+                "5"=>function ($add){return random_int($add + 100, 499 + $add);},
+
+            ];
+
+            $x = $loos % 2 == 1 ? $arvud_liitlah[$level]($add) : $arvud_korjag_x[$level]($add2);
+            $y = $loos % 2 == 1 ? $arvud_liitlah[$level]($add) : $arvud_korjag_y[$level]($add2);
             if ($loos == 1){
                 // Ternary
                 if ($xlünk == 'Lünk'){
