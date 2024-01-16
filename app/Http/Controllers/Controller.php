@@ -970,7 +970,7 @@ class GameController extends Controller
                   
                     $x = random_int($add, 9000 + $add);
                     $y = random_int($add, 9000 + $add);
-                }
+                }   
             }
             if ($loos % 2 == 0){
                 if ($level == "1"){
@@ -1593,23 +1593,12 @@ class GameController extends Controller
             }
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
-                if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){
-    
-                    if($tehe == "liitlahutamine"){
-                        $tehe = "mõlemad";
-                    }
-    
-    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe, $tüüp);
+                if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){   
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp);
                 }
     
-                if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){
-    
-                    if($tehe == "korrujagamine"){
-                        $tehe = "mõlemad";
-                    }
-    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe, $tüüp);
+                if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){    
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp);
                 }
     
                 if($tehe == "lünkamine"){
