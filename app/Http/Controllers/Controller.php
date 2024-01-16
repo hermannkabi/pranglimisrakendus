@@ -83,7 +83,7 @@ class GameController extends Controller
 
 
             $count ++;
-        } while ($count < GameController::OPERATION_COUNT*$aeg);
+        } while ($count < GameController::OPERATION_COUNT + (14 * $aeg));
 
         return ["array"=>$array];
     }
@@ -285,7 +285,7 @@ class GameController extends Controller
                 }
                 $add += $max/5;
                 $count ++;
-            }while ($count < GameController::OPERATION_COUNT);
+            }while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
 
             return $array;
         }
@@ -367,7 +367,7 @@ class GameController extends Controller
                 $add2 -= $max / 5;
                 $count ++;
             
-            } while ($count < GameController::OPERATION_COUNT);
+            } while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
 
             return $array;
         }
@@ -434,7 +434,7 @@ class GameController extends Controller
                 }
                 $add += $max/5;
                 $count ++;
-            }while ($count < GameController::OPERATION_COUNT);
+            }while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
 
             return $array;
         }            
@@ -443,7 +443,7 @@ class GameController extends Controller
 
 
 
-    public function korjag($level, $mis, $tüüp){
+    public function korjag($level, $mis, $tüüp, $aeg){
         $array = [];
         $x = 0;
         $y = 0;
@@ -497,7 +497,7 @@ class GameController extends Controller
                     return $randints[array_rand($randints)];},
             ],
             "5"=>[
-                "natural"=>function (){return random_int(11, 20);},
+                "natural"=>function (){return random_int(2, 10);},
                 "fraction"=>function (){return random_int(20, 30) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-20, -11), random_int(11, 20)];
@@ -602,7 +602,7 @@ class GameController extends Controller
         if($level != "all"){
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-             }, $opnames, $opsymbs, $level);
+             }, $opnames, $opsymbs, $level, $aeg);
 
              return $returnData["array"];
         }
@@ -700,7 +700,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30);
+            } while ($count <= 30 + ($aeg * 7));
             return $array;
         }
             
@@ -818,7 +818,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30);
+            } while ($count <= 30 + ($aeg * 7));
             return $array;
         }
             
@@ -903,7 +903,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30);
+            } while ($count <= 30 + ($aeg * 7));
 
 
             return $array;
@@ -914,7 +914,7 @@ class GameController extends Controller
 
 
     //lünkamine
-    public function lünkamine($level){
+    public function lünkamine($level, $aeg){
 
         $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000];
         $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000];
@@ -946,10 +946,13 @@ class GameController extends Controller
 
             $arvud_liitlah = [
                 "1"=>function ($add){return random_int($add, 2 + $add);},
-                "2"=>function ($add){return random_int($add, 9 + $add);},
-                "3"=>function ($add){return random_int($add, 90 + $add);},
-                "4"=>function ($add){return random_int($add, 900 + $add);},
-                "5"=>function ($add){return random_int($add, 9000 + $add);},
+                "2"=>function ($add){return random_int($add + 4, 9 + $add);},
+                "3"=>function ($add){return random_int($add + 9, 29 + $add);},
+                "4"=>function ($add){return random_int($add + 29, 99 + $add);},
+                "5"=>function ($add){return random_int($add + 99, 999 + $add);},
+                "A"=>function ($add){return random_int($add + 999, 9999 + $add);},
+                "B"=>function ($add){return random_int($add + 9999, 99999 + $add);},
+                "C"=>function ($add){return random_int($add + 99999, 999999 + $add);},
             ];
 
             $arvud_korjag_x = [
@@ -958,6 +961,9 @@ class GameController extends Controller
                 "3"=>function ($add){return random_int($add + 5, 9 + $add);},
                 "4"=>function ($add){return random_int($add + 1, 9 + $add);},
                 "5"=>function ($add){return random_int($add + 1, 8 + $add);},
+                "A"=>function ($add){return random_int($add + 20, 29 + $add);},
+                "B"=>function ($add){return random_int($add + 29, 99 + $add);},
+                "C"=>function ($add){return random_int($add + 100, 499 + $add);},
 
             ];
             $arvud_korjag_y = [
@@ -966,6 +972,9 @@ class GameController extends Controller
                 "3"=>function ($add){return random_int($add+ 5, 9 + $add);},
                 "4"=>function ($add){return random_int($add + 10, 19 + $add);},
                 "5"=>function ($add){return random_int($add + 100, 499 + $add);},
+                "A"=>function ($add){return random_int($add + 30, 99 + $add);},
+                "B"=>function ($add){return random_int($add + 99, 499 + $add);},
+                "C"=>function ($add){return random_int($add + 100, 499 + $add);},
 
             ];
 
@@ -1014,12 +1023,11 @@ class GameController extends Controller
             }
             $count ++;
 
-            // Konstant
-        }while ($count < 10);
+        }while ($count < 10 + (4 * $aeg));
         return $loendlünk;
     }
 
-    public function võrdlemine($level, $mis){
+    public function võrdlemine($level, $mis, $aeg){
         $array = [];
         $array2 = [];
         $x = 0;
@@ -1034,6 +1042,7 @@ class GameController extends Controller
         $xjagold = 0;
         $yjagold = 0;
         $check = 0;
+        $kaspar = 0;
         
 
         if ($level === '1'){
@@ -1560,7 +1569,7 @@ class GameController extends Controller
                     $tehe = "mõlemad";
                 }
 
-                $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp);
+                $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp, $aeg);
             }
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
@@ -1569,11 +1578,11 @@ class GameController extends Controller
                 }
     
                 if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "lünkamine"){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja]);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja], $aeg);
                 }
     
             }
