@@ -1569,7 +1569,7 @@ class GameController extends Controller
     public function wrapper($tehe, $tasemed, $tüüp){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        if ($koik){
+        if ($koik and $tehe != "lünkamine"){
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
