@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/preview.css";
 import NumberInput from "@/Components/NumberInput";
 import SizedBox from "@/Components/SizedBox";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
 
 export default function GamePreviewPage(){
@@ -11,12 +11,30 @@ export default function GamePreviewPage(){
     const id = urlParams.get('id');
 
     const [message, setMessage] = useState();
+    const [levels, setLevels] = useState([]);
+    const [extra, setExtra] = useState([]);
+
 
     // This function is called once when the page is first loaded
     useEffect(()=>{
         // Whether or not the type select is shown
         showNumberType(true);
+
+        showLevels();
     }, []);
+
+
+    function getCheckedLevels(){
+        var levels = [];
+
+        $("input[type='checkbox']").each(function (){
+            if($(this).is(":checked")){
+                levels.push($(this).attr("level"));
+            }
+        });
+
+        return levels;
+    }
 
     function navigateToGame(){
         setMessage();
@@ -27,21 +45,16 @@ export default function GamePreviewPage(){
 
         var time = parseInt($("#number").val());
 
-        var levels = [];
+        var levels = getCheckedLevels();
 
-        $("input[type='checkbox']").each(function (){
-            if($(this).is(":checked")){
-                levels.push($(this).attr("level"));
-            }
-        });
-
-        if(levels.length <= 0){
-            setMessage("Palun vali vähemalt üks tase");
+    
+        if(type == "choose"){
+            setMessage("Palun vali harjutusala");
             return;
         }
 
-        if(type == "choose"){
-            setMessage("Palun vali harjutusala");
+        if(levels.length <= 0){
+            setMessage("Palun vali vähemalt üks tase");
             return;
         }
         
@@ -84,10 +97,62 @@ export default function GamePreviewPage(){
         }
     }
 
+    function showLevels(){
+
+        setLevels([]);
+        setExtra([]);
+
+
+        const data = {
+            "liitmine":{
+                "lvls":5,
+                "extra":["A", "B", "C"],
+            },
+            // If the value is a string, go to said key
+            "lahutamine":"liitmine",
+            "liitlahutamine":"liitmine",
+
+            "korrutamine":{
+                "lvls":6,
+                "extra":["A", "B", "C"],
+            },
+            "jagamine":"korrutamine",
+            "korrujagamine":"korrutamine",
+
+            "lünkamine":{
+                "lvls":5,
+                "extra":[],
+            },
+        };
+
+        var type = $("#game-type").val();
+
+        var typeData = data[type];
+
+        var lvls = [];
+        var extras = [];
+
+        if(typeData != null && typeData != undefined){
+            if(typeof typeData === "string"){
+                typeData = data[data[type]];
+            }
+    
+            for(var i = 0; i<typeData.lvls; i++){
+                lvls.push(<CheckboxTile level={i + 1} key={i} />);
+            }
+    
+            extras = typeData.extra.map((val, i) => <CheckboxTile level={"★" + (i + 1)} levelChar={val} key={i} />);
+    
+            setLevels(lvls);
+            setExtra(extras);
+        }
+    }
+
     $("#game-type").change(function (){
         window.history.replaceState(null, null, getParams());   
         
         showNumberType(false);
+        showLevels();
     });
 
     $("#number-type").change(function (){
@@ -95,6 +160,7 @@ export default function GamePreviewPage(){
     });
 
     $("#number").change(onTimeChange);
+
 
     return (
         <>
@@ -122,7 +188,7 @@ export default function GamePreviewPage(){
                             <option value="sega">Segaarvutused</option>
                         </select>
 
-                        <select name="" id="">
+                        <select name="" id="" style={{display:"none"}}>
                             <option disabled selected>Vali mängurežiim</option>
                             <option value="normal">Tavamäng</option>
                             <option value="sprint">Sprint</option>
@@ -137,19 +203,15 @@ export default function GamePreviewPage(){
 
                         <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? window.localStorage.getItem("default-time") : "")}/>
 
-                        <SizedBox height={16} />
-                        <a alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
-                        <SizedBox height={16} />
-                        <div hidden className="more">
-                            <div style={{textAlign:"start"}}>
-                                <CheckboxTile level={"1"} />
-                                <CheckboxTile level={"2"} />
-                                <CheckboxTile level={"3"} />
-                                <CheckboxTile level={"4"} />
-                                <CheckboxTile level={"5"} />
-                                {/* <br /><br />
-                                <CheckboxTile level={"★ 1"} levelChar={"A"} />
-                                <CheckboxTile level={"★ 2"} levelChar={"B"} /> */}
+                        {levels.length > 0 && <SizedBox height={16} />}
+                        <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
+                        {levels.length > 0 && <SizedBox height={16} />}
+                        <div className="more" hidden>
+                            <div style={{textAlign:"start"}} className="lvls">
+                                {levels}
+
+                                {extra.length > 0 && <><br /><br /></>}
+                                {extra}
                             </div>
                         </div>
                     </section>

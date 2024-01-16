@@ -493,10 +493,17 @@ export default function GamePage({data, time}){
 
             if(isCorrect){
 
-                var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000)
+                var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
+
+                var level = operations.data[currentLevel.current][index].level ?? 1;
+
+                if(["A", "B", "C"].includes(level)){
+                    var data = {"A":7, "B":8, "C":9};
+                    level = data[level];
+                }
 
                 // 100 points per level (e.g. level 3 gets 300 points)
-                var basePoints = 100*(operations.data[currentLevel.current][index].level ?? 1) - pointsLost;
+                var basePoints = 100*level - pointsLost;
 
                 // A floating point count animation
                 $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
@@ -636,7 +643,7 @@ export default function GamePage({data, time}){
 
                         {/* Current operation number & level, total points etc. */}
                         <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{level}</span></h2>
+                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2>
                             <span className="point-span">+100</span>
                             <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
                         </div>
