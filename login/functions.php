@@ -62,7 +62,7 @@ function emptyLogin($name, $famname, $pwd) {
     return empty($name) || empty($famname) || empty($pwd);
 };
 
-function loginUser($conn, $name, $famname, $pwd){
+function loginUser($conn, $name, $email, $pwd){
     $nameExists = nameExists($conn, $name, $email);
 
     if ($nameExists === false){

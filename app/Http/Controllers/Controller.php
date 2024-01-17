@@ -912,7 +912,7 @@ class GameController extends Controller
     }
 
 
-
+    
     //lünkamine
     public function lünkamine($level, $aeg){
 
