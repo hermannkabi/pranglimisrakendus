@@ -121,7 +121,7 @@ export default function GamePreviewPage(){
 
             "lünkamine":{
                 "lvls":5,
-                "extra":[],
+                "extra":["A", "B", "C"],
             },
         };
 

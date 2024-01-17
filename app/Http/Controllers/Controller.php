@@ -83,7 +83,7 @@ class GameController extends Controller
 
 
             $count ++;
-        } while ($count < GameController::OPERATION_COUNT + (14 * $aeg));
+        } while ($count < (GameController::OPERATION_COUNT + (14 * $aeg)));
 
         return ["array"=>$array];
     }
@@ -285,7 +285,7 @@ class GameController extends Controller
                 }
                 $add += $max/5;
                 $count ++;
-            }while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
+            }while ($count < GameController::OPERATION_COUNT + ($aeg * 14));
 
             return $array;
         }
@@ -700,7 +700,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30 + ($aeg * 7));
+            } while ($count < GameController::OPERATION_COUNT + ($aeg * 14));
             return $array;
         }
             
@@ -818,7 +818,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30 + ($aeg * 7));
+            } while ($count < 25 + ($aeg * 14));
             return $array;
         }
             
@@ -903,7 +903,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count <= 30 + ($aeg * 7));
+            } while ($count < 25 + ($aeg * 14));
 
 
             return $array;
@@ -916,8 +916,9 @@ class GameController extends Controller
     //lünkamine
     public function lünkamine($level, $aeg){
 
-        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000];
-        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000];
+        // Lisasin A,B,C tasemed, kui tulevikus vaja neid väärtusi kasutada, siis tuleks muuta
+        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>0, "B"=>0, "C"=>0];
+        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000, "A"=>0, "B"=>0, "C"=>0];
 
         $x = 0;
         $y = 0;

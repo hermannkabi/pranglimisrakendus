@@ -12,13 +12,14 @@ export default function OperationWidget({op}){
 
     const resultCircle = {
         backgroundColor: color,
-        borderRadius:"100px",
+        borderRadius:size,
         height: size,
         width: size,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        margin:"4px 8px"
+        margin:"4px 8px",
+        minWidth:"40px",
     };
 
     // Returns the correct HTML string for the gap type
@@ -34,7 +35,7 @@ export default function OperationWidget({op}){
     return (
     <>
         <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", display:"inline-flex", borderRadius:"8px", alignItems:"center", margin:"8px", padding:"8px", paddingRight:"16px"}}>
-            <div style={resultCircle}><span style={{color:"white"}} className="material-icons">{char}</span></div>
+            <div style={resultCircle}><span style={{color:"white", userSelect:"none"}} className="material-icons">{char}</span></div>
             <div style={{textAlign: "left", marginInline:"8px"}}>
                 <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.toString().replaceAll(".", ",")}}></p>
                 {!op.operation.includes("Lünk") && <p style={{marginBlock:"4px", color:color, fontSize:"20px"}}>{op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.toString().replaceAll(".", ",")+")"}</span></p>}

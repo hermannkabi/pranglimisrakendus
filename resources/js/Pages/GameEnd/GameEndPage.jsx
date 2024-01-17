@@ -3,9 +3,15 @@ import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 import OperationWidget from "@/Components/OperationWidget";
+import { useEffect } from "react";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log}){
+
+
+    useEffect(()=>{
+        saveGame();
+    }, []);
 
     // Style of the description of the statistic
     const statNameStyle = {color:'gray', marginBlock: "0"};
@@ -36,7 +42,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     const greetingsPerfectAccuracy = ["Sa ei eksi kunagi!", "Eksimatu!", "Imeline!", "Perfektne täpsus!"];
 
     // Greetings for 0% accuracy
-    const greetingsZeroAccuracy = ["Nojah siis!", "Enam halvemini ei saagi!", "Käid ikka Reaalis?", "Ikka üsna kehv!"];
+    const greetingsZeroAccuracy = ["Nojah siis!", "Enam halvemini ei saagi!", "Käid ikka Reaalis?", "Ikka üsna kehv!", ":("];
 
 
     const greetingsMedPoints = ["Päris hästi!", "Hea mäng!", "Sa oled tubli!", "Hea tulemus!"];
@@ -75,10 +81,10 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     }
     
     function saveGame(){
+        // Only save such games that at least tried one operation
+        if(total <= 0) return;
 
         window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
-
-        window.location.href = route("dashboard");
     }
 
     return (
@@ -139,7 +145,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 <section>
                     <div className="btn-container">
                         <button onClick={()=>location.reload()} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
-                        <button onClick={saveGame} style={{flex:'1'}}>Edasi</button>
+                        <button onClick={()=>window.location.href = route("dashboard")} style={{flex:'1'}}>Edasi</button>
                     </div>
                 </section>
             </div>
