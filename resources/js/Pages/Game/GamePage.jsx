@@ -55,6 +55,9 @@ export default function GamePage({data, time}){
 
     // Whether the game page is visible, or the results page
     const [showResults, setShowResults] = useState(false);
+
+    // Some operations become pointless with fractions enabled (such as division)
+    const [fractionAllowed, setFractionAllowed] = useState(true);
     
 
     // MOUSETRAP KEY BINDINGS
@@ -164,6 +167,10 @@ export default function GamePage({data, time}){
             // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
             setDtStartedLast(Date.now())
+
+            // Check if the operation contains the multiply and divide chars
+            // If it does, we disable entering fractions
+            setFractionAllowed(!(operationString.includes("·") || operationString.includes(":")))
         }else{
             // The current level has ended
 
@@ -399,6 +406,7 @@ export default function GamePage({data, time}){
 
     // Called when the fraction button is clicked
     function handleFraction(){
+        if(!fractionAllowed) return;
         if(answer.includes(",")){
             return;
         }
@@ -501,7 +509,7 @@ export default function GamePage({data, time}){
                 var level = operations.data[currentLevel.current][index].level ?? 1;
 
                 if(["A", "B", "C"].includes(level)){
-                    var data = {"A":7, "B":8, "C":9};
+                    var data = {"A":10, "B":12, "C":14};
                     level = data[level];
                 }
 
@@ -677,7 +685,7 @@ export default function GamePage({data, time}){
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
                     <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
-                    <NumberButton content={fractionState == "up" ? "arrow_downward" : fractionState == "down" ? "arrow_upward" : "½"} icon={fractionState == "up" || fractionState == "down"} onClick={()=>handleFraction()}/>
+                    <NumberButton disabled={!fractionAllowed} content={fractionState == "up" ? "arrow_downward" : fractionState == "down" ? "arrow_upward" : "½"} icon={fractionState == "up" || fractionState == "down"} onClick={()=>handleFraction()}/>
 
                     <NumberButton content="4" onClick={()=>handleNumberClick(4)} />
                     <NumberButton content="5" onClick={()=>handleNumberClick(5)} />
