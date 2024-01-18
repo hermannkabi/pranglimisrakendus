@@ -454,31 +454,19 @@ export default function GamePage({data, time}){
             "c":"="
         };
 
-        setTotalAnsCount(totalAnsCount + 1);
-
-        if(isCorrect){
-            setCorrectCount(correctCount + 1);
-            setLastLevel(1);
-            setPoints(points => points + 100);            
-        }
-
-        // Add data to the list of operations that have been answered
-        operationLog.current.push({
-            "operation":operations.data[currentLevel.current][index].operation1 + "_" + operations.data[currentLevel.current][index].operation2,
+        onAnswer(isCorrect, {
+            "operation":operations.data[currentLevel.current][index].operation1 + " %SYMB% " + operations.data[currentLevel.current][index].operation2,
             "correct":symbs[operations.data[currentLevel.current][index].answer],
             "answer":symbs[answered],
             "isCorrect":isCorrect
         });
-
-
-        // Get a new operation and set the default answer to it
-        setOperationCount(operation => operation + 1);
-        setAnswer("");
-        getNewOperation();
     }
 
 
     // Checks if the answer is correct
+    // Note: This function checks the answer to questions that have a numeric one
+    // For other types (e.g. compare), we use custom functions
+    // Therefore, things that ALL operation checkings need (dynamic points, animations etc) are done in another function
     function checkAnswer(forceTrue){
         if(!timeOver){
 
@@ -493,9 +481,6 @@ export default function GamePage({data, time}){
 
             // Remove the fraction so that when the next operation appears, a fraction is not shown by default
             setFractionState("off");
-
-            // Total answer count is increased
-            setTotalAnsCount(totalAnsCount + 1);
 
             // Handle fraction
             var regex = /\((\d+)\/(\d+)\)/;
@@ -521,67 +506,79 @@ export default function GamePage({data, time}){
             // Is the answer correct
             var isCorrect = parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2));
 
-            if(isCorrect){
-
-                var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
-
-                var level = operations.data[currentLevel.current][index].level ?? 1;
-
-                if(["A", "B", "C"].includes(level)){
-                    var data = {"A":10, "B":12, "C":14};
-                    level = data[level];
-                }
-
-                // 100 points per level (e.g. level 3 gets 300 points)
-                var basePoints = 100*level - pointsLost;
-
-                // A floating point count animation
-                if(showAnimation){
-                    $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
-                    $(".point-span").css("transform", "translateY(0)");
-                    setTimeout(() => {
-                        $(".point-span").fadeOut(100);
-                        $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
-                    }, 400);
-                }
-                
-
-                // Correct answer stats go here
-                setCorrectCount(correctCount + 1);
-                setLastLevel(operations.data[currentLevel.current][index].level);
-                setPoints(points => points + basePoints);
-            }else{
-                // Decreasing points animation
-                // If points is zero, don't show anything
-                if(showAnimation){
-                    $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
-                    $(".point-span").css("transform", "translateY(0)");
-                    setTimeout(() => {
-                        $(".point-span").fadeOut(100);
-                        $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
-                    }, 400);
-                }
-
-                setPoints(Math.max(0, points - 100));
-            }
-
-            // Add data to the list of operations that have been answered
-            operationLog.current.push({
+            onAnswer(isCorrect, {
                 "operation":operations.data[currentLevel.current][index].operation,
                 "correct":correct,
                 "answer":parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect
             });
 
-
-            // Get a new operation and set the default answer to it
-            setOperationCount(operation => operation + 1);
-            setAnswer("");
-            getNewOperation();
         }else{
             // If timer is over, show detailed resutls
             setShowResults(true);
         }
+    }
+
+
+    // This function does NOT deal with checking the answer, simply assigning points and so on
+    function onAnswer(isCorrect, data){
+
+        // Total answer count is increased
+        setTotalAnsCount(totalAnsCount + 1);
+
+        if(isCorrect){
+
+            var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
+
+            var level = operations.data[currentLevel.current][index].level ?? 1;
+
+            if(["A", "B", "C"].includes(level)){
+                var data = {"A":10, "B":12, "C":14};
+                level = data[level];
+            }
+
+            // 100 points per level (e.g. level 3 gets 300 points)
+            var basePoints = 100*level - pointsLost;
+
+            // A floating point count animation
+            if(showAnimation){
+                $(".point-span").removeClass("red").text("+"+basePoints).fadeIn(100);
+                $(".point-span").css("transform", "translateY(0)");
+                setTimeout(() => {
+                    $(".point-span").fadeOut(100);
+                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                }, 400);
+            }
+            
+
+            // Correct answer stats go here
+            setCorrectCount(correctCount + 1);
+            setLastLevel(operations.data[currentLevel.current][index].level ?? 1);
+            setPoints(points => points + basePoints);
+
+        }else{
+            // Decreasing points animation
+            // If points is zero, don't show anything
+            if(showAnimation){
+                $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
+                $(".point-span").css("transform", "translateY(0)");
+                setTimeout(() => {
+                    $(".point-span").fadeOut(100);
+                    $(".point-span").css("transition", "none").css("transform", "translateY(-64px)").css("transition", "transform 400ms ease-in-out");
+                }, 400);
+            }
+
+            setPoints(Math.max(0, points - 100));
+        }
+
+
+        // Add data to the list of operations that have been answered
+        operationLog.current.push(data);
+
+        // Get a new operation and set the default answer to it
+        setOperationCount(operation => operation + 1);
+        setAnswer("");
+        getNewOperation();
     }
 
 
