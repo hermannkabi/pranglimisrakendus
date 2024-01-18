@@ -1116,7 +1116,7 @@ class GameController extends Controller
 
                 $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk) : $suva[$random]($x, $y);
                 $random = ($random == 1 || $random == 2) ? random_int(3, 4) : random_int(1,2);
-                $teine = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk) : $suva[$random]($x, $y);
+                $teine = ($random == 3 || $random == 4) ? $suva[$random]($xk, $yk) : $suva[$random]($x, $y);
 
                 $vastus = $esimene["ans"] > $teine["ans"] ? "left" : ($esimene["ans"] == $teine["ans"] ? "c" : "right");
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
@@ -1163,9 +1163,9 @@ class GameController extends Controller
                 4=>function($x, $y, $z, $m){return ["op"=> $x + $y * ($m == ":" ? 1/$z : $z) . "-" . $y . $m . $z, "ans"=>$x];}
                 ];
                 
-                $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark2) : $suva[$random]($x, $y, $z, $mark);
+                $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark) : $suva[$random]($x, $y, $z, $mark2);
                 $random = ($random == 1 || $random == 2) ? random_int(3, 4) : random_int(1,2);
-                $teine = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark2) : $suva[$random]($x, $y, $z, $mark);
+                $teine = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark) : $suva[$random]($x, $y, $z, $mark2);
 
                 $vastus = $esimene["ans"] > $teine["ans"] ? "left" : ($esimene["ans"] == $teine["ans"] ? "c" : "right");
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);

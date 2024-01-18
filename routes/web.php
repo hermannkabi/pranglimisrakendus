@@ -70,7 +70,7 @@ Route::post('/register', function () {
         };
 
         // Validation checks completed
-        createUser($conn, $name, $email, $class, $pwd);
+        createUser($conn, $name, $famname, $email, $class, $pwd);
     } else {
         return Inertia::render('Register/RegisterPage', ["message"=>"Midagi läks valesti!"]);
     }
