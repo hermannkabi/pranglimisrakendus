@@ -27,7 +27,26 @@ Route::get("/handleForm", function (){
 Route::get('/login', function () {
     return Inertia::render('Login/LoginPage');
 })->name("login");
-
+Route::post('/login', function () {
+    if(isset($_POST["registration"])){
+        $nimi = $_POST("name");
+        $perenimi = $_POST("famname");
+        $parool = $_POST("pwd");
+    
+    
+        require_once "database.php";
+        require_once "functions.php";
+    
+        if (emptyLogin($nimi, $perenimi, $parool) !== false){
+            //add inf
+            exit();
+        }
+    
+        loginUser($conn, $nimi, $perenimi, $parool);
+    } else {
+        return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
+    }
+})-> name('loginForm');
 Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
 })->name("ui");
