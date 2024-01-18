@@ -92,7 +92,6 @@ section{
 .underline{
     text-decoration: underline;
     text-decoration-thickness: 4px;
-
 }
 
 .correct{
@@ -103,7 +102,10 @@ section{
     color: red;
     text-decoration: underline line-through;
     text-decoration-thickness: 4px;
+}
 
+.incorrect.nounderline{
+    text-decoration: none;
 }
 
 
