@@ -47,11 +47,12 @@ Route::post('/register', function () {
         $pwd = $_POST['pwd'];
         $pwdRepeat = $_POST['pwdrepeat'];
 
-        return Inertia::render('Register/RegisterPage', ["message"=>"Tere, ".$name.". See teade kinnitab info jõudmist back-endi"]);
+        //return Inertia::render('Register/RegisterPage', ["message"=>"Tere, ".$name.". See teade kinnitab info jõudmist back-endi"]);
 
         require_once '../login/functions.php';
         require_once '../login/database.php';
 
+        
         if (emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat)) {
             return Inertia::render('Register/RegisterPage', ["message"=>"Mõni väli on jäänud täitmata!"]);
         };

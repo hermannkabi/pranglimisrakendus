@@ -129,8 +129,8 @@ export default function GamePage({data, time}){
             // Check for võrdlemine here (it has a different syntax with two operations instead of one)
             if(!("operation" in operations.data[currentLevel.current][forcedIndex ?? (index + 1)])){
                 setCompare(true);
-                setOperation1(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].op1);
-                setOperation2(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].op2);
+                setOperation1(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation1);
+                setOperation2(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation2);
 
                 return;
             }
@@ -424,12 +424,10 @@ export default function GamePage({data, time}){
     function handleArrow(type){
 
         if(compare){
-            if(type=="left"){
-                handleLeftGreaterThan();
-            }else if (type=="right"){
-                handleLeftLessThan();
+            if(type=="up" || type=="down"){
+                handleCompareAnswer("c");
             }else{
-                handleEqual();
+                handleCompareAnswer(type);
             }
 
             return;
@@ -443,19 +441,40 @@ export default function GamePage({data, time}){
 
     // Functions for type compare
 
-    // The operation on the left is greater than the right operation
-    function handleLeftGreaterThan(){
-        alert("Vasak on suurem!!!");
-    }
 
-    // The operation on the left is less than the right operation
-    function handleLeftLessThan(){
-        alert("Vasak on väiksem!");
-    }
 
-    // The two operations are equal
-    function handleEqual(){
-        alert("Mõlemad on võrdsed!!!");
+    // Compare answer done
+    function handleCompareAnswer(answered){
+        
+        var isCorrect = operations.data[currentLevel.current][(index)].answer == answered;
+
+        var symbs = {
+            "left":">",
+            "right":"<",
+            "c":"="
+        };
+
+        setTotalAnsCount(totalAnsCount + 1);
+
+        if(isCorrect){
+            setCorrectCount(correctCount + 1);
+            setLastLevel(1);
+            setPoints(points => points + 100);            
+        }
+
+        // Add data to the list of operations that have been answered
+        operationLog.current.push({
+            "operation":operations.data[currentLevel.current][index].operation1 + "_" + operations.data[currentLevel.current][index].operation2,
+            "correct":symbs[operations.data[currentLevel.current][index].answer],
+            "answer":symbs[answered],
+            "isCorrect":isCorrect
+        });
+
+
+        // Get a new operation and set the default answer to it
+        setOperationCount(operation => operation + 1);
+        setAnswer("");
+        getNewOperation();
     }
 
 
@@ -704,9 +723,9 @@ export default function GamePage({data, time}){
 
                {/* Compare type on screen keyboard */}
                {compare && <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', width:'fit-content', margin:"auto"}}>
-                    <NumberButton content=">" onClick={()=>handleLeftGreaterThan()} />
-                    <NumberButton content="=" onClick={()=>handleEqual()} />
-                    <NumberButton content="<" onClick={()=>handleLeftLessThan()} />
+                    <NumberButton content=">" onClick={()=>handleCompareAnswer("left")} />
+                    <NumberButton content="=" onClick={()=>handleCompareAnswer("c")} />
+                    <NumberButton content="<" onClick={()=>handleCompareAnswer("right")} />
                 </div>}
             </div>
             

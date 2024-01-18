@@ -1064,7 +1064,7 @@ class GameController extends Controller
                 $random  = random_int(1, 4);
 
                 $suva = [
-                1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];},
+                1=>function($x, $y){return ["op"=> $x . "·" . $y, "ans"=>$x*$y];},
                 2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];},
                 3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];},
                 4=>function($x, $y){return ["op"=> $x + $y. "-" . $y, "ans"=>$x];}
@@ -1078,9 +1078,9 @@ class GameController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($count <= 10 + ($aeg * 7));
-            
+            } while ($count < 10 + ($aeg * 7));    
         }
+
         if ($level === '2'){
             do{
                 $x = random_int(11, 30);
@@ -1108,7 +1108,7 @@ class GameController extends Controller
                 $random  = random_int(1, 4);
 
                 $suva = [
-                1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];},
+                1=>function($x, $y){return ["op"=> $x . "·" . $y, "ans"=>$x*$y];},
                 2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];},
                 3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];},
                 4=>function($x, $y){return ["op"=> $x + $y. "-" . $y, "ans"=>$x];}
@@ -1122,14 +1122,17 @@ class GameController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($count <= 10 + ($aeg * 7));
-        
-            
-            if ($level === '3'){
+            } while ($count < 10 + ($aeg * 7));
+        }
+
+        if ($level === '3'){
+            do{
                 $x = random_int(1, 10);
                 $y = random_int(1, 10);
                 $xk = random_int(2, 5);
                 $yk = random_int(2, 5);
+                $zk = random_int(2, 5);
+                $z = random_int(2, 5);
                 if ($x == $y){
                     $check ++;
                     if ($check == 2){
@@ -1149,24 +1152,30 @@ class GameController extends Controller
                 $yold = $y;
                 
                 $random  = random_int(1, 4);
-               
+                $mark = random_int(1, 2) == 1 ? "+" : "-";
+                $mark2 = random_int(1, 2) == 1 ? "·" : ":";
                 $suva = [
-                1=>function($x, $y){return ["op"=> $x . "*" . $y, "ans"=>$x*$y];},
-                2=>function($x, $y){return ["op"=> $x * $y . ":" . $y, "ans"=>$x];},
-                3=>function($x, $y){return ["op"=> $x . "+" . $y, "ans"=>$x+$y];},
-                4=>function($x, $y){return ["op"=> $x + $y. "-" . $y, "ans"=>$x];}
+                1=>function($x, $y, $z, $m){
+
+                    return ["op"=> $x . "·" . $y . $m . $z, "ans"=>$x*$y+($m == "-" ? -$z : $z)];},
+                2=>function($x, $y, $z, $m){return ["op"=> $x * $y . ":" . $y. $m. $z, "ans"=>$x+($m == "-" ? -$z : $z)];},
+                3=>function($x, $y, $z, $m){return ["op"=> $x . "+" . $y . $m . $z, "ans"=>$x+$y*($m == ":" ? 1/$z : $z)];},
+                4=>function($x, $y, $z, $m){return ["op"=> $x + $y * ($m == ":" ? 1/$z : $z) . "-" . $y . $m . $z, "ans"=>$x];}
                 ];
                 
-                $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk) : $suva[$random]($x, $y);
+                $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark2) : $suva[$random]($x, $y, $z, $mark);
                 $random = ($random == 1 || $random == 2) ? random_int(3, 4) : random_int(1,2);
-                $teine = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk) : $suva[$random]($x, $y);
+                $teine = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark2) : $suva[$random]($x, $y, $z, $mark);
 
                 $vastus = $esimene["ans"] > $teine["ans"] ? "left" : ($esimene["ans"] == $teine["ans"] ? "c" : "right");
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($count <= 10 + ($aeg * 7)); 
-        }  
+            }while ($count < 10 + ($aeg * 7)); 
+        }; 
+    
+
+        return $array;
     }
 
 

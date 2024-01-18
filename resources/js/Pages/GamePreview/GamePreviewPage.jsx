@@ -123,6 +123,11 @@ export default function GamePreviewPage(){
                 "lvls":5,
                 "extra":["A", "B", "C"],
             },
+
+            "võrdlemine":{
+                "lvls":3,
+                "extra":[],
+            },
         };
 
         var type = $("#game-type").val();
