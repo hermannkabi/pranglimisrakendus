@@ -25,6 +25,8 @@ class GameController extends Controller
     const LAHUTAMINE = "lahutamine";
     const KORRUTAMINE = "korrutamine";
     const JAGAMINE = "jagamine";
+    const ASTENDAMINE = "astendamine";
+    const JUURIMINE = "juurimine";
     //....
 
 
@@ -80,6 +82,9 @@ class GameController extends Controller
             if ($uusmis === $opnames[1]){
                 array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
+            if ($uusmis === GameController::ASTENDAMINE || GameController::JUURIMINE){
+                array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x ** $y) : (pow($x**$y, 1/$y))), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+            }
 
 
             $count ++;
@@ -100,13 +105,11 @@ class GameController extends Controller
         $y = 0;
         $tase = 1;
         $count = 0;
-        $min = 0;
         $max = 10;
         $add = 0;
         $add2 = 0;
         $xold = 0;
         $yold = 0;
-        $check = 0;
         $kontroll = 0;
 
 
@@ -911,7 +914,35 @@ class GameController extends Controller
         
     }
 
+    public function astendamine($level, $mis, $aeg,){
+        $array = [];
+        $x = 0;
+        $y = 0;
+        $tase = 1;
+        $count = 0;
+        $max = 10;
+        $add = 0;
+        $add2 = 0;
+        $xold = 0;
+        $yold = 0;
+        $kontroll = 0;
 
+
+        $opnames = [GameController::ASTENDAMINE, GameController::JUURIMINE];
+        $xvalues = [
+
+        ];
+        $yvalues = [
+
+        ];
+        if($level != "all"){
+            $returnData = GameController::generateOp($xvalues[$level], $yvalues[$level], $mis, function ($num1, $num2, $mis){
+                return $mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1;
+             }, $opnames, $level, $aeg);
+
+             return $returnData["array"];
+        }
+    }
     
     //lünkamine
     public function lünkamine($level, $aeg){
@@ -1177,8 +1208,6 @@ class GameController extends Controller
 
         return $array;
     }
-
-
 
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
