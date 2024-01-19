@@ -1190,8 +1190,8 @@ class GameController extends Controller
 
                     return ["op"=> $x . "·" . $y . $m . $z, "ans"=>$x*$y+($m == "-" ? -$z : $z)];},
                 2=>function($x, $y, $z, $m){return ["op"=> $x * $y . ":" . $y. $m. $z, "ans"=>$x+($m == "-" ? -$z : $z)];},
-                3=>function($x, $y, $z, $m){return ["op"=> $x . "+" . $y . $m . $z, "ans"=>$x+$y*($m == ":" ? 1/$z : $z)];},
-                4=>function($x, $y, $z, $m){return ["op"=> $x + $y * ($m == ":" ? 1/$z : $z) . "-" . $y . $m . $z, "ans"=>$x];}
+                3=>function($x, $y, $z, $m){return ["op"=> $x . "+" . $y . $m . $z, "ans"=>$x+$y*($m == ":" ? round(1/$z, 2) : $z)];},
+                4=>function($x, $y, $z, $m){return ["op"=> $x + $y * ($m == ":" ? round(1/$z,2) : $z) . "-" . $y . $m . $z, "ans"=>$x];}
                 ];
                 
                 $esimene = ($random == 1 || $random == 2) ? $suva[$random]($xk, $yk, $zk, $mark) : $suva[$random]($x, $y, $z, $mark2);

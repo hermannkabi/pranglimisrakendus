@@ -129,8 +129,10 @@ export default function GamePage({data, time}){
             // Check for võrdlemine here (it has a different syntax with two operations instead of one)
             if(!("operation" in operations.data[currentLevel.current][forcedIndex ?? (index + 1)])){
                 setCompare(true);
-                setOperation1(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation1);
-                setOperation2(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation2);
+                setOperation1(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation1.replaceAll(".", ","));
+                setOperation2(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation2.replaceAll(".", ","));
+                setDtStartedLast(Date.now());
+                setLevel(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level)
 
                 return;
             }
@@ -166,7 +168,7 @@ export default function GamePage({data, time}){
 
             // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
-            setDtStartedLast(Date.now())
+            setDtStartedLast(Date.now());
 
             // Check if the operation contains the multiply and divide chars
             // If it does, we disable entering fractions
