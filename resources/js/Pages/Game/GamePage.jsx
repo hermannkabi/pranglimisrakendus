@@ -689,7 +689,7 @@ export default function GamePage({data, time}){
                     </div>
 
                     {/* The operation data  and answer*/}
-                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> _ </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
+                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 

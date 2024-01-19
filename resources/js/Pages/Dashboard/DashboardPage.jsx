@@ -20,7 +20,7 @@ export default function Dashboard({auth}) {
                 <div className='header-container'>
                     <h3 className='section-header'>Statistika</h3>
                 </div>
-                <StatisticsWidget stat={42} desc="Treeningut" />
+                <StatisticsWidget stat={window.localStorage.getItem("total-training-count") ?? "0"} desc="Treeningut" />
                 <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
                 <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
                 <StatisticsWidget stat={"6."} desc="Koht klassis " />

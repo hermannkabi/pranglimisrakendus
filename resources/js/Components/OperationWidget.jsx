@@ -1,4 +1,4 @@
-
+// Käitub väiksemates laiustes pisut veidralt (overflow sectionist). Vaata üle!
 
 export default function OperationWidget({op}){
 
@@ -36,7 +36,7 @@ export default function OperationWidget({op}){
     // Returns the correct HTML for compare type
     function compareHtml(op){
         if(!op.isCorrect){
-            return op.operation.replace("%SYMB%", ` <span class='incorrect nounderline'>`+op.answer.toString().replaceAll(".", ",")+`</span> <span class='correct'>(`+op.correct.toString().replaceAll(".", ",")+`)</span>`)
+            return op.operation.replaceAll(".", ",").replace("%SYMB%", ` <span class='incorrect nounderline'>`+op.answer.toString().replaceAll(".", ",")+`</span> <span class='correct'>(`+op.correct.toString().replaceAll(".", ",")+`)</span>`)
         }
 
         return op.operation.replace("%SYMB%", `<span class='correct'>`+op.answer.toString().replaceAll(".", ",")+`</span>`)
