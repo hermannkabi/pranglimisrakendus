@@ -8,19 +8,20 @@ import "/public/css/dashboard.css";
 export default function Dashboard({auth}) {
 
 
+    const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
     return (
         <>
             <Head title='Töölaud' />
             <Navbar user={auth.user} />
             <SizedBox height={36} />
-            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"pointer"}}>Mari!</span></h2>
+            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"pointer"}}>{window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
 
             <section>
                 <div className='header-container'>
                     <h3 className='section-header'>Statistika</h3>
                 </div>
-                <StatisticsWidget stat={window.localStorage.getItem("total-training-count") ?? "0"} desc="Treeningut" />
+                <StatisticsWidget stat={totalTrainingCount} desc={"Treening"+(totalTrainingCount == "1" ? "" : "ut")} />
                 <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
                 <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
                 <StatisticsWidget stat={"6."} desc="Koht klassis " />

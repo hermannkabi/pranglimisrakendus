@@ -3,6 +3,9 @@ import SizedBox from "./SizedBox";
 import "/public/css/navbar.css";
 
 export default function Navbar({user}){
+
+    const name = (window.localStorage.getItem("first-name") ?? "") + " " + (window.localStorage.getItem("last-name") ?? "");
+
     return (
         <>
             <div className="navbar" style={{display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%"}}>
@@ -13,7 +16,7 @@ export default function Navbar({user}){
                 </a>
                 <a href={route("profilePage")} style={{all:"unset"}}>
                     <div className="profile-btn" style={{right:"0"}}>
-                        <p className="name-text">{user == null ? "Mari Maasikas" : user.name}</p>
+                        <p className="name-text">{user == null ? name.trim().length > 0 ? name : "Mari Maasikas" : user.name}</p>
                         <p className="school-text">Kooli Põhikool</p>
                     </div>
                 </a>
