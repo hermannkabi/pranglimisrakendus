@@ -45,7 +45,7 @@ section{
     margin: auto;
     padding: 8px;
     background-color: rgb(var(--section-color),  var(--section-transparency));
-    border-radius: 16px;
+    border-radius: 8px;
     margin-block: 8px;
     /* That is going to cause problems */
     width: 35%;
@@ -160,15 +160,32 @@ button[secondary]:hover > .lds-ring div{
     height:70px;
     padding:8px 16px;
     margin:8px;
-    display:inline-block;
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
     cursor:pointer;
     user-select: none;
     transition: background-color 100ms;
+    position: relative;
+    overflow: hidden;
+}
+
+.big-btn .symbol{
+    transition: transform 200ms;
+    position: absolute;
+    left: -8px;
+    bottom: -37px;
+    overflow: hidden;
 }
 
 .big-btn:hover{
     background-color: rgb(var(--btn-hover-color));
 }
+
+.big-btn:hover .symbol{
+    transform: translate(6px, -6px);
+}
+
 
 /* Links */
 
@@ -221,7 +238,7 @@ input, textarea, select{
 
     font-family: "Lexend";
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     padding-block: 16px;
     padding-left: 8px;
     font-size: 20px;

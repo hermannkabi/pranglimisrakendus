@@ -95,7 +95,7 @@ export default function RegisterPage({message}){
             <LoginHeader pageName="Loo konto" />
             
             <div className="container">
-                {errorMessage && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {errorMessage && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errorMessage}</p>
                 </div>}
                 <form method="post" action={route("registerPost")}  className="register-container">
