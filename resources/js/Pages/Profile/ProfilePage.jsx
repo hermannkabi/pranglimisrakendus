@@ -16,6 +16,11 @@ export default function ProfilePage(){
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
 
 
+    function updateAccountName(){
+        window.localStorage.setItem("first-name", $("#fname").val());
+        window.localStorage.setItem("last-name", $("#lname").val());
+    }
+
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
@@ -77,6 +82,9 @@ export default function ProfilePage(){
         }
     }
 
+
+    $("#fname, #lname").change(updateAccountName);
+
     return (
         <>
             <Head title="Profiil" />
@@ -136,8 +144,8 @@ export default function ProfilePage(){
                 </div>
                 <div className="" style={{display:'flex', flexWrap:"wrap"}}>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input type="text" placeholder="Eesnimi" value="Mari" disabled/>
-                        <input type="text" placeholder="Perenimi" value="Maasikas" disabled/>
+                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={window.localStorage.getItem("first-name") ?? "Mari"} />
+                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={window.localStorage.getItem("last-name") ?? "Maasikas"}/>
                     </div>
                     <input type="text" placeholder="E-posti aadress" value="mari.maasikas@koolikool.edu.ee" disabled/>
                     <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>

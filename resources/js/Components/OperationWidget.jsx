@@ -1,4 +1,4 @@
-
+// Käitub väiksemates laiustes pisut veidralt (overflow sectionist). Vaata üle!
 
 export default function OperationWidget({op}){
 
@@ -26,7 +26,7 @@ export default function OperationWidget({op}){
     function gapHtml(op){
 
         if(!op.isCorrect){
-            return op.operation.replace("Lünk", ` <span class='correct'>`+op.correct.toString().replaceAll(".", ",")+`</span> <span class='underline incorrect'>`+op.answer.toString().replaceAll(".", ",")+`</span> `)
+            return op.operation.replace("Lünk", ` <span class='correct'>`+op.correct.toFixed(2).replaceAll(".", ",")+`</span> <span class='underline incorrect'>`+op.answer.toString().replaceAll(".", ",")+`</span> `)
         }
 
         return op.operation.replace("Lünk", `<span class='underline correct'>`+op.answer.toString().replaceAll(".", ",")+`</span>`)
@@ -36,7 +36,7 @@ export default function OperationWidget({op}){
     // Returns the correct HTML for compare type
     function compareHtml(op){
         if(!op.isCorrect){
-            return op.operation.replace("%SYMB%", ` <span class='incorrect nounderline'>`+op.answer.toString().replaceAll(".", ",")+`</span> <span class='correct'>(`+op.correct.toString().replaceAll(".", ",")+`)</span>`)
+            return op.operation.replaceAll(".", ",").replace("%SYMB%", ` <span class='incorrect nounderline'>`+op.answer.toString().replaceAll(".", ",")+`</span> <span class='correct'>(`+op.correct.toString().replaceAll(".", ",")+`)</span>`)
         }
 
         return op.operation.replace("%SYMB%", `<span class='correct'>`+op.answer.toString().replaceAll(".", ",")+`</span>`)
@@ -48,7 +48,7 @@ export default function OperationWidget({op}){
             <div style={resultCircle}><span style={{color:"white", userSelect:"none"}} className="material-icons">{char}</span></div>
             <div style={{textAlign: "left", marginInline:"8px"}}>
                 <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.toString().replaceAll(".", ",")}}></p>
-                {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && <p style={{marginBlock:"4px", color:color, fontSize:"20px"}}>{op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.toString().replaceAll(".", ",")+")"}</span></p>}
+                {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && <p style={{marginBlock:"4px", color:color, fontSize:"20px"}}>{op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.replaceAll(".", ",")+")"}</span></p>}
             </div>
         </div>
     </>);

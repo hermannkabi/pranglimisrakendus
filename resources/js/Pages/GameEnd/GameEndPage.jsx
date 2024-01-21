@@ -85,6 +85,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         if(total <= 0) return;
 
         window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
+        window.localStorage.setItem("total-training-count", parseInt(window.localStorage.getItem("total-training-count") ?? 0)+1);
     }
 
     return (

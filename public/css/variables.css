@@ -7,7 +7,7 @@
     --primary-header-color: 0, 0, 0;
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: 255, 255, 255;
-    --primary-btn-border-radius: 12px;
+    --primary-btn-border-radius: 8px;
     --red-color: 239, 131, 131;
     --darkred-color: 226, 81, 81;
     --background-color: 255, 255, 255;
@@ -29,7 +29,7 @@
     --primary-header-color: var(--white);
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: var(--white);
-    --primary-btn-border-radius: 12px;
+    --primary-btn-border-radius: 8px;
     --red-color: 239, 131, 131;
     --darkred-color: 226, 81, 81;
     --background-color: 25, 26, 28;

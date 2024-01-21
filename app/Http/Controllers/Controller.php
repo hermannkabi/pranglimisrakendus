@@ -82,7 +82,7 @@ class GameController extends Controller
             if ($uusmis === $opnames[1]){
                 array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
-            if ($uusmis === GameController::ASTENDAMINE || GameController::JUURIMINE){
+            if ($uusmis === GameController::ASTENDAMINE || $uusmis === GameController::JUURIMINE){
                 array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x ** $y) : (pow($x**$y, 1/$y))), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 

@@ -174,7 +174,7 @@ export default function GamePreviewPage(){
 
             <h2>Mängu eelvaade</h2>
             <div className="container">
-                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
                 <div className="preferences">

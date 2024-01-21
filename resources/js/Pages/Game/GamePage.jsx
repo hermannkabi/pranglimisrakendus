@@ -663,7 +663,7 @@ export default function GamePage({data, time}){
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
                 {/* Message on top of the page */}
-                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"16px", padding:"8px", marginBlock:"8px"}}>
+                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
                 </div>}
 
@@ -671,7 +671,7 @@ export default function GamePage({data, time}){
                 <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
 
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"16px", padding:"8px"}}>
+                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px"}}>
 
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
 
@@ -689,7 +689,7 @@ export default function GamePage({data, time}){
                     </div>
 
                     {/* The operation data  and answer*/}
-                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> _ </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
+                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
