@@ -132,7 +132,7 @@ export default function ProfilePage(){
 
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Vaikimisi aeg</p>
-                        <NumberChoice id="default-time-val" defaultValue={parseInt(window.localStorage.getItem("default-time"))} />
+                        <NumberChoice id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseInt(window.localStorage.getItem("default-time"))} />
                     </div>
                     
                     <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
