@@ -42,12 +42,28 @@ export default function OperationWidget({op}){
         return op.operation.replace("%SYMB%", `<span class='correct'>`+op.answer.toString().replaceAll(".", ",")+`</span>`)
     }
 
+    function expHtml(op){
+        const parts = op.operation.split("EXP");
+        var base = parts[0];
+        var exponent = parts[1];
+
+        return "<div class='expend'><span class='base'>"+base+"</span><sup class='exponent'>"+exponent+"</sup></div>";
+    }
+
+    function radHtml(op){
+        const parts = op.operation.split("RAD");
+        var radicand = parts[0];
+        var radIndex = parts[1];
+
+        return `<span class="rad radend" style="font-size: 0.75em"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
+    }
+
     return (
     <>
         <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", display:"inline-flex", borderRadius:"8px", alignItems:"center", margin:"8px", padding:"8px", paddingRight:"16px"}}>
             <div style={resultCircle}><span style={{color:"white", userSelect:"none"}} className="material-icons">{char}</span></div>
             <div style={{textAlign: "left", marginInline:"8px"}}>
-                <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.toString().replaceAll(".", ",")}}></p>
+                <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.includes("EXP") ? expHtml(op) : op.operation.includes("RAD") ? radHtml(op) : op.operation.toString().replaceAll(".", ",")}}></p>
                 {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && <p style={{marginBlock:"4px", color:color, fontSize:"20px"}}>{op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.replaceAll(".", ",")+")"}</span></p>}
             </div>
         </div>

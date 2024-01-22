@@ -339,6 +339,8 @@ select:after{
     color: var(--text-color);
 }
 
+/* Game fraction rendering */
+
 .frac {
     display: inline-block;
     position: relative;
@@ -362,6 +364,63 @@ select:after{
     border-radius: 8px;
 }
 
+/* Game exponent rendering */
+.exp{
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+
+.exp > .exponent{
+    font-size: 0.6em;
+}
+
+.rad{
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap; 
+    position: relative; 
+    transform: scale(0.8);
+
+}
+
+.radend{
+    transform: scale(1.1);
+
+}
+
+.rad > .index{
+    position:absolute;
+    font-size: 0.6em;
+    top: 10px;
+    left:-2px;
+}
+
+.rad > .radic{
+    font-size:1.6em; 
+    user-select: none;
+    font-weight: normal;
+}
+
+.rad > .radicand{
+    margin-left: -2px;
+    text-decoration: overline;
+    text-decoration-thickness: 5px;
+}
+
+/* These styles are used in game end component */
+.radend > .radicand{
+    margin-left: -2px;
+    text-decoration: overline;
+    text-decoration-thickness: 3px;
+}
+
+.radend > .index{
+    position:absolute;
+    font-size: 0.6em;
+    top: 6px;
+    left:-2px;
+}
 
 /* Point animation */
 .point-span{

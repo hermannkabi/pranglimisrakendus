@@ -163,6 +163,28 @@ export default function GamePage({data, time}){
                 });
             }
 
+            // Handles rendering exponents and radicals
+            if(operationString.includes("EXP")){
+                // Splits the operation into two parts - base and exponent
+                var parts = operationString.split("EXP");
+                var base = parts[0];
+                var exponent = parts[1];
+
+                operationString = "<div class='exp'><span class='base'>"+base+"</span><sup class='exponent'>"+exponent+"</sup></div>";
+
+            }else if(operationString.includes("RAD")){
+                // Don't know how I'm going to create this
+                
+                // Same code as in the exponent part
+                var parts = operationString.split("RAD");
+                var radicand = parts[0];
+                var radIndex = parts[1];
+
+                operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
+
+
+            }
+
             // Check if operation is of type 'gap'
             setIsGap(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.includes("Lünk"));
 

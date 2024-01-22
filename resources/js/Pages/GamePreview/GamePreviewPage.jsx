@@ -128,6 +128,13 @@ export default function GamePreviewPage(){
                 "lvls":3,
                 "extra":[],
             },
+
+            "astendamine":{
+                "lvls":5,
+                "extra":[],
+            },
+            "juurimine":"astendamine",
+            "astejuurimine":"astendamine",
         };
 
         var type = $("#game-type").val();
@@ -182,15 +189,28 @@ export default function GamePreviewPage(){
 
                         <select defaultValue={id ?? "choose"} id="game-type">
                             <option value="choose"> Vali harjutusala</option>
-                            <option value="korrutamine">Korrutamine</option>
-                            <option value="jagamine">Jagamine</option>
-                            <option value="liitmine">Liitmine</option>
-                            <option value="lahutamine">Lahutamine</option>
-                            <option value="liitlahutamine">Liitlahutamine</option>
-                            <option value="korrujagamine">Korrujagamine</option>
+
+                            <optgroup label="Liitmine/lahutamine">
+                                <option value="liitmine">Liitmine</option>
+                                <option value="lahutamine">Lahutamine</option>
+                                <option value="liitlahutamine">Liitlahutamine</option>
+                            </optgroup>
+
+                            <optgroup label="Korrutamine/jagamine">
+                                <option value="korrutamine">Korrutamine</option>
+                                <option value="jagamine">Jagamine</option>
+                                <option value="korrujagamine">Korrujagamine</option>
+                            </optgroup>
+
+                            <optgroup label="Astendamine/juurimine">
+                                <option value="astendamine">Astendamine</option>
+                                <option value="juurimine">Juurimine</option>
+                                <option value="astejuurimine">Astejuurimine</option>
+                            </optgroup>
+
                             <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
-                            <option value="sega">Segaarvutused</option>
+
                         </select>
 
                         <select name="" id="" style={{display:"none"}}>
