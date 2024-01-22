@@ -1361,14 +1361,14 @@ class GameController extends Controller
             ],
         ];
         
-        if($level != "all"){
-            $random = random_int(0,1);
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $random, function ($num1, $num2, $mis){
-                return $random = 0 ? 0  : 1;
-             }, 0, 0,  $level, $aeg);
+        
+        $random = random_int(0,1);
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $random, function ($num1, $num2, $mis){
+            return $random = 0 ? 0  : 1;
+            }, 0, 0,  $level, $aeg);
 
-             return $returnData["array"];
-        }
+            return $returnData["array"];
+        
 
     }
     public function võrdlemine($level, $aeg){
