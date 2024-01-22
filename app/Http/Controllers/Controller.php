@@ -27,6 +27,7 @@ class GameController extends Controller
     const JAGAMINE = "jagamine";
     const ASTENDAMINE = "astendamine";
     const JUURIMINE = "juurimine";
+    const JAGUVUS = "jaguvus";
     //....
 
 
@@ -82,10 +83,16 @@ class GameController extends Controller
             if ($uusmis === $opnames[1]){
                 array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
+
+            //Astendamine ja juurimine
             if ($uusmis === GameController::ASTENDAMINE || $uusmis === GameController::JUURIMINE){
                 array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x ** $y) : (pow($x**$y, 1/$y))), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
             }
 
+            //Jaguvus
+            if ($uusmis === GameController::JAGUVUS){
+                array_push($array, ["operation"=> ($uusmis == 0 ? (($x * $y)%$y) : (($x*$y + 1)%$y)), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+            }
 
             $count ++;
         } while ($count < (GameController::OPERATION_COUNT + (14 * $aeg)));
@@ -1000,8 +1007,8 @@ class GameController extends Controller
         ];
         if($level != "all"){
             $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::ASTENDAMINE ? $num1 ** $num2 : ($num2 %2 == 0 ? -$num1 : $num1);
-             }, $opnames, $level, $aeg);
+                return $mis == GameController::ASTENDAMINE ? $num1 ** $num2 : ($num2 %2 == 0 ? -$num1 && $num1 : $num1);
+             }, $opnames, 0,  $level, $aeg);
 
              return $returnData["array"];
         }
@@ -1155,8 +1162,9 @@ class GameController extends Controller
     public function lünkamine($level, $aeg){
 
         // Lisasin A,B,C tasemed, kui tulevikus vaja neid väärtusi kasutada, siis tuleks muuta
-        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>0, "B"=>0, "C"=>0];
-        $defaultMaxKor = ["1"=>10, "2"=>20, "3"=>30, "4"=>100, "5"=>1000, "A"=>0, "B"=>0, "C"=>0];
+        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>9999, "B"=>99999, "C"=>999999];
+        $defaultMaxKor = ["1"=>5, "2"=>5, "3"=>10, "4"=>10, "5"=>10, "A"=>30, "B"=>100, "C"=>100];
+        $defaultMaxKor2 = ["1"=>5, "2"=>10, "3"=>10, "4"=>20, "5"=>500, "A"=>100, "B"=>100, "C"=>500];
 
         $x = 0;
         $y = 0;
@@ -1168,6 +1176,7 @@ class GameController extends Controller
         $loendlünk = [];
         $max = $defaultMaxLiit[$level];
         $max2 = $defaultMaxKor[$level];
+        $max22 = $defaultMaxKor2[$level];
 
         //Ascending levels
         do{
@@ -1266,6 +1275,102 @@ class GameController extends Controller
         return $loendlünk;
     }
 
+    public function jagseadus($level, $aeg){
+        $xvalues = [
+            "1"=>[
+                "natural"=>function (){return random_int(1, 10);},
+                "integer"=>function (){return random_int(-10, 10);},
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(10, 100);},
+                "integer"=>function (){
+                    $randints = [random_int(-100, -10), random_int(10, 100)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(101, 1000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000, -101), random_int(101, 1000)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(10001, 100000);},
+                "integer"=>function (){
+                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(1001, 10000);},
+                "integer"=>function (){
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(1001, 10000);},
+                "integer"=>function (){
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+            ],
+        ];
+        $yvalues = [
+            "1"=>[
+                "natural"=>function (){return 5 or 10;},
+                "integer"=>function (){return 5 or 10;},
+            ],
+            "2"=>[
+                "natural"=>function (){return 2 or 3;},
+                "integer"=>function (){return 2 or 3;},
+            ],
+            "3"=>[
+                "natural"=>function (){return 4 or 6 or 8;},
+                "integer"=>function (){return 4 or 6 or 8;},
+            ],
+            "4"=>[
+                "natural"=>function (){return 7 or 9;},
+                "integer"=>function (){return 7 or 9;},
+            ],
+            "5"=>[
+                "natural"=>function (){return 12 or 14;},
+                "integer"=>function (){return 12 or 14;},
+            ],
+            "A"=>[
+                "natural"=>function (){return 17 or 15;},
+                "integer"=>function (){return 17 or 15;},
+            ],
+            "B"=>[
+                "natural"=>function (){return 11;},
+                "integer"=>function (){return 11;},
+            ],
+            "C"=>[
+                "natural"=>function (){return 13;},
+                "integer"=>function (){return 13;},
+            ],
+        ];
+        
+        if($level != "all"){
+            $random = random_int(0,1);
+            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $random, function ($num1, $num2, $mis){
+                return $random = 0 ? 0  : 1;
+             }, 0, 0,  $level, $aeg);
+
+             return $returnData["array"];
+        }
+
+    }
     public function võrdlemine($level, $aeg){
         $array = [];
         $count = 0;
