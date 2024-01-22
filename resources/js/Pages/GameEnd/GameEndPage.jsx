@@ -116,7 +116,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>}
                         <div className="stat-row">
                             <p style={statNameStyle}>VASTAMISTÄPSUS</p>
-                            <h3 style={{marginBlock:0}}>{accuracy.toString().replace(".", ",")}%</h3>
+                            <h3 className={accuracy == 100 ? "fancy" : ""} style={{marginBlock:0}}>{accuracy.toString().replace(".", ",")}%</h3>
                         </div>
                         <div className="stat-row">
                             <p style={statNameStyle}><b>PUNKTE</b></p>

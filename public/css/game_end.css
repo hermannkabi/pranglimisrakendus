@@ -114,3 +114,10 @@ section{
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
+
+
+.stat-row > .fancy{
+    background: -webkit-linear-gradient(0deg, rgba(237,201,3,1) 0%, rgba(164,134,6,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
