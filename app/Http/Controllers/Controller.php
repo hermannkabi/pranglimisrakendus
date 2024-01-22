@@ -27,6 +27,7 @@ class GameController extends Controller
     const JAGAMINE = "jagamine";
     const ASTENDAMINE = "astendamine";
     const JUURIMINE = "juurimine";
+    const ASTEJUURIMINE = "astejuurimine";
     const JAGUVUS = "jaguvus";
     //....
 
@@ -91,7 +92,8 @@ class GameController extends Controller
 
             //Jaguvus
             if ($uusmis === GameController::JAGUVUS){
-                array_push($array, ["operation"=> ($uusmis == 0 ? (($x * $y)%$y) : (($x*$y + 1)%$y)), "answer"=>$ans($x, $y, $uusmis), "level"=>$level]);
+                $jagub = $ans($x, $y, $uusmis);
+                array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + 1)." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
             }
 
             $count ++;
@@ -1262,7 +1264,7 @@ class GameController extends Controller
         return $loendlünk;
     }
 
-    public function jagseadus($level, $aeg){
+    public function jagseadus($level, $tüüp, $aeg){
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 10);},
@@ -1306,7 +1308,7 @@ class GameController extends Controller
                     $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
                     return $randints[array_rand($randints)];},
             ],
-            "B"=>[
+            "C"=>[
                 "natural"=>function (){return random_int(10001, 1000000);},
                 "integer"=>function (){
                     $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
@@ -1315,28 +1317,52 @@ class GameController extends Controller
         ];
         $yvalues = [
             "1"=>[
-                "natural"=>function (){return 5 or 10;},
-                "integer"=>function (){return 5 or 10;},
+                "natural"=>function (){
+                    $randints = [5, 10];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [5, 10];
+                    return $randints[array_rand($randints)];},
             ],
             "2"=>[
-                "natural"=>function (){return 2 or 3;},
-                "integer"=>function (){return 2 or 3;},
+                "natural"=>function (){
+                    $randints = [2, 3];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [2, 3];
+                    return $randints[array_rand($randints)];},
             ],
             "3"=>[
-                "natural"=>function (){return 4 or 6 or 8;},
-                "integer"=>function (){return 4 or 6 or 8;},
+                "natural"=>function (){
+                    $randints = [4, 6, 8];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [4, 6, 8];
+                    return $randints[array_rand($randints)];},
             ],
             "4"=>[
-                "natural"=>function (){return 7 or 9;},
-                "integer"=>function (){return 7 or 9;},
+                "natural"=>function (){
+                    $randints = [7, 9];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [7, 9];
+                    return $randints[array_rand($randints)];},
             ],
             "5"=>[
-                "natural"=>function (){return 12 or 14;},
-                "integer"=>function (){return 12 or 14;},
+                "natural"=>function (){
+                    $randints = [12, 14];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [12, 14];
+                    return $randints[array_rand($randints)];},
             ],
             "A"=>[
-                "natural"=>function (){return 17 or 15;},
-                "integer"=>function (){return 17 or 15;},
+                "natural"=>function (){
+                    $randints = [15, 17];
+                    return $randints[array_rand($randints)];},
+                "integer"=>function (){
+                    $randints = [15, 17];
+                    return $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return 11;},
@@ -1348,11 +1374,10 @@ class GameController extends Controller
             ],
         ];
         
-        
-        $random = random_int(0,1);
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $random, function ($num1, $num2, $mis){
-            return $random = 0 ? 0  : 1;
-            }, 0, 0,  $level, $aeg);
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function ($num1, $num2, $mis){
+            // Boolean, mis ütleb, kas vastus on tõene või mitte
+            return random_int(0, 1) == 1;
+            }, [], [],  $level, $aeg);
 
         return $returnData["array"];
         
@@ -1512,7 +1537,7 @@ class GameController extends Controller
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine'){
+        if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine' && $tehe != "jaguvus"){
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
@@ -1539,7 +1564,6 @@ class GameController extends Controller
                 $loend[0] = app('App\Http\Controllers\GameController')->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
             }
 
-
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){   
@@ -1558,9 +1582,14 @@ class GameController extends Controller
                     $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->võrdlemine($tasemed[$lugeja], $aeg);
                 }
 
-                if($tehe == "astendamine" or $tehe == "juurimine" or $tehe == "astejuurimine"){    
+                if($tehe == GameController::ASTENDAMINE or $tehe == GameController::JUURIMINE or $tehe == GameController::ASTEJUURIMINE){    
                     $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
+
+                if($tehe == GameController::JAGUVUS){
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
+                }
+                
             }
         }
         return $loend;

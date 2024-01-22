@@ -94,6 +94,9 @@ export default function GamePage({data, time}){
     // Compare operation type state
     const [compare, setCompare] = useState(false);
 
+    // Division law type
+    const [divisionLaw, setDivisionLaw] = useState(false);
+
     // Two operation states instead of one for compare type
     const [operation1, setOperation1] = useState("");
     const [operation2, setOperation2] = useState("");
@@ -187,6 +190,9 @@ export default function GamePage({data, time}){
 
             // Check if operation is of type 'gap'
             setIsGap(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.includes("Lünk"));
+
+            // Check if operation is of type 'division law'
+            setDivisionLaw(operationString.includes("⋮"));
 
             // Show operation to user
             setOperation(operationString.replaceAll(".", ","));
@@ -445,7 +451,10 @@ export default function GamePage({data, time}){
 
     // Handles the keyboard arrow keys
     // Checks if the type is compare, if so, handles that
+    // type can be left, right, up or down
     function handleArrow(type){
+
+        if(timeOver) return;
 
         if(compare){
             if(type=="up" || type=="down"){
@@ -455,6 +464,11 @@ export default function GamePage({data, time}){
             }
 
             return;
+        }
+
+        if(divisionLaw){
+            // Since the correct button is on the left, map the left arrow to true
+            handleDivisionLaw(type=="left");
         }
 
         if(answer.includes(")")){
@@ -482,6 +496,17 @@ export default function GamePage({data, time}){
             "operation":operations.data[currentLevel.current][index].operation1 + " %SYMB% " + operations.data[currentLevel.current][index].operation2,
             "correct":symbs[operations.data[currentLevel.current][index].answer],
             "answer":symbs[answered],
+            "isCorrect":isCorrect
+        });
+    }
+
+    function handleDivisionLaw(ans){
+        var isCorrect = operations.data[currentLevel.current][(index)].answer == ans;
+
+        onAnswer(isCorrect, {
+            "operation":operations.data[currentLevel.current][index].operation.replaceAll(" ", ""),
+            "correct":operations.data[currentLevel.current][index].answer ? "Jah" : "Ei",
+            "answer":ans ? "Jah" : "Ei",
             "isCorrect":isCorrect
         });
     }
@@ -712,7 +737,7 @@ export default function GamePage({data, time}){
 
                     {/* The operation data  and answer*/}
                     {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
-                    {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> = <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> {!divisionLaw && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
@@ -721,7 +746,7 @@ export default function GamePage({data, time}){
                 <SizedBox height="24px" />
                 
                 {/* On-screen keyboard */}
-                {!compare && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
+                {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
                     <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
                     <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
                     <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
@@ -748,6 +773,13 @@ export default function GamePage({data, time}){
                     <NumberButton content="=" onClick={()=>handleCompareAnswer("c")} />
                     <NumberButton content="<" onClick={()=>handleCompareAnswer("right")} />
                 </div>}
+
+                {/* Division law keyboard (yes/no)*/}
+                {divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(2, 1fr)', width:'fit-content', margin:"auto"}}>
+                    <NumberButton icon={true} content="done" onClick={()=>handleDivisionLaw(true)} />
+                    <NumberButton icon={true} content="close" onClick={()=>handleDivisionLaw(false)} />
+                </div>}
+
             </div>
             
 

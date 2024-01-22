@@ -10,9 +10,12 @@ export default function GamePreviewPage(){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+    const typeIndependents = ["lünkamine", "võrdlemine"];
+
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
     const [extra, setExtra] = useState([]);
+    const [types, setTypes] = useState([]);
 
 
     // This function is called once when the page is first loaded
@@ -42,6 +45,12 @@ export default function GamePreviewPage(){
 
         // Natural, whole or fraction
         var numberType = $("#number-type").val();
+
+        // These don't require a type, so set a random one
+        // It's the same as type purely for a visual reason
+        if(typeIndependents.includes(type)){
+            numberType = type;
+        }
 
         var time = parseInt($("#number").val());
 
@@ -90,7 +99,7 @@ export default function GamePreviewPage(){
 
     function showNumberType(instant){
         // These types are not dependent on this
-        if(["lünkamine", "võrdlemine"].includes($("#game-type").val())){
+        if(typeIndependents.includes($("#game-type").val())){
             $("#number-type").slideUp(instant ? 0 :100);
         }else{
             $("#number-type").slideDown(instant ? 0 :100);
@@ -107,6 +116,7 @@ export default function GamePreviewPage(){
             "liitmine":{
                 "lvls":5,
                 "extra":["A", "B", "C"],
+                "types":["natural", "integer", "fraction"],
             },
             // If the value is a string, go to said key
             "lahutamine":"liitmine",
@@ -115,6 +125,8 @@ export default function GamePreviewPage(){
             "korrutamine":{
                 "lvls":6,
                 "extra":["A", "B", "C"],
+                "types":["natural", "integer", "fraction"],
+
             },
             "jagamine":"korrutamine",
             "korrujagamine":"korrutamine",
@@ -122,19 +134,27 @@ export default function GamePreviewPage(){
             "lünkamine":{
                 "lvls":5,
                 "extra":["A", "B", "C"],
+                "types":["natural", "integer", "fraction"],
             },
 
             "võrdlemine":{
                 "lvls":3,
                 "extra":[],
+                "types":[],
             },
 
             "astendamine":{
                 "lvls":5,
                 "extra":[],
+                "types":["natural", "integer"],
             },
             "juurimine":"astendamine",
             "astejuurimine":"astendamine",
+            "jaguvus":{
+                "lvls":5,
+                "extra":["A", "B", "C"],
+                "types":["natural", "integer"],
+            },
         };
 
         var type = $("#game-type").val();
@@ -157,6 +177,13 @@ export default function GamePreviewPage(){
     
             setLevels(lvls);
             setExtra(extras);
+            setTypes(typeData.types);
+
+            setTimeout(() => {
+                if(typeData.types.includes(urlParams.get("type"))){
+                    $("#number-type").val(urlParams.get("type")).change();
+                }
+            }, 10);
         }
     }
 
@@ -210,7 +237,7 @@ export default function GamePreviewPage(){
 
                             <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
-
+                            <option value="jaguvus">Jaguvusseadused</option>
                         </select>
 
                         <select name="" id="" style={{display:"none"}}>
@@ -220,9 +247,7 @@ export default function GamePreviewPage(){
                         </select>
                         <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
-                            <option value="natural">Naturaalarvud</option>
-                            <option value="integer">Täisarvud</option>
-                            <option value="fraction">Kümnendmurrud</option>
+                            {types.map((e)=><option value={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud"}[e]}</option>)}                            
                         </select>
 
                         <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
