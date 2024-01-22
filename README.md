@@ -1,8 +1,10 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
+<p align="center"><a href="https://react.dev" target="_blank"><img src="https://www.fullstackpython.com/img/logos/react.png" width="250" alt="React Logo"></a></p>
+
 # Pranglimisrakendus
 
-Tere tulemast Pranglimisrakenduse repositooriumisse. Pranglimisrakendus on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja uusi tehnoloogiaid.
+Tere tulemast pranglimisrakenduse repositooriumisse! Pranglimisrakendus on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja tänapäevaseid, mugavaid tehnoloogiaid. Pranglimisrakenduse back end kood on kirjutatud PHP Laraveli raamistikus ja kasutajaliides Reactis.
 
 ## Kasutus
 
@@ -31,3 +33,5 @@ Ava kaks terminali instantsi (nt VS Code seest). Jooksuta ühes terminalis ühte
 ## Litsents
 
 Laraveli raamistik on vabavaraline projekt, mida kaitseb [MIT license](https://opensource.org/licenses/MIT).
+
+Reacti raamistik on vabavaraline projekt, mida kaitseb [MIT license](https://opensource.org/licenses/MIT).
