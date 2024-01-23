@@ -232,7 +232,7 @@ a[alone]:hover{
 /* Text input */
 
 input, textarea, select{
-    background-color: rgba(var(--input-color),0.1);
+    background-color: rgba(var(--input-color), 0.2);
     color: rgb(var(--primary-color));
     color: rgba(0, 0, 0, 0.8);
 
@@ -246,6 +246,11 @@ input, textarea, select{
     vertical-align: middle;
     margin-block: 8px;
     min-width: 50px;
+}
+
+select optgroup, select option {
+    color: black;
+    border-radius: 0;
 }
 
 option{
@@ -397,7 +402,7 @@ select:after{
 }
 
 .rad > .radic{
-    font-size:1.6em; 
+    font-size: 47.4px; 
     user-select: none;
     font-weight: normal;
 }

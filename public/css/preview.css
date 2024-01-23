@@ -35,3 +35,9 @@ select, .number-select{
     width: 100%;
     box-sizing: border-box;
 }
+
+optgroup{
+    font-family: "Lexend", sans-serif;
+    font-style: normal;
+    font-size: 0.9em;
+}
