@@ -43,12 +43,12 @@ class GameController extends Controller
         $yold = 0;
 
         $count = 0;
-
+        
         do{
             $x = $xf();
             $y = $yf();
 
-            if ($x == $y){
+            if ($x == $y && $mis == GameController::ASTENDAMINE || GameController::JUURIMINE){
                 $check ++;
 
                 if ($check > GameController::SAME_NUMBER_REPEAT_COUNT){
@@ -59,7 +59,7 @@ class GameController extends Controller
                 }
             }
 
-            if ($x == $xold or $y == $yold){
+            if ($x == $xold or $y == $yold && $mis == GameController::ASTENDAMINE || GameController::JUURIMINE){
                 do{
                     $x = $xf();
                     $y = $yf();
@@ -961,9 +961,9 @@ class GameController extends Controller
                 },
             ],
             "3"=>[
-                "natural"=>function (){return random_int(3, 5);},
+                "natural"=>function (){return random_int(2, 5);},
                 "integer"=>function (){
-                    $randints = [random_int(-5, -3), random_int(3, 5)];
+                    $randints = [random_int(-5, -2), random_int(2, 5)];
                     return $randints[array_rand($randints)];
                 },
             ],
@@ -980,6 +980,7 @@ class GameController extends Controller
                     return $randints[array_rand($randints)];},
             ],
         ];
+        
         $yvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 2);},
