@@ -20,14 +20,14 @@ function  pwdNoMatch($pwd,  $pwdRepeat) {
     return $pwd !== $pwdRepeat;
 };
 
-function  nameExists($conn, $name, $email) {
-    $sql = "SELECT * FROM users WHERE usersName = ? OR usersEmail = ?;";
+function  nameExists($conn, $email) {
+    $sql = "SELECT * FROM users WHERE usersEmail = ?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         echo 'Error';
         exit();
     }
-    mysqli_stmt_bind_param($stmt, "ss",  $name, $email);
+    mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
 
     $resultData = mysqli_stmt_get_result($stmt);
@@ -58,12 +58,12 @@ function  createUser($conn, $name, $famname, $email, $class, $pwd) {
 };
 
 //Login functions
-function emptyLogin($name, $famname, $pwd) {
-    return empty($name) || empty($famname) || empty($pwd);
+function emptyLogin($email, $pwd) {
+    return empty($email) || empty($pwd);
 };
 
-function loginUser($conn, $name, $email, $pwd){
-    $nameExists = nameExists($conn, $name, $email);
+function loginUser($conn, $email, $pwd){
+    $nameExists = nameExists($conn, $email);
 
     if ($nameExists === false){
         //add more inf

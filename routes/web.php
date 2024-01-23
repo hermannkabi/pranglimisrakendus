@@ -29,20 +29,19 @@ Route::get('/login', function () {
 })->name("login");
 Route::post('/login', function () {
     if(isset($_POST["registration"])){
-        $nimi = $_POST("name");
-        $perenimi = $_POST("famname");
+        $email = $_POST("email");
         $parool = $_POST("pwd");
     
     
         require_once "database.php";
         require_once "functions.php";
     
-        if (emptyLogin($nimi, $perenimi, $parool) !== false){
+        if (emptyLogin($email, $parool) !== false){
             //add inf
             exit();
         }
     
-        loginUser($conn, $nimi, $perenimi, $parool);
+        loginUser($conn, $email, $parool);
     } else {
         return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
     }
@@ -66,7 +65,6 @@ Route::post('/register', function () {
         $pwd = $_POST['pwd'];
         $pwdRepeat = $_POST['pwdrepeat'];
 
-        //return Inertia::render('Register/RegisterPage', ["message"=>"Tere, ".$name.". See teade kinnitab info jõudmist back-endi"]);
 
         require_once '../login/functions.php';
         require_once '../login/database.php';
