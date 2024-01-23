@@ -1074,11 +1074,11 @@ class GameController extends Controller
                 $uusmis = $mis === 'mõlemad' ? (random_int(1, 2) == 1 ? GameController::ASTENDAMINE : GameController::JUURIMINE) : $mis;
                 
                 if ($uusmis === GameController::ASTENDAMINE) {
-                    array_push($array, ["operation"=>$x . '↑' . $y, "answer"=>$x ** $y, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x . 'EXP' . $y, "answer"=>$x ** $y, "level"=>$tase]);
                 }
 
                 if ($uusmis === GameController::JUURIMINE) {
-                    array_push($array, ["operation"=>$x ** $y . '↓' . $y, "answer"=>$x, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x ** $y . 'RAD' . $y, "answer"=>$x, "level"=>$tase]);
                 }
                 
                 $add += $max / 5;
@@ -1161,10 +1161,10 @@ class GameController extends Controller
                 $uusmis = $mis === GameController::BOTH ? (random_int(1, 2) == 1 ? GameController::ASTENDAMINE : GameController::JUURIMINE) : $mis;
                 
                 if ($uusmis === GameController::ASTENDAMINE) {
-                    array_push($array, ["operation"=>$x . '↑' . $y, "answer"=>$x ** $y, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x . 'EXP' . $y, "answer"=>$x ** $y, "level"=>$tase]);
                 }
                 if ($uusmis === GameController::JUURIMINE) {
-                    array_push($array, ["operation"=>$x ** $y . '↓' . $y, "answer"=>$x, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x ** $y . 'RAD' . $y, "answer"=>$x, "level"=>$tase]);
                 }
 
                 $xmax -= $xadd;
