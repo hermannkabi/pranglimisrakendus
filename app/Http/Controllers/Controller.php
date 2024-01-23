@@ -92,8 +92,8 @@ class GameController extends Controller
 
             //Jaguvus
             if ($uusmis === GameController::JAGUVUS){
-                $jagub = $ans($x, $y, $z, $uusmis);
-                array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + $z)." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
+                $jagub = $ans($x, $y, $uusmis);
+                array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + ($y - random_int(1, $y - 1)))." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
             }
 
             $count ++;
@@ -1400,7 +1400,7 @@ class GameController extends Controller
             ],
         ];
         
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function ($num1, $num2, $num3, $mis){
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function ($num1, $num2, $mis){
             // Boolean, mis ütleb, kas vastus on tõene või mitte
             return random_int(0, 1) == 1;
             }, [], [],  $level, $aeg);
