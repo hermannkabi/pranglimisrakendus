@@ -97,6 +97,9 @@ export default function GamePage({data, time}){
     // Division law type
     const [divisionLaw, setDivisionLaw] = useState(false);
 
+    // Simplify type
+    const [simplify, setSimplify] = useState(false);
+
     // Two operation states instead of one for compare type
     const [operation1, setOperation1] = useState("");
     const [operation2, setOperation2] = useState("");
@@ -158,9 +161,9 @@ export default function GamePage({data, time}){
                     var denominator = parseInt(matchList[2]);
                     var fullPart = null;
     
-                    if(numerator > denominator){
-                        fullPart = Math.floor(numerator / denominator);
-                        numerator -= fullPart * denominator;
+                    if(numerator > denominator && (!operationString.includes("LIHT") || !["1", "2", "3"].includes(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level))){
+                        fullPart = Math.floor(numerator / denominator) != (numerator / denominator) ? Math.floor(numerator / denominator) : null;
+                        numerator -=  (fullPart ?? 0) * denominator;
                     }
                     operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
                 });
@@ -184,8 +187,6 @@ export default function GamePage({data, time}){
                 var radIndex = parts[1];
 
                 operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
-
-
             }
 
             // Check if operation is of type 'gap'
@@ -194,8 +195,17 @@ export default function GamePage({data, time}){
             // Check if operation is of type 'division law'
             setDivisionLaw(operationString.includes("⋮"));
 
+            // Check if operation is of type 'simplify'
+            setSimplify(operationString.includes("LIHT"));
+
+            if(operationString.includes("LIHT")){
+                setAnswer("(0/0)");
+            }
+
+            setFractionState(operationString.includes("LIHT") ? "up" : "off");
+
             // Show operation to user
-            setOperation(operationString.replaceAll(".", ","));
+            setOperation(operationString.replaceAll(".", ",").replaceAll("LIHT", ""));
             setDtStartedLast(Date.now());
 
             // Check if the operation contains the multiply and divide chars
@@ -531,35 +541,45 @@ export default function GamePage({data, time}){
             // Remove the fraction so that when the next operation appears, a fraction is not shown by default
             setFractionState("off");
 
-            // Handle fraction
-            var regex = /\((\d+)\/(\d+)\)/;
-            var matches = formattedAnswer.match(regex);
+            var isCorrect = false;
 
-            if(matches != null){
-                var numerator = matches[1].toString();
-                var denominator = matches[2].toString();
-                formattedAnswer = formattedAnswer.replace(matches[0], "+"+((numerator/denominator)));
+            if(simplify){
+                if(!formattedAnswer.includes("(")){
+                    formattedAnswer = "(" + formattedAnswer + "/1)";
+                }
+
+                isCorrect = formattedAnswer == correct;
+            }else{
+                // Handle fraction
+                var regex = /\((\d+)\/(\d+)\)/;
+                var matches = formattedAnswer.match(regex);
+
+                if(matches != null){
+                    var numerator = matches[1].toString();
+                    var denominator = matches[2].toString();
+                    formattedAnswer = formattedAnswer.replace(matches[0], "+"+((numerator/denominator)));
+                }
+
+                formattedAnswer = formattedAnswer.replace(",", ".");
+
+                formattedAnswer = formattedAnswer.replace(" ", "");
+
+                if(formattedAnswer.startsWith("-")){
+                    formattedAnswer = "-("+formattedAnswer.slice(1)+")";
+                }
+
+                // At last, evaluate the string
+                formattedAnswer = eval(formattedAnswer);
+
+                // Is the answer correct
+                isCorrect = parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2));
             }
-
-            formattedAnswer = formattedAnswer.replace(",", ".");
-
-            formattedAnswer = formattedAnswer.replace(" ", "");
-
-            if(formattedAnswer.startsWith("-")){
-                formattedAnswer = "-("+formattedAnswer.slice(1)+")";
-            }
-
-            // At last, evaluate the string
-            formattedAnswer = eval(formattedAnswer);
-
-            // Is the answer correct
-            var isCorrect = parseFloat(parseFloat(formattedAnswer).toFixed(2)) == parseFloat(parseFloat(correct).toFixed(2));
 
             onAnswer(isCorrect, {
                 "operation":operations.data[currentLevel.current][index].operation,
                 "correct":correct,
-                "answer":parseFloat(parseFloat(formattedAnswer).toFixed(2)),
-                "isCorrect":isCorrect
+                "answer": simplify ? formattedAnswer : parseFloat(parseFloat(formattedAnswer).toFixed(2)),
+                "isCorrect":isCorrect,
             });
 
         }else{

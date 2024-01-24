@@ -27,18 +27,20 @@ Route::get("/handleForm", function (){
 Route::get('/login', function () {
     return Inertia::render('Login/LoginPage');
 })->name("login");
+
 Route::post('/login', function () {
-    if(isset($_POST["registration"])){
-        $email = $_POST("email");
-        $parool = $_POST("pwd");
+    if(isset($_POST["email"])){
+
+        $email = $_POST["email"];
+        $parool = $_POST["pwd"];
     
     
-        require_once "database.php";
-        require_once "functions.php";
+        require_once "../login/database.php";
+        require_once "../login/functions.php";
     
         if (emptyLogin($email, $parool) !== false){
             //add inf
-            exit();
+            return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
         }
     
         loginUser($conn, $email, $parool);

@@ -1,5 +1,8 @@
 <?php
 
+use Inertia\Inertia;
+
+
 //Sigup Functions
 function emptyInputSignup($name, $famname, $email, $class, $pwd, $pwdRepeat) {
     return empty($name) || empty($famname) || empty($email) || empty($class) || empty($pwd) || empty($pwdRepeat);
@@ -75,6 +78,7 @@ function loginUser($conn, $email, $pwd){
 
     if ($checkPwd === false) {
         # code...
+        return Inertia::render('Login/LoginPage', ["message"=>"Parool on vale!"]);
     } elseif ($checkPwd === true) {
         session_start();
         $_SESSION['userid'] = $nameExists["usersId"];

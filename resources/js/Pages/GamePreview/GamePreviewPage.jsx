@@ -155,6 +155,11 @@ export default function GamePreviewPage(){
                 "extra":["A", "B", "C"],
                 "types":["natural", "integer"],
             },
+            "lihtsustamine":{
+                "lvls":6,
+                "extra":["A", "B", "C"],
+                "types":["natural"],
+            }
         };
 
         var type = $("#game-type").val();
@@ -238,6 +243,7 @@ export default function GamePreviewPage(){
                             <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
                             <option value="jaguvus">Jaguvusseadused</option>
+                            <option value="lihtsustamine">Lihtsustamine</option>
                         </select>
 
                         <select name="" id="" style={{display:"none"}}>

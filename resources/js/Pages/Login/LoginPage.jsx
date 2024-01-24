@@ -7,23 +7,13 @@ import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 
-export default function LoginPage(){
+export default function LoginPage({message}){
 
     const [loading, setLoading] = useState(false);
 
     function handleSubmit(e){
-        // Prevent reload
-        e.preventDefault();
-
         // Show loading animation
         setLoading(true);
-
-        //After 3 seconds, remove loading effect
-
-        setTimeout(() => {
-            setLoading(false);
-            window.location.href=route("dashboard");
-        }, 3000);
     }
 
     const formChildrenStyle = {width:"100%", boxSizing:"border-box", height:"56px", margin:"8px auto"};
@@ -37,15 +27,14 @@ export default function LoginPage(){
             <Head title="Logi sisse" />
             <LoginHeader pageName={"Logi sisse"} />
             <br />
-            <form method="none" className="login-container">
+            <form method="post" action={route("login")} className="login-container">
                 <input type="hidden" name="_token" value={window.csrfToken} />
-
-
-                <input style={formChildrenStyle} type="email" placeholder="E-posti aadress"/>
+                {message}
+                <input style={formChildrenStyle} name="email" type="email" placeholder="E-posti aadress"/>
                 <br />
-                <PasswordInput divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
+                <PasswordInput name="pwd" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
                 <SizedBox height="16px" />
-                <button onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
+                <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
                 <div className="sso-btns">
