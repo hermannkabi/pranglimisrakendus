@@ -119,9 +119,9 @@ route::get('google-login/callback', [GoogleController::class, 'googlecallback'])
 //     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
 // })->name("game");
 
-Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
+Route::get("/game/{level}/{mis}/{aeg}/{tüüp}/{roman}", function ($level, $mis, $aeg, $tüüp, $roman){
     
-    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
+    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg, $roman), "time"=>60*$aeg]);
 })->name("gameNew");
 
 require __DIR__.'/auth.php';
