@@ -30,6 +30,7 @@ class GameController extends Controller
     const ASTEJUURIMINE = "astejuurimine";
     const JAGUVUS = "jaguvus";
     const LIHTSUSTAMINE = "lihtsustamine";
+    const MULTIOPERAND = "multioperand";
     //....
 
     function gcd ($a, $b) {
@@ -107,6 +108,11 @@ class GameController extends Controller
                     $z = $opnames();
                 }
                 array_push($array, ["operation"=> "LIHT(" . ($x * $z) . "/" .($y * $z) . ")" , "answer"=>$ans($x * $z, $y * $z), "level"=>$level]);
+            }
+
+            //Multioperand
+            if ($uusmis == GameController::MULTIOPERAND){
+                array_push($array, ["operation"=> $x , "answer"=>$ans($x, $y), "level"=>$level]);
             }
 
             $count ++;
@@ -1303,7 +1309,114 @@ class GameController extends Controller
 
         return $loendlünk;
     }
+    public function multioperand($level, $aeg){
+        $xvalues = [
+            "1"=>[
+                "natural"=>function (){return random_int(1, 10);},
+                "integer"=>function (){return random_int(-10, 10);},
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(10, 100);},
+                "integer"=>function (){
+                    $randints = [random_int(-100, -10), random_int(10, 100)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(101, 1000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000, -101), random_int(101, 1000)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(10001, 100000);},
+                "integer"=>function (){
+                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(1001, 10000);},
+                "integer"=>function (){
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(1001, 10000);},
+                "integer"=>function (){
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+            ],
+        ];
+        $yvalues = [
+            "1"=>[
+                "natural"=>function (){return random_int(1, 8);},
+                "integer"=>function (){return random_int(-8, 8);},
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(10, 88);},
+                "integer"=>function (){
+                    $randints = [random_int(-88, -10), random_int(10, 88)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(101, 888);},
+                "integer"=>function (){
+                    $randints = [random_int(-888, -101), random_int(101, 888)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(10001, 88888);},
+                "integer"=>function (){
+                    $randints = [random_int(-88888, -10001), random_int(10001, 88888)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(1001, 8888);},
+                "integer"=>function (){
+                    $randints = [random_int(-8888, -1001), random_int(1001, 8888)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(1001, 10000);},
+                "integer"=>function (){
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(10001, 1000000);},
+                "integer"=>function (){
+                    $randints = [random_int(-1000000, -10001), random_int(10001, 1000000)];
+                    return $randints[array_rand($randints)];},
+                ],
+        ];
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::MULTIOPERAND, function ($num1, $num2){
+            $mis = random_int(1,4);
+            return $mis == 1 ? $num1 + $num2 : ($mis == 2 ? $num1 * $num2 : $num1);
+            }, [], [],  $level, $aeg);
 
+        return $returnData["array"];
+    }
     public function jagseadus($level, $tüüp, $aeg){
         $xvalues = [
             "1"=>[
@@ -1578,40 +1691,31 @@ class GameController extends Controller
         
         $xvalues = [
             "1"=>[
-                "natural"=>function (){return random_int(1, $max =5);},
-                //"fraction"=>function (){return random_int(1, $max =5);},
+                "natural"=>function (){return random_int(1, $max =5);},  
             ],
             "2"=>[
                 "natural"=>function (){return random_int(1, $max =5);},
-                //"fraction"=>function (){return random_int(6, $max =9);},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(1, $max =5);},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(2, $max =10);},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(20, $max =30);},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(11, $max =20);},
-                //"fraction"=>function (){return random_int(31, $max =100);},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(21, $max =30);},
-                //"fraction"=>function (){return random_int(21, $max =30);},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, $max =100);},
-                //"fraction"=>function (){return random_int(31, $max =100);},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(101, $max =1000);},
-                //"fraction"=>function (){return random_int(101, $max =1000);},
             ],
             
         ];
@@ -1619,78 +1723,60 @@ class GameController extends Controller
         $x2values = [
             "1"=>[
                 "natural"=>function (){return random_int(1, $max =5);},
-                //"fraction"=>function (){return random_int(1, $max =5);},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(1, $max =5);},
-                //"fraction"=>function (){return random_int(6, $max =9);},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(1, $max =5);},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(2, $max =10);},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(2, $max =10);},
-                //"fraction"=>function (){return random_int(20, $max =30);},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(11, $max =20);},
-                //"fraction"=>function (){return random_int(31, $max =100);},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(21, $max =30);},
-                //"fraction"=>function (){return random_int(21, $max =30);},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, $max =100);},
-                //"fraction"=>function (){return random_int(31, $max =100);},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(101, $max =1000);},
-                //"fraction"=>function (){return random_int(101, $max =1000);},
             ],
             
         ];
         $zvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
-                //"fraction"=>function (){return random_int(1, 5) + 0.5;},
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                //"fraction"=>function (){return random_int(6, 9) + 0.5;},
             ],
             "3"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                //"fraction"=>function (){return random_int(6, 10) + 0.5;},
             ],
             "4"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                //"fraction"=>function (){return random_int(2, 10) + random_int(1, 9)/10;},
             ],
             "5"=>[
                 "natural"=>function (){return random_int(101, 500);},
-                //"fraction"=>function (){return random_int(10, 20) + random_int(1, 9)/10;},
             ],
             "6"=>[
                 "natural"=>function (){return random_int(21, 30);},
-                //"fraction"=>function (){return random_int(21, 30) + random_int(1, 9)/10;},
             ],
             "A"=>[
                 "natural"=>function (){return random_int(21, 30);},
-                //"fraction"=>function (){return random_int(21, 30) + random_int(1, 9)/10;},
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                //"fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                //"fraction"=>function (){return random_int(31, 100) + random_int(1, 99)/100;},
             ],
         ];
         $x = $xvalues[$level][$tüüp];
