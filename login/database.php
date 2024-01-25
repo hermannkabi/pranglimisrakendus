@@ -1,6 +1,6 @@
 <?php
 
-$serverName = "127.0.0.1:8000";
+$serverName = "localhost";
 $dbUsername = "root";
 $dbPassword = "";
 $dbName = "login";
