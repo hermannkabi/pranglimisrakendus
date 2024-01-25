@@ -188,6 +188,12 @@ export default function GamePreviewPage(){
                 if(typeData.types.includes(urlParams.get("type"))){
                     $("#number-type").val(urlParams.get("type")).change();
                 }
+
+                // If there is only 1 type, set the value to that
+                if(typeData.types.length == 1){
+                    $("#number-type").val(typeData.types[0]).change();
+                }
+
             }, 10);
         }
     }

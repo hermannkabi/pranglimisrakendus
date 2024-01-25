@@ -121,3 +121,8 @@ section{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.strikethrough span{
+    text-decoration: line-through;
+    text-decoration-thickness: 4px;
+}
