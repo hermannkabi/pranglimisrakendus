@@ -380,7 +380,7 @@ export default function GamePage({data, time}){
             if(answer.includes(")")){
 
                 // If the answer has an empty fraction, delete the whole fraction
-                if(answer.endsWith("(0/0)")){
+                if(answer.endsWith("(0/0)") && !simplify){
                     ans = answer.replace("(0/0)", "");
                     setAnswer(ans);
                     setFractionState("off");
