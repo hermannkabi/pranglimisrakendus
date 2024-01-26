@@ -69,7 +69,7 @@ function loginUser($conn, $email, $pwd){
     $nameExists = nameExists($conn, $email);
 
     if ($nameExists === false){
-        //add more inf
+        return Inertia::render('Login/LoginPage', ["message"=>"Sellist kasutajat pole"]);
         exit();
     }
 

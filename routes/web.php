@@ -37,14 +37,14 @@ Route::post('/login', function () {
     
         require_once "../login/database.php";
         require_once "../login/functions.php";
-    
+
         if (emptyLogin($email, $parool) !== false){
             //add inf
             return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
         }
     
         loginUser($conn, $email, $parool);
-    } else {
+        } else {
         return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
     }
 })-> name('loginForm');
