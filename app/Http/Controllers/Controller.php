@@ -1814,10 +1814,33 @@ class GameController extends Controller
         }
     }
 
+    public function kujundid($level, $aeg){
+        $random =random_int(1,3);
+        $random_number_array = range(0, 3);
+        shuffle($random_number_array);
+        if($level === '1'){
+            $random_number_array = array_slice($random_number_array ,0,9);
+        } 
+        if($level ==='2'){
+            $random_number_array = array_slice($random_number_array ,0,16);
+        }
+        if($level === '3'){
+            $random_number_array = array_slice($random_number_array ,0,25);
+        }
+        if($level === '4'){
+            $random_number_array = array_slice($random_number_array ,0,36);
+        }
+        if($level === '5'){
+            $random_number_array = array_slice($random_number_array ,0,49);
+        }
+        $loend = array_count_values($random_number_array);
+        array_push($array, ["operation"=> $random_number_array, "answer"=>$loend[$random], "level"=>$level]);
+    }
+
     public function wrapper($tehe, $tasemed, $tüüp, $aeg, $roman){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine' && $tehe != "jaguvus" && $tehe != GameController::LIHTSUSTAMINE){
+        if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine' && $tehe != "jaguvus" && $tehe != GameController::LIHTSUSTAMINE && $tehe != "kujundid"){
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
@@ -1872,6 +1895,10 @@ class GameController extends Controller
 
                 if($tehe == GameController::LIHTSUSTAMINE){
                     $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lihtsustamine($tasemed[$lugeja], $tüüp, $aeg);
+                }
+
+                if($tehe == 'kujundid'){
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujunid($tasemed[$lugeja], $aeg);
                 }
                 
             }
