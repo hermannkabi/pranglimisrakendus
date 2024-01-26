@@ -1,12 +1,12 @@
 <?php
 require 'config.php';if(isset($_SESSION['login_id'])){
-    header('Location: home.php');
+    header('http://127.0.0.1:8000/dashboard');
     exit;
 }require 'google-api/vendor/autoload.php';// Creating new google client instance
 $client = new Google_Client();// Enter your Client ID
-$client->setClientId('add here client id');
+$client->setClientId('388736580170-u85heuu01abear95nfgppjt7a75u0mov.apps.googleusercontent.com');
 // Enter your Client Secrect
-$client->setClientSecret('add here client secrect');
+$client->setClientSecret('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');
 // Enter the Redirect URL
 $client->setRedirectUri('http://127.0.0.1:8000/google-login-php/login.php');// Adding those scopes which we want to get (email & profile Information)
 $client->addScope("email");
