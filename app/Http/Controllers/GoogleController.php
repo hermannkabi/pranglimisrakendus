@@ -12,7 +12,7 @@ class GoogleController extends Controller
 {
     public function googlepage()
     {
-        return socialite::driver('google')->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     public function googlecallback()

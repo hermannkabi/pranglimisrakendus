@@ -7,6 +7,9 @@ $dbName = "login";
 
 $conn = mysqli_connect($serverName, $dbUsername, $dbPassword, $dbName);
 
+return Inertia::render('Welcome/WelcomePage', ["message"=>"Parool on vale!"]);
+
+
 if (!$conn) {
-    die('Connection failed: ' . mysqli_connect_error());
+    return Inertia::render('Login/LoginPage', ["message"=>"Parool on vale!"]);
 }

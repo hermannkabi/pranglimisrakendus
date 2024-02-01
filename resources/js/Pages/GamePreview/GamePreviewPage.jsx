@@ -116,7 +116,7 @@ export default function GamePreviewPage(){
             "liitmine":{
                 "lvls":5,
                 "extra":["A", "B", "C"],
-                "types":["natural", "integer", "fraction"],
+                "types":["natural", "integer", "fraction", "roman"],
             },
             // If the value is a string, go to said key
             "lahutamine":"liitmine",
@@ -125,7 +125,7 @@ export default function GamePreviewPage(){
             "korrutamine":{
                 "lvls":6,
                 "extra":["A", "B", "C"],
-                "types":["natural", "integer", "fraction"],
+                "types":["natural", "integer", "fraction", "roman"],
 
             },
             "jagamine":"korrutamine",
@@ -259,7 +259,7 @@ export default function GamePreviewPage(){
                         </select>
                         <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
-                            {types.map((e)=><option value={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud"}[e]}</option>)}                            
+                            {types.map((e)=><option value={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option>)}                            
                         </select>
 
                         <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>

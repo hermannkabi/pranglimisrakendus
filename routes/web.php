@@ -33,10 +33,13 @@ Route::post('/login', function () {
 
         $email = $_POST["email"];
         $parool = $_POST["pwd"];
+
     
     
         require_once "../login/database.php";
         require_once "../login/functions.php";
+
+
 
         if (emptyLogin($email, $parool) !== false){
             //add inf
@@ -44,8 +47,10 @@ Route::post('/login', function () {
         }
     
         loginUser($conn, $email, $parool);
-        } else {
-        return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
+
+
+    }else{
+        return Inertia::render('Register/RegisterPage');
     }
 })-> name('loginForm');
 Route::get('/ui', function () {
@@ -119,9 +124,9 @@ route::get('google-login/callback', [GoogleController::class, 'googlecallback'])
 //     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
 // })->name("game");
 
-Route::get("/game/{level}/{mis}/{aeg}/{tüüp}/{roman}", function ($level, $mis, $aeg, $tüüp, $roman){
+Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     
-    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg, $roman), "time"=>60*$aeg]);
+    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew");
 
 require __DIR__.'/auth.php';

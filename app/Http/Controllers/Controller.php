@@ -38,6 +38,9 @@ class GameController extends Controller
         return $b ? GameController::gcd($b, $a % $b) : $a;
     }
     function numberToRoman($number) {
+        if($number == 0){
+            return "0";
+        }
         $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
         $returnValue = '';
         while ($number > 0) {
@@ -93,7 +96,7 @@ class GameController extends Controller
             $yans = $y;
             $uusmis = $mis;
 
-            if($roman != null){
+            if($roman){
                 $x = $this -> numberToRoman($x);
                 $y = $this -> numberToRoman($y);
             }
@@ -149,7 +152,7 @@ class GameController extends Controller
     // Üritame kirjutada võimalikult DRY koodi
 
     //Addition and Substraction
-    public function liitlah($level, $mis, $tüüp, $aeg, $roman){
+    public function liitlah($level, $mis, $tüüp, $aeg){
         $array = [];
         $x = 0;
         $y = 0;
@@ -271,9 +274,9 @@ class GameController extends Controller
 
         //Specific levels
         if($level != "all"){
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
+            $returnData = GameController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level, $aeg, $roman);
+             }, $opnames, $opsymbs, $level, $aeg, $tüüp == "roman");
 
              return $returnData["array"];
         }
@@ -424,7 +427,7 @@ class GameController extends Controller
 
         // Ascending levels -- Natural
         
-        if ($level === "all" && $tüüp ==='natural'){
+        if ($level === "all" && ($tüüp ==='natural' || $tüüp == "roman")){
             do{
                 again4:
                 $x = random_int($add, 1 + $add);
@@ -467,13 +470,22 @@ class GameController extends Controller
                 $xold = $x;
                 $yold = $y;
 
+                $xans = $x;
+                $yans = $y;
+
+
+                if($tüüp == "roman"){
+                    $x = $this -> numberToRoman($x);
+                    $y = $this -> numberToRoman($y);
+                }
+
                 $uusmis = $mis == GameController::BOTH ? (random_int(1, 2) == 1 ?  GameController::LIITMINE : GameController::LAHUTAMINE) : $mis;
 
                 if ($uusmis === GameController::LIITMINE){
-                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$xans + $yans, "level"=>$tase]);
                 }
                 if ($uusmis === GameController::LAHUTAMINE){
-                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$xans, "level"=>$tase]);
                 }
 
                 $add += $max/5;
@@ -499,7 +511,8 @@ class GameController extends Controller
         $xmax2 = 0;
         $ymax = 0;
         $ymax2 = 0;
-        $add = 0;
+        $max2 = 0;
+        $add = 1;
         $add2 = 0;
         $xadd = 0;
         $yadd = 0;
@@ -644,9 +657,9 @@ class GameController extends Controller
         ];
 
         if($level != "all"){
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis){
+            $returnData = GameController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
-             }, $opnames, $opsymbs, $level, $aeg, null);
+             }, $opnames, $opsymbs, $level, $aeg, $tüüp == "roman");
 
              return $returnData["array"];
         }
@@ -870,12 +883,15 @@ class GameController extends Controller
 
         
         //Ascending levels -- Natural
-        if ($level === 'all' && $tüüp === 'natural'){
+        if ($level === 'all' && ($tüüp === 'natural' || $tüüp == "roman")){
             do {
                 again6:
+                $max = 5;
+
                 $x = random_int($add, 1 + $add);
                 $y = random_int($add, 1 + $add);
                 if ($count > 5){
+
                     $x = random_int($add - 5, $add - 4);
                     $tase = 2;
                 }
@@ -939,19 +955,25 @@ class GameController extends Controller
                 }
                 $xold = $x;
                 $yold = $y;
+
+                $xans = $x;
+                $yans = $y;
+
+                if($tüüp == "roman"){
+                    $x = $this -> numberToRoman($x);
+                    $y = $this -> numberToRoman($y);
+                }
+
+                if ($mis === 'mõlemad'){
+                    $mis = random_int(1, 2) == 1 ? "korrutamine" : "jagamine"; 
+                }
+
+                // TODO: Jarl
                 if ($mis === 'korrutamine') {
-                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
+                    array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$xans * $yans, "level"=>$tase]);
                 }
                 if ($mis === 'jagamine') {
-                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                    }
+                    array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$xans, "level"=>$tase]);
                 }
                 
                 $add += $max / 5;
@@ -968,7 +990,7 @@ class GameController extends Controller
     }
 
     //Astenamine - Exponentiation
-    public function astendamine($level, $mis, $tüüp, $aeg,){
+    public function astendamine($level, $mis, $tüüp, $aeg){
         $array = [];
         $x = 0;
         $y = 0;
@@ -1834,10 +1856,10 @@ class GameController extends Controller
             $random_number_array = array_slice($random_number_array ,0,49);
         }
         $loend = array_count_values($random_number_array);
-        array_push($array, ["operation"=> $random_number_array, "answer"=>$loend[$random], "level"=>$level]);
+        array_push($array, ["operation"=> $random_number_array, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
     }
 
-    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $roman){
+    public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
         if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine' && $tehe != "jaguvus" && $tehe != GameController::LIHTSUSTAMINE && $tehe != "kujundid"){
@@ -1870,11 +1892,11 @@ class GameController extends Controller
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == "liitmine" or $tehe == "lahutamine" or $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $roman);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "korrutamine" or $tehe == "jagamine" or $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $roman);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "lünkamine"){
@@ -1886,7 +1908,7 @@ class GameController extends Controller
                 }
 
                 if($tehe == GameController::ASTENDAMINE or $tehe == GameController::JUURIMINE or $tehe == GameController::ASTEJUURIMINE){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg, $roman);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
 
                 if($tehe == GameController::JAGUVUS){

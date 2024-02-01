@@ -34,7 +34,7 @@ function  nameExists($conn, $email) {
     mysqli_stmt_execute($stmt);
 
     $resultData = mysqli_stmt_get_result($stmt);
-    if ($row = mysqli_fetch_assoc($resultData)) {
+    if ($row == mysqli_fetch_assoc($resultData)) {
         return $row;
     } else {
         $result = false;
@@ -76,14 +76,17 @@ function loginUser($conn, $email, $pwd){
     $pwdHashed = $nameExists["usersPwd"];
     $checkPwd = password_verify($pwd, $pwdHashed);
 
-    if ($checkPwd === false) {
+    if (!$checkPwd) {
         # code...
         return Inertia::render('Login/LoginPage', ["message"=>"Parool on vale!"]);
-    } elseif ($checkPwd === true) {
+    } else{
         session_start();
         $_SESSION['userid'] = $nameExists["usersId"];
         $_SESSION['username'] = $nameExists["usersName"];
         $_SESSION['userfamname'] = $nameExists["usersFamName"];
         $_SESSION['userclass'] = $nameExists["usersClass"];
+
+        return Inertia::render('Dashboard/DashboardPage', ["user"=>"Parool on vale!"]);
+
     }
 }
