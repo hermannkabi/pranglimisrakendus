@@ -58,6 +58,8 @@ export default function GamePage({data, time}){
 
     // Some operations become pointless with fractions enabled (such as division)
     const [fractionAllowed, setFractionAllowed] = useState(true);
+    const [minusAllowed, setMinusAllowed] = useState(true);
+    const [commaAllowed, setCommaAllowed] = useState(true);
     
 
     // MOUSETRAP KEY BINDINGS
@@ -99,6 +101,14 @@ export default function GamePage({data, time}){
 
     // Simplify type
     const [simplify, setSimplify] = useState(false);
+
+    // Count shapes type
+    const [shapes, setShapes] = useState(false);
+
+    // What shape is the user counting
+    const [whatShape, setWhatShape] = useState("<div class='shape circle inline'>");
+
+
 
     // Two operation states instead of one for compare type
     const [operation1, setOperation1] = useState("");
@@ -189,6 +199,35 @@ export default function GamePage({data, time}){
                 operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
             }
 
+
+            // Check if game is of type shape count
+            var isArray = Array.isArray(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation);
+            if(isArray){
+                setShapes(true);
+
+                // A really long string containing all the shapes that are in this operation
+                var shapesHTMLString = "";
+                var numToShape={
+                    0:"space",
+                    1:"square",
+                    2:"circle",
+                    3:"triangle",
+                };
+                
+                for(var idx = 0; idx < operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.length; idx++){
+                    var shape = operations.data[currentLevel.current][forcedIndex ?? index + 1].operation[idx];
+                    
+                    shapesHTMLString += "<div class='shape "+numToShape[shape]+"'></div>";
+                }
+
+                // Sets the column count to the squre root of the ans count
+                // This makes the shapes appear in a square (somewhat)
+                var columnCount = Math.floor(Math.sqrt(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.length));
+
+                operationString = "<div class='shapes-container' style='grid-template-columns: repeat("+columnCount+", 1fr)'>"+shapesHTMLString+"</div>";
+                setWhatShape("<div class='shape inline "+numToShape[operations.data[currentLevel.current][forcedIndex ?? index + 1].answer.shape]+"'></div>");
+            }
+
             // Check if operation is of type 'gap'
             setIsGap(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.includes("Lünk"));
 
@@ -210,7 +249,11 @@ export default function GamePage({data, time}){
 
             // Check if the operation contains the multiply and divide chars
             // If it does, we disable entering fractions
-            setFractionAllowed(!(operationString.includes("·") || operationString.includes(":")))
+            // Similarly with comma and minus
+            setFractionAllowed(!(operationString.includes("·") || operationString.includes(":") || isArray ));
+            setCommaAllowed(!isArray);
+            setMinusAllowed(!isArray);
+
         }else{
             // The current level has ended
 
@@ -303,7 +346,11 @@ export default function GamePage({data, time}){
 
     // Handles numbers, minus and comma
     function handleNumberClick(number){   
-        if(timeOver){return;}               
+        if(timeOver){return;}    
+
+        // Check if comma and minus are allowed, if not, return
+        if((number == "," && !commaAllowed) || (number=="-" && !minusAllowed)) return;
+
         // Handle click so that there will be no leading zero
         if((answer == "0" || answer == "-0") && number != ","){
             setAnswer(answer.replace("0", number.toString()));
@@ -432,7 +479,9 @@ export default function GamePage({data, time}){
     // Handles the minus click and minus character press
     // Toggles between negative and positive
     function handleMinusClick(){
-        if(timeOver){return;}               
+        if(timeOver){return;}  
+        
+        if(!minusAllowed) return;
 
         var newAnswer = answer;
         if(answer.startsWith("-")){
@@ -528,6 +577,19 @@ export default function GamePage({data, time}){
     // Therefore, things that ALL operation checkings need (dynamic points, animations etc) are done in another function
     function checkAnswer(forceTrue){
         if(!timeOver){
+
+            if(shapes){
+                const correct = operations.data[currentLevel.current][index].answer.ans;
+
+                var isCorrect = answer == correct;
+                onAnswer(isCorrect, {
+                    "operation":operations.data[currentLevel.current][index].operation.length + " kujundit",
+                    "correct":correct.toString(),
+                    "answer": answer.toString(),
+                    "isCorrect":isCorrect,
+                });
+                return;
+            }
 
             const correct = operations.data[currentLevel.current][index].answer.toString();
 
@@ -757,7 +819,8 @@ export default function GamePage({data, time}){
 
                     {/* The operation data  and answer*/}
                     {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
-                    {!compare && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> {!divisionLaw && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {shapes && <><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>}
+                    {!compare && !shapes && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
@@ -775,12 +838,12 @@ export default function GamePage({data, time}){
                     <NumberButton content="4" onClick={()=>handleNumberClick(4)} />
                     <NumberButton content="5" onClick={()=>handleNumberClick(5)} />
                     <NumberButton content="6" onClick={()=>handleNumberClick(6)} />
-                    <NumberButton content="-" onClick={handleMinusClick} />
+                    <NumberButton disabled={!minusAllowed} content="-" onClick={handleMinusClick} />
 
                     <NumberButton content="7" onClick={()=>handleNumberClick(7)} />
                     <NumberButton content="8" onClick={()=>handleNumberClick(8)} />
                     <NumberButton content="9" onClick={()=>handleNumberClick(9)} />
-                    <NumberButton content="," onClick={()=>handleNumberClick(",")} />
+                    <NumberButton disabled={!commaAllowed} content="," onClick={()=>handleNumberClick(",")} />
 
                     <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />

@@ -444,3 +444,51 @@ select:after{
 .frac span{
     user-select: none;
 }
+
+
+/* Shapes type */
+
+.shapes-container{
+    display: inline-grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.shape{
+    height: 24px;
+    width: 24px;
+    background-color: rgb(var(--primary-color));
+}
+
+.what-shape{
+    display: inline-flex;
+    margin-left: 4px;
+}
+
+.shape.inline{
+    display: inline-block;
+    top: 8px;
+    scale: 0.8;
+}
+
+.shape.space{
+    background-color: transparent;
+}
+
+.shape.square{
+    border-radius: 2px;
+}
+
+.shape.circle{
+    border-radius: 12px;
+}
+
+.shape.triangle{
+    width: 0; 
+    height: 0; 
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 24px solid rgb(var(--primary-color));
+    background-color: transparent;
+    border-radius: 2px;
+}

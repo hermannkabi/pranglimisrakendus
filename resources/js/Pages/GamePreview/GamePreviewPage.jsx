@@ -10,7 +10,7 @@ export default function GamePreviewPage(){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    const typeIndependents = ["lünkamine", "võrdlemine"];
+    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose"];
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
@@ -159,7 +159,12 @@ export default function GamePreviewPage(){
                 "lvls":6,
                 "extra":["A", "B", "C"],
                 "types":["natural"],
-            }
+            },
+            "kujundid":{
+                "lvls":5,
+                "extra":[],
+                "types":[],
+            },
         };
 
         var type = $("#game-type").val();
@@ -250,6 +255,7 @@ export default function GamePreviewPage(){
                             <option value="lünkamine">Lünkamine</option>
                             <option value="jaguvus">Jaguvusseadused</option>
                             <option value="lihtsustamine">Lihtsustamine</option>
+                            <option value="kujundid">Kujundid</option>
                         </select>
 
                         <select name="" id="" style={{display:"none"}}>

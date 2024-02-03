@@ -96,9 +96,15 @@ class GameController extends Controller
             $yans = $y;
             $uusmis = $mis;
 
+            $sum = $x + $y;
+            $prod = $x * $y;
+
             if($roman){
                 $x = $this -> numberToRoman($x);
                 $y = $this -> numberToRoman($y);
+                $sum = $this -> numberToRoman($xans + $yans);
+                $prod = $this -> numberToRoman($xans * $yans);
+
             }
 
             if ($uusmis === GameController::BOTH){
@@ -107,12 +113,12 @@ class GameController extends Controller
 
             // Liitmine v korrutamine
             if (in_array($uusmis, [GameController::LIITMINE, GameController::KORRUTAMINE])){
-                array_push($array, ["operation"=>$x . $opsymbs[0] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=>$x . $opsymbs[0] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
             }
 
             // Lahutamine v jagamine
             if (in_array($uusmis, [GameController::LAHUTAMINE, GameController::JAGAMINE])){
-                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($x + $y) : ($x * $y)) . $opsymbs[1] . ($y < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($sum) : ($prod)) . $opsymbs[1] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
             }
 
             //Astendamine v juurimine
@@ -473,10 +479,12 @@ class GameController extends Controller
                 $xans = $x;
                 $yans = $y;
 
+                $sum = $x + $y;
 
                 if($tüüp == "roman"){
                     $x = $this -> numberToRoman($x);
                     $y = $this -> numberToRoman($y);
+                    $sum = $this -> numberToRoman($xans + $yans);
                 }
 
                 $uusmis = $mis == GameController::BOTH ? (random_int(1, 2) == 1 ?  GameController::LIITMINE : GameController::LAHUTAMINE) : $mis;
@@ -485,7 +493,7 @@ class GameController extends Controller
                     array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$xans + $yans, "level"=>$tase]);
                 }
                 if ($uusmis === GameController::LAHUTAMINE){
-                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$xans, "level"=>$tase]);
+                    array_push($array, ["operation"=>$sum. '-' . $y, "answer"=>$xans, "level"=>$tase]);
                 }
 
                 $add += $max/5;
@@ -1837,26 +1845,34 @@ class GameController extends Controller
     }
 
     public function kujundid($level, $aeg){
-        $random =random_int(1,3);
-        $random_number_array = range(0, 3);
-        shuffle($random_number_array);
-        if($level === '1'){
-            $random_number_array = array_slice($random_number_array ,0,9);
-        } 
-        if($level ==='2'){
-            $random_number_array = array_slice($random_number_array ,0,16);
-        }
-        if($level === '3'){
-            $random_number_array = array_slice($random_number_array ,0,25);
-        }
-        if($level === '4'){
-            $random_number_array = array_slice($random_number_array ,0,36);
-        }
-        if($level === '5'){
-            $random_number_array = array_slice($random_number_array ,0,49);
-        }
-        $loend = array_count_values($random_number_array);
-        array_push($array, ["operation"=> $random_number_array, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
+        $array = [];
+        $count = 0;
+        do{            
+            $random =random_int(1,3);
+            $random_number_array = range(0, 3);
+            shuffle($random_number_array);
+            if($level === '1'){
+                $random_number_array = array_slice($random_number_array ,0,9);
+            } 
+            if($level ==='2'){
+                $random_number_array = array_slice($random_number_array ,0,16);
+            }
+            if($level === '3'){
+                $random_number_array = array_slice($random_number_array ,0,25);
+            }
+            if($level === '4'){
+                $random_number_array = array_slice($random_number_array ,0,36);
+            }
+            if($level === '5'){
+                $random_number_array = array_slice($random_number_array ,0,49);
+            }
+            $loend = array_count_values($random_number_array);
+            array_push($array, ["operation"=> $random_number_array, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
+            $count ++;
+    
+        }while($count < 10 + ($aeg * 7));
+
+        return $array;
     }
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
@@ -1920,7 +1936,7 @@ class GameController extends Controller
                 }
 
                 if($tehe == 'kujundid'){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujunid($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujundid($tasemed[$lugeja], $aeg);
                 }
                 
             }
