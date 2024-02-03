@@ -117,8 +117,8 @@ Route::get("/preview", function (){
 })->name("preview");
 
 
-route::get('google-login', [GoogleController::class, 'googlepage'])->name('googleLogin');
-route::get('google-login/callback', [GoogleController::class, 'googlecallback']);
+Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
 //     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);
