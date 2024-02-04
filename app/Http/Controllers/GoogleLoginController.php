@@ -22,6 +22,7 @@ class GoogleLoginController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
         $user = User::where('email', $googleUser->email)->first();
+        // TODO: Lisa vaheleht, kus küsib klassi || küsi seda dahsboardis
         if(!$user)
         {
             $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000,999999))]);

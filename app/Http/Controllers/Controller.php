@@ -746,19 +746,14 @@ class GameController extends Controller
                 }
                 $xold = $x;
                 $yold = $y;
+                if ($mis === 'mõlemad'){
+                    $mis = random_int(1, 2) == 1 ? "korrutamine" : "jagamine";
+                }
                 if ($mis === 'korrutamine') {
                     array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
                 }
                 if ($mis === 'jagamine') {
                     array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                    }
                 }
                 
                 $add += $max / 5;
@@ -861,19 +856,15 @@ class GameController extends Controller
                 }
                 $xold = $x;
                 $yold = $y;
+
+                if ($mis === 'mõlemad'){
+                    $mis = random_int(1, 2) == 1 ? "korrutamine" : "jagamine";
+                }
                 if ($mis === 'korrutamine') {
                     array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
                 }
                 if ($mis === 'jagamine') {
                     array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                }
-                if ($mis === 'mõlemad'){
-                    $random  = random_int(1, 2);
-                    if ($random == 1){
-                        array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$x * $y, "level"=>$tase]);
-                    } else {
-                        array_push($array, ["operation"=>$x * $y . ':' . $y, "answer"=>$x, "level"=>$tase]);
-                    }
                 }
                 
                 $xadd += $xmax / 5;
@@ -976,7 +967,6 @@ class GameController extends Controller
                     $mis = random_int(1, 2) == 1 ? "korrutamine" : "jagamine"; 
                 }
 
-                // TODO: Jarl
                 if ($mis === 'korrutamine') {
                     array_push($array, ["operation"=>$x . '·' . $y, "answer"=>$xans * $yans, "level"=>$tase]);
                 }

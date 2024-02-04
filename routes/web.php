@@ -11,6 +11,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
@@ -42,7 +43,6 @@ Route::post('/login', function () {
 
 
         if (emptyLogin($email, $parool) !== false){
-            //add inf
             return Inertia::render('Login/LoginPage', ["message"=>"Midagi läks valesti!"]);
         }
     
@@ -116,9 +116,19 @@ Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
 })->name("preview");
 
-
+//Google login
 Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
+
+//Microsoft login
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('azure')->redirect();
+});
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('azure')->user();
+
+    // $user->token
+});
 
 // Route::get("/game/{tehe}/{aeg}", function ($tehe, $aeg){
 //     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->array_Gen($tehe), "time"=>60*$aeg]);

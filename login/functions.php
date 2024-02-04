@@ -34,7 +34,7 @@ function  nameExists($conn, $email) {
     mysqli_stmt_execute($stmt);
 
     $resultData = mysqli_stmt_get_result($stmt);
-    if ($row == mysqli_fetch_assoc($resultData)) {
+    if ($row = mysqli_fetch_assoc($resultData)) {
         return $row;
     } else {
         $result = false;
@@ -56,8 +56,7 @@ function  createUser($conn, $name, $famname, $email, $class, $pwd) {
     mysqli_stmt_bind_param($stmt, "sssss",  $name, $famname, $class, $email, $hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    echo 'Success';
-    exit();
+    route("login");
 };
 
 //Login functions
