@@ -1835,29 +1835,18 @@ class GameController extends Controller
     }
 
     public function kujundid($level, $aeg){
-        $array = [];
+        $suvaline = $array = [];
         $count = 0;
-        do{            
-            $random =random_int(1,3);
-            
-            if($level === '1'){
-                $random_number_array = range(0, 8);
-            } 
-            if($level ==='2'){
-                $random_number_array = range(0, 15);
-            }
-            if($level === '3'){
-                $random_number_array = range(0, 24);
-            }
-            if($level === '4'){
-                $random_number_array = range(0, 35);
-            }
-            if($level === '5'){
-                $random_number_array = range(0, 48);
-            }
-            shuffle($random_number_array);
-            $loend = array_count_values($random_number_array);
-            array_push($array, ["operation"=> $random_number_array, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
+        $tasemax = ["1"=>9, "2"=>16, "3"=>25, "4"=>36, "5"=>49];
+        $max = $tasemax[$level];
+        $random = random_int(1,3);
+        do{ 
+            for ($x = 0; $x < $max; $x++){
+                $random = random_int(0,3);
+                array_push($suvaline, $random);
+            };
+            $loend = array_count_values($suvaline);
+            array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
             $count ++;
     
         }while($count < 10 + ($aeg * 7));
