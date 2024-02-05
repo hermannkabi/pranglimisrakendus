@@ -56,7 +56,7 @@ function  createUser($conn, $name, $famname, $email, $class, $pwd) {
     mysqli_stmt_bind_param($stmt, "sssss",  $name, $famname, $class, $email, $hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    route("login");
+    loginUser($conn, $email, $pwd);
 };
 
 //Login functions

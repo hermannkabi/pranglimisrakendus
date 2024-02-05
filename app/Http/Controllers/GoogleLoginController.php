@@ -12,10 +12,12 @@ use App\Providers\RouteServiceProvider;
 
 class GoogleLoginController extends Controller
 {
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
+    public function redirectToGoogle(){
+        return Socialite::driver('google')
+            ->stateless() //oli soovitatud, võib olla hilisema probleemi põhjustaja
+            ->redirect();
     }
+    
 
 
     public function handleGoogleCallback()
@@ -32,4 +34,4 @@ class GoogleLoginController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
-}
+}        

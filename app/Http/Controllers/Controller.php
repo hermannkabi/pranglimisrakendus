@@ -1839,23 +1839,23 @@ class GameController extends Controller
         $count = 0;
         do{            
             $random =random_int(1,3);
-            $random_number_array = range(0, 3);
-            shuffle($random_number_array);
+            
             if($level === '1'){
-                $random_number_array = array_slice($random_number_array ,0,9);
+                $random_number_array = range(0, 8);
             } 
             if($level ==='2'){
-                $random_number_array = array_slice($random_number_array ,0,16);
+                $random_number_array = range(0, 15);
             }
             if($level === '3'){
-                $random_number_array = array_slice($random_number_array ,0,25);
+                $random_number_array = range(0, 24);
             }
             if($level === '4'){
-                $random_number_array = array_slice($random_number_array ,0,36);
+                $random_number_array = range(0, 35);
             }
             if($level === '5'){
-                $random_number_array = array_slice($random_number_array ,0,49);
+                $random_number_array = range(0, 48);
             }
+            shuffle($random_number_array);
             $loend = array_count_values($random_number_array);
             array_push($array, ["operation"=> $random_number_array, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
             $count ++;
