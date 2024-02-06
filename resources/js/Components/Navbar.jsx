@@ -16,7 +16,7 @@ export default function Navbar({user}){
                 </a>
                 <a href={route("profilePage")} style={{all:"unset"}}>
                     <div className="profile-btn" style={{right:"0"}}>
-                        <p className="name-text">{user == null ? name.trim().length > 0 ? name : "Mari Maasikas" : user.name}</p>
+                        <p className="name-text">{user == null ? name.trim().length > 0 ? name : "Mari Maasikas" : (user.eesnimi + " " + user.perenimi)}</p>
                         <p className="school-text">Kooli Põhikool</p>
                     </div>
                 </a>

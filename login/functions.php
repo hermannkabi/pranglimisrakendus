@@ -69,7 +69,6 @@ function loginUser($conn, $email, $pwd){
 
     if ($nameExists === false){
         return Inertia::render('Login/LoginPage', ["message"=>"Sellist kasutajat pole"]);
-        exit();
     }
 
     $pwdHashed = $nameExists["usersPwd"];

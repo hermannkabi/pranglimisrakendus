@@ -1835,18 +1835,24 @@ class GameController extends Controller
     }
 
     public function kujundid($level, $aeg){
-        $suvaline = $array = [];
+        $array = [];
         $count = 0;
         $tasemax = ["1"=>9, "2"=>16, "3"=>25, "4"=>36, "5"=>49];
         $max = $tasemax[$level];
-        $random = random_int(1,3);
         do{ 
+            $suvaline = array();
+            $random = random_int(1,3);
+            $anscount = 0;
             for ($x = 0; $x < $max; $x++){
-                $random = random_int(0,3);
-                array_push($suvaline, $random);
+                $random2 = random_int(0,3);
+                if($random2 == $random){
+                    $anscount ++;
+                }
+                array_push($suvaline, $random2);
+                
             };
-            $loend = array_count_values($suvaline);
-            array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$loend[$random], "shape"=>$random], "level"=>$level]);
+
+            array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$anscount, "shape"=>$random], "level"=>$level]);
             $count ++;
     
         }while($count < 10 + ($aeg * 7));

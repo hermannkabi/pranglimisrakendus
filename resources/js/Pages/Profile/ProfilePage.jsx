@@ -8,7 +8,7 @@ import { useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 
 
-export default function ProfilePage(){
+export default function ProfilePage({auth}){
 
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
@@ -88,7 +88,7 @@ export default function ProfilePage(){
     return (
         <>
             <Head title="Profiil" />
-            <Navbar title="Profiil & seaded" />
+            <Navbar title="Profiil & seaded"  user={auth.user} />
 
             <SizedBox height={36} />
             <h2>Minu konto</h2>
@@ -144,13 +144,13 @@ export default function ProfilePage(){
                 </div>
                 <div className="" style={{display:'flex', flexWrap:"wrap"}}>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={window.localStorage.getItem("first-name") ?? "Mari"} />
-                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={window.localStorage.getItem("last-name") ?? "Maasikas"}/>
+                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} />
+                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}/>
                     </div>
-                    <input type="text" placeholder="E-posti aadress" value="mari.maasikas@koolikool.edu.ee" disabled/>
+                    <input type="text" placeholder="E-posti aadress" value={auth.user.email} disabled/>
                     <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Kooli Põhikool" disabled/>
-                        <input type="text" placeholder="Klass" value="140.a" style={{minWidth:'100px'}} disabled/>
+                        <input type="text" placeholder="Klass" value={auth.user.klass} style={{minWidth:'100px'}} disabled/>
                     </div>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>

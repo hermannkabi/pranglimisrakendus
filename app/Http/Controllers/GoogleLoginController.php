@@ -27,7 +27,7 @@ class GoogleLoginController extends Controller
         // TODO: Lisa vaheleht, kus küsib klassi || küsi seda dahsboardis
         if(!$user)
         {
-            $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000,999999))]);
+            $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000,999999)), 'klass'=> '140.a', 'eesnimi' => 'Hermann', 'perenimi'=> 'Justus']);
         }
 
         Auth::login($user);
