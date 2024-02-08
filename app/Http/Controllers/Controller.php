@@ -1860,6 +1860,17 @@ class GameController extends Controller
         return $array;
     }
 
+    public function bots($level, $tehe, $tasemed, $tüüp, $aeg){ 
+        $array = array();
+        $count = 0;
+        do {
+            
+            
+
+        }while($count < 10 + ($level * 7));
+        return $array;
+    }
+
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
