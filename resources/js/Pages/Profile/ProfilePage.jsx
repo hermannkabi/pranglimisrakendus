@@ -154,7 +154,7 @@ export default function ProfilePage({auth}){
                     </div>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
                         <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>
-                        <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("login")}>Logi välja</button>
+                        <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("logout")}>Logi välja</button>
                     </div>
                     <a alone="" style={{color:"rgb(var(--darkred-color))", marginInline:"auto", marginBlock:"16px"}}>Kustuta konto</a>
                 </div>

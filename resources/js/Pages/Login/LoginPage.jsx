@@ -27,7 +27,7 @@ export default function LoginPage({message}){
             <Head title="Logi sisse" />
             <LoginHeader pageName={"Logi sisse"} />
             <br />
-            <form method="post" action={route("login")} className="login-container">
+            <form method="post" action={route("authenticate")} className="login-container">
                 <input type="hidden" name="_token" value={window.csrfToken} />
                 {message}
                 <input style={formChildrenStyle} name="email" type="email" placeholder="E-posti aadress"/>

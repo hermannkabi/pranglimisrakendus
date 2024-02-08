@@ -98,7 +98,7 @@ export default function RegisterPage({message}){
                 {errorMessage && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                     <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errorMessage}</p>
                 </div>}
-                <form method="post" action={route("registerPost")}  className="register-container">
+                <form method="post" action={route("store")}  className="register-container">
                     <input type="hidden" name="_token" value={window.csrfToken} />
                     <div className="register-row">
                         <input id="name" name="name" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>

@@ -1862,12 +1862,7 @@ class GameController extends Controller
 
     public function bots($level, $tehe, $tasemed, $tüüp, $aeg){ 
         $array = array();
-        $count = 0;
-        do {
-            
-            
-
-        }while($count < 10 + ($level * 7));
+        
         return $array;
     }
 
