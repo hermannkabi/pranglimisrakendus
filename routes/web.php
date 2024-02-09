@@ -1,20 +1,20 @@
 <?php
 
-use App\Http\Controllers\ArrayController;
-use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ExampleFormController;
-use App\Http\Controllers\GameController;
-use App\Http\Controllers\GoogleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 use App\Http\Controllers\Auth\LoginRegisterController;
-
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\ExampleFormController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArrayController;
+use App\Http\Controllers\Controller;
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
 Route::get('/', function () {
@@ -31,7 +31,7 @@ Route::get('/profile', function () {
     return Inertia::render("Profile/ProfilePage");
 })->middleware('auth.basic');
 
-
+//Login and registration
 Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
@@ -40,14 +40,28 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', 'logout')->name('logout');
 });
+
+//Email verification
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
 Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
 })->name("ui");
-
-
-Route::get('/dashboard/old', function (){
-    return Inertia::render("Dashboard/OldDashboardPage");
-})->name("dashboard-old");
 
 Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
@@ -57,11 +71,16 @@ Route::get("/preview", function (){
 Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
-
+//Game part of PRANGLIMISRAKENDUS
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
-    
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew");
+
+
+
+Route::get('/dashboard/old', function (){
+    return Inertia::render("Dashboard/OldDashboardPage");
+})->name("dashboard-old");
 
 require __DIR__.'/auth.php';
 
