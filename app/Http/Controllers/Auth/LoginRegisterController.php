@@ -39,23 +39,33 @@ class LoginRegisterController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'name' => 'required|string|max:250',
+            'eesnimi' => 'required|string|max:250',
+            'perenimi' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8',
+            'klass' => 'required|string|max:6',
         ]);
 
         User::create([
-            'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'eesnimi' =>$request->eesnimi,    
+            'perenimi' =>$request->perenimi,    
+            'password' => Hash::make($request->password),
+            'klass' => $request->klass,
         ]);
 
+
+
         $credentials = $request->only('email', 'password');
-        Auth::attempt($credentials);
-        $request->session()->regenerate();
-        return redirect()->route('dashboard')
-        ->withSuccess('You have successfully registered & logged in!');
+        if(Auth::attempt($credentials)){
+            $request->session()->regenerate();
+            return redirect()->route("dashboard");
+        }
+
+        return redirect()->route("register")->withErrors(['email' => 'Midagi läks valesti!']);
     }
 
     /**
@@ -84,12 +94,12 @@ class LoginRegisterController extends Controller
         if(Auth::attempt($credentials))
         {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')
+            return redirect()->intended('dashboard')
                 ->withSuccess('You have successfully logged in!');
         }
 
         return back()->withErrors([
-            'email' => 'Your provided credentials do not match in our records.',
+            'email' => 'Vale e-posti aadress/parool',
         ])->onlyInput('email');
 
     } 
@@ -107,9 +117,7 @@ class LoginRegisterController extends Controller
         }
         
         return redirect()->route('login')
-            ->withErrors([
-            'email' => 'Please login to access the dashboard.',
-        ])->onlyInput('email');
+            ->onlyInput('email');
     } 
     
     /**

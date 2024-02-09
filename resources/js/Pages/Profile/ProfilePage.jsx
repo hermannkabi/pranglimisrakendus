@@ -1,6 +1,8 @@
 import Navbar from "@/Components/Navbar";
 import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
+import "/public/css/game_end.css";
+
 import SizedBox from "@/Components/SizedBox";
 import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
@@ -15,11 +17,6 @@ export default function ProfilePage({auth}){
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
 
-
-    function updateAccountName(){
-        window.localStorage.setItem("first-name", $("#fname").val());
-        window.localStorage.setItem("last-name", $("#lname").val());
-    }
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
@@ -82,8 +79,17 @@ export default function ProfilePage({auth}){
         }
     }
 
+    const profileTypeStyle = {
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"baseline",
+        marginBlock:"32px",
+    };
 
-    $("#fname, #lname").change(updateAccountName);
+    function logout(){
+        window.location.href = route("logout");
+    }
 
     return (
         <>
@@ -92,7 +98,60 @@ export default function ProfilePage({auth}){
 
             <SizedBox height={36} />
             <h2>Minu konto</h2>
+            {/* <section>
+                <div className="header-container">
+                    <h3 className="section-header">Profiil</h3>
+                </div>
+                <div className="" style={{display:'flex', flexWrap:"wrap"}}>
+                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
+                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} disabled />
+                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"} disabled />
+                    </div>
+                    <input type="text" placeholder="E-posti aadress" value={auth.user.email} disabled/>
+                    <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
+                        <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Tallinna Reaalkool" disabled/>
+                        <input type="text" placeholder="Klass" value={auth.user.klass} style={{minWidth:'100px'}} disabled/>
+                    </div>
+                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
+                        <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>
+                        <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("logout")}>Logi välja</button>
+                    </div>
+                    <a alone="" style={{color:"rgb(var(--darkred-color))", marginInline:"auto", marginBlock:"16px"}}>Kustuta konto</a>
+                </div>
+            </section> */}
+            {/* A new design for the profile page */}
+            
 
+            <section>
+                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
+                    <div className="big-container" style={{marginTop:"8px"}}>
+                        <SizedBox height={16} />
+
+                        <img style={{height:"64px"}} src="https://upload.wikimedia.org/wikipedia/commons/a/a2/REAALKOOLI_LOGO_MUSTA_T%C3%84PIGA.png" alt="Tallinna Reaalkool" />
+                        <SizedBox height={8} />
+                        <h1 style={{marginTop:"4px", marginBottom:"0"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
+                        <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user.email}</p>
+                    </div>                    
+
+                    <div className="stat-container" style={{width:"90%"}}>
+                        <div style={profileTypeStyle}>
+                            <p style={{color:'gray', marginBlock: "0"}}>KOOL</p>
+                            <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
+                        </div>
+                        <div style={profileTypeStyle}>
+                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
+                            <h3 style={{marginBlock:0}}>{auth.user.klass}</h3>
+                        </div>
+                    </div>
+
+                    <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
+                        <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
+                        <SizedBox height={8} />
+                        <a style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
+                        <SizedBox height={4} />
+                    </div>
+                </div>
+            </section>
             <section>
                 <div className="header-container">
                     <h3 className="section-header">Seaded</h3>
@@ -138,38 +197,7 @@ export default function ProfilePage({auth}){
                     <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
                 </div>
             </section>
-            <section>
-                <div className="header-container">
-                    <h3 className="section-header">Profiil</h3>
-                </div>
-                <div className="" style={{display:'flex', flexWrap:"wrap"}}>
-                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} />
-                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}/>
-                    </div>
-                    <input type="text" placeholder="E-posti aadress" value={auth.user.email} disabled/>
-                    <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Kooli Põhikool" disabled/>
-                        <input type="text" placeholder="Klass" value={auth.user.klass} style={{minWidth:'100px'}} disabled/>
-                    </div>
-                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>
-                        <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("logout")}>Logi välja</button>
-                    </div>
-                    <a alone="" style={{color:"rgb(var(--darkred-color))", marginInline:"auto", marginBlock:"16px"}}>Kustuta konto</a>
-                </div>
-            </section>
             
-
-            <div className="container">
-                <div className="profile">
-                    
-                </div>
-
-                <div className="settings">
-                    
-                </div>
-            </div>
         </>
     );
 }

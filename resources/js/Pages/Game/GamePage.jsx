@@ -6,7 +6,7 @@ import { Head } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
 
-export default function GamePage({data, time}){
+export default function GamePage({data, time, auth}){
 
     // CONSTANTS
 
@@ -638,7 +638,7 @@ export default function GamePage({data, time}){
             }
 
             onAnswer(isCorrect, {
-                "operation":operations.data[currentLevel.current][index].operation,
+                "operation":operations.data[currentLevel.current][index].operation ?? "",
                 "correct":correct,
                 "answer": simplify ? formattedAnswer : parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect,
@@ -664,8 +664,7 @@ export default function GamePage({data, time}){
             var level = operations.data[currentLevel.current][index].level ?? 1;
 
             if(["A", "B", "C"].includes(level)){
-                var data = {"A":10, "B":12, "C":14};
-                level = data[level];
+                level = {"A":10, "B":15, "C":20}[level];
             }
 
             // 100 points per level (e.g. level 3 gets 300 points)
@@ -758,8 +757,10 @@ export default function GamePage({data, time}){
         if(skippedAmount < maxSkip && !timeOver){
             getNewOperation();
             setSkippedAmount(skippedAmount +1);
-            setAnswer("");
-            setFractionState("off");    
+            setAnswer(simplify ? "(0/0)" : "");
+            if(!simplify){
+                setFractionState("off");    
+            }
         }
     }
 
@@ -786,7 +787,7 @@ export default function GamePage({data, time}){
         <div>
 
             <Head title="Mäng" />
-            <Navbar title="Mäng" />
+            <Navbar title="Mäng" user={auth.user} />
 
             <SizedBox height="36px" />
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
@@ -867,5 +868,5 @@ export default function GamePage({data, time}){
             
 
         </div>
-    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} />;
+    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} auth={auth} />;
 }

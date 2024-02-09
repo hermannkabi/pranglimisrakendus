@@ -6,11 +6,11 @@ import SizedBox from "@/Components/SizedBox";
 import { useState, useEffect, useRef } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
 
-export default function GamePreviewPage(){
+export default function GamePreviewPage({auth}){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose"];
+    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose", "lihtsustamine"];
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
@@ -158,7 +158,7 @@ export default function GamePreviewPage(){
             "lihtsustamine":{
                 "lvls":6,
                 "extra":["A", "B", "C"],
-                "types":["natural"],
+                "types":[],
             },
             "kujundid":{
                 "lvls":5,
@@ -220,7 +220,9 @@ export default function GamePreviewPage(){
     return (
         <>
             <Head title="Mängu eelistused" />
-            <Navbar title="Mängu eelistused" />
+            <Navbar title="Mängu eelistused" user={auth.user} />
+
+            <SizedBox height={36} />
 
             <h2>Mängu eelvaade</h2>
             <div className="container">
@@ -254,7 +256,7 @@ export default function GamePreviewPage(){
                             <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
                             <option value="jaguvus">Jaguvusseadused</option>
-                            <option value="lihtsustamine">Lihtsustamine</option>
+                            <option value="lihtsustamine">Murru taandamine</option>
                             <option value="kujundid">Kujundid</option>
                         </select>
 
