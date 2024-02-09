@@ -7,7 +7,7 @@ import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 
-export default function LoginPage({message}){
+export default function LoginPage({message, errors}){
 
     const [loading, setLoading] = useState(false);
 
@@ -22,6 +22,8 @@ export default function LoginPage({message}){
     const msLogo = "https://img.freepik.com/free-icon/microsoft_318-566086.jpg?q=10&h=200";
 
 
+    console.log(errors);
+
     return (
         <>
             <Head title="Logi sisse" />
@@ -29,7 +31,9 @@ export default function LoginPage({message}){
             <br />
             <form method="post" action={route("authenticate")} className="login-container">
                 <input type="hidden" name="_token" value={window.csrfToken} />
-                {message}
+                {Object.keys(errors).length > 0 && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errors.email}</p>
+                </div>}
                 <input style={formChildrenStyle} name="email" type="email" placeholder="E-posti aadress"/>
                 <br />
                 <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />

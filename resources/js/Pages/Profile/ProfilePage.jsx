@@ -16,11 +16,6 @@ export default function ProfilePage({auth}){
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
 
 
-    function updateAccountName(){
-        window.localStorage.setItem("first-name", $("#fname").val());
-        window.localStorage.setItem("last-name", $("#lname").val());
-    }
-
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
@@ -82,9 +77,6 @@ export default function ProfilePage({auth}){
         }
     }
 
-
-    $("#fname, #lname").change(updateAccountName);
-
     return (
         <>
             <Head title="Profiil" />
@@ -144,12 +136,12 @@ export default function ProfilePage({auth}){
                 </div>
                 <div className="" style={{display:'flex', flexWrap:"wrap"}}>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} />
-                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}/>
+                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} disabled />
+                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"} disabled />
                     </div>
                     <input type="text" placeholder="E-posti aadress" value={auth.user.email} disabled/>
                     <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Kooli Põhikool" disabled/>
+                        <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Tallinna Reaalkool" disabled/>
                         <input type="text" placeholder="Klass" value={auth.user.klass} style={{minWidth:'100px'}} disabled/>
                     </div>
                     <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>

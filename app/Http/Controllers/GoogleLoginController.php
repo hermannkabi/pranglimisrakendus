@@ -27,11 +27,11 @@ class GoogleLoginController extends Controller
         // TODO: Lisa vaheleht, kus küsib klassi || küsi seda dahsboardis
         if(!$user)
         {
-            $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000,999999)), 'klass'=> '140.a', 'eesnimi' => 'Hermann', 'perenimi'=> 'Justus']);
+            return redirect()->route("register", ["email"=>$googleUser->email, "name"=>$googleUser->name]);
         }
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }        

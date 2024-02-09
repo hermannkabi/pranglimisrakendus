@@ -24,7 +24,7 @@ export default function Dashboard({auth}) {
                 <StatisticsWidget stat={totalTrainingCount} desc={"Treening"+(totalTrainingCount == "1" ? "" : "ut")} />
                 <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
                 <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
-                <StatisticsWidget stat={"6."} desc="Koht klassis " />
+                <StatisticsWidget stat={window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" />
             </section>
 
             <section>

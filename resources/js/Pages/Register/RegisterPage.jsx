@@ -11,6 +11,19 @@ export default function RegisterPage({message, errors}){
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(message);
     
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    const name = urlParams.get('name');
+
+    if(email){
+        $("#email").val(email);
+    }
+
+    if(name){
+        $("#name").val(name.substring(0, name.lastIndexOf(" ")));
+        $("#famname").val(name.substring(name.lastIndexOf(" ")));
+    }
+
     
 
     var force = false;
@@ -58,7 +71,7 @@ export default function RegisterPage({message, errors}){
 
 
     function nameToEmail(name){
-        return name.toLowerCase().replace("-", "").replace(" ", "").replace("õ", "o").replace("ä", "a").replace("ö", "o").replace("ü", "u").replace("š", "s").replace("ž", "z");
+        return name.toLowerCase().replaceAll("-", "").replaceAll(" ", "").replaceAll("õ", "o").replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("ü", "u").replaceAll("š", "s").replaceAll("ž", "z");
     }
 
     function generateEmail(){
@@ -88,7 +101,6 @@ export default function RegisterPage({message, errors}){
 
     $("#name, #famname").on("input", generateEmail);
 
-    console.log(errors);
 
     return (
         <>
