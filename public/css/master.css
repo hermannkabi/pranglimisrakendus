@@ -124,8 +124,7 @@ button[secondary] > .lds-ring div{
 }
 
 button[secondary]:hover{
-    background-color: rgb(var(--primary-btn-color));
-    color: rgb(var(--primary-btn-text-color));
+    background-color: rgb(var(--primary-btn-color), 0.1);
 }
 
 button[red]{
@@ -225,6 +224,14 @@ a[alone]:hover > .material-icons:not(.no-anim){
 
 a[alone]:hover{
     color: rgb(var(--btn-hover-color));
+}
+
+a[red]{
+    color: rgb(var(--red-color));
+}
+
+a[red]:hover{
+    color: rgb(var(--darkred-color));
 }
 
 /* Inputs */

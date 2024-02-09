@@ -89,8 +89,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         window.localStorage.setItem("total-points", parseInt(window.localStorage.getItem("total-points") ?? 0)+points);
     }
 
-    console.log(log);
-
     return (
         <>
             <Head title="Lõpeta mäng" />

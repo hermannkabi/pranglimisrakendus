@@ -22,16 +22,21 @@ class GoogleLoginController extends Controller
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
-        $user = User::where('email', $googleUser->email)->first();
-        // TODO: Lisa vaheleht, kus küsib klassi || küsi seda dahsboardis
-        if(!$user)
-        {
-            return redirect()->route("register", ["email"=>$googleUser->email, "name"=>$googleUser->name]);
+        try{
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $user = User::where('email', $googleUser->email)->first();
+            if(!$user)
+            {
+                // Praegu saadab tavalisse registeri, teen mingi hetk ümber -Hermann
+                return redirect()->route("register", ["email"=>$googleUser->email, "name"=>$googleUser->name]);
+            }
+    
+            Auth::login($user);
+    
+            return redirect()->intended(RouteServiceProvider::HOME);
+    
+        }catch(\Throwable $e){
+            return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine katkestati"]);
         }
-
-        Auth::login($user);
-
-        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }        
