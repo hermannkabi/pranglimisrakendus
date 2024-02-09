@@ -29,7 +29,7 @@ Route::get("/handleForm", function (){
 
 Route::get('/profile', function () {
     return Inertia::render("Profile/ProfilePage");
-})->middleware('auth.basic');
+})->name("profilePage")->middleware('auth');
 
 
 Route::controller(LoginRegisterController::class)->group(function() {
@@ -38,7 +38,7 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::get('/dashboard', 'dashboard')->name('dashboard');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logout');
 });
 Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
@@ -47,11 +47,11 @@ Route::get('/ui', function () {
 
 Route::get('/dashboard/old', function (){
     return Inertia::render("Dashboard/OldDashboardPage");
-})->name("dashboard-old");
+})->name("dashboard-old")->middleware('auth');
 
 Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
-})->name("preview");
+})->name("preview")->middleware('auth');
 
 //Google login
 Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
@@ -61,7 +61,7 @@ Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::clas
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
-})->name("gameNew");
+})->name("gameNew")->middleware('auth');
 
 require __DIR__.'/auth.php';
 

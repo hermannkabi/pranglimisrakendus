@@ -32,13 +32,14 @@ export default function LoginPage({message}){
                 {message}
                 <input style={formChildrenStyle} name="email" type="email" placeholder="E-posti aadress"/>
                 <br />
-                <PasswordInput name="pwd" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
+                <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
                 <SizedBox height="16px" />
                 <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
                 <HorizontalRule />
+                <button style={formChildrenStyle} type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button>
+
                 <div className="sso-btns">
-                    <button type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button> <button type="button" style={{marginRight:"0"}} secondary="true"><img src={msLogo} /> Microsoft</button>
                 </div>
             </form>
         </>

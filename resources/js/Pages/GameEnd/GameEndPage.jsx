@@ -6,7 +6,7 @@ import OperationWidget from "@/Components/OperationWidget";
 import { useEffect } from "react";
 
 
-export default function GameEndPage({correct, total, points, time, lastLevel, log}){
+export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
 
 
     useEffect(()=>{
@@ -88,10 +88,12 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         window.localStorage.setItem("total-training-count", parseInt(window.localStorage.getItem("total-training-count") ?? 0)+1);
     }
 
+    console.log(log);
+
     return (
         <>
             <Head title="Lõpeta mäng" />
-            <Navbar title="Lõpeta mäng" />
+            <Navbar title="Lõpeta mäng" user={auth.user} />
             <SizedBox height={36} />
 
             

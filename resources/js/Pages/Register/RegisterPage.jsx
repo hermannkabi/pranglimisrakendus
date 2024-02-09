@@ -6,7 +6,7 @@ import SizedBox from "@/Components/SizedBox";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import { useState } from "react";
 
-export default function RegisterPage({message}){
+export default function RegisterPage({message, errors}){
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(message);
@@ -21,8 +21,8 @@ export default function RegisterPage({message}){
         // Similarly, the email address is probably correctly formatted (though, should check organisation)
 
         var email = $("input[name='email']").val();
-        var pwd = $("input[name='pwd']").val();
-        var pwd2 = $("input[name='pwdrepeat']").val();
+        var pwd = $("input[name='password']").val();
+        var pwd2 = $("input[name='password_confirmation']").val();
 
         var numberMatch = /\d/;
 
@@ -88,6 +88,8 @@ export default function RegisterPage({message}){
 
     $("#name, #famname").on("input", generateEmail);
 
+    console.log(errors);
+
     return (
         <>
 
@@ -101,13 +103,13 @@ export default function RegisterPage({message}){
                 <form method="post" action={route("store")}  className="register-container">
                     <input type="hidden" name="_token" value={window.csrfToken} />
                     <div className="register-row">
-                        <input id="name" name="name" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
-                        <input id="famname" name="famname" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
+                        <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
+                        <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
                     </div>
                     <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
-                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="class" type="text" placeholder="Klass (nt 140.a)" required/><br />
-                    <PasswordInput name="pwd" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
-                    <PasswordInput name="pwdrepeat" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
+                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
+                    <PasswordInput name="password" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
+                    <PasswordInput name="password_confirmation" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
                     <SizedBox height="16px" />
                     <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
                 </form>
