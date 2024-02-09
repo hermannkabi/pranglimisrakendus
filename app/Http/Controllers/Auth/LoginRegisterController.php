@@ -117,9 +117,7 @@ class LoginRegisterController extends Controller
         }
         
         return redirect()->route('login')
-            ->withErrors([
-            'email' => 'Jätkamiseks palun logi sisse',
-        ])->onlyInput('email');
+            ->onlyInput('email');
     } 
     
     /**

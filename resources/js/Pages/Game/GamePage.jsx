@@ -757,7 +757,7 @@ export default function GamePage({data, time, auth}){
         if(skippedAmount < maxSkip && !timeOver){
             getNewOperation();
             setSkippedAmount(skippedAmount +1);
-            setAnswer("");
+            setAnswer(simplify ? "(0/0)" : "");
             if(!simplify){
                 setFractionState("off");    
             }

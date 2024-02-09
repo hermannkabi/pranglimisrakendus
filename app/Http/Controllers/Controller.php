@@ -1923,7 +1923,7 @@ class GameController extends Controller
                 }
 
                 if($tehe == GameController::LIHTSUSTAMINE){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lihtsustamine($tasemed[$lugeja], $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
                 }
 
                 if($tehe == 'kujundid'){
