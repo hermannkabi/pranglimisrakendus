@@ -15,7 +15,7 @@ export default function Dashboard({auth}) {
             <Head title='Töölaud' />
             <Navbar user={auth.user} />
             <SizedBox height={36} />
-            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"pointer"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
+            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
 
             <section>
                 <div className='header-container'>

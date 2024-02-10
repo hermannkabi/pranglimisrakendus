@@ -41,9 +41,9 @@ export default function LoginPage({message, errors}){
                 <HorizontalRule />
 
                 <input type="hidden" name="_token" value={window.csrfToken} />
-                <input style={formChildrenStyle} id="email" name="email" type="email" placeholder="E-posti aadress"/>
+                <input style={formChildrenStyle} id="email" name="email" type="email" placeholder="E-posti aadress" required />
                 <br />
-                <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" />
+                <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" required />
                 <SizedBox height="16px" />
                 <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>

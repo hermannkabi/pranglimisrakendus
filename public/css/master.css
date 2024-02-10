@@ -73,7 +73,7 @@ button{
     font-family: var(--main-font);
     font-size: 20px;
     border: none;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: background-color 200ms;
     display: inline-flex;
     vertical-align: middle;
@@ -90,7 +90,7 @@ button > .material-icons, button > .lds-ring{
 }
 
 button:hover{
-    background-color: rgb(56, 80, 79);
+    background-color: rgb(var(--btn-hover-color));
 }
 
 button:focus-visible{
@@ -162,7 +162,7 @@ button[secondary]:hover > .lds-ring div{
     display:inline-flex;
     justify-content: center;
     align-items: center;
-    cursor:pointer;
+    /* cursor:pointer; */
     user-select: none;
     transition: background-color 100ms;
     position: relative;
@@ -196,7 +196,7 @@ a{
     border-top-right-radius: 4px;
     transition: box-shadow 400ms, color;
     padding: 0 4px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 a:not([alone]):hover{
