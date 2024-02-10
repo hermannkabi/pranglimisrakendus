@@ -65,7 +65,7 @@ class LoginRegisterController extends Controller
             return redirect()->route("dashboard");
         }
 
-        return Inertia::render("Dashboard/DashboardPage");;
+        return redirect()->route("register")->withErrors(['email' => 'Midagi läks valesti!']);
     }
 
     /**
@@ -94,12 +94,12 @@ class LoginRegisterController extends Controller
         if(Auth::attempt($credentials))
         {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')
+            return redirect()->intended('dashboard')
                 ->withSuccess('You have successfully logged in!');
         }
 
         return back()->withErrors([
-            'email' => 'Your provided credentials do not match in our records.',
+            'email' => 'Vale e-posti aadress/parool',
         ])->onlyInput('email');
 
     } 
@@ -117,9 +117,7 @@ class LoginRegisterController extends Controller
         }
         
         return redirect()->route('login')
-            ->withErrors([
-            'email' => 'Please login to access the dashboard.',
-        ])->onlyInput('email');
+            ->onlyInput('email');
     } 
     
     /**

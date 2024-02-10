@@ -15,7 +15,7 @@ export default function Dashboard({auth}) {
             <Head title='Töölaud' />
             <Navbar user={auth.user} />
             <SizedBox height={36} />
-            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"pointer"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
+            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
 
             <section>
                 <div className='header-container'>
@@ -24,7 +24,7 @@ export default function Dashboard({auth}) {
                 <StatisticsWidget stat={totalTrainingCount} desc={"Treening"+(totalTrainingCount == "1" ? "" : "ut")} />
                 <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
                 <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
-                <StatisticsWidget stat={"6."} desc="Koht klassis " />
+                <StatisticsWidget stat={window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" />
             </section>
 
             <section>

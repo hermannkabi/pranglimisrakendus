@@ -10,7 +10,7 @@ export default function GamePreviewPage({auth}){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose"];
+    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose", "lihtsustamine"];
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
@@ -158,7 +158,7 @@ export default function GamePreviewPage({auth}){
             "lihtsustamine":{
                 "lvls":6,
                 "extra":["A", "B", "C"],
-                "types":["natural"],
+                "types":[],
             },
             "kujundid":{
                 "lvls":5,
@@ -221,6 +221,8 @@ export default function GamePreviewPage({auth}){
         <>
             <Head title="Mängu eelistused" />
             <Navbar title="Mängu eelistused" user={auth.user} />
+
+            <SizedBox height={36} />
 
             <h2>Mängu eelvaade</h2>
             <div className="container">
