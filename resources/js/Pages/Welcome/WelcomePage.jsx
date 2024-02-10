@@ -11,12 +11,10 @@ export default function WelcomePage({name, message}){
                 <LoginHeader topMargin="16px" pageName="Pranglimisrakendus" description="Installatsioon on õnnestunud!!!"/>
                 <br />
                 <div>
-                    <a href="/dashboard">Dashboard</a>
-                    &nbsp;
-                    <a href="/register">Register</a>
+                    <a href="/dashboard">Alusta</a>
                 </div>
                 <br /><br />
-                <p style={{fontSize:"0.75rem"}}>10.02.2024.1</p>
+                <p style={{fontSize:"0.75rem"}}>10.02.2024.32</p>
             </div>
         </div>
     )

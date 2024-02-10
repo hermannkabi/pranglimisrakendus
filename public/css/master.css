@@ -414,6 +414,10 @@ select:after{
     font-weight: normal;
 }
 
+.rad > .radic.small{
+    font-size: 28.4px;
+}
+
 .rad > .radicand{
     margin-left: -2px;
     text-decoration: overline;

@@ -36,7 +36,7 @@ class GoogleLoginController extends Controller
             return redirect()->intended(RouteServiceProvider::HOME);
     
         }catch(\Throwable $e){
-            return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine katkestati"]);
+            return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine ebaõnnestus"]);
         }
     }
 }        

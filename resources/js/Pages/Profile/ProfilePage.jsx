@@ -65,7 +65,7 @@ export default function ProfilePage({auth}){
             if(defaultTime != window.localStorage.getItem("default-time")){
                 changedSomething = true;
             }
-            window.localStorage.setItem("default-time", defaultTime);
+            window.localStorage.setItem("default-time", defaultTime.length == 0 ? "0" : defaultTime);
         }
 
         if(changedSomething){
@@ -93,7 +93,7 @@ export default function ProfilePage({auth}){
 
     return (
         <>
-            <Head title="Profiil" />
+            <Head title="Minu konto" />
             <Navbar title="Profiil & seaded"  user={auth.user} />
 
             <SizedBox height={36} />
