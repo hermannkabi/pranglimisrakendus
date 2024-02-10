@@ -2,27 +2,14 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Support\Facades\Password;
 
-use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\GameController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\ExampleFormController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ArrayController;
-use App\Http\Controllers\Controller;
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
 Route::get('/', function () {
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
 
-Route::post("/handleForm", [ExampleFormController::class, "handleForm"])->name("saveItem");
+Route::post("/handleForm", [App\Http\Controllers\ExampleFormController::class, "handleForm"])->name("saveItem");
 
 Route::get("/handleForm", function (){
     return redirect()->route("welcome");
@@ -33,7 +20,7 @@ Route::get('/profile', function () {
 })->name("profilePage")->middleware('auth');
 
 //Login and registration
-Route::controller(LoginRegisterController::class)->group(function() {
+Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
