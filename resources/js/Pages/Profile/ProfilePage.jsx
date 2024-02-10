@@ -129,8 +129,8 @@ export default function ProfilePage({auth}){
 
                         <img style={{height:"64px"}} src="https://upload.wikimedia.org/wikipedia/commons/a/a2/REAALKOOLI_LOGO_MUSTA_T%C3%84PIGA.png" alt="Tallinna Reaalkool" />
                         <SizedBox height={8} />
-                        <h1 style={{marginTop:"4px", marginBottom:"0"}}>{auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
-                        <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user.email}</p>
+                        <h1 style={{marginTop:"4px", marginBottom:"0"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
+                        <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
                     </div>                    
 
                     <div className="stat-container" style={{width:"90%"}}>
@@ -140,7 +140,7 @@ export default function ProfilePage({auth}){
                         </div>
                         <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
-                            <h3 style={{marginBlock:0}}>{auth.user.klass}</h3>
+                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass}</h3>
                         </div>
                     </div>
 
