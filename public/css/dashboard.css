@@ -14,7 +14,7 @@
     }
 }
 
-@media only screen and (max-width: 1200px) {
+/* @media only screen and (max-width: 1200px) {
 
 
 
@@ -68,7 +68,7 @@
     .small-btns div{
         text-align: center !important;
     }
-}
+} */
 
 @media only screen and (max-width: 800px){
     .stat-container{

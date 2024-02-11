@@ -8,7 +8,7 @@ export default function WelcomePage({name, message}){
         <div style={{height:"100%", width:"100%"}}>
             <div style={{position:"absolute", "top":"45%", "left":"50%", transform:"translate(-50%, -50%)"}}>
                 <Head title="Avaleht" />
-                <LoginHeader topMargin="16px" pageName="Pranglimisrakendus" description="Installatsioon on õnnestunud!!!"/>
+                <LoginHeader topMargin="16px" pageName="Pranglimine" description="Tere tulemast!"/>
                 <br />
                 <div>
                     <a href="/dashboard">Alusta</a>

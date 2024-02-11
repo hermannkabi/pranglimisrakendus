@@ -87,6 +87,10 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
         window.localStorage.setItem("total-training-count", parseInt(window.localStorage.getItem("total-training-count") ?? 0)+1);
         window.localStorage.setItem("total-points", parseInt(window.localStorage.getItem("total-points") ?? 0)+points);
+        
+        // The average percentage works by saving a sum of all the percentages and dividing it by total-training-count
+        window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
+
     }
 
     return (

@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
 Route::get('/', function () {
+    if(Auth::check()){
+        return redirect()->route("dashboard");
+    }
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
 

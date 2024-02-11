@@ -21,7 +21,7 @@ export default function Dashboard({auth}) {
                     <h3 className='section-header'>Statistika</h3>
                 </div>
                 <StatisticsWidget stat={totalTrainingCount} desc={"Treening"+(totalTrainingCount == "1" ? "" : "ut")} />
-                <StatisticsWidget stat={"47%"} desc="Vastamistäpsus" />
+                <StatisticsWidget stat={(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0) + "%"} desc="Vastamistäpsus" />
                 <StatisticsWidget stat={window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
                 <StatisticsWidget stat={window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" />
             </section>
@@ -38,7 +38,7 @@ export default function Dashboard({auth}) {
                     <BigGameButton symbol="÷" text="Jagamine" value={"jagamine"}/>
                 </div>
                 <SizedBox height={24}/>
-                <a alone='true' href={route("preview")}>Kõik harjutusalad →</a>
+                <a alone='true' href={route("preview")}>Kõik harjutusalad <span className="material-icons">navigate_next</span></a>
                 <SizedBox height={8}/>
 
             </section>
