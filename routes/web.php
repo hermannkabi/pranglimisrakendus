@@ -31,13 +31,13 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 
 
 //Email verification
-Route::get('/email/verify', [App\Http\Controllers\Auth\EmailVerificationPromptController::class, 'invoke'
+Route::get('/email/verify', [App\Http\Controllers\Auth\EmailVerificationPromptController::class
 ])->middleware('auth')->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke'
+Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class
 ])->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/verification-notification', [App\Http\Controllers\Auth\EmailVerificationNotificationController::class, 'store'
+Route::post('/email/verification-notification', [App\Http\Controllers\Auth\EmailVerificationNotificationController::class
 ])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
