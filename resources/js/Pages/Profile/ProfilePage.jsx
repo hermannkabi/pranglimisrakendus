@@ -143,7 +143,6 @@ export default function ProfilePage({auth}){
                             <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass}</h3>
                         </div>
                     </div>
-
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
                         <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
                         <SizedBox height={8} />

@@ -1,0 +1,47 @@
+import LoginHeader from "@/Components/LoginHeader";
+import SizedBox from "@/Components/SizedBox";
+import { Head } from "@inertiajs/react";
+import { useState } from "react";
+import "/public/css/register.css";
+
+
+export default function RegisterGooglePage({errors}){
+    const [loading, setLoading] = useState(false);
+
+    var urlParams = new URLSearchParams(window.location.search);
+
+    const name = urlParams.get("name");
+    const email = urlParams.get("email");
+    const googleId = urlParams.get("googleId");
+
+
+    $("#name").val(name.substring(0, name.lastIndexOf(" ")));
+    $("#famname").val(name.substring(name.lastIndexOf(" ")));
+
+    console.log(errors);
+
+    return <>
+        <Head title="Jätka Google'ga" />
+        <LoginHeader pageName="Jätka Google'ga" googleLogo={true} />
+
+        <div className="container">
+                <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ Kasutaja loomiseks Google'ga palun täida allolevad väljad</p>
+                </div>
+                <form method="post" action={route("storeGoogle")}  className="register-container">
+                    <input type="hidden" name="_token" value={window.csrfToken} />
+                    <input style={{display:'none'}} name="googleid" value={googleId} />
+
+                    <div className="register-row">
+                        <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
+                        <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
+                    </div>
+                    <input value={email} id="email" name="email" type="email" placeholder="E-posti aadress" required readOnly/><br />
+                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
+                    <SizedBox height="16px" />
+                    <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
+                </form>
+            </div>
+        
+    </>;
+}

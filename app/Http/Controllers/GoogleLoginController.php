@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class GoogleLoginController extends Controller
@@ -22,21 +23,25 @@ class GoogleLoginController extends Controller
 
     public function handleGoogleCallback()
     {
-        try{
             $googleUser = Socialite::driver('google')->stateless()->user();
             $user = User::where('email', $googleUser->email)->first();
             if(!$user)
             {
                 // Praegu saadab tavalisse registeri, teen mingi hetk ümber -Hermann
-                return redirect()->route("register", ["email"=>$googleUser->email, "name"=>$googleUser->name]);
+                return redirect()->route("registerGoogle", ["email"=>$googleUser->email, "name"=>$googleUser->name, "googleId"=>$googleUser->id]);
+            }
+
+            if($user->googleid != $googleUser->id){
+                $user->googleid = $googleUser->id;
+                $user->save();    
             }
     
             Auth::login($user);
     
             return redirect()->intended(RouteServiceProvider::HOME);
     
-        }catch(\Throwable $e){
-            return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine ebaõnnestus"]);
-        }
+        // }catch(\Throwable $e){
+        //     return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine ebaõnnestus"]);
+        // }
     }
 }        
