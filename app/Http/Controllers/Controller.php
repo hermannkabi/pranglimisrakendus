@@ -1081,6 +1081,7 @@ class GameController extends Controller
         //Ascending levels -- Natural
         if ($level === 'all' && $tüüp === 'natural'){
             do {
+                $chance = random_int(1,5);
                 again7:
                 if ($check != 1){
                     $check = 1;
@@ -1094,7 +1095,7 @@ class GameController extends Controller
                         $check = 11;
                     };
                     $tase = 2;
-                    $y = 2;
+                    $y = $chance == 3 ? 0 : random_int(1,2);
                 }
                 if ($count > 20){ 
                     if ($check != 2){

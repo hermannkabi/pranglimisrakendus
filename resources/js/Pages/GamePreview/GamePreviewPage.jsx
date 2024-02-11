@@ -5,6 +5,7 @@ import NumberInput from "@/Components/NumberInput";
 import SizedBox from "@/Components/SizedBox";
 import { useState, useEffect, useRef } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
+import LoadingSpinner from "@/Components/LoadingSpinner";
 
 export default function GamePreviewPage({auth}){
     const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +17,8 @@ export default function GamePreviewPage({auth}){
     const [levels, setLevels] = useState([]);
     const [extra, setExtra] = useState([]);
     const [types, setTypes] = useState([]);
+
+    const [loading, setLoading] = useState(false);
 
 
     // This function is called once when the page is first loaded
@@ -58,32 +61,38 @@ export default function GamePreviewPage({auth}){
 
     
         if(type == "choose"){
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setMessage("Palun vali harjutusala");
             return;
         }
 
         if(levels.length <= 0){
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setMessage("Palun vali vähemalt üks tase");
             return;
         }
         
         if(isNaN(time)){
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setMessage("Palun sisesta aeg, kui palju soovid harjutada");
             return; 
         }
 
         if(time <= 0){
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setMessage("Aeg peab olema suurem nullist");
             return;
         }
 
         if(numberType == null){
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setMessage("Palun vali arvuhulk");
             return;
         }
 
         if(type != "choose" && time != null && time > 0){
-            return window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time+"/"+numberType;
+            setLoading(true);
+            window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time+"/"+numberType;
         }
 
     }
@@ -289,7 +298,7 @@ export default function GamePreviewPage({auth}){
                 <div className="start-btn">
                     <section>
                         <p style={{fontSize:"1.5rem", color:"rgb(var(--primary-color))", marginBottom:"8px"}}>Harjutusmäng</p>
-                        <button onClick={navigateToGame}>Alusta mängu</button>
+                        <button onClick={navigateToGame}>{loading && <LoadingSpinner />} Alusta mängu</button>
                     </section>
                 </div>
             </div>

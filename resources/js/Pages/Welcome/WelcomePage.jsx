@@ -8,15 +8,13 @@ export default function WelcomePage({name, message}){
         <div style={{height:"100%", width:"100%"}}>
             <div style={{position:"absolute", "top":"45%", "left":"50%", transform:"translate(-50%, -50%)"}}>
                 <Head title="Avaleht" />
-                <LoginHeader topMargin="16px" pageName="Pranglimisrakendus" description="Installatsioon on õnnestunud!!!"/>
+                <LoginHeader topMargin="16px" pageName="Pranglimine" description="Tere tulemast!"/>
                 <br />
                 <div>
-                    <a href="/dashboard">Dashboard</a>
-                    &nbsp;
-                    <a href="/register">Register</a>
+                    <a href="/dashboard">Alusta</a>
                 </div>
                 <br /><br />
-                <p style={{fontSize:"0.75rem"}}>10.02.2024.1</p>
+                <p style={{fontSize:"0.75rem"}}>10.02.2024.32</p>
             </div>
         </div>
     )

@@ -58,7 +58,7 @@ export default function OperationWidget({op}){
         var radicand = parts[0];
         var radIndex = parts[1];
 
-        return `<span class="rad radend" style="font-size: 0.75em"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
+        return `<span class="rad radend" style="font-size: 0.75em"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic small'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
     }
 
     // Returns an HTML code of the fraction

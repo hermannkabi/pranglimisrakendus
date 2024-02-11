@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
 Route::get('/', function () {
+    if(Auth::check()){
+        return redirect()->route("dashboard");
+    }
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
 
@@ -22,7 +25,11 @@ Route::get('/profile', function () {
 //Login and registration
 Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
+    Route::get('/register/google', 'registerGoogle')->name('registerGoogle');
+
     Route::post('/store', 'store')->name('store');
+    Route::post('/store/google', 'storeGoogle')->name('storeGoogle');
+
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::get('/dashboard', 'dashboard')->name('dashboard');

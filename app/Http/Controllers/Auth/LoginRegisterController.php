@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
+use App\Providers\RouteServiceProvider;
 
 class LoginRegisterController extends Controller
 {
@@ -31,6 +32,39 @@ class LoginRegisterController extends Controller
         return Inertia::render('Register/RegisterPage');
     }
 
+    public function registerGoogle(){
+        return Inertia::render("Register/RegisterGooglePage");
+    }
+
+    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId){
+        return User::create([
+            'email' => $email,
+            'eesnimi' => $eesnimi,    
+            'perenimi' => $perenimi,    
+            'password' => $password == null ? null : Hash::make($password),
+            'klass' => $klass,
+            'googleid'=> $googleId,
+        ]);
+    }
+
+
+    public function storeGoogle(Request $request){
+        $request->validate([
+            'eesnimi' => 'required|string|max:250',
+            'perenimi' => 'required|string|max:250',
+            'email' => 'required|email|max:250|unique:users',
+            'klass' => 'required|string|max:6',
+            'googleid' => 'required',
+        ]);
+
+        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, $request->klass, $request->googleid);
+
+        Auth::login($user);
+
+        return redirect()->route("dashboard");
+    }
+
+
     /**
      * Store a new user.
      *
@@ -49,15 +83,7 @@ class LoginRegisterController extends Controller
             'klass' => 'required|string|max:6',
         ]);
 
-        User::create([
-            'email' => $request->email,
-            'eesnimi' =>$request->eesnimi,    
-            'perenimi' =>$request->perenimi,    
-            'password' => Hash::make($request->password),
-            'klass' => $request->klass,
-        ]);
-
-
+        $this->createUser($request->email, $request->eesnimi, $request->perenimi, $request->password, $request->klass, null);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){

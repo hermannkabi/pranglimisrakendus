@@ -12,9 +12,9 @@ export default function CheckboxTile({level, levelChar=level}){
 
     return (
         <>
-            <div className="checkbox-group" onClick={changeChecked} style={{display:"inline-block", cursor:"pointer"}}>
-                <input char={levelChar} level={levelChar} type="checkbox" checked={checked} onClick={changeChecked} onChange={changeChecked} style={{cursor:"pointer"}} />
-                <label style={{userSelect:"none", cursor:"pointer"}}>{level}. tase</label>
+            <div className="checkbox-group" onClick={changeChecked} style={{display:"inline-block"}}>
+                <input char={levelChar} level={levelChar} type="checkbox" checked={checked} onClick={changeChecked} onChange={changeChecked} />
+                <label style={{userSelect:"none"}}>{level}. tase</label>
             </div>
         </>
     );

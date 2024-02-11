@@ -409,9 +409,13 @@ select:after{
 }
 
 .rad > .radic{
-    font-size: 47.4px; 
+    font-size: 48.4px; 
     user-select: none;
     font-weight: normal;
+}
+
+.rad > .radic.small{
+    font-size: 28.4px;
 }
 
 .rad > .radicand{
