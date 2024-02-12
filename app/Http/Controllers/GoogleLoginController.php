@@ -31,8 +31,8 @@ class GoogleLoginController extends Controller
                 return redirect()->route("registerGoogle", ["email"=>$googleUser->email, "name"=>$googleUser->name, "googleId"=>$googleUser->id]);
             }
 
-            if($user->googleid != $googleUser->id){
-                $user->googleid = $googleUser->id;
+            if($user->google_id != $googleUser->id){
+                $user->google_id = $googleUser->id;
                 $user->save();    
             }
     

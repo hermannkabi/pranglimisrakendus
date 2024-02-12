@@ -32,6 +32,8 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
+    Route::get('/authenticate/guest', 'authenticateGuest')->name('authenticateGuest');
+
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/logout', 'logout')->name('logout');
 });

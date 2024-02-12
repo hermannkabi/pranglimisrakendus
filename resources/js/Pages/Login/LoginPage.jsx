@@ -47,6 +47,9 @@ export default function LoginPage({message, errors}){
                 <SizedBox height="16px" />
                 <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>
                 <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
+                <br />
+                <a href={route("authenticateGuest")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Sisene külalisena</a>
+
             </form>
         </>
     )

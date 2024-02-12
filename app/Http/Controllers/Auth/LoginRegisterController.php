@@ -43,7 +43,7 @@ class LoginRegisterController extends Controller
             'perenimi' => $perenimi,    
             'password' => $password == null ? null : Hash::make($password),
             'klass' => $klass,
-            'googleid'=> $googleId,
+            'google_id'=> $googleId,
         ]);
     }
 
@@ -129,6 +129,13 @@ class LoginRegisterController extends Controller
         ])->onlyInput('email');
 
     } 
+
+
+    public function authenticateGuest(Request $request){
+        Auth::login(User::where("id", "999999")->first());
+
+        return redirect()->route("dashboard");
+    }
     
     /**
      * Display a dashboard to authenticated users.
