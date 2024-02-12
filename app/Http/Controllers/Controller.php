@@ -1046,7 +1046,7 @@ class GameController extends Controller
             $yvalues = [
                 
                 "1"=>[
-                    "natural"=>function (){return random_int(0, 2);},
+                    "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE ? 2 : random_int(0, 2);},
                     "integer"=>function () use($x1){return random_int($x1 < 3 ? -10 : -2, -2 || 0) || random_int(0 || 2, $x1 < 3 ? 10 : 2);},
                 ],
                 "2"=>[
@@ -1095,7 +1095,7 @@ class GameController extends Controller
                         $check = 11;
                     };
                     $tase = 2;
-                    $y = $chance == 3 ? 0 : random_int(1,2);
+                    $y = $mis == GameController::JUURIMINE ? 2 : ($chance == 3 ? 0 : random_int(1,2));
                 }
                 if ($count > 20){ 
                     if ($check != 2){
@@ -1159,7 +1159,7 @@ class GameController extends Controller
                 $xadd2 = -$xadd;
                 $xjarl = [random_int($xadd2 - 1, $xadd2 + 1), random_int($xadd - 1, $xadd + 1)];
                 $x = $xjarl[array_rand($xjarl)];
-                $y = $chance == 4 ? 1 || -1 : 2 || -2 || 0;
+                $y = $mis == GameController::JUURIMINE ? 2 : ($chance == 4 ? [1, -1][array_rand([1, -1])] : [2, -2, 0][array_rand([2, -2, 0])]); //TODO:
                 if ($count > 10){
                     if ($check != 1){
                         $xadd = 2;
