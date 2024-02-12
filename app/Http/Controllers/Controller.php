@@ -989,246 +989,115 @@ class GameController extends Controller
 
     //Astenamine - Exponentiation
     public function astendamine($level, $mis, $tüüp, $aeg){
-        $array = [];
-        $x = 0;
-        $y = 0;
-        $tase = 1;
-        $count = 0;
-        $max = 0;
-        $add = 1;
-        $xadd = 1;
-        $xadd2 = -$xadd;
-        $xold = 0;
-        $yold = 0;
-        $check = 0;
         $xvalues = [];
-        $chance = random_int(1,4);
-
 
         $opnames = [GameController::ASTENDAMINE, GameController::JUURIMINE];
-        if ($level!='all'){
-            $xvalues = [
-                "1"=>[
-                    "natural"=>function (){return random_int(1, 5);},
-                    "integer"=>function (){
-                        $randints = [random_int(-5, -1), random_int(1, 5)];
-                        return $randints[array_rand($randints)];
-                    },
-                ],
-                "2"=>[
-                    "natural"=>function (){return random_int(6, 10);},
-                    "integer"=>function (){
-                        $randints = [random_int(-10, -6), random_int(6, 10)];
-                        return $randints[array_rand($randints)];
-                    },
-                ],
-                "3"=>[
-                    "natural"=>function (){return random_int(2, 5);},
-                    "integer"=>function (){
-                        $randints = [random_int(-5, -2), random_int(2, 5)];
-                        return $randints[array_rand($randints)];
-                    },
-                ],
-                "4"=>[
-                    "natural"=>function (){return random_int(11, 20);},
-                    "integer"=>function (){
-                        $randints = [random_int(-20, -11), random_int(11, 20)];
-                        return $randints[array_rand($randints)];},
-                ],
-                "5"=>[
-                    "natural"=>function (){return random_int(6, 10);},
-                    "integer"=>function (){
-                        $randints = [random_int(-10, -6), random_int(6, 10)];
-                        return $randints[array_rand($randints)];},
-                ],
-            ];
-            $x1 = $xvalues[$level][$tüüp]();
-            $yvalues = [
-                
-                "1"=>[
-                    "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE ? 2 : random_int(0, 2);},
-                    "integer"=>function () use($x1){return random_int($x1 < 3 ? -10 : -2, -2 || 0) || random_int(0 || 2, $x1 < 3 ? 10 : 2);},
-                ],
-                "2"=>[
-                    "natural"=>function (){return 2;},
-                    "integer"=>function (){return -2 || 2;},
-                ],
-                "3"=>[
-                    "natural"=>function (){return random_int(3,4);},
-                    "integer"=>function () use($x1){
-                        $randints = [random_int($x1 < 4 ? -5 : -4, -3), random_int(3, $x1 < 4 ? 5 : 4)];
-                        return $randints[array_rand($randints)];},
-                ],
-                "4"=>[
-                    "natural"=>function (){return 2;},
-                    "integer"=>function (){return -2 || 2;},
-                ],
-                "5"=>[
-                    "natural"=>function (){return 3;},
-                    "integer"=>function (){return -3 || 3;},
-                ],
-            ];
-
-
+        
+        $xvalues = [
+            "1"=>[
+                "natural"=>function (){return random_int(1, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-5, -1), random_int(1, 5)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "2"=>[
+                "natural"=>function (){return random_int(6, 10);},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(2, 5);},
+                "integer"=>function (){
+                    $randints = [random_int(-5, -2), random_int(2, 5)];
+                    return $randints[array_rand($randints)];
+                },
+            ],
+            "4"=>[
+                "natural"=>function (){return random_int(11, 20);},
+                "integer"=>function (){
+                    $randints = [random_int(-20, -11), random_int(11, 20)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "5"=>[
+                "natural"=>function (){return random_int(6, 10);},
+                "integer"=>function (){
+                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "A"=>[
+                "natural"=>function (){return random_int(21, 29);},
+                "integer"=>function (){
+                    $randints = [random_int(-29, -21), random_int(21, 29)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "B"=>[
+                "natural"=>function (){return random_int(4,9);},
+                "integer"=>function (){
+                    $randints = [random_int(-9, -4), random_int(4, 9)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(11,19);},
+                "integer"=>function (){return 
+                    $randints = [random_int(-19, -11), random_int(11, 19)];
+                    return $randints[array_rand($randints)];},
+            ],
             
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1){
-                return $mis == GameController::ASTENDAMINE && $x1 < 0 ? 1/($num1 ** abs($num2)) : (GameController::JUURIMINE && $x1 < 0 ? 1/$num1 : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1));
-            }, $opnames, [],  $level, $aeg, null);
-
-            return $returnData["array"];
-        }
-
-        //Ascending levels -- Natural
-        if ($level === 'all' && $tüüp === 'natural'){
-            do {
-                $chance = random_int(1,5);
-                again7:
-                if ($check != 1){
-                    $check = 1;
-                };
-                $max = 5;
-                $x = random_int($add, 1 + $add);
-                $y = $chance == 4 ? 1 : 0 || 2;
-                if ($count > 10){
-                    if ($check != 11){
-                        $max = 10;
-                        $check = 11;
-                    };
-                    $tase = 2;
-                    $y = $mis == GameController::JUURIMINE ? 2 : ($chance == 3 ? 0 : random_int(1,2));
-                }
-                if ($count > 20){ 
-                    if ($check != 2){
-                        $add = 1;
-                        $max = 5;
-                        $check = 2;
-                    };
-                    $tase = 3;
-                    $x = random_int($add, 1 + $add);
-                    $y = ($x < 4) ? 6 : 2;
-                }
-                if ($count > 30){ 
-                    if ($check != 3){
-                        $add = 11;
-                        $max = 20;
-                        $check = 3;
-                    };
-                    $tase = 4;
-                    $x = random_int($add, 1 + $add);
-                    $y = 2;
-
-                }
-                if ($count > 40){ 
-                    if ($check != 4){
-                        $add = 6;
-                        $max = 10;
-                        $check = 4;
-                    };
-                    $tase = 5;
-                    $x = random_int($add, 1 + $add);
-                    $y = 3;
-                }
-
-                $uusmis = $mis === 'mõlemad' ? (random_int(1, 2) == 1 ? GameController::ASTENDAMINE : GameController::JUURIMINE) : $mis;
-                
-                if ($uusmis === GameController::ASTENDAMINE) {
-                    array_push($array, ["operation"=>$x . 'EXP' . $y, "answer"=>$x ** $y, "level"=>$tase]);
-                }
-
-                if ($uusmis === GameController::JUURIMINE) {
-                    array_push($array, ["operation"=>$x ** $y . 'RAD' . $y, "answer"=>$x, "level"=>$tase]);
-                }
-                
-                $add += $max / 5;
-                $count ++;
+        ];
+        $x1 = $xvalues[$level][$tüüp]();
+        $yvalues = [
             
-            } while ($count < 50 + ($aeg * 7));
-
-            return $array; 
-        }
-
-        //Ascending levels - Integer
-        if ($level === 'all' && $tüüp === 'integer'){
-            do {
-                again8:
-                if ($check != 1){
-                    $xadd = 1;
-                    $xmax = 5;
-                    $check = 1;
-                };
-                $xadd2 = -$xadd;
-                $xjarl = [random_int($xadd2 - 1, $xadd2 + 1), random_int($xadd - 1, $xadd + 1)];
-                $x = $xjarl[array_rand($xjarl)];
-                $y = $mis == GameController::JUURIMINE ? 2 : ($chance == 4 ? [1, -1][array_rand([1, -1])] : [2, -2, 0][array_rand([2, -2, 0])]); //TODO:
-                if ($count > 10){
-                    if ($check != 1){
-                        $xadd = 2;
-                        $xmax = 10;
-                        $check = 1;
-                    };
-                    $xjarl = [random_int($xadd2 - 1, $xadd2 + 1), random_int($xadd - 1, $xadd + 1)];
-                    $x = $xjarl[array_rand($xjarl)];
-                    $y = -2 || 2;
-                    $tase = 2;
-                }
-                if ($count > 20){ 
-                    if ($check != 1){
-                        $xadd = 2;
-                        $xmax = 5;
-                        $check = 1;
-                    };
-                    $tase = 3;
-                    $xjarl = [random_int($xadd2 - 1, $xadd2 + 1), random_int($xadd - 1,$xadd + 1)];
-                    $x = $xjarl[array_rand($xjarl)];
-                    $yjarl = [random_int($x < 3 ? 10 : ($x == 3 ? 5 : 4), 2), random_int($x > -3 ? -10 : ($x == -3 ? -5 : -4), -2)];
-                    $y = $yjarl[array_rand($yjarl)];
-                }
-                if ($count > 30){ 
-                    if ($check != 1){
-                        $xadd = 2;
-                        $xmax = 10;
-                        $check = 1;
-                    };
-                    $tase = 4;
-                    $y = -3 || 3;
-                    $xjarl = [random_int($xadd2 - 1, $xadd2 + 1), random_int($xadd - 1,$xadd + 1)];
-                    $x = $xjarl[array_rand($xjarl)];
-                }
-                if ($count > 40){ 
-                    if ($check != 1){
-                        $xadd = 11;
-                        $check = 1;
-                        $xmax = 20;
-                    };
-                    $tase = 5;
-                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
-                    $y = -2 || 2;
-                    $x = $xjarl[array_rand($xjarl)];   
-                }
-                
-                if ($x == $xold || $y == $yold){
-                    goto again8;
-                }
-                $xold = $x;
-                $yold = $y;
-                    
-                $uusmis = $mis === GameController::BOTH ? (random_int(1, 2) == 1 ? GameController::ASTENDAMINE : GameController::JUURIMINE) : $mis;
-                
-                if ($uusmis === GameController::ASTENDAMINE) {
-                    array_push($array, ["operation"=>$x . 'EXP' . $y, "answer"=>$x ** $y, "level"=>$tase]);
-                }
-                if ($uusmis === GameController::JUURIMINE) {
-                    array_push($array, ["operation"=>$x ** $y . 'RAD' . $y, "answer"=>$x, "level"=>$tase]);
-                }
-
-                $xadd += $xmax / 5;
-                
-                $count ++;
+            "1"=>[
+                "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE ? 2 : random_int(0, 2);},
+                "integer"=>function () use ($x1, $mis){
+                    return $mis == GameController::JUURIMINE ? 2 : $randints = [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "2"=>[
+                "natural"=>function (){return 2;},
+                "integer"=>function (){return [2, -2][array_rand([2, -2])];},
+            ],
+            "3"=>[
+                "natural"=>function (){return random_int(3,4);},
+                "integer"=>function () use($x1){
+                    $randints = [random_int($x1 < 4 ? -5 : -4, -3), random_int(3, $x1 < 4 ? 5 : 4)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "4"=>[
+                "natural"=>function (){return 2;},
+                "integer"=>function (){return [2, -2][array_rand([2, -2])];},
+            ],
+            "5"=>[
+                "natural"=>function (){return 3;},
+                "integer"=>function (){return [3, -3][array_rand([3, -3])];},
+            ],
+            "A"=>[
+                "natural"=>function (){return 2;},
+                "integer"=>function (){return [2, -2][array_rand([2, -2])];},
+            ],
+            "B"=>[
+                "natural"=>function (){return 4;},
+                "integer"=>function (){return [4, -4][array_rand([4, -4])];},
+            ],
+            "C"=>[
+                "natural"=>function (){return 3;},
+                "integer"=>function (){return [3, -3][array_rand([3, -3])];},
+            ],
             
-            } while ($count < 50 + ($aeg * 7));
+        ];
+        $y1 = $xvalues[$level][$tüüp]();
 
-            return $array; 
-        }
+
+        
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1, $y1){
+            return $mis == GameController::ASTENDAMINE && $y1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $y1 < 0 ? $num1 : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1));
+        }, $opnames, [],  $level, $aeg, null);
+
+        return $returnData["array"];
+        
     }
 
 
