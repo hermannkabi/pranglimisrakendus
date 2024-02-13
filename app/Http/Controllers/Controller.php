@@ -1737,7 +1737,8 @@ class GameController extends Controller
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        if ($koik && $tehe != "lünkamine" && $tehe != 'võrdlemine' && $tehe != "jaguvus" && $tehe != GameController::LIHTSUSTAMINE && $tehe != "kujundid"){
+        $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "lihtsustamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
+        if ($koik && !in_array($tehe, $types_without_all)){
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju

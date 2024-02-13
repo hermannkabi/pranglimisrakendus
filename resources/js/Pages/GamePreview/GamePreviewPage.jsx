@@ -154,7 +154,7 @@ export default function GamePreviewPage({auth}){
 
             "astendamine":{
                 "lvls":5,
-                "extra":[],
+                "extra":["A", "B", "C"],
                 "types":["natural", "integer"],
             },
             "juurimine":"astendamine",
