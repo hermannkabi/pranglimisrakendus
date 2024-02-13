@@ -84,6 +84,7 @@ Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::clas
 
 //Game part of PRANGLIMISRAKENDUS
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
+    $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew")->middleware('auth');
 

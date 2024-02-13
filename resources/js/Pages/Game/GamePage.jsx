@@ -578,7 +578,7 @@ export default function GamePage({data, time, auth}){
     function checkAnswer(forceTrue){
         if(!timeOver){
 
-            if(shapes){
+            if(shapes && answer.length > 0){
                 const correct = operations.data[currentLevel.current][index].answer.ans;
 
                 var isCorrect = answer == correct;
@@ -782,13 +782,36 @@ export default function GamePage({data, time, auth}){
     $(".frac .top, .frac .bottom").click(function (){
         setFractionState($(this).hasClass("top") ? "up" : "down");
     });
+
+
+    function obfuscateOperation(oper){
+
+        // Don't obfuscate sqrt
+        if(oper.includes("span")){
+            return oper;
+        }
+
+        var newOper = "";
+        for(var i = 0; i<oper.length; i++){
+            if(oper[i] == "1"){
+                var randChoice = ["hjsdhjsdhjshd", "ihbjgdjhsdhjsd", "qdffgkfgkjgdf"][Math.floor(Math.random() * 3)];
+                newOper += "<"+randChoice+"></"+randChoice+">";
+            }else if(oper[i] == "9"){
+                newOper += "<sdjkhskdsdsde></sdjkhskdsdsde>";
+            }else{
+                newOper += "<"+["suva", "oper", "bads", "skdjkds", "sjkd", "sdjnc", "uysrwj", "icok", "karlerik", "karl"][Math.floor(Math.random() * 10)]+">" + oper[i];
+            }
+            newOper += "<span>"+["&#x200B;", "&#8203;", "&ZeroWidthSpace;", "&zwnj;"][Math.floor(Math.random() * 4)]+"</span>";
+        }
+
+        return newOper;
+    }
     
     return !showResults ? (
         <div>
 
             <Head title="Mäng" />
             <Navbar title="Mäng" user={auth.user} />
-
             <SizedBox height="36px" />
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
@@ -821,7 +844,7 @@ export default function GamePage({data, time, auth}){
                     {/* The operation data  and answer*/}
                     {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {shapes && <><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>}
-                    {!compare && !shapes && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {!compare && !shapes && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
