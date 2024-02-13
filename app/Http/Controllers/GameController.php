@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mang;
+use App\Models\User;
 
 class GameController extends Controller
 {
@@ -19,12 +20,13 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($game_id, $user_id, $score_sum, $accuracy_sum,$game_count,$last_level,$time,$dt)
+    public function createMang($game_id, $user_id, $score_sum, $experience,$accuracy_sum,$game_count,$last_level,$time,$dt)
     {
         return Mang::create([
             'game_id' => $game_id,
             'user_id' => $user_id,
             'score_sum' => $score_sum,
+            'experience' => $experience,
             'accuracy_sum' => $accuracy_sum,
             'game_count' => $game_count,
             'last_level'=> $last_level,
@@ -38,7 +40,24 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'game_id' => 'required|string|max:37',
+            'user_id' => 'required|string|max:37',
+            'score_sum' => 'required|string|max:37',
+            'experience' => 'required|string|max:37',
+            'accuracy_sum' => 'required|string|max:37',
+            'game_count' => 'required|string|max:37',
+            'last_level'=> 'required|string|max:37',
+            'time' => 'date_format:H:i',
+            'dt' => 'date_format:H:i'
+        ]);
+
+        $this->createMang($request->game_id,$request->user_id, $request->score_sum, $request->experience, $request->accuracy_sum, $request->game_count, $request->last_level, $request->time,$request->dt);
+        $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'time', 'dt');
+        if($resources){
+            return redirect()->route("dashboard")->with($resources);
+        }
+        return redirect()->route("dashboard")->withErrors('Midagi läks valesti!');
     }
 
     /**
@@ -79,8 +98,9 @@ class GameController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $game_id)
     {
-        //
+        $Mang = Mang::findOrFail($game_id);
+        $Mang->delete();
     }
 }

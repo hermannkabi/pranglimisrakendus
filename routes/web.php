@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // See on väga halb kood, lihtsalt selleks, et lehed töötaks praegu
 
@@ -38,6 +39,10 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
     Route::get('/logout', 'logout')->name('logout');
 });
 
+//Google login
+Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
+
 
 //Email verification
 Route::get('/email/verify', [App\Http\Controllers\Auth\EmailVerificationPromptController::class
@@ -66,7 +71,7 @@ Route::post('/reset-password', [App\Http\Controllers\Auth\NewPasswordController:
 
 //User deletion
 Route::post('/delete-user', [App\Http\Controllers\ProfileController::class, 'destroy'
-])->middleware('guest')->name('delete-user');
+])->middleware('auth')->name('delete-user');
 
 
 
@@ -78,16 +83,17 @@ Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
 })->name("preview")->middleware('auth');
 
-//Google login
-Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
-
 //Game part of PRANGLIMISRAKENDUS
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew")->middleware('auth');
 
+//Game data
+Route::controller(App\Http\Controllers\GameController::class)->group(function() {
+    Route::post('/store', 'store')->name('store');
+    Route::post('/update', 'update')->name('update');
+})->middleware('auth');
 
 
 Route::get('/dashboard/old', function (){
