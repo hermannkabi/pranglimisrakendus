@@ -64,6 +64,11 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\NewPasswordCont
 Route::post('/reset-password', [App\Http\Controllers\Auth\NewPasswordController::class, 'store'
 ])->middleware('guest')->name('password.update');
 
+//User deletion
+Route::post('/delete-user', [App\Http\Controllers\ProfileController::class, 'destroy'
+])->middleware('guest')->name('delete-user');
+
+
 
 Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
