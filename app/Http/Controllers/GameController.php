@@ -51,7 +51,7 @@ class GameController extends Controller
             'time' => 'date_format:H:i',
             'dt' => 'date_format:H:i'
         ]);
-
+        
         $this->createMang($request->game_id,$request->user_id, $request->score_sum, $request->experience, $request->accuracy_sum, $request->game_count, $request->last_level, $request->time,$request->dt);
         $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'time', 'dt');
         if($resources){
@@ -83,11 +83,11 @@ class GameController extends Controller
     {
         $mang = Mang::findOrFail($game_id);
 
-        $mang -> score_sum = $request['score_sum'];
-        $mang -> accuracy_sum = $request['accuracy_sum'];
-        $mang -> game_count = $request['game_count'];
+        $mang -> score_sum += $request['score_sum'];
+        $mang -> accuracy_sum += $request['accuracy_sum'] /2;
+        $mang -> game_count += $request['game_count'];
         $mang -> last_level = $request['last_level'];
-        $mang -> time = $request['time'];
+        $mang -> time += $request['time'];
         $mang -> dt = $request['dt'];
 
         $mang->save();

@@ -584,14 +584,14 @@ class GameController extends Controller
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                "fraction"=>function (){return random_int(31, 100) + random_int(1, 999)/1000;},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 99)/100;},
                 "integer"=>function (){
                     $randints = [random_int(-100, -31), random_int(31, 100)];
                     return $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(101, 1000);},
-                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 999)/1000;},
+                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 99)/100;},
                 "integer"=>function (){
                     $randints = [random_int(-1000, -101), random_int(101, 1000)];
                     return $randints[array_rand($randints)];},
@@ -657,7 +657,7 @@ class GameController extends Controller
             ],
             "C"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                "fraction"=>function (){return random_int(31, 100) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-100, -31), random_int(31, 100)];
                     return $randints[array_rand($randints)];},
