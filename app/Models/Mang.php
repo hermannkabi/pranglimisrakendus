@@ -12,6 +12,7 @@ class Mang extends Model
         'game_id',
         'user_id',
         'score_sum',
+        'experience',
         'accuracy_sum',
         'game_count',
         'last_level',

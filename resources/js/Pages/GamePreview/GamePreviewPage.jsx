@@ -21,6 +21,12 @@ export default function GamePreviewPage({auth}){
     const [loading, setLoading] = useState(false);
 
 
+    window.addEventListener("beforeunload", function (e) {
+        setLoading(false);
+    });
+    
+
+
     // This function is called once when the page is first loaded
     useEffect(()=>{
         // Whether or not the type select is shown
@@ -78,9 +84,9 @@ export default function GamePreviewPage({auth}){
             return; 
         }
 
-        if(time <= 0){
+        if(time <= 0 || time > 10){
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Aeg peab olema suurem nullist");
+            setMessage("Aeg peab olema täisarv vahemikus 0-10 min");
             return;
         }
 
