@@ -29,7 +29,7 @@ export default function OperationWidget({op}){
     function gapHtml(op){
 
         if(!op.isCorrect){
-            return op.operation.replace("Lünk", ` <span class='correct'>`+op.correct.toFixed(2).replaceAll(".", ",")+`</span> <span class='underline incorrect'>`+op.answer.toString().replaceAll(".", ",")+`</span> `)
+            return op.operation.replace("Lünk", ` <span class='correct'>`+(typeof op.correct == "string" ? op.correct : op.correct.toFixed(2)).replaceAll(".", ",")+`</span> <span class='underline incorrect'>`+op.answer.toString().replaceAll(".", ",")+`</span> `)
         }
 
         return op.operation.replace("Lünk", `<span class='underline correct'>`+op.answer.toString().replaceAll(".", ",")+`</span>`)

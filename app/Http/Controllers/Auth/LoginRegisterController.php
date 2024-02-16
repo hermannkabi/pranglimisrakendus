@@ -36,9 +36,8 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
-    public function createUser($id, $email, $eesnimi, $perenimi, $password, $klass, $googleId){
+    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId){
         return User::create([
-            'id' => $id,
             'email' => $email,
             'eesnimi' => $eesnimi,    
             'perenimi' => $perenimi,    
@@ -51,7 +50,6 @@ class LoginRegisterController extends Controller
 
     public function storeGoogle(Request $request){
         $request->validate([
-            'id' => 'required',
             'eesnimi' => 'required|string|max:250',
             'perenimi' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
@@ -59,7 +57,7 @@ class LoginRegisterController extends Controller
             'googleid' => 'required',
         ]);
 
-        $user = $this->createUser($request->id,$request->email, $request->eesnimi, $request->perenimi, null, $request->klass, $request->googleid);
+        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, $request->klass, $request->googleid);
 
         Auth::login($user);
 
@@ -85,7 +83,7 @@ class LoginRegisterController extends Controller
             'klass' => 'required|string|max:6',
         ]);
 
-        $this->createUser($request->id,$request->email, $request->eesnimi, $request->perenimi, $request->password, $request->klass, null);
+        $this->createUser($request->email, $request->eesnimi, $request->perenimi, $request->password, $request->klass, null);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){

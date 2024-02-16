@@ -88,8 +88,8 @@ Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->group(function() {
-    Route::post('/store', 'store')->name('store');
-    Route::post('/update', 'update')->name('update');
+    Route::post('/game/store', 'store')->name('gameStore');
+    Route::post('/game/update', 'update')->name('gameUpdate');
 })->middleware('auth');
 
 
