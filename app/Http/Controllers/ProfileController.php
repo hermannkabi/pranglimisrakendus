@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Models\User;
+
 class ProfileController extends Controller
 {
     /**
@@ -39,6 +41,18 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit');
+    }
+    //User cookies
+    public function settings($id, $darkBackround, $visibleTimer, $animations, $defaultTime){
+        $user = User::find($id);
+        $user->update([
+            'dark_backround' => $darkBackround,
+            'visible_timer' => $visibleTimer,
+            'score_animations' => $animations,
+            'default_time' => $defaultTime
+        ]);
+
+        return redirect()->route('profilePage')->with($user);
     }
 
     /**

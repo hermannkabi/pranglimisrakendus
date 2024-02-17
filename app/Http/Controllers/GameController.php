@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mang;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class GameController extends Controller
 {
@@ -14,7 +15,9 @@ class GameController extends Controller
      */
     public function index()
     {
-        //
+        //Scoreboard
+        $koik = DB::table("mang")->get();
+        return redirect()->route("scoreboard")->with($koik);
     }
 
     /**
@@ -63,9 +66,11 @@ class GameController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $user_id)
     {
-        //
+        //Game history
+        $mangud = DB::table('mang')->select($user_id)->get();
+        return redirect()->route("history")->with($mangud);
     }
 
     /**
@@ -79,28 +84,35 @@ class GameController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $game_id)
+    public function update(string $user_id)
     {
-        $mang = Mang::findOrFail($game_id);
-
-        $mang -> score_sum += $request['score_sum'];
-        $mang -> accuracy_sum += $request['accuracy_sum'] /2;
-        $mang -> game_count += $request['game_count'];
-        $mang -> last_level = $request['last_level'];
-        $mang -> time += $request['time'];
-        $mang -> dt = $request['dt'];
-
+        $Mang = Mang::select($user_id);
+        $mang = User::where("id",'=',$user_id);
+        foreach($Mang as $game){
+            $mang -> score_sum += $game["score_sum"];
+            $mang -> accuracy_sum += $game['accuracy_sum']/2;
+            $mang -> game_count += $game['game_count'];
+            $mang -> last_level = $game['last_level'];
+            $mang -> time += $game['time'];
+            $mang -> dt = $game['dt'];
+        };
+        
         $mang->save();
-
         return redirect()->route('dashboard')->with('Mang',$mang);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $game_id)
+    public function destroy(string $user_id)
     {
-        $Mang = Mang::findOrFail($game_id);
-        $Mang->delete();
+        $mang = DB::table("Mang")->select($user_id)->get();
+        $mang -> delete();
+
+        // $range = Mang::where($user_id)->count();
+        // for($count = 0; $count<$range;$count++){
+        //     $Mang = Mang::findOrFail($user_id);
+        //     $Mang->delete();
+        // }
     }
 }
