@@ -27,6 +27,21 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'klass',
         'google_id',
+
+        //User settings
+        'dark_backround',
+        'visible_timer',
+        'score_animations',
+        'default_time',
+
+        //Game information
+        'score_sum',
+        'experience',
+        'accuracy_sum',
+        'game_count',
+        'last_level',
+        'time',
+        'dt',
     ];
 
     /**

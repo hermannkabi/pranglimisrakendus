@@ -45,14 +45,11 @@ Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::clas
 
 
 //Email verification
-Route::get('/email/verify', [App\Http\Controllers\Auth\EmailVerificationPromptController::class
-])->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerifyEmailController::class
-])->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', [App\Http\Controllers\Auth\EmailVerificationNotificationController::class
-])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::controller(App\Http\Controllers\AuthVerificationController::class)->group(function() {
+    Route::get('/email/verify', 'notice')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
+    Route::post('/email/resend', 'resend')->name('verification.resend');
+});
 
 
 //Password reset
@@ -91,8 +88,8 @@ Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->group(function() {
-    Route::post('/store', 'store')->name('store');
-    Route::post('/update', 'update')->name('update');
+    Route::post('/game/store', 'store')->name('gameStore');
+    Route::post('/game/update', 'update')->name('gameUpdate');
 })->middleware('auth');
 
 

@@ -348,6 +348,10 @@ export default function GamePage({data, time, auth}){
     function handleNumberClick(number){   
         if(timeOver){return;}    
 
+        if(compare) return;
+        if(divisionLaw) return;
+
+
         // Check if comma and minus are allowed, if not, return
         if((number == "," && !commaAllowed) || (number=="-" && !minusAllowed)) return;
 
@@ -420,6 +424,10 @@ export default function GamePage({data, time, auth}){
     function handleRemoveClick(){
         if(timeOver){return;}
 
+        if(compare) return;
+        if(divisionLaw) return;
+
+
         if(answer.endsWith(")")){
             var regex = /\((\d+)\/(\d+)\)/;
             var ans = answer;
@@ -482,6 +490,10 @@ export default function GamePage({data, time, auth}){
         if(timeOver){return;}  
         
         if(!minusAllowed) return;
+
+        if(compare) return;
+        if(divisionLaw) return;
+
 
         var newAnswer = answer;
         if(answer.startsWith("-")){

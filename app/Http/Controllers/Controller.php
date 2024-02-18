@@ -584,14 +584,14 @@ class GameController extends Controller
             ],
             "B"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                "fraction"=>function (){return random_int(31, 100) + random_int(1, 999)/1000;},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 99)/100;},
                 "integer"=>function (){
                     $randints = [random_int(-100, -31), random_int(31, 100)];
                     return $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return random_int(101, 1000);},
-                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 999)/1000;},
+                "fraction"=>function (){return random_int(101, 1000) + random_int(1, 99)/100;},
                 "integer"=>function (){
                     $randints = [random_int(-1000, -101), random_int(101, 1000)];
                     return $randints[array_rand($randints)];},
@@ -657,7 +657,7 @@ class GameController extends Controller
             ],
             "C"=>[
                 "natural"=>function (){return random_int(31, 100);},
-                "fraction"=>function (){return random_int(31, 100) + random_int(1, 99)/100;},
+                "fraction"=>function (){return random_int(31, 100) + random_int(1, 9)/10;},
                 "integer"=>function (){
                     $randints = [random_int(-100, -31), random_int(31, 100)];
                     return $randints[array_rand($randints)];},
@@ -1051,7 +1051,7 @@ class GameController extends Controller
         $yvalues = [
             
             "1"=>[
-                "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE ? 2 : random_int(0, 2);},
+                "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE  ? 2 : random_int(0, 2);},
                 "integer"=>function () use ($x1, $mis){
                     return $mis == GameController::JUURIMINE ? 2 : $randints = [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
                     return $randints[array_rand($randints)];},
@@ -1093,7 +1093,7 @@ class GameController extends Controller
 
         
         $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1, $y1){
-            return $mis == GameController::ASTENDAMINE && $y1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $y1 < 0 ? $num1 : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1));
+            return $mis == GameController::ASTENDAMINE && $y1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $y1 < 0 ? 1/$num1 : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : abs($num1)));
         }, $opnames, [],  $level, $aeg, null);
 
         return $returnData["array"];

@@ -20,4 +20,9 @@ class EmailVerificationPromptController extends Controller
                     ? redirect()->intended(RouteServiceProvider::HOME)
                     : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
     }
+
+
+    public function verify(){
+        return Inertia::render("EmailVerify/EmailVerifyPage");
+    }
 }
