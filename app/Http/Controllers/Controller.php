@@ -436,8 +436,8 @@ class GameController extends Controller
         if ($level === "all" && ($tüüp ==='natural' || $tüüp == "roman")){
             do{
                 again4:
-                $x = random_int($add, 1 + $add);
-                $y = random_int($add, 1 + $add);
+                $x = random_int($add, 2 + $add);
+                $y = random_int($add, 2 + $add);
 
                 $tase = 1;
                 if ($count > 5){
