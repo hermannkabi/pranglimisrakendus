@@ -1702,25 +1702,29 @@ class GameController extends Controller
         }
     }
 
-    public function kujundid($level, $aeg){
+    public function kujundid($level, $tüüp, $aeg){
         $array = [];
         $count = 0;
         $tasemax = ["1"=>9, "2"=>16, "3"=>25, "4"=>36, "5"=>49];
         $max = $tasemax[$level];
         do{ 
             $suvaline = array();
-            $random = random_int(1,3);
+            $random_kujund = $tüüp == 'kujund' or $tüüp == 'all' ? random_int(1,3) : null;
+            $random_color = $tüüp == 'color' or $tüüp == 'all' ? random_int(1,3) : null;
+            $random_size = $tüüp == 'size' or $tüüp == 'all' ? random_int(1,3) : null;
             $anscount = 0;
             for ($x = 0; $x < $max; $x++){
-                $random2 = random_int(0,3);
-                if($random2 == $random){
+                $random_kujund2 = $tüüp == 'kujund' or $tüüp == 'all' ? random_int(1,3) : null;
+                $random_color2 = $tüüp == 'color' or $tüüp == 'all' ? random_int(1,3) : null;
+                $random_size2 = $tüüp == 'size' or $tüüp == 'all' ? random_int(1,3) : null;
+
+                if($random_kujund2 == $random_kujund && $random_color2 == $random_color && $random_size2 == $random_size){
                     $anscount ++;
                 }
-                array_push($suvaline, $random2);
+                array_push($suvaline, $random_kujund2, $random_color2, $random_size2);
                 
             };
-
-            array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$anscount, "shape"=>$random], "level"=>$level]);
+            array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$anscount, "shape"=>$random_kujund, 'color'=>$random_color, 'size'=>$random_size], "level"=>$level]);
             $count ++;
     
         }while($count < 10 + ($aeg * 7));
@@ -1796,7 +1800,7 @@ class GameController extends Controller
                 }
 
                 if($tehe == 'kujundid'){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujundid($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujundid($tasemed[$lugeja], $tüüp, $aeg);
                 }
                 
             }
