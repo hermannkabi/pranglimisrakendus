@@ -108,6 +108,9 @@ export default function GamePage({data, time, auth}){
     // What shape is the user counting
     const [whatShape, setWhatShape] = useState("<div class='shape circle inline'>");
 
+    const [debugValue, setDebugValue] = useState(0);
+
+
 
 
     // Two operation states instead of one for compare type
@@ -213,11 +216,26 @@ export default function GamePage({data, time, auth}){
                     2:"circle",
                     3:"triangle",
                 };
+
+                var numToColor={
+                    1:"green",
+                    2:"red",
+                    3:"blue",
+                };
+
+                var numToSize={
+                    1:"small",
+                    2:"medium",
+                    3:"big",
+                };
                 
                 for(var idx = 0; idx < operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.length; idx++){
-                    var shape = operations.data[currentLevel.current][forcedIndex ?? index + 1].operation[idx];
                     
-                    shapesHTMLString += "<div class='shape "+numToShape[shape]+"'></div>";
+                    var shapeData = operations.data[currentLevel.current][forcedIndex ?? index + 1].operation[idx];
+
+                    var shapeClassList = numToShape[shapeData.shape]  + " " + (shapeData.color != null ? numToColor[shapeData.color] : "") + " " + (shapeData.size != null ? numToSize[shapeData.size] : "");
+                    
+                    shapesHTMLString += "<div class='shape "+shapeClassList+"'></div>";
                 }
 
                 // Sets the column count to the squre root of the ans count
@@ -225,7 +243,10 @@ export default function GamePage({data, time, auth}){
                 var columnCount = Math.floor(Math.sqrt(operations.data[currentLevel.current][forcedIndex ?? index + 1].operation.length));
 
                 operationString = "<div class='shapes-container' style='grid-template-columns: repeat("+columnCount+", 1fr)'>"+shapesHTMLString+"</div>";
-                setWhatShape("<div class='shape inline "+numToShape[operations.data[currentLevel.current][forcedIndex ?? index + 1].answer.shape]+"'></div>");
+
+                var ansData = operations.data[currentLevel.current][forcedIndex ?? index + 1].answer;
+                var whatShapeClassList = numToShape[ansData.shape] + " " + (ansData.color != null ? numToColor[ansData.color] : "") + " " + (ansData.size != null ? numToSize[ansData.size] : "");
+                setWhatShape("<div class='shape inline "+ whatShapeClassList + "'></div>");
             }
 
             // Check if operation is of type 'gap'
@@ -351,6 +372,9 @@ export default function GamePage({data, time, auth}){
         if(compare) return;
         if(divisionLaw) return;
 
+        if(answer.length <= 0){setDebugValue(Date.now() - dtStartedLast)}
+
+
 
         // Check if comma and minus are allowed, if not, return
         if((number == "," && !commaAllowed) || (number=="-" && !minusAllowed)) return;
@@ -426,7 +450,6 @@ export default function GamePage({data, time, auth}){
 
         if(compare) return;
         if(divisionLaw) return;
-
 
         if(answer.endsWith(")")){
             var regex = /\((\d+)\/(\d+)\)/;
@@ -899,6 +922,7 @@ export default function GamePage({data, time, auth}){
                     <NumberButton icon={true} content="close" onClick={()=>handleDivisionLaw(false)} />
                 </div>}
 
+                <p style={{color:"gray"}}>DEBUG: {debugValue}</p>
             </div>
             
 

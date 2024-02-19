@@ -1716,19 +1716,19 @@ class GameController extends Controller
         $max = $tasemax[$level];
         do{ 
             $suvaline = array();
-            $random_kujund = $tüüp == 'kujund' or $tüüp == 'all' ? random_int(1,3) : null;
-            $random_color = $tüüp == 'color' or $tüüp == 'all' ? random_int(1,3) : null;
-            $random_size = $tüüp == 'size' or $tüüp == 'all' ? random_int(1,3) : null;
+            $random_kujund = random_int(1,3);
+            $random_color = ($tüüp == 'color' or $tüüp == 'all') ? random_int(1,3) : null;
+            $random_size = ($tüüp == 'size' or $tüüp == 'all') ? random_int(1,3) : null;
             $anscount = 0;
             for ($x = 0; $x < $max; $x++){
-                $random_kujund2 = $tüüp == 'kujund' or $tüüp == 'all' ? random_int(1,3) : null;
-                $random_color2 = $tüüp == 'color' or $tüüp == 'all' ? random_int(1,3) : null;
-                $random_size2 = $tüüp == 'size' or $tüüp == 'all' ? random_int(1,3) : null;
+                $random_kujund2 = random_int(1,3);
+                $random_color2 = ($tüüp == 'color' or $tüüp == 'all') ? random_int(1,3) : null;
+                $random_size2 = ($tüüp == 'size' or $tüüp == 'all') ? random_int(1,3) : null;
 
                 if($random_kujund2 == $random_kujund && $random_color2 == $random_color && $random_size2 == $random_size){
                     $anscount ++;
                 }
-                array_push($suvaline, $random_kujund2, $random_color2, $random_size2);
+                array_push($suvaline, ["shape"=>$random_kujund2, "color"=>$random_color2, "size"=>$random_size2]);
                 
             };
             array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$anscount, "shape"=>$random_kujund, 'color'=>$random_color, 'size'=>$random_size], "level"=>$level]);
