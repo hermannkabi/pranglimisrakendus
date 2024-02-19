@@ -11,7 +11,7 @@ export default function GamePreviewPage({auth}){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    const typeIndependents = ["lünkamine", "võrdlemine", "kujundid", "choose", "lihtsustamine"];
+    const typeIndependents = ["lünkamine", "võrdlemine", "choose", "lihtsustamine"];
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
@@ -178,7 +178,7 @@ export default function GamePreviewPage({auth}){
             "kujundid":{
                 "lvls":5,
                 "extra":[],
-                "types":[],
+                "types":[{value: "kujundid", label: "Tavaline"}, {value: "color", label: "Erinevad värvid"}, {value: "size", label: "Erinevad suurused"}, {value: "all", label: "Erinevad värvid ja suurused"}],
             },
         };
 
@@ -207,6 +207,14 @@ export default function GamePreviewPage({auth}){
             setTimeout(() => {
                 if(typeData.types.includes(urlParams.get("type"))){
                     $("#number-type").val(urlParams.get("type")).change();
+                }
+
+                if(typeof typeData.types != "string"){
+                    for(var type of typeData.types){
+                        if(type.value == urlParams.get("type")){
+                            $("#number-type").val(urlParams.get("type")).change();
+                        }
+                    }
                 }
 
                 // If there is only 1 type, set the value to that
@@ -282,7 +290,7 @@ export default function GamePreviewPage({auth}){
                         </select>
                         <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
                             <option disabled selected>Vali arvuhulk</option>
-                            {types.map((e)=><option value={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option>)}                            
+                            {types.map((e)=>typeof e == "string" ? <option value={e} key={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option> : <option key={e.value} value={e.value}>{e.label}</option>)}                            
                         </select>
 
                         <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
