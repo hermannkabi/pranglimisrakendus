@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Nette\Utils\Random;
 use PhpParser\Node\Stmt\ElseIf_;
 
 class Controller extends BaseController
@@ -32,6 +33,7 @@ class GameController extends Controller
     const LIHTSUSTAMINE = "lihtsustamine";
     const MULTIOPERAND = "multioperand";
     const ROMAN = "roman";
+    const BOTS = "bots";
     //....
 
     function gcd ($a, $b) {
@@ -144,6 +146,11 @@ class GameController extends Controller
             //Multioperand
             if ($uusmis == GameController::MULTIOPERAND){
                 array_push($array, ["operation"=> $x , "answer"=>$ans($x, $y), "level"=>$level]);
+            }
+
+            //Bots
+            if ($uusmis == GameController::BOTS){
+                array_push($array, ["answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
             }
 
             $count ++;
@@ -1436,7 +1443,7 @@ class GameController extends Controller
             ],
         ];
         
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function ($num1, $num2, $mis){
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function (){
             // Boolean, mis ütleb, kas vastus on tõene või mitte
             return random_int(0, 1) == 1;
             }, [], [],  $level, $aeg, null);
@@ -1732,10 +1739,25 @@ class GameController extends Controller
         return $array;
     }
 
-    public function bots($level, $tehe, $tasemed, $tüüp, $aeg){ 
-        $array = array();
-        
-        return $array;
+    public function bots($level, $tehe, $tasemed, $tüüp, $aeg){
+        $raskus = [
+            "300" => [function ($min, $kadu){
+                $min = 0.1;
+                $kadu = random_int(1, 15)/100;
+                return array($min, $kadu);
+            }],
+            //...
+
+        ];
+        app("App\Http\Controllers\Controller")->wrapper($tehe, $tasemed, $tüüp, $aeg);
+
+        $returnData = GameController::generateOp($raskus[$level], [], GameController::BOTS, function($kadu, $min, $botcheck){
+            $accuracy = 1 - ($botcheck > $min ? $kadu : 0);
+            $botcheck = $accuracy;
+            return $accuracy;
+        }, [], [],  $level, $aeg, null);
+
+        return $returnData["array"];
     }
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
