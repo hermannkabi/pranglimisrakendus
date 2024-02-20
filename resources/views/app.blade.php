@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html data-theme="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="dark" lang="et" translate="no" class="notranslate">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-language" content="et" />
+        <meta name="description" content="Pranglimisrakendus on Tallinna Reaalkooli arvutusäpp"/>
+
 
         <title inertia>{{ config('app.name', 'Pranglimisrakendus') }}</title>
         <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">

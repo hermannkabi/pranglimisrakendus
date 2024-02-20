@@ -91,7 +91,7 @@ export default function OperationWidget({op}){
 
     return (
     <>
-        <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", display:"inline-flex", borderRadius:"8px", alignItems:"center", margin:"8px", padding:"8px", paddingRight:"16px"}}>
+        <div translate="no" style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", display:"inline-flex", borderRadius:"8px", alignItems:"center", margin:"8px", padding:"8px", paddingRight:"16px"}}>
             <div style={resultCircle}><span style={{color:"white", userSelect:"none"}} className="material-icons">{char}</span></div>
             <div style={{textAlign: "left", marginInline:"8px"}}>
                 <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px", wordWrap:"anywhere"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.includes("EXP") ? expHtml(op) : op.operation.includes("RAD") ? radHtml(op) : op.operation.includes("LIHT") ? fracHtml(op) : op.operation.toString().replaceAll(".", ",")}}></p>
