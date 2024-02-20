@@ -1058,7 +1058,7 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE  ? 2 : random_int(0, 2);},
                 "integer"=>function () use ($x1, $mis){
-                    $randints =  $mis == GameController::JUURIMINE ? [2, -2] : [random_int($x1 < 3 ? -8 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 8 : 2)];
+                    $randints =  $mis == GameController::JUURIMINE ? [2, -2] : [random_int(abs($x1) < 3 ? -8 : -2, abs($x1) < 3 ? 8 : 2)];
                     return $randints[array_rand($randints)];},
             ],
             "2"=>[
@@ -1097,7 +1097,7 @@ class GameController extends Controller
 
         
         $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1){
-            return $mis == GameController::ASTENDAMINE && $x1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $x1 < 0 ? abs($num1) : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : abs($num1)));
+            return $mis == GameController::ASTENDAMINE && $x1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $x1 < 0 ? abs($num1) : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1)); //TODO: Fix astejuurimine
         }, $opnames, [],  $level, $aeg, null);
 
         return $returnData["array"];
