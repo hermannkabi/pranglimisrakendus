@@ -1058,7 +1058,7 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE  ? 2 : random_int(0, 2);},
                 "integer"=>function () use ($x1, $mis){
-                    $randints =  $mis == GameController::JUURIMINE ? [2, -2][array_rand([2, -2])] : [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
+                    $randints =  $mis == GameController::JUURIMINE ? [2, -2] : [random_int($x1 < 3 ? -8 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 8 : 2)];
                     return $randints[array_rand($randints)];},
             ],
             "2"=>[
