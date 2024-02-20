@@ -1058,7 +1058,7 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE  ? 2 : random_int(0, 2);},
                 "integer"=>function () use ($x1, $mis){
-                    return $mis == GameController::JUURIMINE ? [2, -2][array_rand([2, -2])] : $randints = [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
+                    $randints =  $mis == GameController::JUURIMINE ? [2, -2][array_rand([2, -2])] : [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
                     return $randints[array_rand($randints)];},
             ],
             "2"=>[
@@ -1093,12 +1093,11 @@ class GameController extends Controller
             ],
             
         ];
-        $y1 = $xvalues[$level][$tüüp]();
 
 
         
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1, $y1){
-            return $mis == GameController::ASTENDAMINE && $y1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $y1 < 0 ? abs($num1) : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : abs($num1)));
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1){
+            return $mis == GameController::ASTENDAMINE && $x1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $x1 < 0 ? abs($num1) : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : abs($num1)));
         }, $opnames, [],  $level, $aeg, null);
 
         return $returnData["array"];
