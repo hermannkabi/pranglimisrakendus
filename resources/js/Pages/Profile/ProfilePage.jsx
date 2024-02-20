@@ -76,6 +76,8 @@ export default function ProfilePage({auth}){
                 $("#save-btn .save-icon").hide();   
                 $("#save-btn .text").text("Salvesta seaded");
             }, 1500);
+
+            window.location.href = route("dashboard");
         }
     }
 
@@ -127,7 +129,7 @@ export default function ProfilePage({auth}){
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
 
-                        <img style={{height:"64px"}} src="https://upload.wikimedia.org/wikipedia/commons/a/a2/REAALKOOLI_LOGO_MUSTA_T%C3%84PIGA.png" alt="Tallinna Reaalkool" />
+                        <img style={{height:"64px"}} src="https://www.deltae.ee/wp-content/uploads/2023/01/tallinna-reaalkool.png" alt="Tallinna Reaalkool" />
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
@@ -146,7 +148,7 @@ export default function ProfilePage({auth}){
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
                         <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
                         <SizedBox height={8} />
-                        <a style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
+                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
                         <SizedBox height={4} />
                     </div>
                 </div>

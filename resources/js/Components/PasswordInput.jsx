@@ -28,7 +28,7 @@ export default function PasswordInput(props){
     return (
         <div style={{position:"relative", display:"inline-block", ...props.divstyle}}>
             <input type={type} {...props} value={value} onChange={handleChange}  />
-            <span onClick={handleClick} className="material-icons" style={visibilityBtn}>{type=="password" ? "visibility" : "visibility_off"}</span>
+            <span translate="no" onClick={handleClick} className="material-icons" style={visibilityBtn}>{type=="password" ? "visibility" : "visibility_off"}</span>
         </div>
     );
 }

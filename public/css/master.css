@@ -480,6 +480,7 @@ select:after{
     display: inline-block;
     top: 8px;
     scale: 0.8;
+    margin-inline: 4px;
 }
 
 .shape.space{
@@ -504,6 +505,41 @@ select:after{
     border-radius: 2px;
 }
 
+.shape:not(.triangle).green{
+    background-color: rgb(var(--primary-color));
+}
+
+.shape.triangle.green{
+    border-bottom: 24px solid rgb(var(--primary-color));
+}
+
+.shape:not(.triangle).red{
+    background-color: rgb(var(--red-color));
+}
+
+.shape.triangle.red{
+    border-bottom: 24px solid rgb(var(--red-color));
+}
+
+.shape:not(.triangle).blue{
+    background-color: #98ABEE;
+}
+
+.shape.triangle.blue{
+    border-bottom: 24px solid #98ABEE;
+}
+
+.shape.small{
+    scale: 0.5;
+}
+
+.shape.medium{
+    scale: 1;
+}
+
+.shape.big{
+    scale: 1.5;
+}
 
 ihbjgdjhsdhjsd::after{
     content: "1";
