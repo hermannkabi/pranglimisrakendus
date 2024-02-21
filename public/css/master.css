@@ -438,6 +438,16 @@ select:after{
     left:-2px;
 }
 
+
+.math-style{
+    font-family: "Lexend";
+    font-weight: bold;
+}
+
+.math-pow-transformed{
+    transform: translate(-10px, 10px);
+}
+
 /* Point animation */
 .point-span{
     display: none;
