@@ -125,7 +125,7 @@ class GameController extends Controller
 
             //Astendamine v juurimine
             if (in_array($uusmis, [GameController::ASTENDAMINE, GameController::JUURIMINE])){
-                array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x . "EXP" . $y) : ($x**$y . "RAD" . $y) ), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+                array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x . "EXP" . $y) : ($y > 0 ? ($x**$y . "RAD" . $y) : ('1'. '/' . $x**abs($y). "RAD" . $y)) ), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
             }
 
             //Jaguvus
@@ -517,22 +517,19 @@ class GameController extends Controller
     public function korjag($level, $mis, $tüüp, $aeg){
         $array = [];
         $x = 0;
-        $y = 0;
+       
         $tase = 1;
         $count = 0;
-        $min = 0;
         $max = 0;
-        $xmax = 0;
-        $xmax2 = 0;
-        $ymax = 0;
-        $ymax2 = 0;
+        $xmax = 5;
+        $ymax = 5;
         $max2 = 0;
         $add = 1;
         $add2 = 0;
-        $xadd = 0;
-        $yadd = 0;
+        $xadd = 1;
+        $yadd = 1;
         $xadd2 = 0;
-        $yadd2 = 0;
+        $yadd2 = -1;
         $xold = 0;
         $yold = 0;
         $check = 0;
@@ -610,7 +607,10 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
                 "fraction"=>function (){return random_int(1, 5)/10;},
-                "integer"=>function (){return random_int(-5, 5);},
+                "integer"=>function (){ 
+                    $randints = [random_int(-5, -1), random_int(1, 5)];
+                    return $randints[array_rand($randints)];
+                },
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
@@ -776,10 +776,11 @@ class GameController extends Controller
         if ($level === 'all' && $tüüp === 'integer'){
             do {
                 again:
-                $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2, $xadd + 2)];
-                $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2, $yadd + 2)];
+                $xjarl = [random_int($xadd2 - 2, $xadd2 + 1), random_int($xadd - 1, $xadd + 2)];
+                $yjarl = [random_int($yadd2 - 2, $yadd2 == 0 ? -1 : $yadd), random_int($yadd == 0 ? 1 : $yadd, $yadd + 2)];
                 $x = $xjarl[array_rand($xjarl)];
                 $y = $yjarl[array_rand($yjarl)];
+                
                 if ($count > 5){
                     if ($check != 1){
                         $xadd = 1;
@@ -788,9 +789,6 @@ class GameController extends Controller
                     };
                     $ymax = 10;
                     $xmax = 5;
-                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 1), random_int($xadd - 1, $xadd + 2)];
-                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 1), random_int($yadd - 1, $yadd + 2)];
-                    $x = $xjarl[array_rand($xjarl)];
                     $tase = 2;
                 }
                 if ($count > 10){ 
@@ -800,7 +798,7 @@ class GameController extends Controller
                     };
                     $tase = 3;
                     $xmax = $ymax = 10;
-                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                    $xjarl = [random_int($xadd2 - 3, $xadd2 + 3), random_int($xadd - 3,$xadd + 3)];
                     $x = $xjarl[array_rand($xjarl)];
                     $y = $xjarl[array_rand($xjarl)];
                 }
@@ -813,8 +811,8 @@ class GameController extends Controller
                     $tase = 4;
                     $xmax = 10;
                     $ymax = 20;
-                    $yjarl = [random_int($yadd2 - 2, $yadd2 + 2), random_int($yadd - 2,$yadd + 2)];
-                    $xjarl = [random_int($xadd2 - 2, $xadd2 + 2), random_int($xadd - 2,$xadd + 2)];
+                    $yjarl = [random_int($yadd2 - 4, $yadd2 + 4), random_int($yadd - 4,$yadd + 4)];
+                    $xjarl = [random_int($xadd2 - 4, $xadd2 + 4), random_int($xadd - 4,$xadd + 4)];
                     $x = $xjarl[array_rand($xjarl)];
                     $y = $yjarl[array_rand($yjarl)];
                     
@@ -881,7 +879,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count < 25 + ($aeg * 14));
+            } while ($count < 30 + ($aeg * 14));
             return $array;
         }
             
@@ -1060,7 +1058,7 @@ class GameController extends Controller
             "1"=>[
                 "natural"=>function () use ($mis){return $mis == GameController::JUURIMINE  ? 2 : random_int(0, 2);},
                 "integer"=>function () use ($x1, $mis){
-                    return $mis == GameController::JUURIMINE ? 2 : $randints = [random_int($x1 < 3 ? -10 : -2, [0, -2][array_rand([0, -2])]), random_int([0, 2][array_rand([0, 2])], $x1 < 3 ? 10 : 2)];
+                    $randints =  $mis == GameController::JUURIMINE ? [2, -2] : [random_int(abs($x1) < 3 ? -8 : -2, abs($x1) < 3 ? 8 : 2)];
                     return $randints[array_rand($randints)];},
             ],
             "2"=>[
@@ -1095,12 +1093,11 @@ class GameController extends Controller
             ],
             
         ];
-        $y1 = $xvalues[$level][$tüüp]();
 
 
         
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1, $y1){
-            return $mis == GameController::ASTENDAMINE && $y1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $y1 < 0 ? 1/$num1 : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : abs($num1)));
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $mis) use ($x1){
+            return $mis == GameController::ASTENDAMINE && $x1 < 0 ? 1/($num1 ** abs($num2)) : ($mis == GameController::JUURIMINE && $x1 < 0 ? abs($num1) : ($mis == GameController::ASTENDAMINE ? $num1 ** $num2 : $num1)); //TODO: Fix astejuurimine
         }, $opnames, [],  $level, $aeg, null);
 
         return $returnData["array"];

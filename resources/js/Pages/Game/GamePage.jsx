@@ -852,7 +852,7 @@ export default function GamePage({data, time, auth}){
                 
                 {/* Message on top of the page */}
                 {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
+                    <p style={{color:"rgb(var(--primary-color))"}}> <span translate="no">ⓘ</span> {message}</p>
                 </div>}
 
                 {/* Cancel button */}
@@ -877,13 +877,13 @@ export default function GamePage({data, time, auth}){
                     </div>
 
                     {/* The operation data  and answer*/}
-                    {compare && <h2 style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
-                    {shapes && <><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></>}
-                    {!compare && !shapes && <h2 style={{overflowWrap:'anywhere'}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {compare && <h2 translate="no" style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
+                    {shapes && <span translate="no"><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></span>}
+                    {!compare && !shapes && <h2 translate="no" style={{overflowWrap:'anywhere'}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
-                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span className="material-icons">fast_forward</span></a> : null}
+                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span translate="no" className="material-icons">fast_forward</span></a> : null}
                 
                 <SizedBox height="24px" />
                 

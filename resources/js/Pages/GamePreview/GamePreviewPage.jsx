@@ -105,7 +105,7 @@ export default function GamePreviewPage({auth}){
 
 
     function getParams(timeVal){
-        return "?id="+$("#game-type").val() + "&time=" + (timeVal != null && Number.isInteger(timeVal) ? timeVal : $("#number").val()) + "&type="+($("#number-type").val() ?? ""); 
+        return "?id="+$("#game-type").val() + "&time=" + (timeVal != null && Number.isInteger(timeVal) ? timeVal : $("#number").val()) + ("&type="+($("#number-type").val() ?? "choose")); 
     }
 
     function onTimeChange(val){
@@ -205,6 +205,11 @@ export default function GamePreviewPage({auth}){
             setTypes(typeData.types);
 
             setTimeout(() => {
+                if(urlParams.get("type").length == 0){
+                    $("#number-type").val("choose").change();
+                    return;
+                }
+                
                 if(typeData.types.includes(urlParams.get("type"))){
                     $("#number-type").val(urlParams.get("type")).change();
                 }
@@ -289,7 +294,7 @@ export default function GamePreviewPage({auth}){
                             <option value="sprint">Sprint</option>
                         </select>
                         <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
-                            <option disabled selected>Vali arvuhulk</option>
+                            <option disabled selected value="choose">Vali arvuhulk</option>
                             {types.map((e)=>typeof e == "string" ? <option value={e} key={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option> : <option key={e.value} value={e.value}>{e.label}</option>)}                            
                         </select>
 

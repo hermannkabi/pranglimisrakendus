@@ -76,6 +76,8 @@ export default function ProfilePage({auth}){
                 $("#save-btn .save-icon").hide();   
                 $("#save-btn .text").text("Salvesta seaded");
             }, 1500);
+
+            window.location.href = route("dashboard");
         }
     }
 
@@ -146,7 +148,7 @@ export default function ProfilePage({auth}){
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
                         <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
                         <SizedBox height={8} />
-                        <a style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
+                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
                         <SizedBox height={4} />
                     </div>
                 </div>

@@ -11,7 +11,7 @@ export default function BigGameButton({symbol, text, value}){
             //     <div className="big-btn-symbol" style={{marginBottom:"4px", lineHeight:'1'}}>{symbol}</div>
             // </button>
 
-            <div onClick={navigateToPreview} className="big-btn">
+            <div translate="no" onClick={navigateToPreview} className="big-btn">
                 <span className="symbol" style={{fontWeight:"normal", fontSize:"6rem", color:"transparent", color:"#ffffff77"}}>{symbol}</span>
                 <span style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
             </div>

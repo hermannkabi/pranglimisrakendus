@@ -41,8 +41,8 @@ export default function NumberInput(props){
 
     return (
         <div className="number-select">
-            <span style={{marginTop:"-2px"}} onClick={decrement} className="number-edit-btn remove material-icons no-anim">remove</span>
-            <span style={{marginTop:"-2px"}} onClick={increment} className="number-edit-btn add material-icons no-anim">add</span>
+            <span translate="no" style={{marginTop:"-2px"}} onClick={decrement} className="number-edit-btn remove material-icons no-anim">remove</span>
+            <span translate="no" style={{marginTop:"-2px"}} onClick={increment} className="number-edit-btn add material-icons no-anim">add</span>
         
             <input style={{marginTop:"0"}} {...props} type="text" pattern="-?[0-9]+" inputMode="numeric" value={value === undefined || value.length == 0 ? '' : value} onChange={handleChange} />
         </div>
