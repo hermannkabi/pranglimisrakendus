@@ -150,7 +150,7 @@ class GameController extends Controller
 
             //Bots
             if ($uusmis == GameController::BOTS){
-                array_push($array, ["answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
+                array_push($array, ["operation"=> $x[-1],"answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
             }
 
             $count ++;
@@ -1744,7 +1744,8 @@ class GameController extends Controller
             "300" => [function ($min, $kadu){
                 $min = 0.1;
                 $kadu = random_int(1, 15)/100;
-                return array($min, $kadu);
+                $kiirus = 10;
+                return array($min, $kadu, $kiirus);
             }],
             //...
 
