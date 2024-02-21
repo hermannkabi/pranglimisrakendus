@@ -3,34 +3,16 @@ import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 import OperationWidget from "@/Components/OperationWidget";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import CheckboxTile from "@/Components/CheckboxTile";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
 
 
-    useEffect(()=>{
-        saveGame();
-    }, []);
+    const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
 
-    // Style of the description of the statistic
-    const statNameStyle = {color:'gray', marginBlock: "0"};
-
-    // Percentage of correctly answered operations
-    var accuracy = total == 0 ? 0 : Math.round(correct/total*100);
-
-    // Returns a string of human readable time (e.g. 1 min 30 sec)
-    function getHumanReadableTime(){
-        if(time < 60){
-            return Math.round(time) + " s";
-        }else if(time%60 == 0){
-            return time/60 + " min";
-        }else{
-
-            return Math.floor(time/60) + " min " + (time%60) +" s";
-        }
-    }
-
+    const [title, setTitle] = useState(null);
 
     // Default greetings
     const greetings = ["Hästi tehtud!", "Väga tubli!", "Suurepärane!", "Tubli töö!"];
@@ -53,28 +35,54 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
 
 
+    // Percentage of correctly answered operations
+    var accuracy = total == 0 ? 0 : Math.round(correct/total*100);
+
 
     // Get a random title from the list of greetings
     function getTitle(greetingList){
         return greetingList[Math.floor(Math.random() * greetingList.length)]
     }
 
-    var title;
+    useEffect(()=>{
 
-    // Greeting algorithm
-    if(accuracy == 100){
-        title = getTitle(greetingsPerfectAccuracy);
-    }else if(accuracy >= 90){
-        title = getTitle(greetingsHighAccuracy);
-    }else if(accuracy >= 80){
-        title = getTitle(greetingsMedPoints);
-    }else if(accuracy == 0){
-        title = getTitle(greetingsZeroAccuracy);
-    }else if(total*100 > points){
-        title = getTitle(greetingsLowPoints);
-    }else{
-        title = getTitle(greetings);
+        // Greeting algorithm
+        if(accuracy == 100){
+            setTitle(getTitle(greetingsPerfectAccuracy));
+        }else if(accuracy >= 90){
+            setTitle(getTitle(greetingsHighAccuracy));
+        }else if(accuracy >= 80){
+            setTitle(getTitle(greetingsMedPoints));
+        }else if(accuracy == 0){
+            setTitle(getTitle(greetingsZeroAccuracy));
+        }else if(total*100 > points){
+            setTitle(getTitle(greetingsLowPoints));
+        }else{
+            setTitle(getTitle(greetings));
+        }
+
+        saveGame();
+
+        
+    }, []);
+
+    // Style of the description of the statistic
+    const statNameStyle = {color:'gray', marginBlock: "0"};
+
+    // Returns a string of human readable time (e.g. 1 min 30 sec)
+    function getHumanReadableTime(){
+        if(time < 60){
+            return Math.round(time) + " s";
+        }else if(time%60 == 0){
+            return time/60 + " min";
+        }else{
+
+            return Math.floor(time/60) + " min " + (time%60) +" s";
+        }
     }
+
+
+    
 
     function dateToString(date){
         return (date.getDate() + 1 < 9 ? "0" : "") + date.getDate().toString() + "." + (date.getMonth() + 1 < 9 ? "0" : "") + (date.getMonth() + 1).toString() + "." + date.getFullYear();
@@ -91,6 +99,21 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         // The average percentage works by saving a sum of all the percentages and dividing it by total-training-count
         window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
 
+    }
+
+    function filterOperations(){
+        const animationTime = 150;
+        $(".ss .detailed-container").animate({
+            opacity: 0,
+
+        }, animationTime, function (){
+            console.log(log.filter((op) => op.isCorrect));
+            setCurrentlyShownLog(log.filter((op) => ($(".correct-choice").is(":checked") && op.isCorrect) || ($(".incorrect-choice").is(":checked") && !op.isCorrect)));
+
+            $(".ss .detailed-container").animate({
+                opacity: 1,
+            }, animationTime);
+        });
     }
 
     return (
@@ -135,8 +158,13 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         {/* Updated looks from 14.01.2024 */}
                         <div className="ss" style={{display:"none"}}>
                             <SizedBox height={16} />
+                            {accuracy != 0 && accuracy != 100 && <div>
+                                <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
+                                <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                            </div>}
+
                             <div className="detailed-container">
-                                {log.map(function (op, i){
+                                {currentlyShownLog.map(function (op, i){
                                     return (
                                         <OperationWidget op={op} key={i} />
                                     );

@@ -129,7 +129,7 @@ export default function ProfilePage({auth}){
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
 
-                        <img style={{height:"64px"}} src="https://www.deltae.ee/wp-content/uploads/2023/01/tallinna-reaalkool.png" alt="Tallinna Reaalkool" />
+                        <img style={{height:"64px"}} src="assets/logo.png" alt="Tallinna Reaalkool" />
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
