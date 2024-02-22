@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Nette\Utils\Random;
 use PhpParser\Node\Stmt\ElseIf_;
 
+use function PHPUnit\Framework\returnValue;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
@@ -1273,7 +1275,7 @@ class GameController extends Controller
                     return $randints[array_rand($randints)];},
             ],
         ];
-        $yvalues = [
+        $yvalues = [ //Võiks olla korrujagamisarvud
             "1"=>[
                 "natural"=>function (){return random_int(1, 8);},
                 "integer"=>function (){return random_int(-8, 8);},
@@ -1323,9 +1325,20 @@ class GameController extends Controller
                     return $randints[array_rand($randints)];},
                 ],
         ];
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::MULTIOPERAND, function ($num1, $num2){
-            $mis = random_int(1,4);
-            return $mis == 1 ? $num1 + $num2 : ($mis == 2 ? $num1 * $num2 : $num1);
+        $astekogum = ['1'=>3, '2'=>3, '3'=>4, '4'=>4];
+        $aste = $astekogum[$level];
+        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::MULTIOPERAND, function ($num1, $num2,$num1kor, $num2kor) use ($aste){
+            $kogum = [$num1.'+'.$num2, $num1+$num2.'-'.$num2, $num1kor.'*'.$num2kor, $num1kor*$num2kor.':'.$num2kor];
+            $valik = array_fill(0, $aste, $kogum[$suvakogum = array_rand(range(1,4))]);//$suvanorm - Kogum numbritest, antud juhul tehtemärkidest
+            $margid = ['+','-'];
+            $suva = array_fill(1, $aste-1, $margid[array_rand($margid)]);
+            for($i=0, $番号=0;$i<$aste;$i++){ //番号 - number
+                if ($i%2==1) {
+                    $valik =array_splice($valik, $i, 0, $suva[$番号]); // Kogum arvudest ja tehetest
+                    $番号++;
+                }
+            }
+            return [$valik, $suvakogum];
             }, [], [],  $level, $aeg, null);
 
         return $returnData["array"];
