@@ -27,6 +27,11 @@
     section{
         width: 100% !important;
     }
+
+    
+    .math-pow-transformed{
+        transform: translate(-10px, 10px);
+    }
 }
 
 body{
@@ -436,6 +441,20 @@ select:after{
     font-size: 0.6em;
     top: 6px;
     left:-2px;
+}
+
+
+.math-style{
+    font-family: "Lexend";
+    font-weight: bold;
+}
+
+.math-pow-transformed{
+    transform: translate(-10px, 10px);
+}
+
+.root-alignment{
+    transform: translateY(-4px);
 }
 
 /* Point animation */

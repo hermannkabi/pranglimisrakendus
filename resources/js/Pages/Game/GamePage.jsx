@@ -157,39 +157,24 @@ export default function GamePage({data, time, auth}){
             }
 
             // Basic operation data
-            var regex = /\((\d+)\/(\d+)\)$/;
+            var regex = /\((-?\d+)\/(-?\d+)\)/;
             var operationString = operations.data[currentLevel.current][forcedIndex ?? (index + 1)].operation.toString();
+
+            var matches = operationString.match(regex);
 
             // Sets level of the new operation
             setLevel(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level)
 
-
-            // Handle fraction rendering
-            var matches = operationString.match(regex);
-            if(matches!= null){
-                matches.forEach(function (match){
-                    var matchList = regex.exec(match);
-                    if(matchList == null) return;
-                    var numerator = parseInt(matchList[1]);
-                    var denominator = parseInt(matchList[2]);
-                    var fullPart = null;
-    
-                    if(numerator > denominator && (!operationString.includes("LIHT") || !["1", "2", "3"].includes(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level))){
-                        fullPart = Math.floor(numerator / denominator) != (numerator / denominator) ? Math.floor(numerator / denominator) : null;
-                        numerator -=  (fullPart ?? 0) * denominator;
-                    }
-                    operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
-                });
-            }
-
             // Handles rendering exponents and radicals
+            // Since there might be fractions here, this has to be before fraction rendering
             if(operationString.includes("EXP")){
                 // Splits the operation into two parts - base and exponent
                 var parts = operationString.split("EXP");
                 var base = parts[0];
                 var exponent = parts[1];
 
-                operationString = "<div class='exp'><span class='base'>"+base+"</span><sup class='exponent'>"+exponent+"</sup></div>";
+                // operationString = "<div class='exp'><span class='base'>"+base+"</span><sup class='exponent'>"+exponent+"</sup></div>";
+                operationString = "<math><msup class='math-style'><mn>"+base+"</mn><mi class='"+(matches != null ? "math-pow-transformed" : "")+"'>"+exponent+"</mi></msup></math>";
 
             }else if(operationString.includes("RAD")){
                 // Don't know how I'm going to create this
@@ -199,8 +184,33 @@ export default function GamePage({data, time, auth}){
                 var radicand = parts[0];
                 var radIndex = parts[1];
 
-                operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
+
+                operationString = `<math><mroot><mi class='math-style'>`+radicand+`</mi><mn class='math-style root-alignment'>`+(radIndex == "2" ? "" : radIndex)+`</mn></mroot></math>`;
+
+                //operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
             }
+
+            // Handle fraction rendering
+            if(matches!= null){
+                matches.forEach(function (match){
+                    var matchList = regex.exec(match);
+                    if(matchList == null) return;
+                    var numerator = parseInt(matchList[1]);
+                    var denominator = parseInt(matchList[2]);
+                    var fullPart = null;
+    
+                    if(numerator > denominator && (!operationString.includes("LIHT") || !["1", "2", "3"].includes(operations.data[currentLevel.current][forcedIndex ?? (index + 1)].level)) && (!operationString.includes("div"))){
+                        fullPart = Math.floor(numerator / denominator) != (numerator / denominator) ? Math.floor(numerator / denominator) : null;
+                        //numerator -=  (fullPart ?? 0) * denominator;
+                    }
+
+                    operationString = operationString.replace(match, '<math>'+(operationString.includes("msup") ? '<mrow><mo>(</mo>' : '')+'<mfrac class="math-style"><mn>'+numerator+'</mn><mi>'+denominator+'</mi></mfrac>'+(operationString.includes("msup") ? '<mo>)</mo></mrow>' : '')+'</math>');
+
+                    // operationString = operationString.replace(match, (fullPart == null ? '' : fullPart.toString()) + ' <div class="frac"><span>'+numerator+'</span><span class="symbol">/</span><span class="bottom">'+denominator+'</span></div>')
+                });
+            }
+
+            
 
 
             // Check if game is of type shape count
@@ -265,12 +275,13 @@ export default function GamePage({data, time, auth}){
             setFractionState(operationString.includes("LIHT") ? "up" : "off");
 
             // Show operation to user
-            setOperation(operationString.replaceAll(".", ",").replaceAll("LIHT", ""));
+            setOperation(operationString.replaceAll(".", ",").replaceAll("LIHT", "").replaceAll(",png", ".png"));
             setDtStartedLast(Date.now());
 
             // Check if the operation contains the multiply and divide chars
             // If it does, we disable entering fractions
             // Similarly with comma and minus
+            console.log(( operationString));
             setFractionAllowed(!(operationString.includes("·") || operationString.includes(":") || isArray ));
             setCommaAllowed(!isArray);
             setMinusAllowed(!isArray);
@@ -674,7 +685,7 @@ export default function GamePage({data, time, auth}){
 
             onAnswer(isCorrect, {
                 "operation":operations.data[currentLevel.current][index].operation ?? "",
-                "correct":correct,
+                "correct": simplify ? correct : parseFloat(correct).toFixed(2).replace(".00", ""),
                 "answer": simplify ? formattedAnswer : parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect,
             });
@@ -822,7 +833,7 @@ export default function GamePage({data, time, auth}){
     function obfuscateOperation(oper){
 
         // Don't obfuscate sqrt
-        if(oper.includes("span")){
+        if(oper.includes("span") || oper.includes("math")){
             return oper;
         }
 
@@ -848,6 +859,7 @@ export default function GamePage({data, time, auth}){
             <Head title="Mäng" />
             <Navbar title="Mäng" user={auth.user} />
             <SizedBox height="36px" />
+
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
                 {/* Message on top of the page */}
