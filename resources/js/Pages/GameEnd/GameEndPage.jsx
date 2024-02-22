@@ -5,6 +5,7 @@ import SizedBox from "@/Components/SizedBox";
 import OperationWidget from "@/Components/OperationWidget";
 import { useEffect, useState } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
+import HorizontalRule from "@/Components/HorizontalRule";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
@@ -159,8 +160,11 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         <div className="ss" style={{display:"none"}}>
                             <SizedBox height={16} />
                             {accuracy != 0 && accuracy != 100 && <div>
+                                <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
                                 <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
                                 <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                                <br />
+                                <HorizontalRule />
                             </div>}
 
                             <div className="detailed-container">

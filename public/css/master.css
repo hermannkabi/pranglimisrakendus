@@ -27,6 +27,11 @@
     section{
         width: 100% !important;
     }
+
+    
+    .math-pow-transformed{
+        transform: translate(-10px, 10px);
+    }
 }
 
 body{
