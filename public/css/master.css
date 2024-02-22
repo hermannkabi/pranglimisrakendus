@@ -453,6 +453,10 @@ select:after{
     transform: translate(-10px, 10px);
 }
 
+.root-alignment{
+    transform: translateY(-4px);
+}
+
 /* Point animation */
 .point-span{
     display: none;

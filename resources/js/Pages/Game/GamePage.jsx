@@ -185,7 +185,7 @@ export default function GamePage({data, time, auth}){
                 var radIndex = parts[1];
 
 
-                operationString = `<math><mroot><mi class='math-style'>`+radicand+`</mi><mn>`+(radIndex == "2" ? "" : radIndex)+`</mn></mroot></math>`;
+                operationString = `<math><mroot><mi class='math-style'>`+radicand+`</mi><mn class='math-style root-alignment'>`+(radIndex == "2" ? "" : radIndex)+`</mn></mroot></math>`;
 
                 //operationString = `<span class="rad"><span class="index">`+(radIndex == "2" ? "" : radIndex) +`</span><span class='radic'>&radic;</span><span class='radicand'>`+radicand+`</span>`;
             }
