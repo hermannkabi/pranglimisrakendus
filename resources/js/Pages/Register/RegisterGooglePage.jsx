@@ -3,6 +3,9 @@ import SizedBox from "@/Components/SizedBox";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import "/public/css/register.css";
+import "/public/css/auth_layout.css";
+import InfoBanner from "@/Components/InfoBanner";
+
 
 
 export default function RegisterGooglePage({errors}){
@@ -22,12 +25,11 @@ export default function RegisterGooglePage({errors}){
 
     return <>
         <Head title="Jätka Google'ga" />
-        <LoginHeader pageName="Jätka Google'ga" googleLogo={true} />
 
-        <div className="container">
-                <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ Kasutaja loomiseks Google'ga palun täida allolevad väljad</p>
-                </div>
+        <div className="auth-container">
+            <LoginHeader pageName="Jätka Google'ga" googleLogo={true} />
+            <div className="auth-main-content">
+                <InfoBanner text="Kasutaja loomiseks Google'ga palun täida allolevad väljad" />
                 <form method="post" action={route("storeGoogle")}  className="register-container">
                     <input type="hidden" name="_token" value={window.csrfToken} />
                     <input style={{display:'none'}} name="googleid" value={googleId} />
@@ -42,6 +44,7 @@ export default function RegisterGooglePage({errors}){
                     <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
                 </form>
             </div>
+        </div>
         
     </>;
 }

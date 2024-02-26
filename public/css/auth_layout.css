@@ -1,0 +1,33 @@
+.auth-container{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20%;
+}
+
+.auth-header{
+    text-align: left;
+}
+
+.auth-main-content{
+    width: max(20%, 300px);
+}
+
+@media only screen and (max-width: 800px) {
+    .auth-container{
+        display: flex;
+        margin-top: 0px;
+        flex-direction: column;
+    }
+
+    .auth-main-content{
+        margin: auto;
+    }
+    
+    .auth-header{
+        text-align: center;
+        margin: auto;
+    }
+}

@@ -455,6 +455,7 @@ select:after{
 
 .root-alignment{
     transform: translateY(-4px);
+    font-size: .5em;
 }
 
 /* Point animation */

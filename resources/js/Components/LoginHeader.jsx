@@ -1,20 +1,22 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import SizedBox from "./SizedBox";
+import "/public/css/auth_layout.css";
 
 
-export default function LoginHeader({pageName, description="PRANGLIMISRAKENDUS", topMargin="100px", googleLogo=false}){
 
-    const windowWidth = window.innerWidth;
-    const google = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png";
+export default function LoginHeader({pageName, description="PRANGLIMISRAKENDUS", topMargin="100px", googleLogo=false, forceCenter=false}){
 
+    const google = "/assets/google_logo.png";
+
+    const size = 75;
 
     return (
-        <>
-            <SizedBox height={windowWidth <= 600 ? "16px" : topMargin} />
+        <div className="auth-header" style={forceCenter ? {textAlign:"center"} : {}}>
+            <SizedBox height="8px" />
             {!googleLogo && <ApplicationLogo height="100px" style={{marginBottom:"16px"}} />}
-            {googleLogo && <img src={google} height={100} width={100} />}
+            {googleLogo && <img src={google} height={size} width={size} style={{userSelect:"none"}} />}
             <h1 style={{marginBlock: "0"}}>{pageName}</h1>
             <p style={{marginTop: "0", fontSize:"16px"}}>{description}</p>
-        </>
+        </div>
     );
 }

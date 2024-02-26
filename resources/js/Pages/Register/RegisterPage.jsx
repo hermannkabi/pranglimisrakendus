@@ -2,9 +2,11 @@ import LoginHeader from "@/Components/LoginHeader";
 import PasswordInput from "@/Components/PasswordInput";
 import { Head } from "@inertiajs/react";
 import "/public/css/register.css";
+import "/public/css/auth_layout.css";
 import SizedBox from "@/Components/SizedBox";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import { useState } from "react";
+import InfoBanner from "@/Components/InfoBanner";
 
 export default function RegisterPage({message, errors}){
 
@@ -106,26 +108,29 @@ export default function RegisterPage({message, errors}){
         <>
 
             <Head title="Loo konto" />
-            <LoginHeader pageName="Loo konto" />
-            
-            <div className="container">
-                {errorMessage && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errorMessage}</p>
-                </div>}
-                <form method="post" action={route("store")}  className="register-container">
-                    <input type="hidden" name="_token" value={window.csrfToken} />
-                    <div className="register-row">
-                        <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
-                        <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
-                    </div>
-                    <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
-                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
-                    <PasswordInput name="password" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
-                    <PasswordInput name="password_confirmation" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
-                    <SizedBox height="16px" />
-                    <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
-                </form>
+
+            <div className="auth-container">
+
+                <LoginHeader pageName="Loo konto" />
+                
+                <div className="auth-main-content">
+                    {errorMessage && <InfoBanner text={errorMessage}/>}
+                    <form method="post" action={route("store")}  className="register-container">
+                        <input type="hidden" name="_token" value={window.csrfToken} />
+                        <div className="register-row">
+                            <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
+                            <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
+                        </div>
+                        <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
+                        <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
+                        <PasswordInput name="password" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
+                        <PasswordInput name="password_confirmation" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
+                        <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
+                    </form>
+                </div>
+
             </div>
+
         </>
     )
 }

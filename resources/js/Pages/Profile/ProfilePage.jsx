@@ -142,7 +142,7 @@ export default function ProfilePage({auth}){
                         </div>
                         <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass}</h3>
+                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : auth.user.klass}</h3>
                         </div>
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
