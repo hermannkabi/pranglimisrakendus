@@ -185,8 +185,8 @@ export default function NewRegisterPage({message, errors}){
                     <div className="register-step name-email-container" hidden>
                         <form className="register-container" onSubmit={navigateToNext}>
                             <div className="register-row">
-                                <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
-                                <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
+                                <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0", textTransform:"capitalize"}} type="text" placeholder="Eesnimi" autoCapitalize="words" required/>
+                                <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0", textTransform:"capitalize"}} type="text" placeholder="Perenimi" autoCapitalize="words" required/><br />
                             </div>
                             <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
                             {!isTeacher && <><input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br /> </>}                       

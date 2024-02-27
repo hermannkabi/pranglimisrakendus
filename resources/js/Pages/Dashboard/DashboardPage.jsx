@@ -9,6 +9,8 @@ export default function Dashboard({auth}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
+    const greetings = ["Tere", "Hei", "Tšau", "Toredat pranglimist", "Mõnusat arvutamist", "Ajud ragisema"];
+
     return (
         <>
             <Head title='Töölaud' />

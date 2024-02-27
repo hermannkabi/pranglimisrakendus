@@ -34,6 +34,10 @@
             }else{
                 document.documentElement.setAttribute('data-theme', 'light');
             }
+
+            if(window.localStorage.getItem("app-primary-color") != null && window.localStorage.getItem("app-primary-color") != "default"){
+                document.documentElement.style.setProperty("--primary-color", window.localStorage.getItem("app-primary-color"));
+            }
         </script>
     </body>
 </html>

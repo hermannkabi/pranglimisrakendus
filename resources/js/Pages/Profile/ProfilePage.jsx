@@ -13,6 +13,7 @@ import NumberChoice from "@/Components/NumberChoice";
 export default function ProfilePage({auth}){
 
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
+    const [primaryColor, setPrimaryColor] = useState(window.localStorage.getItem("app-primary-color") ?? "default");
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
@@ -20,11 +21,14 @@ export default function ProfilePage({auth}){
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
+        var currentPrimaryColor = window.localStorage.getItem("app-primary-color") ?? "default";
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
         var isCountGameMode = window.localStorage.getItem("game-mode") != "speed";
         var isPointsAnimation = window.localStorage.getItem("points-animation") != "off";
 
         var defaultTime = $("#default-time-val").val();
+        var newPrimaryColor = $("#primary-color-select").val();
+
 
         // If any of the settings was changed
         // Used to show/not show the done icon
@@ -38,7 +42,12 @@ export default function ProfilePage({auth}){
             document.documentElement.setAttribute('data-theme', lightTheme ? "light" : "dark");
         }
 
-
+        // App primary color
+        if(newPrimaryColor != currentPrimaryColor){
+            changedSomething = true;
+            window.localStorage.setItem("app-primary-color", newPrimaryColor);
+            document.documentElement.style.setProperty('--primary-color', newPrimaryColor);
+        }
 
         // Timer visibility
         if(isTimerVisible != timerVisible){
@@ -164,6 +173,17 @@ export default function ProfilePage({auth}){
                             <RadioChoice icon="light_mode" text="Hele teema" selected={lightTheme} onClick={()=>setLightTheme(true)} />
                             <RadioChoice icon="dark_mode" text="Tume teema" selected={!lightTheme} onClick={()=>setLightTheme(false)} />
                         </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Peamine värv</p>
+                        <select style={{width:"100%"}} name="" id="primary-color-select" defaultValue={primaryColor}>
+                            <option value="default">Roheline</option>
+                            <option value="64, 103, 158">Sinine</option>
+                            <option value="231, 136, 149">Roosa</option>
+                            <option value="142, 122, 181">Lilla</option>
+                            <option value="255, 164, 71">Oranž</option>
+                        </select>
                     </div>
 
                     <div style={{width:"100%"}}>
