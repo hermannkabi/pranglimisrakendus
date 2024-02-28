@@ -27,6 +27,11 @@
     section{
         width: 100% !important;
     }
+
+    
+    .math-pow-transformed{
+        transform: translate(-10px, 10px);
+    }
 }
 
 body{
@@ -90,7 +95,7 @@ button > .material-icons, button > .lds-ring{
 }
 
 button:hover{
-    background-color: rgb(var(--btn-hover-color));
+    filter: brightness(85%);
 }
 
 button:focus-visible{
@@ -178,7 +183,7 @@ button[secondary]:hover > .lds-ring div{
 }
 
 .big-btn:hover{
-    background-color: rgb(var(--btn-hover-color));
+    filter: brightness(85%);
 }
 
 .big-btn:hover .symbol{
@@ -223,7 +228,7 @@ a[alone]:hover > .material-icons:not(.no-anim){
 }
 
 a[alone]:hover{
-    color: rgb(var(--btn-hover-color));
+    filter: brightness(85%);
 }
 
 a[red]{
@@ -438,6 +443,21 @@ select:after{
     left:-2px;
 }
 
+
+.math-style{
+    font-family: "Lexend";
+    font-weight: bold;
+}
+
+.math-pow-transformed{
+    transform: translate(-10px, 10px);
+}
+
+.root-alignment{
+    transform: translateY(-4px);
+    font-size: .5em;
+}
+
 /* Point animation */
 .point-span{
     display: none;
@@ -500,17 +520,17 @@ select:after{
     height: 0; 
     border-left: 14px solid transparent;
     border-right: 14px solid transparent;
-    border-bottom: 24px solid rgb(var(--primary-color));
+    border-bottom: 24px solid rgb(53, 81, 80);
     background-color: transparent;
     border-radius: 2px;
 }
 
 .shape:not(.triangle).green{
-    background-color: rgb(var(--primary-color));
+    background-color: rgb(53, 81, 80);
 }
 
 .shape.triangle.green{
-    border-bottom: 24px solid rgb(var(--primary-color));
+    border-bottom: 24px solid rgb(53, 81, 80);
 }
 
 .shape:not(.triangle).red{

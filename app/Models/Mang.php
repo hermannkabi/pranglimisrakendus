@@ -18,5 +18,7 @@ class Mang extends Model
         'last_level',
         'time',
         'dt',
+        'mistakes',
+        'mistakes_sum',
     ];
 }

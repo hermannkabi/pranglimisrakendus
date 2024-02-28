@@ -29,7 +29,7 @@ class LoginRegisterController extends Controller
      */
     public function register()
     {
-        return Inertia::render('Register/RegisterPage');
+        return Inertia::render('Register/NewRegisterPage');
     }
 
     public function registerGoogle(){
@@ -44,6 +44,29 @@ class LoginRegisterController extends Controller
             'password' => $password == null ? null : Hash::make($password),
             'klass' => $klass,
             'google_id'=> $googleId,
+
+            //User settings
+            'dark_backround' => false,
+            'visible_timer' => true,
+            'score_animations' => true,
+            'default_time' => 0,
+
+            //Game information
+            'score_sum' => 0,
+            'experience' => 0,
+            'accuracy_sum' => 0,
+            'game_count' => 0,
+            'last_level' => 0,
+            'last_equation' => 0,
+            'time' => 0,
+            'dt' => 0,
+            'mistakes_tendency' => 0,
+            'mistakes_sum' => 0,
+
+            //Quests
+            'quests' => 0,
+            'quest_type' => 0,
+            'completed_quests_sum' => 0,
         ]);
     }
 
@@ -80,8 +103,27 @@ class LoginRegisterController extends Controller
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required|min:8',
-            'klass' => 'required|string|max:6',
-        ]);
+            'klass' => 'required|string',],
+            [
+                'eesnimi.required' => 'Palun sisesta enda eesnimi',
+                'perenimi.required' => 'Palun sisesta enda perenimi',
+
+                'eesnimi.max' => 'Eesnime pikkus saab olla kuni 250 tähemärki',
+                'perenimi.max' => 'Perenime pikkus saab olla kuni 250 tähemärki',
+
+                'email.required' => 'Palun sisesta enda e-posti aadress',
+                'email.unique' => 'Sellise e-posti aadressiga konto juba eksisteerib',
+
+                'password.required' => 'Palun sisesta parool',
+                'password_confirmation.required' => 'Palun kinnita parool',
+
+                'password.confirmed' => 'Paroolid ei kattu',
+
+                'password.min' => 'Parool peab olema vähemalt 8 tähemärki pikk',
+
+                'klass.required' => 'Palun sisesta klass, kus õpid' 
+            ]
+        );
 
         $this->createUser($request->email, $request->eesnimi, $request->perenimi, $request->password, $request->klass, null);
 
@@ -101,7 +143,7 @@ class LoginRegisterController extends Controller
      */
     public function login()
     {
-        return Inertia::render("Login/LoginPage");;
+        return Inertia::render("Login/NewLoginPage");;
     }
 
     /**

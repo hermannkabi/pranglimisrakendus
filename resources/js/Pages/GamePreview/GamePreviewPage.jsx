@@ -161,7 +161,7 @@ export default function GamePreviewPage({auth}){
             "astendamine":{
                 "lvls":5,
                 "extra":["A", "B", "C"],
-                "types":["natural", "integer"],
+                "types":[{value:"natural", label:"Naturaalarvud"}, {value:"fraction", label:"Harilikud murrud"}],
             },
             "juurimine":"astendamine",
             "astejuurimine":"astendamine",

@@ -21,6 +21,7 @@
     font-weight: bold;
     margin: 0;
     line-height: 1.2;
+    text-transform: capitalize;
 }
 
 .school-text{
