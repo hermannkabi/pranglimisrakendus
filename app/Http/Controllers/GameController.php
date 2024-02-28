@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Mang;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class GameController extends Controller
 {
@@ -16,7 +17,11 @@ class GameController extends Controller
     public function index()
     {
         //Scoreboard
-        $koik = DB::table("mang")->get();
+        $koik = DB::table("mang")->chunk(50, function(Collection $mangud){
+            foreach($mangud as $game){
+                DB::table("users")->where('id',$game->user_id);
+            }
+        });
         return redirect()->route("scoreboard")->with($koik);
     }
 
@@ -95,13 +100,13 @@ class GameController extends Controller
     public function update_user(string $user_id, string $mistakes_tendency)
     {
         $Mang = Mang::select($user_id);
-        $mang = User::where("id",'=',$user_id);
+        $mang = User::where("id",$user_id);
         foreach($Mang as $game){
             $mang -> score_sum += $game["score_sum"];
             $mang -> accuracy_sum += $game['accuracy_sum']/2;
             $mang -> game_count += $game['game_count'];
             $mang -> last_level = $game['last_level'];
-            $mang -> last_equation = $game['last_equation']->where('game_id','=',$game['last_level']->get('game_id'));
+            $mang -> last_equation = $game['last_equation']->where('game_id',$game['last_level']->get('game_id'));
             $mang -> time += $game['time'];
             $mang -> dt = $game['dt'];
             $mang -> mistakes_tendency = $mistakes_tendency;
