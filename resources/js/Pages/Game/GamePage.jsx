@@ -934,7 +934,6 @@ export default function GamePage({data, time, auth}){
                     <NumberButton icon={true} content="close" onClick={()=>handleDivisionLaw(false)} />
                 </div>}
 
-                <p style={{color:"gray"}}>DEBUG: {debugValue}</p>
             </div>
             
 
