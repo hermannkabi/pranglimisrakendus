@@ -11,7 +11,7 @@ use PhpParser\Node\Stmt\ElseIf_;
 
 use function PHPUnit\Framework\returnValue;
 
-class Controller extends BaseController
+class Controller extends BaseController     
 {
     use AuthorizesRequests, ValidatesRequests;
 };

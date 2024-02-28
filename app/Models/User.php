@@ -40,8 +40,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'accuracy_sum',
         'game_count',
         'last_level',
+        'last_equation',
         'time',
         'dt',
+        'mistakes_tendency',
+        'mistakes_sum',
+
+        //Quests
+        'quests',
+        'quest_type',
+        'completed_quests_sum',
     ];
 
     /**

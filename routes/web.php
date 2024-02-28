@@ -40,36 +40,35 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 });
 
 //Google login
-Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
-
+Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(function() {
+    Route::get('/google/redirect', 'redirectToGoogle')->name('google.redirect');
+    Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
+})->middleware('throtle:6,1');
 
 //Email verification
 Route::controller(App\Http\Controllers\AuthVerificationController::class)->group(function() {
     Route::get('/email/verify', 'notice')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
     Route::post('/email/resend', 'resend')->name('verification.resend');
-});
-
+})->middleware(['auth','throtle:6,1']);
 
 //Password reset
-Route::get('/forgot-password', [App\Http\Controllers\Auth\PasswordResetLinkController::class, 'create'
-])->middleware('guest')->name('password.request');
-
-Route::post('/forgot-password', [App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store'
-])->middleware('guest')->name('password.email');
+Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->group(function() {
+    Route::get('/forgot-password', 'create')->name('password.request');
+    Route::get('/forgot-password', 'store')->name('password.email');
+})->middleware(['guest', 'throtle:4,1']);
 
 //Password reset form
-Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\NewPasswordController::class, 'create'
-])->middleware('guest')->name('password.reset');
+Route::controller(App\Http\Controllers\Auth\NewPasswordController::class)->group(function() {
+    Route::get('/reset-password/{token}', 'create')->name('password.reset');
+    Route::get('/reset-password', 'store')->name('password.update');
+})->middleware(['guest', 'throtle:4,1']);
 
-Route::post('/reset-password', [App\Http\Controllers\Auth\NewPasswordController::class, 'store'
-])->middleware('guest')->name('password.update');
-
-//User deletion
-Route::post('/delete-user', [App\Http\Controllers\ProfileController::class, 'destroy'
-])->middleware('auth')->name('delete-user');
-
+//User information
+Route::controller(App\Http\Controllers\ProfileController::class)->group(function() {
+    Route::post('/user/settings', 'settings')->name('user-settings');
+    Route::post('/delete-user',  'destroy')->name('delete-user');
+})->middleware('auth');
 
 
 Route::get('/ui', function () {
@@ -84,12 +83,14 @@ Route::get("/preview", function (){
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
-})->name("gameNew")->middleware('auth');
+})->name("gameNew")->middleware(['auth', 'throtle:7,1']);
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->group(function() {
     Route::post('/game/store', 'store')->name('gameStore');
     Route::post('/game/update', 'update')->name('gameUpdate');
+    Route::post('/game/history', 'show')->name('gameHistory');
+    Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
 })->middleware('auth');
 
 

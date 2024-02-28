@@ -44,6 +44,29 @@ class LoginRegisterController extends Controller
             'password' => $password == null ? null : Hash::make($password),
             'klass' => $klass,
             'google_id'=> $googleId,
+
+            //User settings
+            'dark_backround' => false,
+            'visible_timer' => true,
+            'score_animations' => true,
+            'default_time' => 0,
+
+            //Game information
+            'score_sum' => 0,
+            'experience' => 0,
+            'accuracy_sum' => 0,
+            'game_count' => 0,
+            'last_level' => 0,
+            'last_equation' => 0,
+            'time' => 0,
+            'dt' => 0,
+            'mistakes_tendency' => 0,
+            'mistakes_sum' => 0,
+
+            //Quests
+            'quests' => 0,
+            'quest_type' => 0,
+            'completed_quests_sum' => 0,
         ]);
     }
 
