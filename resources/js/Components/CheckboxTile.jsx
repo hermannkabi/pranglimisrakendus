@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CheckboxTile({level, levelChar=level, forcedText=null, onChange=null, inputClass=null}){
+export default function CheckboxTile({level, levelChar=level, forcedText=null, onChange=null, inputClass=null, style=null}){
 
 
     const [checked, setChecked] = useState(level == levelChar);
@@ -16,7 +16,7 @@ export default function CheckboxTile({level, levelChar=level, forcedText=null, o
 
     return (
         <>
-            <div className="checkbox-group" onClick={changeChecked} style={{display:"inline-block"}}>
+            <div className="checkbox-group" onClick={changeChecked} style={{...{display:"inline-block"}, ...style}}>
                 <input className={inputClass ?? ""} char={levelChar} level={levelChar} type="checkbox" checked={checked} onClick={changeChecked} onChange={changeChecked} />
                 <label style={{userSelect:"none"}}>{forcedText ?? (level + ". tase")}</label>
             </div>
