@@ -1017,51 +1017,48 @@ class GameController extends Controller
                 "natural"=>function (){return random_int(1, 5);},
                 "fraction"=>function ($uusmis=null){
                     $randints = $uusmis == GameController::JUURIMINE ? [1, random_int(2, 5)] : [random_int(-5, -1), random_int(1, 5)];
-                    return $randints[array_rand($randints)];
-                },
+                    return $randints[array_rand($randints)];}
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [2, random_int(2, 5)] : [random_int(-10, -6), random_int(6, 10)];
-                    return $randints[array_rand($randints)];
-                },
+                    $randints = $uusmis == GameController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];}
             ],
             "3"=>[
                 "natural"=>function (){return random_int(2, 5);},
-                "fraction"=>function (){
-                    $randints = [random_int(-5, -2), random_int(2, 5)];
-                    return $randints[array_rand($randints)];
-                },
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [2, random_int(2, 5)] : [random_int(-5, -2), random_int(2, 5)];
+                    return $randints[array_rand($randints)];}
             ],
             "4"=>[
                 "natural"=>function (){return random_int(11, 20);},
-                "fraction"=>function (){
-                    $randints = [random_int(-20, -11), random_int(11, 20)];
-                    return $randints[array_rand($randints)];},
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [11, random_int(12, 20)] : [random_int(-20, -11), random_int(11, 20)];
+                    return $randints[array_rand($randints)];}
             ],
             "5"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){
-                    $randints = [random_int(-10, -6), random_int(6, 10)];
-                    return $randints[array_rand($randints)];},
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
+                    return $randints[array_rand($randints)];}
             ],
             "A"=>[
-                "natural"=>function (){return random_int(21, 29);},
-                "fraction"=>function (){
-                    $randints = [random_int(-29, -21), random_int(21, 29)];
-                    return $randints[array_rand($randints)];},
+                "natural"=>function (){return random_int(1, 9)*10 + 5;},
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [15, random_int(2, 9)*10 + 5] : [random_int(-9, -1)*10 -5, random_int(1, 9)*10+5];
+                    return $randints[array_rand($randints)];}
             ],
             "B"=>[
                 "natural"=>function (){return random_int(4,9);},
-                "fraction"=>function (){
-                    $randints = [random_int(-9, -4), random_int(4, 9)];
-                    return $randints[array_rand($randints)];},
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [4, random_int(5, 9)] : [random_int(-9, -4), random_int(4, 9)];
+                    return $randints[array_rand($randints)];}
             ],
             "C"=>[
                 "natural"=>function (){return random_int(11,19);},
-                "fraction"=>function (){return 
-                    $randints = [random_int(-19, -11), random_int(11, 19)];
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [11, random_int(12, 19)] : [random_int(-19, -11), random_int(11, 19)];
                     return $randints[array_rand($randints)];},
             ],
             
@@ -1071,41 +1068,57 @@ class GameController extends Controller
             
             "1"=>[
                 "natural"=>function () use ($mis){return ($mis == GameController::JUURIMINE || $mis === "mõlemad")  ? 2 : random_int(0, 2);},
-                "fraction"=>function ($uusmis=null) use ($mis){
+                "fraction"=>function ($uusmis=null) use ($mis, $x1){
                     $randints = [random_int(-2, 2)];
 
-                    //$randints = [random_int(abs($x1) < 3 ? -8 : -2, abs($x1) < 3 ? 8 : 2)];
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
+                    //$randints = [random_int(abs($x1) < 3 ? -8 : -2, abs($x1) < 3 ? 8 : 2)];   
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==2 ? random_int(3,6) : 
+                    (($uusmis ?? $mis) == GameController::JUURIMINE && $x1==3 ? random_int(2,4) : 
+                    (($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)]));},
             ],
             "2"=>[
                 "natural"=>function (){return 2;},
-                "fraction"=>function (){return [2, -2][array_rand([2, -2])];},
+                "fraction"=>function ($uusmis=null) use ($mis){
+                    $randints = [random_int(-2, 2)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "3"=>[
-                "natural"=>function (){return random_int(3,4);},
-                "fraction"=>function () use($x1){
-                    $randints = [random_int($x1 < 4 ? -5 : -4, -3), random_int(3, $x1 < 4 ? 5 : 4)];
-                    return $randints[array_rand($randints)];},
+                "natural"=>function () use ($x1){return random_int(3,$x1==2 ? 8 : ($x1==3 ? 5 : 4));},
+                "fraction"=>function ($uusmis=null) use($mis, $x1){
+                    $randints = [random_int(-2, 2)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==2 ? random_int(3,8) : 
+                    (($uusmis ?? $mis) == GameController::JUURIMINE && $x1==3 ? random_int(2,5) : 
+                    (($uusmis ?? $mis) == GameController::JUURIMINE ? random_int(3,4) : $randints[array_rand($randints)]));},
             ],
             "4"=>[
                 "natural"=>function (){return 2;},
-                "fraction"=>function (){return [2, -2][array_rand([2, -2])];},
+                "fraction"=>function ($uusmis=null) use ($mis){
+                    $randints = [random_int(-2, 2)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "5"=>[
-                "natural"=>function (){return 3;},
-                "fraction"=>function (){return [3, -3][array_rand([3, -3])];},
+                "natural"=>function () use ($x1){return $x1 == 10 ? random_int(4,6) : 3;},
+                "fraction"=>function ($uusmis=null) use ($mis, $x1){
+                    $randints = [random_int(-3, 3)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==10 ? random_int(4,6) : (($uusmis ?? $mis) == GameController::JUURIMINE ? 3 : $randints[array_rand($randints)]);},
             ],
             "A"=>[
                 "natural"=>function (){return 2;},
-                "fraction"=>function (){return [2, -2][array_rand([2, -2])];},
+                "fraction"=>function ($uusmis=null) use ($mis){
+                    $randints = [random_int(-2, 2)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return 4;},
-                "fraction"=>function (){return [4, -4][array_rand([4, -4])];},
+                "fraction"=>function ($uusmis=null) use ($mis){
+                    $randints = [random_int(-4, 4)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 4 : $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return 3;},
-                "fraction"=>function (){return [3, -3][array_rand([3, -3])];},
+                "fraction"=>function ($uusmis=null) use ($mis){
+                    $randints = [random_int(-3, 3)];  
+                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 3 : $randints[array_rand($randints)];},
             ],
             
         ];
