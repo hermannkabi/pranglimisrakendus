@@ -8,6 +8,7 @@ import SizedBox from "@/Components/SizedBox";
 import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
+import CheckboxTile from "@/Components/CheckboxTile";
 
 export default function NewLoginPage({message, errors}){
 
@@ -50,9 +51,17 @@ export default function NewLoginPage({message, errors}){
                     <br />
                     <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" required />
                     <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>                    
-                    <a href={route("register")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Loo konto</a>
+                    
                     <SizedBox height={8} />
-                    <a href={route("authenticateGuest")} alone="true" style={{textAlign:"right", display:"block", fontSize:"18px"}}>Sisene külalisena</a>
+                    
+                    <section style={{width: "100%"}}>
+                        <p style={{fontWeight:"bold", fontSize: "18px", marginBottom:"8px"}}>Oled siin uus?</p>
+                        <a href={route("register")} alone="true" style={{fontSize:"18px"}}>Loo konto</a>
+                        <SizedBox height={8} />
+                        <a href={route("authenticateGuest")} alone="true" style={{fontSize:"18px"}}>Sisene külalisena</a>
+                        <SizedBox height={8} />
+
+                    </section>
 
                 </form>
 

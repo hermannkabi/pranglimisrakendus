@@ -8,6 +8,7 @@ import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
 import { useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
+import ColorPicker from "@/Components/ColorPicker";
 
 
 export default function ProfilePage({auth}){
@@ -27,7 +28,6 @@ export default function ProfilePage({auth}){
         var isPointsAnimation = window.localStorage.getItem("points-animation") != "off";
 
         var defaultTime = $("#default-time-val").val();
-        var newPrimaryColor = $("#primary-color-select").val();
 
 
         // If any of the settings was changed
@@ -43,10 +43,12 @@ export default function ProfilePage({auth}){
         }
 
         // App primary color
-        if(newPrimaryColor != currentPrimaryColor){
+        if(primaryColor != currentPrimaryColor){
             changedSomething = true;
-            window.localStorage.setItem("app-primary-color", newPrimaryColor);
-            document.documentElement.style.setProperty('--primary-color', newPrimaryColor);
+            window.localStorage.setItem("app-primary-color", primaryColor);
+            if(primaryColor != "default"){
+                document.documentElement.style.setProperty('--primary-color', primaryColor);
+            }
         }
 
         // Timer visibility
@@ -177,13 +179,21 @@ export default function ProfilePage({auth}){
 
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Peamine värv</p>
-                        <select style={{width:"100%"}} name="" id="primary-color-select" defaultValue={primaryColor}>
-                            <option value="default">Roheline</option>
-                            <option value="64, 103, 158">Sinine</option>
-                            <option value="231, 136, 149">Roosa</option>
-                            <option value="142, 122, 181">Lilla</option>
-                            <option value="255, 164, 71">Oranž</option>
-                        </select>
+                        <div className="color-picker-container">
+                            <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"255, 164, 71"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+
+                            <ColorPicker color={"181, 192, 208"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"173, 139, 115"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"48, 227, 202"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"164, 190, 123"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+
+                        </div>
+
                     </div>
 
                     <div style={{width:"100%"}}>
