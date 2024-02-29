@@ -1022,8 +1022,8 @@ class GameController extends Controller
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
-                "fraction"=>function (){
-                    $randints = [random_int(-10, -6), random_int(6, 10)];
+                "fraction"=>function ($uusmis=null){
+                    $randints = $uusmis == GameController::JUURIMINE ? [2, random_int(2, 5)] : [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];
                 },
             ],
