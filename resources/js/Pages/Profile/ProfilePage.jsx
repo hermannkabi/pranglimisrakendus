@@ -6,7 +6,7 @@ import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 
@@ -19,6 +19,10 @@ export default function ProfilePage({auth}){
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
 
+
+    useEffect(()=>{
+        saveSettings();
+    }, [primaryColor, lightTheme, timerVisible, countGameMode, pointsAnimation]);
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
@@ -48,6 +52,9 @@ export default function ProfilePage({auth}){
             window.localStorage.setItem("app-primary-color", primaryColor);
             if(primaryColor != "default"){
                 document.documentElement.style.setProperty('--primary-color', primaryColor);
+            }else{
+                document.documentElement.style.setProperty('--primary-color', lightTheme ? "53, 81, 80" : "70, 107, 106");
+
             }
         }
 
@@ -88,7 +95,8 @@ export default function ProfilePage({auth}){
                 $("#save-btn .text").text("Salvesta seaded");
             }, 1500);
 
-            window.location.href = route("dashboard");
+            console.log("Saved");
+            //window.location.href = route("dashboard");
         }
     }
 
@@ -102,6 +110,10 @@ export default function ProfilePage({auth}){
 
     function logout(){
         window.location.href = route("logout");
+    }
+
+    function changePrimaryColor(color){
+        setPrimaryColor(color);
     }
 
     return (
@@ -152,7 +164,7 @@ export default function ProfilePage({auth}){
                             <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
                         </div>
                         <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
+                            <p style={{color:'gray', marginBlock: "0"}}>{auth.user != null && auth.user.klass == "õpetaja" ? "KONTO" : "KLASS"}</p>
                             <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : auth.user.klass}</h3>
                         </div>
                     </div>
@@ -180,17 +192,17 @@ export default function ProfilePage({auth}){
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Peamine värv</p>
                         <div className="color-picker-container">
-                            <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"255, 164, 71"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"255, 164, 71"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
-                            <ColorPicker color={"181, 192, 208"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"173, 139, 115"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"48, 227, 202"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
-                            <ColorPicker color={"164, 190, 123"} currentColor={primaryColor} onChange={(color)=>setPrimaryColor(color)} />
+                            <ColorPicker color={"181, 192, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"173, 139, 115"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"48, 227, 202"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"164, 190, 123"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
                         </div>
 
@@ -199,8 +211,8 @@ export default function ProfilePage({auth}){
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Taimeri nähtavus</p>
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="timer" text="Taimer nähtav" selected={timerVisible} onClick={()=>setTimerVisible(true)} />
-                            <RadioChoice icon="timer_off" text="Taimer peidetud" selected={!timerVisible} onClick={()=>setTimerVisible(false)} />
+                            <RadioChoice icon="timer" text="Näita" selected={timerVisible} onClick={()=>setTimerVisible(true)} />
+                            <RadioChoice icon="timer_off" text="Peida" selected={!timerVisible} onClick={()=>setTimerVisible(false)} />
                         </div>
                     </div>
 
@@ -222,10 +234,10 @@ export default function ProfilePage({auth}){
 
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Vaikimisi aeg</p>
-                        <NumberChoice id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseInt(window.localStorage.getItem("default-time"))} />
+                        <NumberChoice onChange={saveSettings} id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseInt(window.localStorage.getItem("default-time"))} />
                     </div>
                     
-                    <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button>
+                    {/* <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button> */}
                 </div>
             </section>
             
