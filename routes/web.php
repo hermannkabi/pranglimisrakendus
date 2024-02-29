@@ -43,26 +43,26 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(function() {
     Route::get('/google/redirect', 'redirectToGoogle')->name('google.redirect');
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
-})->middleware('throtle:6,1');
+})->middleware('throttle:6,1');
 
 //Email verification
 Route::controller(App\Http\Controllers\AuthVerificationController::class)->group(function() {
     Route::get('/email/verify', 'notice')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
     Route::post('/email/resend', 'resend')->name('verification.resend');
-})->middleware(['auth','throtle:6,1']);
+})->middleware(['auth','throttle:6,1']);
 
 //Password reset
 Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->group(function() {
     Route::get('/forgot-password', 'create')->name('password.request');
     Route::get('/forgot-password', 'store')->name('password.email');
-})->middleware(['guest', 'throtle:4,1']);
+})->middleware(['guest', 'throttle:4,1']);
 
 //Password reset form
 Route::controller(App\Http\Controllers\Auth\NewPasswordController::class)->group(function() {
     Route::get('/reset-password/{token}', 'create')->name('password.reset');
     Route::get('/reset-password', 'store')->name('password.update');
-})->middleware(['guest', 'throtle:4,1']);
+})->middleware(['guest', 'throttle:4,1']);
 
 //User information
 Route::controller(App\Http\Controllers\ProfileController::class)->group(function() {
