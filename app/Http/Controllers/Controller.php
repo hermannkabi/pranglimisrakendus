@@ -1010,8 +1010,6 @@ class GameController extends Controller
 
         $opnames = [GameController::ASTENDAMINE, GameController::JUURIMINE];
         
-
-        //TODO: xvalues al level 2 ja yvalues al level 2 ümber teha esimesega sarnaselt
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
@@ -1154,21 +1152,20 @@ class GameController extends Controller
     public function lünkamine($level, $aeg){
 
         // Lisasin A,B,C tasemed, kui tulevikus vaja neid väärtusi kasutada, siis tuleks muuta
-        $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>9999, "B"=>99999, "C"=>999999];
-        $defaultMaxKor = ["1"=>5, "2"=>5, "3"=>10, "4"=>10, "5"=>10, "A"=>30, "B"=>100, "C"=>100];
-        $defaultMaxKor2 = ["1"=>5, "2"=>10, "3"=>10, "4"=>20, "5"=>500, "A"=>100, "B"=>100, "C"=>500];
+        // $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>9999, "B"=>99999, "C"=>999999];
+        // $defaultMaxKor = ["1"=>5, "2"=>5, "3"=>10, "4"=>10, "5"=>10, "A"=>30, "B"=>100, "C"=>100];
+        // $defaultMaxKor2 = ["1"=>5, "2"=>10, "3"=>10, "4"=>20, "5"=>500, "A"=>100, "B"=>100, "C"=>500];
 
         $x = 0;
         $y = 0;
-        $xold = 0;
-        $yold = 0;
         $add = 1;
         $add2 = 1;
+        $add22 = 1;
         $count = 0;
         $loendlünk = [];
-        $max = $defaultMaxLiit[$level];
-        $max2 = $defaultMaxKor[$level];
-        $max22 = $defaultMaxKor2[$level];
+        // $max = $defaultMaxLiit[$level];
+        // $max2 = $defaultMaxKor[$level];
+        // $max22 = $defaultMaxKor2[$level];
 
         //Ascending levels
         do{
@@ -1178,6 +1175,7 @@ class GameController extends Controller
 
             // $add += $max/10;
             // $add2 += $max2/10;
+            // $add22 += $max22/10;
             
             $jarjekord = rand(1, 2);
             $jarjekord === 1 ? $xlünk = "Lünk" : $ylünk =  "Lünk";
@@ -1219,7 +1217,7 @@ class GameController extends Controller
             ];
 
             $x = $loos % 2 == 1 ? $arvud_liitlah[$level]($add) : $arvud_korjag_x[$level]($add2);
-            $y = $loos % 2 == 1 ? $arvud_liitlah[$level]($add) : $arvud_korjag_y[$level]($add2);
+            $y = $loos % 2 == 1 ? $arvud_liitlah[$level]($add) : $arvud_korjag_y[$level]($add22);
             if ($loos == 1){
                 // Ternary
                 if ($xlünk == 'Lünk'){
