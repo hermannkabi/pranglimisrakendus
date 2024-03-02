@@ -16,6 +16,7 @@ class Mang extends Model
         'accuracy_sum',
         'game_count',
         'last_level',
+        'last_equation',
         'time',
         'dt',
         'mistakes',

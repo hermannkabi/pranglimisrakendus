@@ -50,6 +50,7 @@ class LoginRegisterController extends Controller
             'visible_timer' => true,
             'score_animations' => true,
             'default_time' => 0,
+            'color' => 'turquoise',
 
             //Game information
             'score_sum' => 0,

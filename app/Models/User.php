@@ -20,12 +20,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        //Primary information
         'id',
         'eesnimi',
         'perenimi',
         'email',
         'password',
         'klass',
+        'techer',
         'google_id',
 
         //User settings
@@ -33,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'visible_timer',
         'score_animations',
         'default_time',
+        'color',
 
         //Game information
         'score_sum',

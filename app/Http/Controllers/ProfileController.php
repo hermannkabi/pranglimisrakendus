@@ -43,13 +43,14 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
     //User cookies
-    public function settings($id, $darkBackround, $visibleTimer, $animations, $defaultTime){
+    public function settings($id, $darkBackround, $visibleTimer, $animations, $defaultTime, $color){
         $user = User::find($id);
         $user->update([
             'dark_backround' => $darkBackround,
             'visible_timer' => $visibleTimer,
             'score_animations' => $animations,
-            'default_time' => $defaultTime
+            'default_time' => $defaultTime,
+            'color' => $color,
         ]);
 
         return redirect()->route('profilePage')->with($user);
@@ -67,10 +68,9 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-
-        $user->delete();
         app('App/Http/Controllers/GameController')->destroy();
-
+        $user->delete();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

@@ -80,7 +80,7 @@ class GameController extends Controller
     public function show(string $user_id)
     {
         //Game history
-        $mangud = DB::table('mang')->select($user_id)->get();
+        $mangud = DB::table('mang')->select($user_id)->take(10)->get();
         return redirect()->route("game_history")->with($mangud);
     }
 
