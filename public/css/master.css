@@ -43,7 +43,18 @@ body{
     min-width: 250px;
     box-sizing: border-box;
     background-color: rgb(var(--background-color));
-    transition: background-color 100ms;
+    transition: background-color 100ms ease-in;
+    scrollbar-color: rgb(var(--primary-color));
+}
+
+/* User selection text color and background color */
+::selection {
+    background: rgb(var(--primary-color)); /* WebKit/Blink Browsers */
+    color: white;
+}
+::-moz-selection {
+    background: rgb(var(--primary-color)); /* Gecko Browsers */
+    color: white;
 }
 
 section{

@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function NumberChoice({defaultValue, id, maxValue=10}){
+export default function NumberChoice({defaultValue, id, maxValue=10, onChange=null}){
 
     const [value, setValue] = useState(defaultValue);
+
+    useEffect(()=>{
+        if(onChange != null) onChange();
+    }, [value]);
 
     function addToValue(){
         var newVal = Math.min(value + 1, maxValue);
