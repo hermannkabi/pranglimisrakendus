@@ -27,17 +27,7 @@
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
         <script src="{{ URL::asset('js/mousetrap.js') }}"></script> 
-        <script src="{{ URL::asset('js/jquery.js') }}"></script> 
-        <script>
-            if(window.localStorage.getItem("app-theme") == "dark"){
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }else{
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-
-            if(window.localStorage.getItem("app-primary-color") != null && window.localStorage.getItem("app-primary-color") != "default"){
-                document.documentElement.style.setProperty("--primary-color", window.localStorage.getItem("app-primary-color"));
-            }
-        </script>
+        <script src="{{ URL::asset('js/jquery.js') }}"></script>
+        <script src="{{ URL::asset('js/theme.js') }}"></script> 
     </body>
 </html>
