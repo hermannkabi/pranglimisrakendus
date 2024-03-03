@@ -96,6 +96,12 @@ Route::controller(App\Http\Controllers\GameController::class)->group(function() 
 //Classroom data
 Route::controller(App\Http\Controllers\ClassController::class)->group(function (){
     //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
+    Route::post('/classroom/store', 'store')->name('classStore');
+    Route::post('/classroom/search', 'index')->name('classSearch');
+    Route::get('/classroom/view/{id}', 'show')->name('classShow');
+    Route::post('/classroom/join', 'join')->name('classJoin');
+    Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
+    Route::post('/classroom/remove}', 'destroy')->name('classRemove')->middleware('role:teacher');
 })->middleware('auth');
 
 Route::get('/dashboard/old', function (){

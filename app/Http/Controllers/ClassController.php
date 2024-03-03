@@ -41,6 +41,16 @@ class ClassController extends Controller
         
     }
 
+    public function remove($id, $class) {
+        $klass = Klass::find($class);
+        $user = User::find($id);
+        $klass -> array_pop($klass->student_list, $user->eesnimi . ' ' . $user->perenimi);//võimalik veakoht
+        $klass -> save();
+        $user -> klass = 'None';
+        $user -> teacher = 'None';
+        $user -> save();
+        return Inertia::render('ClassroomPage', 'Õpilane ' .  $user->eesnimi . ' ' . $user->perenimi . ' ' . 'on edukalt eemaldatud teie klassist.');
+    }
     /**
      * Show the form for creating a new resource.
      */
