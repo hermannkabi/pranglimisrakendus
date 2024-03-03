@@ -93,6 +93,10 @@ Route::controller(App\Http\Controllers\GameController::class)->group(function() 
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
 })->middleware('auth');
 
+//Classroom data
+Route::controller(App\Http\Controllers\ClassController::class)->group(function (){
+    //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
+})->middleware('auth');
 
 Route::get('/dashboard/old', function (){
     return Inertia::render("Dashboard/OldDashboardPage");

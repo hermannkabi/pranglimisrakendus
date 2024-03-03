@@ -8,6 +8,7 @@ use App\Models\Mang;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Inertia\Inertia;
 
 class GameController extends Controller
 {
@@ -22,7 +23,10 @@ class GameController extends Controller
                 DB::table("users")->where('id',$game->user_id);
             }
         });
+        // Option 1
         return redirect()->route("scoreboard")->with($koik);
+        //Option 2
+        return Inertia::render('scoreboard',$koik);
     }
 
     /**
@@ -69,9 +73,12 @@ class GameController extends Controller
         $request->mistakes, $request->mistakes_sum);
         $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'last_equation', 'time', 'dt', 'mistakes', 'mistakes_sum');
         if($resources){
-            return redirect()->route("dashboard")->with($resources);
+            return Inertia::render('DashboardPage');    //($resources);
         }
+        //Option 1
         return redirect()->route("dashboard")->withErrors('Midagi läks valesti!');
+        //Option 2
+        return Inertia::render('DashboardPage')->withErrors('Midagi läks valesti!');
     }
 
     /**
@@ -81,7 +88,10 @@ class GameController extends Controller
     {
         //Game history
         $mangud = DB::table('mang')->select($user_id)->take(10)->get();
+        //Option 1
         return redirect()->route("game_history")->with($mangud);
+        //Option 2
+        return Inertia::render('GameHistory', $mangud);
     }
 
     /**
@@ -114,7 +124,10 @@ class GameController extends Controller
         };
         
         $mang->save();
+        //Option 1
         return redirect()->route('dashboard')->with('Mang',$mang);
+        //Option 2
+        return Inertia::render('DashboardPage', $mang);
     }
 
     /**
