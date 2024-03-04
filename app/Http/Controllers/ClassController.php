@@ -7,6 +7,7 @@ use App\Models\Klass;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClassController extends Controller
 {
@@ -16,7 +17,7 @@ class ClassController extends Controller
     public function index(string $search)
     {
       
-        $tabel = $search==null ? DB::table('klass')->orderBy('klass_name') : DB::table('klass')->orderBy($search);
+        $tabel =  DB::table('klass')->orderBy($search==null ? 'klass_name' : $search)->take(25);
         
         return Inertia::render("ClassroomSearch", $tabel);
     }
@@ -50,14 +51,15 @@ class ClassController extends Controller
         $user -> teacher = 'None';
         $user -> save();
         return Inertia::render('ClassroomPage', 'Õpilane ' .  $user->eesnimi . ' ' . $user->perenimi . ' ' . 'on edukalt eemaldatud teie klassist.');
+        //Viimane rida ülearune - sama funktsiooni saaks kasutada kasutaja eemaldamiseks klassist, kui konto kustub
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function createKlass($klass_id, $klass_name, $student_list, $klass_password, $teacher)
+    public function createKlass($klass_name, $student_list, $klass_password, $teacher)
     {
         return Klass::create([
-            'klass_id' => $klass_id,
+            'klass_id' => (string)Str::uuid(),
             'klass_name' => $klass_name,
             'student_list' => $student_list,
             'klass_password' => $klass_password,
@@ -71,14 +73,13 @@ class ClassController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'klass_id' => 'required|string|max:37',
             'klass_name' => 'required|string|max:256',
             'student_list' => 'required|string|max:1000',
             'klass_password' => 'required|string|min:8',
             'teacher' => 'required|string|max:37',
         ]);
 
-        $this->createKlass($request->klass_id, $request->klass_name, $request->student_list, $request->klass_password, $request->teacher);
+        $this->createKlass($request->klass_name, $request->student_list, $request->klass_password, $request->teacher);
         $resources = $request->all();
         if($resources){
             return Inertia::render('ClassroomPage',$resources);
@@ -117,10 +118,12 @@ class ClassController extends Controller
      */
     public function destroy(string $klass_name, $teacher, $all)
     {
+        //Delete one class
         DB::table('klass')->where('klass_name',$klass_name)->get()->delete();
 
-        if($all){
-            DB::table('klass')->select($teacher)->get()->delete();
+        //Delete all classes with that teacher
+        if($all==notNullValue()){
+            DB::table('klass')->where('teacher', $teacher)->get()->delete();
         }
     }
 }
