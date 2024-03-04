@@ -100,6 +100,24 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         // The average percentage works by saving a sum of all the percentages and dividing it by total-training-count
         window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
 
+
+        // Real saving
+        $.post(route("gameStore"), {
+            "_token":window.csrfToken,
+            'score_sum':points,
+            'experience':"0",
+            'accuracy_sum':accuracy,
+            'game_count': total,
+            'last_level':lastLevel.toString(),
+            'last_equation':"0",
+            'time':getHumanReadableTime(),
+            'dt':Date.now(),
+            'log':JSON.stringify(log),
+        }).done(function (data){
+            window.location.href = route("dashboard");
+        }).fail(function (data){
+            console.log(data);
+        });
     }
 
     function filterOperations(){

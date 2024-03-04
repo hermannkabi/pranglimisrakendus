@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mang;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ class GameController extends Controller
     public function index()
     {
         //Scoreboard
-        $koik = DB::table("mang")->chunk(50, function(Collection $mangud){
+        $koik = DB::table("mangs")->chunk(50, function(Collection $mangud){
             foreach($mangud as $game){
                 DB::table("users")->where('id',$game->user_id);
             }
@@ -32,10 +33,9 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createMang($game_id, $user_id, $score_sum, $experience,$accuracy_sum,$game_count,$last_level,$last_equation,$time,$dt, $mistakes, $mistakes_sum)
-    {
+    public function createMang($user_id, $score_sum, $experience,$accuracy_sum,$game_count,$last_level,$last_equation,$time,$dt, $log)
+    { 
         return Mang::create([
-            'game_id' => $game_id,
             'user_id' => $user_id,
             'score_sum' => $score_sum,
             'experience' => $experience,
@@ -45,8 +45,7 @@ class GameController extends Controller
             'last_equation' => $last_equation,
             'time' => $time,
             'dt' => $dt,
-            'mistakes' => $mistakes,
-            'mistakes_sum' => $mistakes_sum,
+            'log' => $log,
         ]);
     }
 
@@ -56,24 +55,21 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'game_id' => 'required|string|max:37',
-            'user_id' => 'required|string|max:37',
             'score_sum' => 'required|string|max:37',
             'experience' => 'required|string|max:37',
             'accuracy_sum' => 'required|string|max:37',
             'game_count' => 'required|string|max:37',
             'last_level'=> 'required|string|max:37',
-            'time' => 'date_format:H:i',
-            'dt' => 'date_format:H:i',
-            'mistakes' => 'required|string|max:4444',
-            'mistakes_sum' => 'required|string|max:37',
+            'last_equation'=>'required|string|max:37',
+            'time' => 'required',
+            'dt' => 'required',
+            'log' => 'required|string|max:4444',
         ]);
-        
-        $this->createMang($request->game_id,$request->user_id, $request->score_sum, $request->experience, $request->accuracy_sum, $request->game_count, $request->last_level, $request->last_equation, $request->time,$request->dt, 
-        $request->mistakes, $request->mistakes_sum);
-        $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'last_equation', 'time', 'dt', 'mistakes', 'mistakes_sum');
+        $this->createMang($request->user()->id, $request->score_sum, $request->experience, $request->accuracy_sum, $request->game_count, $request->last_level, $request->last_equation, $request->time,$request->dt, 
+        $request->log);
+        $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
         if($resources){
-            return Inertia::render('DashboardPage');    //($resources);
+            return Inertia::render('DashboardPage', $resources);    //($resources);
         }
         //Option 1
         return redirect()->route("dashboard")->withErrors('Midagi läks valesti!');
@@ -87,7 +83,7 @@ class GameController extends Controller
     public function show(string $user_id)
     {
         //Game history
-        $mangud = DB::table('mang')->select($user_id)->take(10)->get();
+        $mangud = DB::table('mangs')->where('user_id',$user_id)->take(10)->get();
         //Option 1
         return redirect()->route("game_history")->with($mangud);
         //Option 2
@@ -135,7 +131,7 @@ class GameController extends Controller
      */
     public function destroy(string $user_id)
     {
-        $mang = DB::table("Mang")->select($user_id)->get();
+        $mang = DB::table("Mang")->where('user_id', $user_id)->get();
         $mang -> delete();
 
         // $range = Mang::where($user_id)->count();

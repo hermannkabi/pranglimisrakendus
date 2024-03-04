@@ -16,7 +16,7 @@ class Controller extends BaseController
     use AuthorizesRequests, ValidatesRequests;
 };
 
-class GameController extends Controller
+class MathController extends Controller
 {
 
     // KONSTANDID:
@@ -39,7 +39,7 @@ class GameController extends Controller
     //....
 
     function gcd ($a, $b) {
-        return $b ? GameController::gcd($b, $a % $b) : $a;
+        return $b ? MathController::gcd($b, $a % $b) : $a;
     }
     function numberToRoman($number) {
         if($number == 0){
@@ -74,18 +74,18 @@ class GameController extends Controller
         do{
             $uusmis = $mis;
 
-            if ($uusmis === GameController::BOTH){
+            if ($uusmis === MathController::BOTH){
                 $uusmis = $opnames[array_rand($opnames)];
             }
 
-            $x = $uusmis == GameController::ASTENDAMINE || $uusmis == GameController::JUURIMINE ?  $xf($uusmis) : $xf();
-            $y = $uusmis == GameController::ASTENDAMINE || $uusmis == GameController::JUURIMINE ?  $yf($uusmis) : $yf();            ;    
+            $x = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $xf($uusmis) : $xf();
+            $y = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $yf($uusmis) : $yf();            ;    
             
 
-            if ($x == $y && !($uusmis == GameController::ASTENDAMINE || $uusmis == GameController::JUURIMINE)){
+            if ($x == $y && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
                 $check ++;
 
-                if ($check > GameController::SAME_NUMBER_REPEAT_COUNT){
+                if ($check > MathController::SAME_NUMBER_REPEAT_COUNT){
                     do{
                         $x = $xf($uusmis);
                         $y = $yf($uusmis);
@@ -93,7 +93,7 @@ class GameController extends Controller
                 }
             }
 
-            if (($x == $xold || $y == $yold) && !($uusmis == GameController::ASTENDAMINE || $uusmis == GameController::JUURIMINE)){
+            if (($x == $xold || $y == $yold) && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
                 do{
                     $x = $xf($uusmis);
                     $y = $yf($uusmis);
@@ -119,35 +119,35 @@ class GameController extends Controller
 
 
             // Liitmine v korrutamine
-            if (in_array($uusmis, [GameController::LIITMINE, GameController::KORRUTAMINE])){
+            if (in_array($uusmis, [MathController::LIITMINE, MathController::KORRUTAMINE])){
                 array_push($array, ["operation"=>$x . $opsymbs[0] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
             }
 
             // Lahutamine v jagamine
-            if (in_array($uusmis, [GameController::LAHUTAMINE, GameController::JAGAMINE])){
-                array_push($array, ["operation"=> ($uusmis == GameController::LAHUTAMINE ? ($sum) : ($prod)) . $opsymbs[1] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+            if (in_array($uusmis, [MathController::LAHUTAMINE, MathController::JAGAMINE])){
+                array_push($array, ["operation"=> ($uusmis == MathController::LAHUTAMINE ? ($sum) : ($prod)) . $opsymbs[1] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
             }
 
             //Astendamine v juurimine
-            if (in_array($uusmis, [GameController::ASTENDAMINE, GameController::JUURIMINE])){
+            if (in_array($uusmis, [MathController::ASTENDAMINE, MathController::JUURIMINE])){
 
                 // See tähendab, et on murdudega juurimine/astendamine
                 if($opsymbs){
                     $x3 = $xf($uusmis);
-                    array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ("(".$x."/".$x3.")" . "EXP" . $y) : ("(".$x3**$y."/".$x**$y.")" . "RAD" . $y)), "answer"=>$ans($xans, $yans, $x3, $uusmis), "level"=>$level]);
+                    array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ("(".$x."/".$x3.")" . "EXP" . $y) : ("(".$x3**$y."/".$x**$y.")" . "RAD" . $y)), "answer"=>$ans($xans, $yans, $x3, $uusmis), "level"=>$level]);
                 }else{
-                    array_push($array, ["operation"=> ($uusmis == GameController::ASTENDAMINE ? ($x . "EXP" . $y) : ($y > 0 ? ($x**$y . "RAD" . $y) : ('1'. '/' . $x**abs($y). "RAD" . $y)) ), "answer"=>$ans($xans, $yans, null, $uusmis), "level"=>$level]);
+                    array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ($x . "EXP" . $y) : ($y > 0 ? ($x**$y . "RAD" . $y) : ('1'. '/' . $x**abs($y). "RAD" . $y)) ), "answer"=>$ans($xans, $yans, null, $uusmis), "level"=>$level]);
                 }
             }
 
             //Jaguvus
-            if ($uusmis === GameController::JAGUVUS){
+            if ($uusmis === MathController::JAGUVUS){
                 $jagub = $ans($x, $y, $uusmis);
                 array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + ($y - random_int(1, $y - 1)))." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
             }
 
             //Lihtustamine
-            if ($uusmis == GameController::LIHTSUSTAMINE){
+            if ($uusmis == MathController::LIHTSUSTAMINE){
                 $z = $opnames();
                 while ($z * $y == 1 || $x * $z == 1){
                     $z = $opnames();
@@ -156,17 +156,17 @@ class GameController extends Controller
             }
 
             //Multioperand
-            if ($uusmis == GameController::MULTIOPERAND){
+            if ($uusmis == MathController::MULTIOPERAND){
                 array_push($array, ["operation"=> $x , "answer"=>$ans($x, $y), "level"=>$level]);
             }
 
             //Bots
-            if ($uusmis == GameController::BOTS){
+            if ($uusmis == MathController::BOTS){
                 array_push($array, ["operation"=> $x[-1],"answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
             }
 
             $count ++;
-        } while ($count < (GameController::OPERATION_COUNT + (14 * $aeg)));
+        } while ($count < (MathController::OPERATION_COUNT + (14 * $aeg)));
 
         return ["array"=>$array];
     }
@@ -191,7 +191,7 @@ class GameController extends Controller
         $kontroll = 0;
 
 
-        $opnames = [GameController::LIITMINE, GameController::LAHUTAMINE];
+        $opnames = [MathController::LIITMINE, MathController::LAHUTAMINE];
         $opsymbs = ["+", "-"];
 
         $xvalues = [
@@ -299,8 +299,8 @@ class GameController extends Controller
 
         //Specific levels
         if($level != "all"){
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::LIITMINE ? $num1 + $num2 : $num1;
+            $returnData = MathController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
+                return $mis == MathController::LIITMINE ? $num1 + $num2 : $num1;
              }, $opnames, $opsymbs, $level, $aeg, $tüüp == "roman");
 
              return $returnData["array"];
@@ -339,7 +339,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again2;
                     }
                 }
@@ -350,19 +350,19 @@ class GameController extends Controller
                 $xold = $x;
                 $yold = $y;
 
-                $uusmis = $mis == GameController::BOTH ? (random_int(1, 2) == 1 ?  GameController::LIITMINE : GameController::LAHUTAMINE) : $mis;
+                $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
 
-                if ($uusmis === GameController::LIITMINE){
+                if ($uusmis === MathController::LIITMINE){
                     array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                 }
 
-                if ($uusmis === GameController::LAHUTAMINE){
+                if ($uusmis === MathController::LAHUTAMINE){
                     array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
                 }
 
                 $add += $max/5;
                 $count ++;
-            }while ($count < GameController::OPERATION_COUNT + ($aeg * 14));
+            }while ($count < MathController::OPERATION_COUNT + ($aeg * 14));
 
             return $array;
         }
@@ -403,7 +403,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again3;
                     }
                 }
@@ -419,11 +419,11 @@ class GameController extends Controller
 
                 $uusmis = $mis;
 
-                if($mis == GameController::BOTH){
+                if($mis == MathController::BOTH){
                     $uusmis = $opnames[array_rand($opnames)];
                 }
                 
-                if ($uusmis === GameController::LIITMINE){
+                if ($uusmis === MathController::LIITMINE){
                     if ($y < 0){
                         $y = -$y;
                         array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
@@ -431,7 +431,7 @@ class GameController extends Controller
                     array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
                     }
                 }
-                if ($uusmis === GameController::LAHUTAMINE){
+                if ($uusmis === MathController::LAHUTAMINE){
                     if ($y < 0){
                         $y = -$y;
                         array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
@@ -444,7 +444,7 @@ class GameController extends Controller
                 $add2 -= $max / 5;
                 $count ++;
             
-            } while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
+            } while ($count < MathController::OPERATION_COUNT + ($aeg * 7));
 
             return $array;
         }
@@ -482,7 +482,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again4;
                     }
                 }
@@ -506,18 +506,18 @@ class GameController extends Controller
                     $sum = $this -> numberToRoman($xans + $yans);
                 }
 
-                $uusmis = $mis == GameController::BOTH ? (random_int(1, 2) == 1 ?  GameController::LIITMINE : GameController::LAHUTAMINE) : $mis;
+                $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
 
-                if ($uusmis === GameController::LIITMINE){
+                if ($uusmis === MathController::LIITMINE){
                     array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$xans + $yans, "level"=>$tase]);
                 }
-                if ($uusmis === GameController::LAHUTAMINE){
+                if ($uusmis === MathController::LAHUTAMINE){
                     array_push($array, ["operation"=>$sum. '-' . $y, "answer"=>$xans, "level"=>$tase]);
                 }
 
                 $add += $max/5;
                 $count ++;
-            }while ($count < GameController::OPERATION_COUNT + ($aeg * 7));
+            }while ($count < MathController::OPERATION_COUNT + ($aeg * 7));
 
             return $array;
         }            
@@ -548,7 +548,7 @@ class GameController extends Controller
         $kontroll = 0;
 
 
-        $opnames = [GameController::KORRUTAMINE, GameController::JAGAMINE];
+        $opnames = [MathController::KORRUTAMINE, MathController::JAGAMINE];
         $opsymbs= ["·", ":"];
 
 
@@ -684,8 +684,8 @@ class GameController extends Controller
         ];
 
         if($level != "all"){
-            $returnData = GameController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
-                return $mis == GameController::KORRUTAMINE ? $num1 * $num2 : $num1;
+            $returnData = MathController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
+                return $mis == MathController::KORRUTAMINE ? $num1 * $num2 : $num1;
              }, $opnames, $opsymbs, $level, $aeg, $tüüp == "roman");
 
              return $returnData["array"];
@@ -756,7 +756,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again1;
                     }
                 }
@@ -779,7 +779,7 @@ class GameController extends Controller
 
                 $count ++;
             
-            } while ($count < GameController::OPERATION_COUNT + ($aeg * 14));
+            } while ($count < MathController::OPERATION_COUNT + ($aeg * 14));
             return $array;
         }
             
@@ -864,7 +864,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again;
                     }
                 }
@@ -962,7 +962,7 @@ class GameController extends Controller
                 }
                 if ($x == $y){
                     $kontroll ++;
-                    if ($kontroll > GameController::SAME_NUMBER_REPEAT_COUNT){
+                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                         goto again6;
                     }
                 }
@@ -1008,55 +1008,55 @@ class GameController extends Controller
     public function astendamine($level, $mis, $tüüp, $aeg){
         $xvalues = [];
 
-        $opnames = [GameController::ASTENDAMINE, GameController::JUURIMINE];
+        $opnames = [MathController::ASTENDAMINE, MathController::JUURIMINE];
         
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 5);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [1, random_int(2, 5)] : [random_int(-5, -1), random_int(1, 5)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [1, random_int(2, 5)] : [random_int(-5, -1), random_int(1, 5)];
                     return $randints[array_rand($randints)];}
             ],
             "2"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];}
             ],
             "3"=>[
                 "natural"=>function (){return random_int(2, 5);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [2, random_int(2, 5)] : [random_int(-5, -2), random_int(2, 5)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [2, random_int(2, 5)] : [random_int(-5, -2), random_int(2, 5)];
                     return $randints[array_rand($randints)];}
             ],
             "4"=>[
                 "natural"=>function (){return random_int(11, 20);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [11, random_int(12, 20)] : [random_int(-20, -11), random_int(11, 20)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [11, random_int(12, 20)] : [random_int(-20, -11), random_int(11, 20)];
                     return $randints[array_rand($randints)];}
             ],
             "5"=>[
                 "natural"=>function (){return random_int(6, 10);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [6, random_int(7, 10)] : [random_int(-10, -6), random_int(6, 10)];
                     return $randints[array_rand($randints)];}
             ],
             "A"=>[
                 "natural"=>function (){return random_int(1, 9)*10 + 5;},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [15, random_int(2, 9)*10 + 5] : [random_int(-9, -1)*10 -5, random_int(1, 9)*10+5];
+                    $randints = $uusmis == MathController::JUURIMINE ? [15, random_int(2, 9)*10 + 5] : [random_int(-9, -1)*10 -5, random_int(1, 9)*10+5];
                     return $randints[array_rand($randints)];}
             ],
             "B"=>[
                 "natural"=>function (){return random_int(4,9);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [4, random_int(5, 9)] : [random_int(-9, -4), random_int(4, 9)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [4, random_int(5, 9)] : [random_int(-9, -4), random_int(4, 9)];
                     return $randints[array_rand($randints)];}
             ],
             "C"=>[
                 "natural"=>function (){return random_int(11,19);},
                 "fraction"=>function ($uusmis=null){
-                    $randints = $uusmis == GameController::JUURIMINE ? [11, random_int(12, 19)] : [random_int(-19, -11), random_int(11, 19)];
+                    $randints = $uusmis == MathController::JUURIMINE ? [11, random_int(12, 19)] : [random_int(-19, -11), random_int(11, 19)];
                     return $randints[array_rand($randints)];},
             ],
             
@@ -1065,58 +1065,58 @@ class GameController extends Controller
         $yvalues = [
             
             "1"=>[
-                "natural"=>function () use ($mis){return ($mis == GameController::JUURIMINE || $mis === "mõlemad")  ? 2 : random_int(0, 2);},
+                "natural"=>function () use ($mis){return ($mis == MathController::JUURIMINE || $mis === "mõlemad")  ? 2 : random_int(0, 2);},
                 "fraction"=>function ($uusmis=null) use ($mis, $x1){
                     $randints = [random_int(-2, 2)];
 
                     //$randints = [random_int(abs($x1) < 3 ? -8 : -2, abs($x1) < 3 ? 8 : 2)];   
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==2 ? random_int(3,6) : 
-                    (($uusmis ?? $mis) == GameController::JUURIMINE && $x1==3 ? random_int(2,4) : 
-                    (($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)]));},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE && $x1==2 ? random_int(3,6) : 
+                    (($uusmis ?? $mis) == MathController::JUURIMINE && $x1==3 ? random_int(2,4) : 
+                    (($uusmis ?? $mis) == MathController::JUURIMINE ? 2 : $randints[array_rand($randints)]));},
             ],
             "2"=>[
                 "natural"=>function (){return 2;},
                 "fraction"=>function ($uusmis=null) use ($mis){
                     $randints = [random_int(-2, 2)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "3"=>[
                 "natural"=>function () use ($x1){return random_int(3,$x1==2 ? 8 : ($x1==3 ? 5 : 4));},
                 "fraction"=>function ($uusmis=null) use($mis, $x1){
                     $randints = [random_int(-2, 2)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==2 ? random_int(3,8) : 
-                    (($uusmis ?? $mis) == GameController::JUURIMINE && $x1==3 ? random_int(2,5) : 
-                    (($uusmis ?? $mis) == GameController::JUURIMINE ? random_int(3,4) : $randints[array_rand($randints)]));},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE && $x1==2 ? random_int(3,8) : 
+                    (($uusmis ?? $mis) == MathController::JUURIMINE && $x1==3 ? random_int(2,5) : 
+                    (($uusmis ?? $mis) == MathController::JUURIMINE ? random_int(3,4) : $randints[array_rand($randints)]));},
             ],
             "4"=>[
                 "natural"=>function (){return 2;},
                 "fraction"=>function ($uusmis=null) use ($mis){
                     $randints = [random_int(-2, 2)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "5"=>[
                 "natural"=>function () use ($x1){return $x1 == 10 ? random_int(4,6) : 3;},
                 "fraction"=>function ($uusmis=null) use ($mis, $x1){
                     $randints = [random_int(-3, 3)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE && $x1==10 ? random_int(4,6) : (($uusmis ?? $mis) == GameController::JUURIMINE ? 3 : $randints[array_rand($randints)]);},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE && $x1==10 ? random_int(4,6) : (($uusmis ?? $mis) == MathController::JUURIMINE ? 3 : $randints[array_rand($randints)]);},
             ],
             "A"=>[
                 "natural"=>function (){return 2;},
                 "fraction"=>function ($uusmis=null) use ($mis){
                     $randints = [random_int(-2, 2)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE ? 2 : $randints[array_rand($randints)];},
             ],
             "B"=>[
                 "natural"=>function (){return 4;},
                 "fraction"=>function ($uusmis=null) use ($mis){
                     $randints = [random_int(-4, 4)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 4 : $randints[array_rand($randints)];},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE ? 4 : $randints[array_rand($randints)];},
             ],
             "C"=>[
                 "natural"=>function (){return 3;},
                 "fraction"=>function ($uusmis=null) use ($mis){
                     $randints = [random_int(-3, 3)];  
-                    return ($uusmis ?? $mis) == GameController::JUURIMINE ? 3 : $randints[array_rand($randints)];},
+                    return ($uusmis ?? $mis) == MathController::JUURIMINE ? 3 : $randints[array_rand($randints)];},
             ],
             
         ];
@@ -1127,8 +1127,8 @@ class GameController extends Controller
         // num1 - x1
         // num2 - y
         // num3 - x2 (kui on)
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $num3, $mis){
-            if($mis == GameController::ASTENDAMINE){
+        $returnData = MathController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], $mis, function ($num1, $num2, $num3, $mis){
+            if($mis == MathController::ASTENDAMINE){
                 if($num3 != null){
                     return ($num1/$num3)**$num2;
                 }
@@ -1368,7 +1368,7 @@ class GameController extends Controller
         ];
         $astekogum = ['1'=>3, '2'=>3, '3'=>4, '4'=>4];
         $aste = $astekogum[$level];
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::MULTIOPERAND, function ($num1, $num2,$num1kor, $num2kor) use ($aste){
+        $returnData = MathController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], MathController::MULTIOPERAND, function ($num1, $num2,$num1kor, $num2kor) use ($aste){
             $kogum = [$num1.'+'.$num2, $num1+$num2.'-'.$num2, $num1kor.'*'.$num2kor, $num1kor*$num2kor.':'.$num2kor];
             $valik = array_fill(0, $aste, $kogum[$suvakogum = array_rand(range(1,4))]);//$suvanorm - Kogum numbritest, antud juhul tehtemärkidest
             $margid = ['+','-'];
@@ -1494,7 +1494,7 @@ class GameController extends Controller
             ],
         ];
         
-        $returnData = GameController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], GameController::JAGUVUS, function (){
+        $returnData = MathController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], MathController::JAGUVUS, function (){
             // Boolean, mis ütleb, kas vastus on tõene või mitte
             return random_int(0, 1) == 1;
             }, [], [],  $level, $aeg, null);
@@ -1751,8 +1751,8 @@ class GameController extends Controller
         $z = $zvalues[$level][$tüüp];
 
         if($level != "all"){
-            $returnData = GameController::generateOp($x, $x2, GameController::LIHTSUSTAMINE, function ($x, $y){
-                $gcd = GameController::gcd($x, $y);
+            $returnData = MathController::generateOp($x, $x2, MathController::LIHTSUSTAMINE, function ($x, $y){
+                $gcd = MathController::gcd($x, $y);
                 return "(" . ($x / $gcd) . "/" . ($y / $gcd) . ")";
              }, $z, [], $level, $aeg, null);
 
@@ -1803,7 +1803,7 @@ class GameController extends Controller
         ];
         app("App\Http\Controllers\Controller")->wrapper($tehe, $tasemed, $tüüp, $aeg);
 
-        $returnData = GameController::generateOp($raskus[$level], [], GameController::BOTS, function($kadu, $min, $botcheck){
+        $returnData = MathController::generateOp($raskus[$level], [], MathController::BOTS, function($kadu, $min, $botcheck){
             $accuracy = 1 - ($botcheck > $min ? $kadu : 0);
             $botcheck = $accuracy;
             return $accuracy;
@@ -1827,7 +1827,7 @@ class GameController extends Controller
                 }
 
 
-                $loend[0] = app('App\Http\Controllers\GameController')->liitlah('all', $tehe, $tüüp, $aeg);
+                $loend[0] = app('App\Http\Controllers\MathController')->liitlah('all', $tehe, $tüüp, $aeg);
             }
 
             if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){
@@ -1836,45 +1836,45 @@ class GameController extends Controller
                     $tehe = "mõlemad";
                 }
 
-                $loend[0] = app('App\Http\Controllers\GameController')->korjag("all", $tehe, $tüüp, $aeg);
+                $loend[0] = app('App\Http\Controllers\MathController')->korjag("all", $tehe, $tüüp, $aeg);
             }
 
             if($tehe == "astendamine" || $tehe == "juurimine" || $tehe == "astejuurimine"){
-                $loend[0] = app('App\Http\Controllers\GameController')->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
+                $loend[0] = app('App\Http\Controllers\MathController')->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
             }
 
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == "liitmine" || $tehe == "lahutamine" || $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "lünkamine"){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lünkamine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->lünkamine($tasemed[$lugeja], $aeg);
                 }
 
                 if($tehe == "võrdlemine"){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->võrdlemine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->võrdlemine($tasemed[$lugeja], $aeg);
                 }
 
-                if($tehe == GameController::ASTENDAMINE || $tehe == GameController::JUURIMINE || $tehe == GameController::ASTEJUURIMINE){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE || $tehe == MathController::ASTEJUURIMINE){    
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
 
-                if($tehe == GameController::JAGUVUS){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
+                if($tehe == MathController::JAGUVUS){
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
                 }
 
-                if($tehe == GameController::LIHTSUSTAMINE){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
+                if($tehe == MathController::LIHTSUSTAMINE){
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
                 }
 
                 if($tehe == 'kujundid'){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\GameController')->kujundid($tasemed[$lugeja], $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->kujundid($tasemed[$lugeja], $tüüp, $aeg);
                 }
                 
             }

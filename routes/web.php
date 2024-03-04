@@ -37,7 +37,7 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/logout', 'logout')->name('logout');
-});
+}) -> middleware('throttle:6,1');
 
 //Google login
 Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(function() {
@@ -82,8 +82,8 @@ Route::get("/preview", function (){
 //Game part of PRANGLIMISRAKENDUS
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
-    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\GameController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
-})->name("gameNew")->middleware(['auth']);
+    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\MathController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
+})->name("gameNew")->middleware(['auth', 'throttle: 6,1']);
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->group(function() {
@@ -96,10 +96,10 @@ Route::controller(App\Http\Controllers\GameController::class)->group(function() 
 //Classroom data
 Route::controller(App\Http\Controllers\ClassController::class)->group(function (){
     //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
-    Route::post('/classroom/store', 'store')->name('classStore');
     Route::post('/classroom/search', 'index')->name('classSearch');
     Route::get('/classroom/view/{id}', 'show')->name('classShow');
     Route::post('/classroom/join', 'join')->name('classJoin');
+    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher', 'throttle: 4,1']);
     Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
     Route::post('/classroom/remove}', 'destroy')->name('classRemove')->middleware('role:teacher');
 })->middleware('auth');

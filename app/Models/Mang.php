@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Mang extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'game_id';
+    public $timestamps = false;
     protected $fillable = [
         'game_id',
         'user_id',
@@ -19,7 +21,6 @@ class Mang extends Model
         'last_equation',
         'time',
         'dt',
-        'mistakes',
-        'mistakes_sum',
+        'log',
     ];
 }

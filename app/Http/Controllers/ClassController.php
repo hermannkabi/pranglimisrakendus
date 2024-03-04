@@ -13,10 +13,10 @@ class ClassController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($search)
+    public function index(string $search)
     {
       
-        $tabel = $search==false ? DB::table('klass')->orderBy('klass_name') : DB::table('klass')->orderBy($search);
+        $tabel = $search==null ? DB::table('klass')->orderBy('klass_name') : DB::table('klass')->orderBy($search);
         
         return Inertia::render("ClassroomSearch", $tabel);
     }
@@ -31,7 +31,7 @@ class ClassController extends Controller
             array_push($klass -> student_list,$id ->eesnimi . ' ' . $id->perenimi);
             $klass->save();
             $kasutaja = User::find($id);
-            $kasutaja -> klass = $klass_name;
+            $kasutaja -> joined_klass = $klass_name;
             $kasutaja -> teacher = Klass::find($klass_name) -> get('teacher');
             $kasutaja->save();
             return redirect()->route('classroom/{id}');
@@ -46,7 +46,7 @@ class ClassController extends Controller
         $user = User::find($id);
         $klass -> array_pop($klass->student_list, $user->eesnimi . ' ' . $user->perenimi);//võimalik veakoht
         $klass -> save();
-        $user -> klass = 'None';
+        $user -> joined_klass = 'None';
         $user -> teacher = 'None';
         $user -> save();
         return Inertia::render('ClassroomPage', 'Õpilane ' .  $user->eesnimi . ' ' . $user->perenimi . ' ' . 'on edukalt eemaldatud teie klassist.');
@@ -107,24 +107,20 @@ class ClassController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id, $add)
+    public function update(Request $request, string $id)
     {
-        // $klass = Klass::find($id);
-        // if($add){
-        //     $klass->student_list=$request->input('name');
-
-        // }
+       //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $klass_name, $user_id, $all)
+    public function destroy(string $klass_name, $teacher, $all)
     {
         DB::table('klass')->where('klass_name',$klass_name)->get()->delete();
 
         if($all){
-            DB::table('klass')->select($user_id)->get()->delete();
+            DB::table('klass')->select($teacher)->get()->delete();
         }
     }
 }
