@@ -37,7 +37,28 @@ class LoginRegisterController extends Controller
     }
 
     public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId){
+        $teachers = array(
+        'andres.talts@real.edu.ee',
+        'helen.kaasik@real.edu.ee',
+        'helli.juurma@real.edu.ee',
+        'kerli.kupits@real.edu.ee',
+        'liivi.koss@real.edu.ee',
+        'riin.saar@real.edu.ee',
+        'villu.raja@real.edu.ee',
+        'jaanika.lukk@real.edu.ee',
+    
+
+        'aili.hobejarv@real.edu.ee',
+        'kadri.pajo@real.edu.ee',
+        'kati.kurim@real.edu.ee',
+        'kaie.matt@real.edu.ee',
+        'lisette.veevali@real.edu.ee',
+        'margit.luts@real.edu.ee',
+        'reet.libe@real.edu.ee',
+        'triinuliis.vahter@real.edu.ee');
+        
         return User::create([
+            'role' => !in_array($teachers, Auth::user()->email->get()) ? 0 : 1,
             'email' => $email,
             'eesnimi' => $eesnimi,    
             'perenimi' => $perenimi,    
@@ -46,6 +67,7 @@ class LoginRegisterController extends Controller
             'google_id'=> $googleId,
 
             //User settings
+        //TODO: Tee need küpsisteks https://laravel.com/docs/master/requests#cookies , https://stackoverflow.com/questions/45207485/how-to-set-and-get-cookie-in-laravel
             'dark_backround' => false,
             'visible_timer' => true,
             'score_animations' => true,

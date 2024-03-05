@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         //Primary information
         'id',
+        'role',
         'eesnimi',
         'perenimi',
         'email',
