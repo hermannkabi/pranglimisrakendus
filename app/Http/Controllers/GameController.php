@@ -9,21 +9,25 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($search)
     {
         //Scoreboard
-        $koik = DB::table("mangs")->chunk(50, function(Collection $mangud){
+        /* $koik = DB::table("mangs")->chunk(50, function(Collection $mangud){
             foreach($mangud as $game){
                 DB::table("users")->where('id',$game->user_id);
             }
-        });
+        }); */
+        $koik = DB::table('users')->where('id', Mang::get('user_id'))->orderBy($search == null ? 'score_sum' : $search)
+        ->take(25);
         // Option 1
         return redirect()->route("scoreboard")->with($koik);
         //Option 2
@@ -33,14 +37,15 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createMang($user_id, $score_sum, $experience,$accuracy_sum,$game_count,$last_level,$last_equation,$time,$dt, $log)
+    public function createMang($score_sum, $experience,$accuracy_sum,$equation_count,$last_level,$last_equation,$time,$dt, $log)
     { 
         return Mang::create([
-            'user_id' => $user_id,
+            'user_id' => Auth::id(),
+            'game_id' => (string)Str::uuid(),
             'score_sum' => $score_sum,
             'experience' => $experience,
             'accuracy_sum' => $accuracy_sum,
-            'game_count' => $game_count,
+            'equation_count' => $equation_count,
             'last_level'=> $last_level,
             'last_equation' => $last_equation,
             'time' => $time,
@@ -65,9 +70,9 @@ class GameController extends Controller
             'dt' => 'required',
             'log' => 'required|string|max:4444',
         ]);
-        $this->createMang($request->user()->id, $request->score_sum, $request->experience, $request->accuracy_sum, $request->game_count, $request->last_level, $request->last_equation, $request->time,$request->dt, 
+        $this->createMang($request->score_sum, $request->experience, $request->accuracy_sum, $request->equation_count, $request->last_level, $request->last_equation, $request->time,$request->dt, 
         $request->log);
-        $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'game_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
+        $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'equation_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
         if($resources){
             return Inertia::render('DashboardPage', $resources);    //($resources);
         }
@@ -80,10 +85,10 @@ class GameController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $user_id)
+    public function show()
     {
         //Game history
-        $mangud = DB::table('mangs')->where('user_id',$user_id)->take(10)->get();
+        $mangud = DB::table('mangs')->where('user_id',Auth::id())->take(10)->get();
         //Option 1
         return redirect()->route("game_history")->with($mangud);
         //Option 2

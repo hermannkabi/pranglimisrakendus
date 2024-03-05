@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Klass;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -68,6 +69,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
+        app('App/Http/Controllers/ClassController')->remove(Auth::id(), Klass::find(Auth::id())->get('klass_id'));
         app('App/Http/Controllers/GameController')->destroy();
         $user->delete();
         
