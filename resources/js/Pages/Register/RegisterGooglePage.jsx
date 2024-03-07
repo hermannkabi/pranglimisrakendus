@@ -19,7 +19,7 @@ export default function RegisterGooglePage({errors}){
 
 
     $("#name").val(name.substring(0, name.lastIndexOf(" ")));
-    $("#famname").val(name.substring(name.lastIndexOf(" ")));
+    $("#famname").val(name.substring(name.lastIndexOf(" ")+1));
 
     console.log(errors);
 
@@ -29,7 +29,7 @@ export default function RegisterGooglePage({errors}){
         <div className="auth-container">
             <LoginHeader pageName="Jätka Google'ga" googleLogo={true} />
             <div className="auth-main-content">
-                <InfoBanner text="Kasutaja loomiseks Google'ga palun täida allolevad väljad" />
+                {Object.values(errors).map((e)=><InfoBanner key={e} text={e} />)}
                 <form method="post" action={route("storeGoogle")}  className="register-container">
                     <input type="hidden" name="_token" value={window.csrfToken} />
                     <input style={{display:'none'}} name="googleid" value={googleId} />
@@ -38,7 +38,7 @@ export default function RegisterGooglePage({errors}){
                         <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0"}} type="text" placeholder="Eesnimi" required/>
                         <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
                     </div>
-                    <input value={email} id="email" name="email" type="email" placeholder="E-posti aadress" required readOnly/><br />
+                    <input className="field-disabled" onChange={null} defaultValue={email} id="email" name="email" type="email" placeholder="E-posti aadress" required readOnly={true}/><br />
                     <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
                     <SizedBox height="16px" />
                     <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>

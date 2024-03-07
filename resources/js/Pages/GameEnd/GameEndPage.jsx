@@ -6,12 +6,17 @@ import OperationWidget from "@/Components/OperationWidget";
 import { useEffect, useState } from "react";
 import CheckboxTile from "@/Components/CheckboxTile";
 import HorizontalRule from "@/Components/HorizontalRule";
+import InfoBanner from "@/Components/InfoBanner";
+import LoadingSpinner from "@/Components/LoadingSpinner";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
 
 
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
+    const [gameSaved, setGameSaved] = useState(auth.user.role == "guest" || false);
+    const [showGameSavedDialog, setShowGameSavedDialog] = useState(false);
+
 
     const [title, setTitle] = useState(null);
 
@@ -101,23 +106,26 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
 
 
-        // Real saving
-        $.post(route("gameStore"), {
-            "_token":window.csrfToken,
-            'score_sum':points,
-            'experience':"0",
-            'accuracy_sum':accuracy,
-            'game_count': total,
-            'last_level':lastLevel.toString(),
-            'last_equation':"0",
-            'time':time,
-            'dt':Date.now(),
-            'log':JSON.stringify(log),
-        }).done(function (data){
-            console.log("Tehtud!");
-        }).fail(function (data){
-            console.log(data);
-        });
+        // Real saving (non-guests only)
+        if(auth.user.role != "guest"){
+            $.post(route("gameStore"), {
+                "_token":window.csrfToken,
+                'score_sum':points,
+                'experience':"0",
+                'accuracy_sum':accuracy,
+                'game_count': total,
+                'last_level':lastLevel.toString(),
+                'last_equation':"0",
+                'time':time,
+                'log':JSON.stringify(log),
+            }).done(function (data){
+                console.log("Tehtud!");
+                setGameSaved(true);
+            }).fail(function (data){
+                console.log(data);
+            });
+        }
+        
     }
 
     function filterOperations(){
@@ -135,17 +143,27 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         });
     }
 
+    function navigateAway(onComplete){
+        if(!gameSaved){
+            setShowGameSavedDialog(true);
+        }else{
+            onComplete();
+        }
+    }
+
     return (
         <>
             <Head title="Lõpeta mäng" />
             <Navbar title="Lõpeta mäng" user={auth.user} />
             <SizedBox height={36} />
 
-            
-
             <div className="container">
                 {/* Greeting */}
                 <h2 style={{marginBottom: 0}}>{title}</h2>
+                {showGameSavedDialog && <section style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                    {gameSaved ? <i className="material-icons">check</i> : <LoadingSpinner color={true} />}
+                    <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
+                </section>}
                 {/* Stats */}
                 <section>
                     <div className="stat-container">
@@ -200,8 +218,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 {/* Buttons */}
                 <section>
                     <div className="btn-container">
-                        <button onClick={()=>location.reload()} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
-                        <button onClick={()=>window.location.href = route("dashboard")} style={{flex:'1'}}>Edasi</button>
+                        <button onClick={()=>navigateAway(()=>location.reload())} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
+                        <button onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} style={{flex:'1'}}>Edasi</button>
                     </div>
                 </section>
             </div>

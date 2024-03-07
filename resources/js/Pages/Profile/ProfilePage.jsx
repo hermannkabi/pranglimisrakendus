@@ -146,8 +146,12 @@ export default function ProfilePage({auth}){
             </section> */}
             {/* A new design for the profile page */}
             
+            {<section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
+            </section>}
 
             <section>
+                
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
@@ -161,7 +165,7 @@ export default function ProfilePage({auth}){
                     <div className="stat-container" style={{width:"90%"}}>
                        {auth.user.role != "student" && <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>KONTO</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role}</h3>
+                            <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role}</h3>
                         </div>}
 
                         <div style={profileTypeStyle}>
@@ -245,7 +249,10 @@ export default function ProfilePage({auth}){
                     {/* <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button> */}
                 </div>
             </section>
-            
+            <SizedBox height={48} />
+            <a alone="" href={route("changelog")}><i className="material-icons">update</i>&nbsp; Uuenduste ajalugu</a>
+            <SizedBox height={32} />
+
         </>
     );
 }

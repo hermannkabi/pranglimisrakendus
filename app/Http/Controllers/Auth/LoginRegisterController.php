@@ -103,6 +103,10 @@ class LoginRegisterController extends Controller
             'googleid' => 'required',
         ]);
 
+        if(!str_ends_with($request->email, "real.edu.ee")){
+            return redirect()->back()->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
+        }
+
         $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, $request->klass, $request->googleid);
 
         Auth::login($user);

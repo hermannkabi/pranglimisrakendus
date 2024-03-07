@@ -301,7 +301,7 @@ input:focus, textarea:focus{
     outline: 2px solid rgb(var(--primary-btn-color));
 }
 
-input:disabled, textarea:disabled{
+input:disabled, textarea:disabled, .field-disabled{
     opacity: 0.75;
     color: rgb(var(--input-color), 0.5);
     cursor: not-allowed;

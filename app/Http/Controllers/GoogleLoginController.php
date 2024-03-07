@@ -24,7 +24,6 @@ class GoogleLoginController extends Controller
             $user = User::where('email', $googleUser->email)->first();
             if(!$user)
             {
-                // Praegu saadab tavalisse registeri, teen mingi hetk ümber -Hermann
                 return redirect()->route("registerGoogle", ["email"=>$googleUser->email, "name"=>$googleUser->name, "googleId"=>$googleUser->id]);
             }
 

@@ -281,7 +281,7 @@ export default function GamePage({data, time, auth}){
             // Check if the operation contains the multiply and divide chars
             // If it does, we disable entering fractions
             // Similarly with comma and minus
-            console.log(( operationString));
+            //console.log(( operationString));
             setFractionAllowed(!(operationString.includes("·") || operationString.includes(":") || isArray ));
             setCommaAllowed(!isArray);
             setMinusAllowed(!isArray);
@@ -327,7 +327,7 @@ export default function GamePage({data, time, auth}){
     // The data is a Map with keys of levels and values of arrays including the operation, answer, level etc
     var operations = {data};
 
-    console.log(operations);
+    //console.log(operations);
     // var operations = {
     //     data:{
     //         1:[

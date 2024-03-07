@@ -75,6 +75,10 @@ Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
 })->name("ui");
 
+Route::get('/changelog', function () {
+    return Inertia::render('UpdateHistory/UpdateHistoryPage');
+})->name("changelog");
+
 Route::get("/preview", function (){
     return Inertia::render("GamePreview/GamePreviewPage");
 })->name("preview")->middleware('auth');
