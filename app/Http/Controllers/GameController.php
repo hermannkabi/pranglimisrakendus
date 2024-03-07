@@ -37,21 +37,27 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createMang($score_sum, $experience,$accuracy_sum,$equation_count,$last_level,$last_equation,$time,$dt, $log)
+    public function createMang($score_sum, $experience,$accuracy_sum, $game_count, $equation_count,$last_level,$last_equation,$time, $log)
     { 
         return Mang::create([
             'user_id' => Auth::id(),
             'game_id' => (string)Str::uuid(),
             'score_sum' => $score_sum,
+            'game_count' => $game_count,
             'experience' => $experience,
             'accuracy_sum' => $accuracy_sum,
             'equation_count' => $equation_count,
             'last_level'=> $last_level,
             'last_equation' => $last_equation,
             'time' => $time,
-            'dt' => $dt,
+            'dt' => date('Y-m-d H:i:s'),
             'log' => $log,
         ]);
+    }
+
+    function calculateExperience($time, $accuracy, $score_sum, $game_count){
+        // (accuracy * (game count + score_sum))/time (min)
+        return $time == 0 || $accuracy == 0 ? 0 : round(($accuracy*($score_sum + $game_count))/(100*$time/60));
     }
 
     /**
@@ -61,16 +67,14 @@ class GameController extends Controller
     {
         $request->validate([
             'score_sum' => 'required|string|max:37',
-            'experience' => 'required|string|max:37',
             'accuracy_sum' => 'required|string|max:37',
             'game_count' => 'required|string|max:37',
             'last_level'=> 'required|string|max:37',
             'last_equation'=>'required|string|max:37',
             'time' => 'required',
-            'dt' => 'required',
             'log' => 'required|string|max:4444',
         ]);
-        $this->createMang($request->score_sum, $request->experience, $request->accuracy_sum, $request->equation_count, $request->last_level, $request->last_equation, $request->time,$request->dt, 
+        $this->createMang($request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
         $resources = $request->only('game_id', 'user_id', 'score_sum', 'experience', 'accuracy_sum', 'equation_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
         if($resources){
@@ -93,6 +97,26 @@ class GameController extends Controller
         return redirect()->route("game_history")->with($mangud);
         //Option 2
         return Inertia::render('GameHistory', $mangud);
+    }
+
+    public function getOverallStats(){
+        $mangud = DB::table('mangs')->where('user_id',Auth::id())->orderBy("dt", "desc")->get();
+
+        $accuracy_sum = 0;
+        $points_sum = 0;
+
+
+        $count = sizeof($mangud);
+        foreach($mangud as $mang){
+            $accuracy_sum += $mang->accuracy_sum;
+            $points_sum += $mang->score_sum;
+
+        }
+
+        $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
+
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
+
     }
 
     /**

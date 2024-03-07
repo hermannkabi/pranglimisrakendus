@@ -110,11 +110,11 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
             'game_count': total,
             'last_level':lastLevel.toString(),
             'last_equation':"0",
-            'time':getHumanReadableTime(),
+            'time':time,
             'dt':Date.now(),
             'log':JSON.stringify(log),
         }).done(function (data){
-            window.location.href = route("dashboard");
+            console.log("Tehtud!");
         }).fail(function (data){
             console.log(data);
         });
