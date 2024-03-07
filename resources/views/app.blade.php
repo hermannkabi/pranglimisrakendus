@@ -23,6 +23,18 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased" >
+
+        <noscript>
+            <div style="display: flex; justify-content: center; height: 100vh;">
+               <div>
+                    <img style="border-radius: 8px; height: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/220px-Unofficial_JavaScript_logo_2.svg.png" alt="">
+                    <h1>JavaScript on keelatud</h1>
+                    <p>Selle lehe jaoks on vaja lubada brauseris JavaScript</p>
+                    <p>Kui sa seda ei oska, vaata <a href="https://enable-javascript.com">sellele lingile</a></p>
+                </div> 
+            </div>
+            
+        </noscript>
         
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
