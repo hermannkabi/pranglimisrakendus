@@ -27,7 +27,7 @@ class GameController extends Controller
             }
         }); */
         $koik = DB::table('users')->where('id', Mang::get('user_id'))->orderBy($search == null ? 'score_sum' : $search)
-        ->take(25);
+        ->simplePaginate(25);
         // Option 1
         return redirect()->route("scoreboard")->with($koik);
         //Option 2
