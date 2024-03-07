@@ -13,8 +13,8 @@ class Klass extends Model
         'klass_id',
         'klass_name',
         'klass_password',
-        'student_list',
-        'teacher',
+        'student_list', //TODO: Tee ainult queridega.
+        'teacher', //TODO: Tee ainult queridega. Ühenda User modeliga.
     ];
 
 }

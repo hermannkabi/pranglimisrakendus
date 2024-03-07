@@ -58,7 +58,7 @@ class LoginRegisterController extends Controller
         'triinuliis.vahter@real.edu.ee');
         
         return User::create([
-            'role' => !in_array($teachers, Auth::user()->email->get()) ? 0 : 1,
+            'role' => !in_array($email, $teachers) ? 'student' : 'teacher',
             'email' => $email,
             'eesnimi' => $eesnimi,    
             'perenimi' => $perenimi,    
@@ -211,9 +211,12 @@ class LoginRegisterController extends Controller
     {
         if(Auth::check())
         {
-            return Inertia::render("Dashboard/DashboardPage");
+            $stats = app("App\Http\Controllers\GameController")->getOverallStats();
+            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats]);
         }
         
+
+
         return redirect()->route('login')
             ->onlyInput('email');
     } 

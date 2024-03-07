@@ -35,29 +35,29 @@ class User extends Authenticatable implements MustVerifyEmail
         'teacher',
         //'invited_to_klass',
 
-        //User settings
-        'dark_backround',
-        'visible_timer',
-        'score_animations',
-        'default_time',
-        'color',
+        // //User settings
+        // 'dark_backround',
+        // 'visible_timer',
+        // 'score_animations',
+        // 'default_time',
+        // 'color',
 
-        //Game information
-        'score_sum',
-        'experience',
-        'accuracy_sum',
-        'game_count',
-        'last_level',
-        'last_equation',
-        'time',
-        'dt',
-        'mistakes_tendency',
-        'mistakes_sum',
+        // //Game information
+        // 'score_sum',
+        // 'experience',
+        // 'accuracy_sum',
+        // 'game_count',
+        // 'last_level',
+        // 'last_equation',
+        // 'time',
+        // 'dt',
+        // 'mistakes_tendency',
+        // 'mistakes_sum',
 
-        //Quests
-        'quests',
-        'quest_type',
-        'completed_quests_sum',
+        // //Quests
+        // 'quests',
+        // 'quest_type',
+        // 'completed_quests_sum',
     ];
 
     /**

@@ -159,12 +159,17 @@ export default function ProfilePage({auth}){
                     </div>                    
 
                     <div className="stat-container" style={{width:"90%"}}>
+                       {auth.user.role != "student" && <div style={profileTypeStyle}>
+                            <p style={{color:'gray', marginBlock: "0"}}>KONTO</p>
+                            <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role}</h3>
+                        </div>}
+
                         <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>KOOL</p>
                             <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
                         </div>
                         <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>{auth.user != null && auth.user.klass == "õpetaja" ? "KONTO" : "KLASS"}</p>
+                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
                             <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : auth.user.klass}</h3>
                         </div>
                     </div>

@@ -11,10 +11,11 @@ class TeacherRole extends Middleware{
     {
     $user = Auth::user();
 
-    if($user->role == 1)
+    if($user->role === 'teacher'){
         return $next($request);
-
-    return redirect('login');
+    }
+    
+    return redirect()->back();
     }
 }
 

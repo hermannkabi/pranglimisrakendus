@@ -92,6 +92,7 @@ export default function NewRegisterPage({message, errors}){
         }).done(function (data){
             window.location.href = route("dashboard");
         }).fail(function (data){
+            console.log(data);
             setErrorMessages(Object.values(data.responseJSON.errors));
         });
     }
