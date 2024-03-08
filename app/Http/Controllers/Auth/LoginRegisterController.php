@@ -37,7 +37,7 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
-    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId){
+    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId, $settings){
         $teachers = array(
         'andres.talts@real.edu.ee',
         'helen.kaasik@real.edu.ee',
@@ -66,31 +66,7 @@ class LoginRegisterController extends Controller
             'password' => $password == null ? null : Hash::make($password),
             'klass' => $klass,
             'google_id'=> $googleId,
-
-            //User settings
-        //TODO: Tee need küpsisteks https://laravel.com/docs/master/requests#cookies , https://stackoverflow.com/questions/45207485/how-to-set-and-get-cookie-in-laravel
-            'dark_backround' => false,
-            'visible_timer' => true,
-            'score_animations' => true,
-            'default_time' => 0,
-            'color' => 'turquoise',
-
-            //Game information
-            'score_sum' => 0,
-            'experience' => 0,
-            'accuracy_sum' => 0,
-            'game_count' => 0,
-            'last_level' => 0,
-            'last_equation' => 0,
-            'time' => 0,
-            'dt' => 0,
-            'mistakes_tendency' => 0,
-            'mistakes_sum' => 0,
-
-            //Quests
-            'quests' => 0,
-            'quest_type' => 0,
-            'completed_quests_sum' => 0,
+            'settings' => $settings,
         ]);
     }
 
@@ -108,7 +84,8 @@ class LoginRegisterController extends Controller
             return redirect()->back()->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
         }
 
-        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, $request->klass, $request->googleid);
+        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, 
+        $request->klass, $request->googleid, $request->settings);
 
         Auth::login($user);
 
@@ -153,7 +130,8 @@ class LoginRegisterController extends Controller
             ]
         );
 
-        $this->createUser($request->email, $request->eesnimi, $request->perenimi, $request->password, $request->klass, null);
+        $this->createUser($request->email, $request->eesnimi, $request->perenimi, 
+        $request->password, $request->klass, null, $request->settings);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){

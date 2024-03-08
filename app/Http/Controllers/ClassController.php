@@ -19,7 +19,7 @@ class ClassController extends Controller
       
         $tabel =  DB::table('klass')->orderBy($search==null ? 'klass_name' : $search)->take(25);
         
-        return Inertia::render("ClassroomSearch", $tabel);
+        return $tabel;
     }
 
     /**
@@ -92,8 +92,10 @@ class ClassController extends Controller
      */
     public function show(string $klass_id)
     {
-        $list = Klass::where('klass_id', $klass_id)->get('student_list');
-        return Inertia::render('ClassroomPage', $list);
+        $list = Klass::where('klass_id', $klass_id)->get();
+        $users = User::where('klass', $list->klass_name)->where('role', 'student');
+        $teacher = User::where('klass', $list->klass_name)->where('role', 'teacher');   
+        return ['students'=>$users, 'teacher'=>$teacher];
     }
 
     /**

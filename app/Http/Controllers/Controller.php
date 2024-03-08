@@ -1827,7 +1827,7 @@ class MathController extends Controller
                 }
 
 
-                $loend[0] = app('App\Http\Controllers\MathController')->liitlah('all', $tehe, $tüüp, $aeg);
+                $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg);
             }
 
             if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){
@@ -1836,45 +1836,45 @@ class MathController extends Controller
                     $tehe = "mõlemad";
                 }
 
-                $loend[0] = app('App\Http\Controllers\MathController')->korjag("all", $tehe, $tüüp, $aeg);
+                $loend[0] = $this->korjag("all", $tehe, $tüüp, $aeg);
             }
 
             if($tehe == "astendamine" || $tehe == "juurimine" || $tehe == "astejuurimine"){
-                $loend[0] = app('App\Http\Controllers\MathController')->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
+                $loend[0] = $this->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
             }
 
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == "liitmine" || $tehe == "lahutamine" || $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
                 if($tehe == "lünkamine"){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->lünkamine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->lünkamine($tasemed[$lugeja], $aeg);
                 }
 
                 if($tehe == "võrdlemine"){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->võrdlemine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->võrdlemine($tasemed[$lugeja], $aeg);
                 }
 
                 if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE || $tehe == MathController::ASTEJUURIMINE){    
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
 
                 if($tehe == MathController::JAGUVUS){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
                 }
 
                 if($tehe == MathController::LIHTSUSTAMINE){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
                 }
 
                 if($tehe == 'kujundid'){
-                    $loend[$tasemed[$lugeja]] = app('App\Http\Controllers\MathController')->kujundid($tasemed[$lugeja], $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->kujundid($tasemed[$lugeja], $tüüp, $aeg);
                 }
                 
             }
