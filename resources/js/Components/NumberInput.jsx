@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function NumberInput(props){
 
-    const [value, setValue] = useState(props.defaultValue);
+    const [value, setValue] = useState(props.defaultValue.toString().replace(".", ","));
 
     function increment(){
         if(isNaN(value) || value.length == 0){
@@ -44,7 +44,7 @@ export default function NumberInput(props){
             <span translate="no" style={{marginTop:"-2px"}} onClick={decrement} className="number-edit-btn remove material-icons no-anim">remove</span>
             <span translate="no" style={{marginTop:"-2px"}} onClick={increment} className="number-edit-btn add material-icons no-anim">add</span>
         
-            <input style={{marginTop:"0"}} {...props} type="text" pattern="-?[0-9]+" inputMode="numeric" value={value === undefined || value.length == 0 ? '' : value} onChange={handleChange} />
+            <input style={{marginTop:"0"}} {...props} type="text" pattern="-?[0-9],?[0-9]?+" inputMode="numeric" value={value === undefined || value.length == 0 ? '' : value} onChange={handleChange} />
         </div>
     );
 }

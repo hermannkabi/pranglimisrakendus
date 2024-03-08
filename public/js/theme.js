@@ -2,9 +2,11 @@ if(!window.localStorage.getItem("app-theme")){
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         // dark mode
         localStorage.setItem("app-theme", "dark");
+        document.documentElement.setAttribute('data-theme', 'dark');
     }else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){
         //light mode
         localStorage.setItem("app-theme", "light");
+        document.documentElement.setAttribute('data-theme', 'light');
     }
 }else{
     if(window.localStorage.getItem("app-theme") == "dark"){

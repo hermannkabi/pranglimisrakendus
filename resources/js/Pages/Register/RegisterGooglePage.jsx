@@ -39,7 +39,7 @@ export default function RegisterGooglePage({errors}){
                         <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0"}} type="text" placeholder="Perenimi" required/><br />
                     </div>
                     <input className="field-disabled" onChange={null} defaultValue={email} id="email" name="email" type="email" placeholder="E-posti aadress" required readOnly={true}/><br />
-                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br />
+                    <input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Mis lennus sa õpid? (nt 140.a)" name="klass" type="text" placeholder="Lend (nt 140.a)" required/><br />
                     <SizedBox height="16px" />
                     <button name="registration" type="submit">{loading && <LoadingSpinner />} Loo konto</button>
                 </form>

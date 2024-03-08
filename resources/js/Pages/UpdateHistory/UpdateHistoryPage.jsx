@@ -9,6 +9,7 @@ export default function UpdateHistoryPage({auth}){
         "05.03.2024": ["See on testuuendus", "Veel mõni uuendatud võimalus", "..."],
         "06.03.2024": ["See on testuuendus", "Veel mõni uuendatud võimalus", "..."],
         "07.03.2024": ["See on testuuendus", "Veel mõni uuendatud võimalus", "..."],
+        
     };
 
     return <>

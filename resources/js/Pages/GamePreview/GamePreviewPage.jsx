@@ -61,7 +61,7 @@ export default function GamePreviewPage({auth}){
             numberType = type;
         }
 
-        var time = parseInt($("#number").val());
+        var time = parseFloat($("#number").val().replace(",", "."));
 
         var levels = getCheckedLevels();
 
@@ -86,7 +86,7 @@ export default function GamePreviewPage({auth}){
 
         if(time <= 0 || time > 10){
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Aeg peab olema täisarv vahemikus 0-10 min");
+            setMessage("Aeg peab olema vahemikus 0-10 min");
             return;
         }
 

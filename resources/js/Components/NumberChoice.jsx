@@ -2,19 +2,21 @@ import { useEffect, useState } from "react";
 
 export default function NumberChoice({defaultValue, id, maxValue=10, onChange=null}){
 
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(defaultValue ?? "");
+
+    const delta = 0.5;
 
     useEffect(()=>{
         if(onChange != null) onChange();
     }, [value]);
 
     function addToValue(){
-        var newVal = Math.min(value + 1, maxValue);
+        var newVal = Math.min(value + delta, maxValue);
         setValue(newVal);
     }
 
     function subtractFromValue(){
-        var newVal = Math.max(0, value - 1);
+        var newVal = Math.max(0, value - delta);
         setValue(newVal);
     }
 
@@ -25,7 +27,7 @@ export default function NumberChoice({defaultValue, id, maxValue=10, onChange=nu
             <div translate="no" onClick={subtractFromValue} style={{transition:"background-color 100ms, color 100ms", backgroundColor: "rgb(var(--primary-color))", display:"flex", alignItems:"center", padding:"8px 16px"}}>
                 <span style={{color: "white", userSelect:"none"}} className="material-icons">remove</span>
             </div>
-            <p translate="no" style={{padding:"4px 16px", userSelect:"none"}}>{value == 0 ? "-" : value ?? "-"} {value == 0 || value == null ? "" : "min"}</p>
+            <p translate="no" style={{padding:"4px 16px", userSelect:"none"}}>{value == 0 ? "-" : value.toString().replace(".", ",") ?? "-"} {value == 0 || value == null ? "" : "min"}</p>
             <div translate="no" onClick={addToValue} style={{transition:"background-color 100ms, color 100ms", backgroundColor:"rgb(var(--primary-color))", display:"flex", alignItems:"center", padding:"8px 16px"}}>
                 <span style={{color: "white", userSelect:"none"}} className="material-icons">add</span>
             </div>

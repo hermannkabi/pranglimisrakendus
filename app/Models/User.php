@@ -29,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'klass',
         'google_id',
+        'settings',
 
         //Class information
         'joined_klass',

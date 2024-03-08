@@ -207,7 +207,7 @@ export default function ProfilePage({auth}){
                             <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"255, 164, 71"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
-                            <ColorPicker color={"181, 192, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"208, 72, 72"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"173, 139, 115"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"48, 227, 202"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
@@ -243,14 +243,14 @@ export default function ProfilePage({auth}){
 
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Vaikimisi aeg</p>
-                        <NumberChoice onChange={saveSettings} id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseInt(window.localStorage.getItem("default-time"))} />
+                        <NumberChoice onChange={saveSettings} id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseFloat(window.localStorage.getItem("default-time"))} />
                     </div>
                     
                     {/* <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button> */}
                 </div>
             </section>
             <SizedBox height={48} />
-            <a alone="" href={route("changelog")}><i className="material-icons">update</i>&nbsp; Uuenduste ajalugu</a>
+            <a alone="" href={route("changelog")}><i className="material-icons no-anim">update</i>&nbsp; Uuenduste ajalugu</a>
             <SizedBox height={32} />
 
         </>

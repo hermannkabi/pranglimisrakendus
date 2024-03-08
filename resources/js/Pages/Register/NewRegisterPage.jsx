@@ -190,7 +190,7 @@ export default function NewRegisterPage({message, errors}){
                                 <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0", textTransform:"capitalize"}} type="text" placeholder="Perenimi" autoCapitalize="words" required/><br />
                             </div>
                             <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
-                            {!isTeacher && <><input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Klass lennu numbriga (nt 140.a)" name="klass" type="text" placeholder="Klass (nt 140.a)" required/><br /> </>}                       
+                            {!isTeacher && <><input minLength="4" maxLength="5" pattern="\d{2,3}\.[^\d]" title="Mis lennus sa õpid? (nt 140.a)" name="klass" type="text" placeholder="Lend (nt 140.a)" required/><br /> </>}                       
                             <button type="submit" >Edasi</button>
                             <a style={{display:"block", textAlign:"left"}} alone="" onClick={()=>navigateToNext(null, true)}>Tagasi</a>
                         </form>
