@@ -7,29 +7,34 @@ function getCookieFromName(name) {
     return null;
 }
 
-var settings = JSON.parse(decodeURIComponent(getCookieFromName("settings")));
+function applySettings(){
+    var settings = JSON.parse(decodeURIComponent(getCookieFromName("settings")));
 
-console.log(settings);
+    if(settings){
+        if("theme" in settings){
+            window.localStorage.setItem("app-theme", settings.theme);
+        }
+        if("color" in settings){
+            window.localStorage.setItem("app-primary-color", settings.color);
+        }
+        if("timer-visibility" in settings){
+            window.localStorage.setItem("timer-visibility", settings["timer-visibility"]);
+        }
+        if("points-animation" in settings){
+            window.localStorage.setItem("points-animation", settings["points-animation"]);
+        }
+        if("default-time" in settings){
+            window.localStorage.setItem("default-time", settings["default-time"]);
+        }
 
-if(settings){
-    if("theme" in settings){
-        window.localStorage.setItem("app-theme", settings.theme);
     }
-    if("color" in settings){
-        window.localStorage.setItem("app-primary-color", settings.color);
-    }
-    if("timer-visibility" in settings){
-        window.localStorage.setItem("timer-visibility", settings["timer-visibility"]);
-    }
-    if("points-animation" in settings){
-        window.localStorage.setItem("points-animation", settings["points-animation"]);
-    }
-    if("default-time" in settings){
-        window.localStorage.setItem("default-time", settings["default-time"]);
-    }
-
 }
 
+applySettings();
+
+window.addEventListener('popstate', function(event) {
+    applySettings();
+}, false);
 
 if(!window.localStorage.getItem("app-theme")){
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {

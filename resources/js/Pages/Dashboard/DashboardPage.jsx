@@ -23,10 +23,12 @@ export default function Dashboard({auth, stats}) {
                 <div className='header-container'>
                     <h3 className='section-header'>Statistika</h3>
                 </div>
-                <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treening"+(totalTrainingCount == "1" ? "" : "ut")} />
-                <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
-                <StatisticsWidget stat={stats.last_active ?? window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
-                <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" />
+                <div className="stats-container">
+                    <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treeningut"} oneDesc={"Treening"} />
+                    <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
+                    <StatisticsWidget stat={stats.last_active ?? window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
+                    <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
+                </div>
             </section>}
             {auth.user.role == "guest" && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                 <div className='header-container'>
