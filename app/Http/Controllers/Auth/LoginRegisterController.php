@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -211,16 +212,14 @@ class LoginRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         if(Auth::check())
-        {
+        {        
             $stats = app("App\Http\Controllers\GameController")->getOverallStats();
-            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats]);
+            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats])->with(['theme' => 'something']);
         }
         
-
-
         return redirect()->route('login')
             ->onlyInput('email');
     } 

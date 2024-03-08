@@ -97,6 +97,14 @@ export default function ProfilePage({auth}){
 
             console.log("Saved");
             //window.location.href = route("dashboard");
+            $.post(route("settingsAdd"), {
+                "_token":window.csrfToken,
+                'settings':'{"color":"'+document.documentElement.style.getPropertyValue('--primary-color')+'", "theme":"'+document.documentElement.getAttribute("data-theme")+'", "timer-visibility":"'+(timerVisible ? "visible" : "hidden")+'", "points-animation":"'+(pointsAnimation ? "on" : "off")+'", "default-time":"'+(defaultTime.length == 0 ? "0" : defaultTime)+'"}',
+            }).done(function (data){
+                console.log("Tehtud!");
+            }).fail(function (data){
+                console.log(data);
+            });
         }
     }
 
@@ -173,7 +181,7 @@ export default function ProfilePage({auth}){
                             <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
                         </div>
                         <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
+                            <p style={{color:'gray', marginBlock: "0"}}>LEND</p>
                             <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : auth.user.klass}</h3>
                         </div>
                     </div>

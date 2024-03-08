@@ -40,6 +40,7 @@
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
         <script src="{{ URL::asset('js/mousetrap.js') }}"></script> 
         <script src="{{ URL::asset('js/jquery.js') }}"></script>
+        <script src="{{ URL::asset('js/settings.js') }}"></script> 
         <script src="{{ URL::asset('js/theme.js') }}"></script> 
     </body>
 </html>

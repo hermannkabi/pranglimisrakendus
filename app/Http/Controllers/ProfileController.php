@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Klass;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,17 +45,13 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
     //User cookies
-    public function settings($id, $darkBackround, $visibleTimer, $animations, $defaultTime, $color){
-        $user = User::find($id);
-        $user->update([
-            'dark_backround' => $darkBackround,
-            'visible_timer' => $visibleTimer,
-            'score_animations' => $animations,
-            'default_time' => $defaultTime,
-            'color' => $color,
-        ]);
+    public function settings(Request $request){
+        $user = $request->user();
+        
+        $user->settings = $request->settings;
+        $user->save();
 
-        return redirect()->route('profilePage')->with($user);
+        return;
     }
 
     /**

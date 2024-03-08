@@ -23,6 +23,16 @@ Route::get('/profile', function () {
     return Inertia::render("Profile/ProfilePage");
 })->name("profilePage")->middleware('auth');
 
+Route::controller(App\Http\Controllers\ProfileController::class)->group(function() {
+    Route::get('/profile', function () {
+        return Inertia::render("Profile/ProfilePage");
+    })->name("profilePage");
+
+    Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
+
+}) -> middleware(['throttle:6,1', 'auth']);
+
+
 //Login and registration
 Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
