@@ -4,6 +4,7 @@ function getCookieFromName(name) {
     const value = cookies;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
 }
 
 var settings = JSON.parse(decodeURIComponent(getCookieFromName("settings")));

@@ -14,7 +14,7 @@ import ColorPicker from "@/Components/ColorPicker";
 export default function ProfilePage({auth}){
 
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
-    const [primaryColor, setPrimaryColor] = useState(window.localStorage.getItem("app-primary-color") ?? "default");
+    const [primaryColor, setPrimaryColor] = useState(window.localStorage.getItem("app-primary-color") == null || window.localStorage.getItem("app-primary-color").length <= 0 ? "default" : window.localStorage.getItem("app-primary-color"));
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
