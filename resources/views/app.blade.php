@@ -6,7 +6,6 @@
         <meta http-equiv="content-language" content="et" />
         <meta name="description" content="Pranglimisrakendus on Tallinna Reaalkooli arvutusäpp"/>
 
-
         <title inertia>{{ config('app.name', 'Pranglimisrakendus') }}</title>
         <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
 
@@ -15,7 +14,6 @@
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
-
         <!-- Scripts -->
         @routes
         @viteReactRefresh
