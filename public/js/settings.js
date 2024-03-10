@@ -26,6 +26,10 @@ function applySettings(){
         if("default-time" in settings){
             window.localStorage.setItem("default-time", settings["default-time"]);
         }
+        if("flip-keyboard" in settings){
+            window.localStorage.setItem("flip-keyboard", settings["flip-keyboard"]);
+        }
+        console.log(settings);
 
     }
 }

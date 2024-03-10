@@ -24,6 +24,8 @@ export default function GamePage({data, time, auth}){
 
     const showAnimation = window.localStorage.getItem("points-animation") != "off";
 
+    const flippedKeyboard = window.localStorage.getItem("flip-keyboard") == "true";
+
 
     // STATE
 
@@ -852,6 +854,12 @@ export default function GamePage({data, time, auth}){
 
         return newOper;
     }
+
+    // Number is the lower one of the two possibilities (i.e 1 -> 1 or 7)
+    function flippedKeyboardKey(number){
+        var newNumber = flippedKeyboard ? (number > 3 ? number - 6 : number + 6) : number;
+        return <NumberButton content={newNumber.toString()} onClick={()=>handleNumberClick(newNumber)} />
+    }
     
     return !showResults ? (
         <div>
@@ -901,9 +909,9 @@ export default function GamePage({data, time, auth}){
                 
                 {/* On-screen keyboard */}
                 {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
-                    <NumberButton content="1" onClick={()=>handleNumberClick(1)} />
-                    <NumberButton content="2" onClick={()=>handleNumberClick(2)} />
-                    <NumberButton content="3" onClick={()=>handleNumberClick(3)} />
+                    {flippedKeyboardKey(1)}
+                    {flippedKeyboardKey(2)}
+                    {flippedKeyboardKey(3)}
                     <NumberButton disabled={!fractionAllowed} content={fractionState == "up" ? "arrow_downward" : fractionState == "down" ? "arrow_upward" : "½"} icon={fractionState == "up" || fractionState == "down"} onClick={()=>handleFraction()}/>
 
                     <NumberButton content="4" onClick={()=>handleNumberClick(4)} />
@@ -911,9 +919,9 @@ export default function GamePage({data, time, auth}){
                     <NumberButton content="6" onClick={()=>handleNumberClick(6)} />
                     <NumberButton disabled={!minusAllowed} content="-" onClick={handleMinusClick} />
 
-                    <NumberButton content="7" onClick={()=>handleNumberClick(7)} />
-                    <NumberButton content="8" onClick={()=>handleNumberClick(8)} />
-                    <NumberButton content="9" onClick={()=>handleNumberClick(9)} />
+                    {flippedKeyboardKey(7)}
+                    {flippedKeyboardKey(8)}
+                    {flippedKeyboardKey(9)}
                     <NumberButton disabled={!commaAllowed} content="," onClick={()=>handleNumberClick(",")} />
 
                     <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />

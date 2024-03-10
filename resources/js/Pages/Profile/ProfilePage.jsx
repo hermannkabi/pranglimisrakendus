@@ -18,11 +18,12 @@ export default function ProfilePage({auth}){
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
     const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
+    const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
 
 
     useEffect(()=>{
         saveSettings();
-    }, [primaryColor, lightTheme, timerVisible, countGameMode, pointsAnimation]);
+    }, [primaryColor, lightTheme, timerVisible, countGameMode, pointsAnimation, flipKeyboard]);
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
@@ -30,6 +31,7 @@ export default function ProfilePage({auth}){
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
         var isCountGameMode = window.localStorage.getItem("game-mode") != "speed";
         var isPointsAnimation = window.localStorage.getItem("points-animation") != "off";
+        var isFlipKeyboard = window.localStorage.getItem("flip-keyboard") == "true";
 
         var defaultTime = $("#default-time-val").val();
 
@@ -76,6 +78,12 @@ export default function ProfilePage({auth}){
             window.localStorage.setItem("game-mode", countGameMode ? "count" : "speed");
         }
 
+        // Flipped keyboard
+        if(isFlipKeyboard != flipKeyboard){
+            changedSomething = true;
+            window.localStorage.setItem("flip-keyboard", flipKeyboard ? "true" : "false");
+        }
+
 
 
         // Default time
@@ -99,7 +107,7 @@ export default function ProfilePage({auth}){
             //window.location.href = route("dashboard");
             $.post(route("settingsAdd"), {
                 "_token":window.csrfToken,
-                'settings':'{"color":"'+(primaryColor == "default" ? "default" : document.documentElement.style.getPropertyValue('--primary-color'))+'", "theme":"'+document.documentElement.getAttribute("data-theme")+'", "timer-visibility":"'+(timerVisible ? "visible" : "hidden")+'", "points-animation":"'+(pointsAnimation ? "on" : "off")+'", "default-time":"'+(defaultTime.length == 0 ? "0" : defaultTime)+'"}',
+                'settings':'{"color":"'+(primaryColor == "default" ? "default" : document.documentElement.style.getPropertyValue('--primary-color'))+'", "theme":"'+document.documentElement.getAttribute("data-theme")+'", "timer-visibility":"'+(timerVisible ? "visible" : "hidden")+'", "points-animation":"'+(pointsAnimation ? "on" : "off")+'", "default-time":"'+(defaultTime.length == 0 ? "0" : defaultTime)+'", "flip-keyboard":"'+(flipKeyboard ? "true" : "false")+'"}',
             }).done(function (data){
                 console.log("Tehtud!");
             }).fail(function (data){
@@ -238,6 +246,14 @@ export default function ProfilePage({auth}){
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
                             <RadioChoice icon="visibility" text="Näita" selected={pointsAnimation} onClick={()=>setPointsAnimation(true)} />
                             <RadioChoice icon="visibility_off" text="Peida" selected={!pointsAnimation} onClick={()=>setPointsAnimation(false)} />
+                        </div>
+                    </div>
+
+                    <div style={{width:"100%"}}>
+                        <p style={{color:"grey"}}>Klaviatuur</p>
+                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
+                            <RadioChoice icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
+                            <RadioChoice icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
                         </div>
                     </div>
 
