@@ -96,11 +96,16 @@ class GameController extends Controller
         return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud]);
     }
 
+    /**
+     * Get user information for Game History
+     */
     public function getUserExp($user_id){
         $mangud = Mang::where('user_id', $user_id)->get();
         $sumExp = 0;
+        
         foreach($mangud as $game){
             $sumExp += $game->experience;
+            
         }
         return $sumExp;
     }
