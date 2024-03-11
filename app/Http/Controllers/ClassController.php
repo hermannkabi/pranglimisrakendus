@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Klass;
 use App\Models\User;
+use App\Models\Mang;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ClassController extends Controller
 {
@@ -25,15 +28,31 @@ class ClassController extends Controller
     /**
      * Join function for connecting with a classroom.
      */
-    public function join(string $klass_name, $klass_password, $id) {
+    public function add(){
+        $teacher = DB::table('users')->where('teacher', Auth::user()->role);
+        $student = User::where('klass', $teacher->klass);
+
+        foreach($teacher as $õp){
+            $student->joined_klass = $õp->klass;
+            $student->teacher = $õp;
+            $student->save();
+        }
+        return;
+
+    }
+
+    /**
+     * Join function for connecting with a classroom.
+     */
+    public function join(string $klass_name, $klass_password) {
         $klasspwd = Klass::find($klass_name)->get('klass_password');
         if($klass_password==$klasspwd){
             $klass = Klass::find($klass_name);
-            array_push($klass -> student_list,$id ->eesnimi . ' ' . $id->perenimi);
+            array_push($klass -> student_list,Auth::user() ->eesnimi . ' ' . Auth::user()->perenimi);
             $klass->save();
-            $kasutaja = User::find($id);
+            $kasutaja = DB::table('users')->where('user_id',Auth::id());
             $kasutaja -> joined_klass = $klass_name;
-            $kasutaja -> teacher = Klass::find($klass_name) -> get('teacher');
+            $kasutaja -> teacher = DB::table('users')->where(Auth::user()->klass, DB::table('users')->where('teacher')->where('klass'));
             $kasutaja->save();
             return redirect()->route('classroom/{id}');
         }else{
@@ -56,14 +75,12 @@ class ClassController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createKlass($klass_name, $student_list, $klass_password, $teacher)
+    public function createKlass($klass_name, $klass_password)
     {
         return Klass::create([
             'klass_id' => (string)Str::uuid(),
             'klass_name' => $klass_name,
-            'student_list' => $student_list,
-            'klass_password' => $klass_password,
-            'teacher' => $teacher,
+            'klass_password' => $klass_password == null ? null : Hash::make($klass_password),
         ]);
     }
 
@@ -74,12 +91,14 @@ class ClassController extends Controller
     {
         $request->validate([
             'klass_name' => 'required|string|max:256',
-            'student_list' => 'required|string|max:1000',
             'klass_password' => 'required|string|min:8',
-            'teacher' => 'required|string|max:37',
         ]);
 
-        $this->createKlass($request->klass_name, $request->student_list, $request->klass_password, $request->teacher);
+        $this->createKlass($request->klass_name, $request->klass_password);
+        $question = $request->input('Answer', 'Jah');
+        if($question){
+            $this->add();
+        }
         $resources = $request->all();
         if($resources){
             return Inertia::render('ClassroomPage',$resources);
@@ -113,6 +132,39 @@ class ClassController extends Controller
     public function update(Request $request, string $id)
     {
        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function ClassStats($klass, $õpilane /** Õpilase id */, $game, $game_type){
+        if($õpilane!=null){
+            
+            
+            //Overall stats of a student
+            $stats = app('App\Http\Controllers\GameController')->getOverallStats($õpilane);
+
+            //Speficied stats - gameMode
+
+
+            
+        }
+            
+            $students = User::where('klass', $klass)->where('role', 'student')->get();
+            $mangud = DB::table('mangs')->where('user_id',$students->id)->orderBy("dt", "desc")->get();
+
+            $accuracy_sum = 0;
+            $experience = 0;
+
+            $count = sizeof($mangud);
+            foreach($mangud as $games){
+                $accuracy_sum += $games->accuracy_sum;
+                $experience += $games->experience;
+            }
+            $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
+            return [];
+        
+
     }
 
     /**

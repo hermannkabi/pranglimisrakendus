@@ -12,6 +12,8 @@ class Mang extends Model
     public $timestamps = false;
     protected $fillable = [
         'game_id',
+        'game', //korrutamine, liitmine
+        'game_type', //täisarvud, naturaalarvud
         'user_id',
         'score_sum',
         'experience',
