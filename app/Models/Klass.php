@@ -9,9 +9,10 @@ class Klass extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'klass_id';
     protected $fillable = [
-        'klass_id',
-        'klass_name',
+        'klass_id', // Primary key
+        'klass_name', // 140.a // 140.a mata
         'klass_password',
         'student_list', //TODO: Tee ainult queridega.
         'teacher', //TODO: Tee ainult queridega. Ühenda User modeliga.

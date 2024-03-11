@@ -118,6 +118,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 'last_equation':"0",
                 'time':time,
                 'log':JSON.stringify(log),
+                'game':"astendamine",
+                'game_type': "murdarvud",
             }).done(function (data){
                 console.log("Tehtud!");
                 setGameSaved(true);

@@ -32,8 +32,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'settings',
 
         //Class information
-        'joined_klass',
-        'teacher',
         //'invited_to_klass',
 
         // //User settings

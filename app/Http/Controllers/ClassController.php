@@ -29,11 +29,14 @@ class ClassController extends Controller
      * Join function for connecting with a classroom.
      */
     public function add(){
-        $teacher = DB::table('users')->where('teacher', Auth::user()->role);
-        $student = User::where('klass', $teacher->klass);
-
+        $teacher = Auth::user()->role == 'teacher';
+        if($teacher){
+            $student = User::where('klass', Auth::user()->klass);
+        }
+        
+        
         foreach($teacher as $õp){
-            $student->joined_klass = $õp->klass;
+            $student->joined_klass = Auth::user()->klass;
             $student->teacher = $õp;
             $student->save();
         }
@@ -137,7 +140,7 @@ class ClassController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function ClassStats($klass, $õpilane /** Õpilase id */, $game, $game_type){
+    public function classStats($klass, $õpilane /** Õpilase id */, $game, $game_type){
         if($õpilane!=null){
             
             

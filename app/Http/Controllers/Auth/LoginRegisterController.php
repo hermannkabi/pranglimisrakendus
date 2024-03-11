@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Klass;
+
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -194,8 +196,24 @@ class LoginRegisterController extends Controller
     {
         if(Auth::check())
         {        
-            $stats = app("App\Http\Controllers\GameController")->getOverallStats();
-            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats])->with(['theme' => 'something']);
+            $stats = app("App\Http\Controllers\GameController")->getOverallStats(Auth::id());
+            $klass = Auth::user()->klass != null;
+            $classData = false;
+            if($klass){
+                $class = Klass::where("klass_id", Auth::user()->klass)->first();
+                $teacher = User::select(["eesnimi", "perenimi"])->where("role", "teacher")->where("klass", Auth::user()->klass)->get();
+                $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
+
+                $leaderboardData = [];
+                foreach($students as $õp){
+                    array_push($leaderboardData, ["user"=>$õp->id, "score"=>app('App\Http\Controllers\GameController')->getUserExp($õp->id)]);
+                }
+
+                usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
+
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "leaderboard"=>$leaderboardData];
+            }
+            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, 'classData'=>$classData])->with(['theme' => 'something']);
         }
         
         return redirect()->route('login')

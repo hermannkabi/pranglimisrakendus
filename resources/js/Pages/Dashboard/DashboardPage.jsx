@@ -6,9 +6,12 @@ import { Head } from "@inertiajs/react";
 import "/public/css/dashboard.css";
 import InfoBanner from "@/Components/InfoBanner";
 
-export default function Dashboard({auth, stats}) {
+export default function Dashboard({auth, stats, classData}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
+
+    console.log(classData);
+
 
     return (
         <>

@@ -91,11 +91,18 @@ class GameController extends Controller
     public function show()
     {
         //Game history
-        $mangud = DB::table('mangs')->where('user_id',Auth::id())->take(10)->get();
-        //Option 1
-        return redirect()->route("game_history")->with($mangud);
-        //Option 2
-        return Inertia::render('GameHistory', $mangud);
+        $mangud = DB::table('mangs')->where('user_id',Auth::id())->paginate(10);
+
+        return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud]);
+    }
+
+    public function getUserExp($user_id){
+        $mangud = Mang::where('user_id', $user_id)->get();
+        $sumExp = 0;
+        foreach($mangud as $game){
+            $sumExp += $game->experience;
+        }
+        return $sumExp;
     }
 
     //Dashboard stats
@@ -120,23 +127,34 @@ class GameController extends Controller
     }
 
     //Extra stats (total play time etc)
-    public function getOverallSpecificStats(Request $request){
-        $mangud = DB::table('mangs')->where('user_id',Auth::id())->orderBy("dt", "desc")->get();
+    // public function getOverallSpecificStats(Request $request){
+    //     $mangud = DB::table('mangs')->where('user_id',Auth::id())->orderBy("dt", "desc")->get();
 
-        $totalTime = 0;
-        $mostActiveDay =''; //TODO:
-        $expTotal = 0;
-        $mostPlayedGame = '';
-        $mostPlayedGameType = '';
+    //     $totalTime = 0;
+    //     $mostActiveDay =''; //TODO:
+    //     $expTotal = 0;
+    //     $mostPlayedGame = '';
+    //     $mostPlayedGameType = '';
 
-        foreach($mangud as $mang){
-            //$mainMistake += $mang->;
-            $totalTime += $mang->time;
-            $expTotal += $mang->experience;
+    //     foreach($mangud as $mang){
+    //         //$mainMistake += $mang->;
+    //         $totalTime += $mang->time;
+    //         $expTotal += $mang->experience;
 
 
-        }
+    //     }
         
+    // }
+    public function getOverallSpecificStats(Request $request, $mangud){
+        // arvuta listi $mangud statistika
+        
+        foreach($mangud as $game){
+            $Mang = Mang::where('game_id', $game)->first()->get();
+
+            //Game statistics
+        }
+
+        return Inertia::render('', ['data'=> '',]);
     }
     //Data for gamemode or gametype 
     public function getSpecificStats($õpilane, $gameMode, $gameType){

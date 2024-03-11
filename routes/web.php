@@ -103,7 +103,7 @@ Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $
 Route::controller(App\Http\Controllers\GameController::class)->group(function() {
     Route::post('/game/store', 'store')->name('gameStore');
     Route::post('/game/update', 'update')->name('gameUpdate');
-    Route::post('/game/history', 'show')->name('gameHistory');
+    Route::get('/game/history', 'show')->name('gameHistory');
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
 })->middleware('auth');
 
