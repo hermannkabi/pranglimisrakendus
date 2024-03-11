@@ -34,6 +34,7 @@ export default function Dashboard({auth, stats}) {
                 <div className='header-container'>
                     <h3 className='section-header'>Statistika</h3>
                 </div>
+                <i class="fa-solid fa-calculator"></i>
                 <p style={{color:"rgb(var(--primary-color))", marginInline:"16px"}}><span translate="no">ⓘ</span> Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto</p>
             </section>}
 
@@ -43,6 +44,7 @@ export default function Dashboard({auth, stats}) {
                 </div>
 
                 <div className="big-btns">
+                    {/* Ma hullult vihkan kuidas need nupud välja näevad */}
                     <BigGameButton symbol="+" text="Liitmine" value={"liitmine"}/>
                     <BigGameButton symbol="-" text="Lahutamine" value={"lahutamine"}/>
                     <BigGameButton symbol="×" text="Korrutamine" value={"korrutamine"}/>

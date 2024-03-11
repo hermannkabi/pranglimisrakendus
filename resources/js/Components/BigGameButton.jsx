@@ -15,5 +15,6 @@ export default function BigGameButton({symbol, text, value}){
                 <span className="symbol" style={{fontWeight:"normal", fontSize:"6rem", color:"#ffffff77"}}>{symbol}</span>
                 <span style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
             </div>
+
     );
 }

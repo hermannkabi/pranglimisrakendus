@@ -59,6 +59,8 @@ export default function UpdateHistoryPage({auth}){
         "29.02.2024-05.03.2024":["Uuendused back-endis, keskenduvad põhiliselt kontole", "Lihtsad parandused ja uuendused", "Automaatselt salvestuvad seaded (varem oli selleks nupp)"],
         "07.03.2024":["boldKonto saab viimaks olulisuse - statistika salvestatakse nüüd kontopõhiselt", "See on väga pikalt töös olnud uuendus", "Õpetajakonto korral näeb ta profiilil vastavat märget"],
         "08.03.2024":["boldPärast pikka päeva koolis valmib ka seadete salvestamine kontole", "Nagu öeldud, oli see varasemalt seadmepõhine", "Samuti uuendatakse natuke töölaual oleva statistika kuvamist"],
+        "09.03.2024":["Uuendatud suurte pranglimisnuppude välimus"],
+        "10.03.2024":[""]
     };
 
     return <>
