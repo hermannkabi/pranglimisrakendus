@@ -29,7 +29,7 @@ class ClassController extends Controller
      * Join function for connecting with a classroom.
      */
     public function add(){
-        $teacher = Auth::user()->role == 'teacher';
+        $teacher = User::wehre('teacher',Auth::user()->role);
         if($teacher){
             $student = User::where('klass', Auth::user()->klass);
         }
