@@ -48,32 +48,22 @@ class ClassController extends Controller
      * Join function for connecting with a classroom.
      */
     public function join(string $klass_name, $klass_password) {
-        $klasspwd = Klass::find($klass_name)->get('klass_password');
-        if($klass_password==$klasspwd){
-            $klass = Klass::find($klass_name);
-            array_push($klass -> student_list,Auth::user() ->eesnimi . ' ' . Auth::user()->perenimi);
-            $klass->save();
-            $kasutaja = DB::table('users')->where('user_id',Auth::id());
-            $kasutaja -> joined_klass = $klass_name;
-            $kasutaja -> teacher = DB::table('users')->where(Auth::user()->klass, DB::table('users')->where('teacher')->where('klass'));
-            $kasutaja->save();
-            return redirect()->route('classroom/{id}');
-        }else{
-            return Inertia::render('ClassroomSearch', 'Vale parool.');
-        }
-        
+        //For later, when working with multiple schools
     }
 
-    public function remove($id, $class) {
-        $klass = Klass::find($class);
-        $user = User::find($id);
-        $klass -> array_pop($klass->student_list, $user->eesnimi . ' ' . $user->perenimi);//võimalik veakoht
-        $klass -> save();
-        $user -> joined_klass = 'None';
-        $user -> teacher = 'None';
-        $user -> save();
-        return Inertia::render('ClassroomPage', 'Õpilane ' .  $user->eesnimi . ' ' . $user->perenimi . ' ' . 'on edukalt eemaldatud teie klassist.');
-        //Viimane rida ülearune - sama funktsiooni saaks kasutada kasutaja eemaldamiseks klassist, kui konto kustub
+    public function remove(Request $request, $user) {
+        if(!$user){
+            $user = User::where('id',$request->input('Student', 'id'));
+            $user -> klass = null;
+            $user -> save();
+            return [$user->eesnimi, $user->perenimi]; //For displaying which studend got removed
+        } else {
+            $mina = User::where('id', Auth::id());
+            $mina ->klass = null;
+            $mina->save();
+        }
+
+       
     }
     /**
      * Show the form for creating a new resource.

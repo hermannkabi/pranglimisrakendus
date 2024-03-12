@@ -202,13 +202,8 @@ class GameController extends Controller
      */
     public function destroy(string $user_id)
     {
-        $mang = DB::table("Mang")->where('user_id', $user_id)->get();
+        $mang = Mang::where('user_id', $user_id);
         $mang -> delete();
 
-        // $range = Mang::where($user_id)->count();
-        // for($count = 0; $count<$range;$count++){
-        //     $Mang = Mang::findOrFail($user_id);
-        //     $Mang->delete();
-        // }
     }
 }

@@ -39,7 +39,7 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
-    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId, $settings){
+    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId, $settings, $remember){
         $teachers = array(
         'andres.talts@real.edu.ee',
         'helen.kaasik@real.edu.ee',
@@ -69,6 +69,7 @@ class LoginRegisterController extends Controller
             'klass' => $klass,
             'google_id'=> $googleId,
             'settings' => $settings,
+            'remember_token' => $remember,
         ]);
     }
 
@@ -87,7 +88,7 @@ class LoginRegisterController extends Controller
         }
 
         $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, 
-        $request->klass, $request->googleid, $request->settings);
+    $request->klass, $request->googleid, $request->settings, $request->remember_token);
 
         Auth::login($user);
 
@@ -133,7 +134,7 @@ class LoginRegisterController extends Controller
         );
 
         $this->createUser($request->email, $request->eesnimi, $request->perenimi, 
-        $request->password, $request->klass, null, $request->settings);
+        $request->password, $request->klass, null, $request->settings, $request->remember_token);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
@@ -180,7 +181,7 @@ class LoginRegisterController extends Controller
 
     } 
 
-
+    //TODO: Needs to be reworked
     public function authenticateGuest(Request $request){
         Auth::login(User::where("id", "999999")->first());
 

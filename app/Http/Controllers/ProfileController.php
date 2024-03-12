@@ -66,8 +66,8 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-        app('App/Http/Controllers/ClassController')->remove(Auth::id(), Klass::find(Auth::id())->get('klass_id'));
-        app('App/Http/Controllers/GameController')->destroy();
+        app('App/Http/Controllers/ClassController')->remove(Auth::id(), true);
+        app('App/Http/Controllers/GameController')->destroy(Auth::id());
         $user->delete();
         
         $request->session()->invalidate();
