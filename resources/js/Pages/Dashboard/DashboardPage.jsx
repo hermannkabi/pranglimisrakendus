@@ -32,6 +32,9 @@ export default function Dashboard({auth, stats, classData}) {
                     <StatisticsWidget stat={stats.last_active ?? window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
+                {stats.total_training_count > 0 && <><SizedBox height={24}/>
+                <a alone='true' href={route("gameHistory")}>Vaata täpsemalt <span translate="no" className="material-icons">navigate_next</span></a>
+                <SizedBox height={8}/></>}
             </section>}
             {auth.user.role == "guest" && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                 <div className='header-container'>

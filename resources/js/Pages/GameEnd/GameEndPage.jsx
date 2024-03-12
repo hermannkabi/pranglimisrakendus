@@ -118,8 +118,9 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 'last_equation':"0",
                 'time':time,
                 'log':JSON.stringify(log),
-                'game':"astendamine",
-                'game_type': "murdarvud",
+                // Siia oleks tulevikus vaja paremat lahendust
+                'game':window.location.href.split("/")[5],
+                'game_type': window.location.href.split("/")[7],
             }).done(function (data){
                 console.log("Tehtud!");
                 setGameSaved(true);
