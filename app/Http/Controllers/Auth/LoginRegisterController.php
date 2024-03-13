@@ -39,7 +39,8 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
-    public function createUser($email, $eesnimi, $perenimi, $password, $klass, $googleId, $settings, $remember, $profile_pic){
+    public function createUser($email, $eesnimi, $perenimi, $password, $klass, 
+    $googleId, $settings, $remember, $profile_pic, $streak){
         $teachers = array(
         'andres.talts@real.edu.ee',
         'helen.kaasik@real.edu.ee',
@@ -71,6 +72,7 @@ class LoginRegisterController extends Controller
             'settings' => $settings,
             'remember_token' => $remember,
             'profile_pic' => $profile_pic,
+            'streak' => $streak,
         ]);
     }
 
@@ -91,7 +93,7 @@ class LoginRegisterController extends Controller
         }
 
         $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, 
-    $request->klass, $request->googleid, $request->settings, $request->remember_token, $request->profile_pic);
+    $request->klass, $request->googleid, $request->settings, $request->remember_token, $request->profile_pic, 0);
 
         Auth::login($user);
 
@@ -137,7 +139,7 @@ class LoginRegisterController extends Controller
         );
 
         $this->createUser($request->email, $request->eesnimi, $request->perenimi, 
-        $request->password, $request->klass, null, $request->settings, $request->remember_token, null);
+        $request->password, $request->klass, null, $request->settings, $request->remember_token, $request->profile_pic, 0);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
