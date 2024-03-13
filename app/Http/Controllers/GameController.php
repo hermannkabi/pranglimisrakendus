@@ -127,7 +127,10 @@ class GameController extends Controller
 
         $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
 
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
+        $streak = $user_id == null ? User::where('id', Auth::id()) : 0;
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 
+        "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y"), 
+        'streak'=>$streak];
 
     }
 

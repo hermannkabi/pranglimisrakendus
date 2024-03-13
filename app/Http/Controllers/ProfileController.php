@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Klass;
+use App\Models\Mang;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -53,7 +52,9 @@ class ProfileController extends Controller
 
         return;
     }
-
+    /**
+     * Changes avatar to the one suggested by the user.
+     */
     public function changeProfilePicture($image){
         $user = User::where('id',Auth::id());
         $user->profile_pic = $image;
@@ -61,6 +62,18 @@ class ProfileController extends Controller
         return;
     }
 
+    public function checkStreak(){
+        $user = Mang::select('user_id');
+
+        foreach($user as $j){
+            if(strtotime($j->get('dt'))<(strtotime('now')-86400)){
+                $j->streak = 0;
+            }else{
+                $j->streak += 1;
+            }
+            $j->save();
+        }
+    }
     /**
      * Delete the user's account.
      */
