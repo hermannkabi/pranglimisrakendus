@@ -12,6 +12,14 @@ export default function Dashboard({auth, stats, classData}) {
 
     console.log(classData);
 
+    Mousetrap.bind("c h r i s e t t e", function (){
+        $(".easteregg1").fadeIn(50, function (){
+            setTimeout(() => {
+                $(".easteregg1").fadeOut(50);
+            }, 500);
+        });
+    });
+
 
     return (
         <>
@@ -19,6 +27,7 @@ export default function Dashboard({auth, stats, classData}) {
             <Navbar user={auth.user} />
             <SizedBox height={36} />
 
+            <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
         
             <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default", textTransform:"capitalize"}}>{auth.user == null ? (window.localStorage.getItem("first-name") ?? "Mari") : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
 

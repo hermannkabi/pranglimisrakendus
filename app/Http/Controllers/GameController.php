@@ -76,7 +76,7 @@ class GameController extends Controller
             'last_level'=> 'required|string|max:37',
             'last_equation'=>'required|string|max:37',
             'time' => 'required',
-            'log' => 'required|string|max:4444',
+            'log' => 'required|string',
         ]);
         $this->createMang($request->game, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);

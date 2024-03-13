@@ -702,6 +702,8 @@ export default function GamePage({data, time, auth}){
     // This function does NOT deal with checking the answer, simply assigning points and so on
     function onAnswer(isCorrect, data){
 
+        if(Date.now() - dtStartedLast <= 500) return;
+
         // Total answer count is increased
         setTotalAnsCount(totalAnsCount + 1);
 
