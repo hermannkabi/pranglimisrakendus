@@ -29,6 +29,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->group(function
     })->name("profilePage");
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
+    Route::post('/profile/avatar', 'changeProfilePicture')->name('changeProfilePicture');
 
 }) -> middleware(['throttle:6,1', 'auth']);
 

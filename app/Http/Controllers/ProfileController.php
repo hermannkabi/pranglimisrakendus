@@ -54,6 +54,13 @@ class ProfileController extends Controller
         return;
     }
 
+    public function changeProfilePicture($image){
+        $user = User::where('id',Auth::id());
+        $user->profile_pic = $image;
+        $user->save();
+        return;
+    }
+
     /**
      * Delete the user's account.
      */
