@@ -4,7 +4,7 @@ import "/public/css/auth_layout.css";
 
 
 
-export default function LoginHeader({pageName, description="PRANGLIMISRAKENDUS", topMargin="100px", googleLogo=false, forceCenter=false}){
+export default function LoginHeader({pageName, description="REAALER", topMargin="100px", googleLogo=false, forceCenter=false}){
 
     const google = "/assets/google_logo.png";
 
