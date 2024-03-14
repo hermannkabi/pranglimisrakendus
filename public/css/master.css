@@ -388,6 +388,11 @@ select:after{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 4px;
+    overflow-x: scroll;
+}
+
+.stats-container::-webkit-scrollbar{
+    display: none;
 }
 
 .stat-widget{
@@ -402,7 +407,11 @@ select:after{
 .history-statistics{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    overflow: scroll;
+    overflow-x: scroll;
+}
+
+.history-statistics::-webkit-scrollbar{
+    display: none;
 }
 
 /* GAME STUFF STARTS HERE */

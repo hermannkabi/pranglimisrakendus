@@ -39,12 +39,14 @@ export default function GameHistoryPage({auth, games, stats}){
                 {games.data.length <= 0 && <p>Tingimustele vastavaid tulemusi ei leitud</p>}
             </section>
 
-            <section>
+            {/* You may ask - why 3? */}
+            {/* Because Laravel gives the previous and next page links as well as the page 1 link (so 3 in total) */}
+            {games.links.length > 3 && <section>
                 <p style={{color:"grey"}}>Navigeeri lehel</p>
                 {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <NavigatePagesButton data={e} key={e.label} />)}
 
                 {/* {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <a style={{border: e.active ? "2px solid rgb(var(--primary-color))" : "", borderRadius:"4px", marginInline:"4px"}} href={e.url} alone="" className="no-anim" key={e.label}>{e.label.replace("&laquo; Previous", "Eelmine").replace("Next &raquo;", "Järgmine")}</a>)} */}
-            </section>
+            </section>}
 
     </>;
 }

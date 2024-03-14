@@ -14,7 +14,7 @@ export default function WelcomePage({name, message}){
                     <a href="/dashboard">Alusta</a>
                 </div>
                 <br /><br />
-                <p style={{fontSize:"0.75rem"}}>Versioon v3.26022024</p>
+                <p style={{fontSize:"0.75rem"}}>Versioon v11.14032024</p>
             </div>
         </div>
     )

@@ -61,6 +61,8 @@ export default function UpdateHistoryPage({auth}){
         "08.03.2024":["boldPärast pikka päeva koolis valmib ka seadete salvestamine kontole", "Nagu öeldud, oli see varasemalt seadmepõhine", "Samuti uuendatakse natuke töölaual oleva statistika kuvamist"],
         "09.03.2024":["Uuendatud suurte pranglimisnuppude välimus"],
         "10.03.2024":["Uus seade klaviatuuri ümberpööramiseks (nii, nagu on kalkulaatoritel)"],
+        "13.03.2024":["boldMängude ajalugu võimaldab näha kõiki varasemalt mängitud kordi", "Lisaks saab oma paremate mängude linke teistele vaatamiseks jagada"],
+        "14.03.2024":["boldPranglimisrakendus saab nime - Reaaler", "Nime ja logo konkursi tulemused on avalikustatud", "Kuna logo vajab digitaliseerimist, ei ole need veel lehele üles pandud - seda teeme lähiajal", "Plaanime lisaks nime ja logo uuendamisele siis ka mõne teise suurema muudatuse teha"],
     };
 
     return <>

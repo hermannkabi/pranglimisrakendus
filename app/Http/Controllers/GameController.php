@@ -133,7 +133,7 @@ class GameController extends Controller
 
 
         $streak = User::select("streak")->where('id', $user_id == null ? Auth::id() : $user_id)->first()["streak"];
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "average_time"=>$avg_time];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
 
     }
 

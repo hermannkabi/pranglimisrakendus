@@ -38,7 +38,7 @@ export default function Dashboard({auth, stats, classData}) {
                 <div className="stats-container">
                     <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treeningut"} oneDesc={"Treening"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
-                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Streak" />
+                    <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>

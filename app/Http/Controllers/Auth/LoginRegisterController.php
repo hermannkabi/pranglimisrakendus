@@ -116,7 +116,7 @@ class LoginRegisterController extends Controller
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required|min:8',
-            'klass' => 'required|string',],
+            ],
             [
                 'eesnimi.required' => 'Palun sisesta enda eesnimi',
                 'perenimi.required' => 'Palun sisesta enda perenimi',
@@ -134,7 +134,6 @@ class LoginRegisterController extends Controller
 
                 'password.min' => 'Parool peab olema vähemalt 8 tähemärki pikk',
 
-                'klass.required' => 'Palun sisesta klass, kus õpid' 
             ]
         );
 

@@ -86,7 +86,7 @@ export default function NewRegisterPage({message, errors}){
             "eesnimi":$("input[name='eesnimi']").val(),
             "perenimi":$("input[name='perenimi']").val(),
             "email":email,
-            "klass": isTeacher ? "õpetaja" : $("input[name='klass']").val(),
+            // "klass": isTeacher ? "õpetaja" : $("input[name='klass']").val(),
             "password":pwd,
             "password_confirmation":pwd2,
         }).done(function (data){

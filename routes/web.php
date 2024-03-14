@@ -21,7 +21,7 @@ Route::get('/profile', function () {
     return Inertia::render("Profile/ProfilePage");
 })->name("profilePage")->middleware('auth');
 
-Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['throttle:6,1', 'auth'])->group(function() {
+Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['auth'])->group(function() {
     Route::get('/profile', "show")->name("profilePage");
 
     //Route::get('/checkstreak', "checkStreak")->name("checkstreak");
@@ -33,7 +33,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['t
 
 
 //Login and registration
-Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->middleware('throttle:6,1')->group(function() {
+Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
     Route::get('/register/google', 'registerGoogle')->name('registerGoogle');
 
@@ -49,26 +49,26 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->mid
 });
 
 //Google login
-Route::controller(App\Http\Controllers\GoogleLoginController::class)->middleware('throttle:6,1')->group(function() {
+Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(function() {
     Route::get('/google/redirect', 'redirectToGoogle')->name('google.redirect');
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
 });
 
 //Email verification
-Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth','throttle:6,1'])->group(function() {
+Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
     Route::get('/email/verify', 'notice')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
     Route::post('/email/resend', 'resend')->name('verification.resend');
 });
 
 //Password reset
-Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest', 'throttle:4,1'])->group(function() {
+Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
     Route::get('/forgot-password', 'create')->name('password.request');
     Route::get('/forgot-password', 'store')->name('password.email');
 });
 
 //Password reset form
-Route::controller(App\Http\Controllers\Auth\NewPasswordController::class)->middleware(['guest', 'throttle:4,1'])->group(function() {
+Route::controller(App\Http\Controllers\Auth\NewPasswordController::class)->middleware(['guest'])->group(function() {
     Route::get('/reset-password/{token}', 'create')->name('password.reset');
     Route::get('/reset-password', 'store')->name('password.update');
 });
@@ -96,7 +96,7 @@ Route::get("/preview", function (){
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\MathController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
-})->name("gameNew")->middleware(['auth', 'throttle: 6,1']);
+})->name("gameNew")->middleware(['auth']);
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth"])->group(function() {
@@ -113,7 +113,7 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/search', 'index')->name('classSearch');
     Route::get('/classroom/view/{id}', 'show')->name('classShow');
     Route::post('/classroom/join', 'join')->name('classJoin');
-    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher', 'throttle: 4,1']);
+    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher']);
     Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
     Route::post('/classroom/remove}', 'destroy')->name('classRemove')->middleware('role:teacher');
 });
