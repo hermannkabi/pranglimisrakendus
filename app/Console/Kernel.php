@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
+        // See tuleks ümber teha
+        // Streak peaks ju uuenema kohe, kui kasutaja mängib, mitte ainult keskööl
+        // Streak tuleks aga kesköösel lõpetada küll
         $schedule->call(function () {
             app('App\Http\Controllers\ProfileController')->checkStreak();
         })->daily();

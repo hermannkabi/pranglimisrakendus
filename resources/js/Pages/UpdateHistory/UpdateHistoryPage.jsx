@@ -60,7 +60,7 @@ export default function UpdateHistoryPage({auth}){
         "07.03.2024":["boldKonto saab viimaks olulisuse - statistika salvestatakse nüüd kontopõhiselt", "See on väga pikalt töös olnud uuendus", "Õpetajakonto korral näeb ta profiilil vastavat märget"],
         "08.03.2024":["boldPärast pikka päeva koolis valmib ka seadete salvestamine kontole", "Nagu öeldud, oli see varasemalt seadmepõhine", "Samuti uuendatakse natuke töölaual oleva statistika kuvamist"],
         "09.03.2024":["Uuendatud suurte pranglimisnuppude välimus"],
-        "10.03.2024":[""]
+        "10.03.2024":["Uus seade klaviatuuri ümberpööramiseks (nii, nagu on kalkulaatoritel)"],
     };
 
     return <>

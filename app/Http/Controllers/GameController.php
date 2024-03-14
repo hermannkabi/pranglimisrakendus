@@ -140,10 +140,10 @@ class GameController extends Controller
 
     public function gameDetails($id){
         $mang = Mang::where("game_id", $id)->first();
+        $manguAutor = User::where("id", $mang->user_id)->first();
 
         if($mang){
-
-            return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang]);
+            return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang, "playedBy"=>$manguAutor]);
         }
 
         return redirect()->route("dashboard");

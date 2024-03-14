@@ -162,7 +162,7 @@ export default function ProfilePage({auth, className}){
             </section> */}
             {/* A new design for the profile page */}
             
-            {<section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+            {false && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                 <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
             </section>}
 
@@ -172,7 +172,7 @@ export default function ProfilePage({auth, className}){
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
 
-                        <img style={{height:"64px", userSelect:"none"}} src="assets/logo.png" alt="Tallinna Reaalkool" />
+                        <img style={{height:"64px", userSelect:"none"}} src={auth.user.profile_pic} alt="Tallinna Reaalkool" />
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
@@ -191,7 +191,7 @@ export default function ProfilePage({auth, className}){
                         
                         <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>LEND</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className}</h3>
+                            <h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3>
                         </div>
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>

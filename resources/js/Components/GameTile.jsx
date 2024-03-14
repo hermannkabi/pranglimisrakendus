@@ -18,7 +18,7 @@ return <>
                     {/* <p style={{marginBlock:"4px", color:"grey"}}>{data.game_count} tehe{data.game_count == 1 ? "" : "t"} {isTypeShown && <span>·</span>} <span style={{textTransform:"capitalize"}}>{isTypeShown ? typeToReadable[data.game_type] : ""}</span></p> */}
                 </div>
                 <div style={{display:"inline-flex", alignItems:"center"}}>
-                    <p style={{color:"grey"}}>{(new Date(data.dt)).toLocaleString("et-EE").split(",")[0]}</p>
+                    <p style={{color:"grey"}}>{(new Date(data.dt)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>
                     <span style={{color:"grey"}} translate="no" className="material-icons">navigate_next</span>
                 </div>
             </div>

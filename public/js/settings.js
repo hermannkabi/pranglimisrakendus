@@ -29,7 +29,7 @@ function applySettings(){
         if("flip-keyboard" in settings){
             window.localStorage.setItem("flip-keyboard", settings["flip-keyboard"]);
         }
-        console.log(settings);
+        //console.log(settings);
 
     }
 }

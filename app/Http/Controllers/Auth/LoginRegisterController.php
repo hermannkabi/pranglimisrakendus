@@ -71,7 +71,7 @@ class LoginRegisterController extends Controller
             'google_id'=> $googleId,
             'settings' => $settings,
             'remember_token' => $remember,
-            'profile_pic' =>  "/public/assets/logo.png",
+            'profile_pic' =>  "/assets/logo.png",
             'streak' => $streak,
         ]);
     }

@@ -7,7 +7,15 @@ import { Head } from "@inertiajs/react";
 
 export default function GameHistoryPage({auth, games, stats}){
 
-    console.log(games);
+    function averageTime(timeInSeconds){
+        var minutes = Math.floor(timeInSeconds / 60);
+        var seconds = timeInSeconds - 60*minutes;
+
+        minutes = minutes <= 9 ? "0"+minutes.toString() : minutes.toString();
+        seconds = seconds <= 9 ? "0"+seconds.toString() : seconds.toString();
+
+        return minutes + ":" + seconds;
+    }
 
     return <>
             <Head title="Mängude ajalugu" />
@@ -16,12 +24,11 @@ export default function GameHistoryPage({auth, games, stats}){
 
             <h2>Mängude ajalugu</h2>
 
-            {/* DEMO section NOT real*/}
             <section>
                 <div className="history-statistics">
                     <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} />
                     <StatisticsWidget stat={stats.accuracy + "%"} desc={"Keskmine täpsus"} />
-                    <StatisticsWidget stat={stats.average_time} desc={"Keskmine aeg"} />
+                    <StatisticsWidget stat={averageTime(stats.average_time)} desc={"Keskmine aeg"} />
                 </div>
             </section>
 
