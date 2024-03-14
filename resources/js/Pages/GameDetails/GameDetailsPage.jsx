@@ -20,7 +20,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
 
     const name = game.game == null ? null : game.game[0].toUpperCase() + game.game.substring(1);
 
-    const userName = playedBy.eesnimi + " " + playedBy.perenimi;
+    const userName = playedBy == null ? null : playedBy.eesnimi + " " + playedBy.perenimi;
 
     const typeToReadable = {
         "natural":"Naturaalarvud",
@@ -33,11 +33,11 @@ export default function GameDetailsPage({game, auth, playedBy}){
             <Navbar title={name ?? "Mäng"} user={auth.user} />
             <SizedBox height={36} />
 
-        <h2 style={{marginBottom:"8px"}}>{name ?? "Tundmatu"}</h2>
+        <h2 style={{marginBottom:"8px"}}>{name ?? "Detailne vaade"}</h2>
 
-        {playedBy.id != auth.user.id &&<div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"24px"}}>
-            <img style={{height:"32px"}} src={playedBy.profile_pic} alt={userName} />
-            <p style={{display:"inline", marginBlock:"0", color:"grey"}}>{userName}</p>
+        {playedBy != null && playedBy.id != auth.user.id &&<div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"24px"}}>
+            <img style={{height:"32px"}} className="profile-pic" src={playedBy.profile_pic} alt={userName} />
+            <p style={{display:"inline", marginBlock:"0", color:"grey", textTransform:"capitalize"}}>{userName}</p>
         </div>}
 
         <section>

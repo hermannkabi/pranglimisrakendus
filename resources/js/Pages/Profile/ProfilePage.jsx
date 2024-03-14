@@ -172,7 +172,7 @@ export default function ProfilePage({auth, className}){
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
 
-                        <img style={{height:"64px", userSelect:"none"}} src={auth.user.profile_pic} alt="Tallinna Reaalkool" />
+                        <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
