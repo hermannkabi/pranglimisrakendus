@@ -40,7 +40,7 @@ class LoginRegisterController extends Controller
     }
 
     public function createUser($email, $eesnimi, $perenimi, $password, $klass, 
-    $googleId, $settings, $remember, $profile_pic, $streak){
+    $googleId, $settings, $remember, $streak){
         $teachers = array(
         'andres.talts@real.edu.ee',
         'helen.kaasik@real.edu.ee',
@@ -71,7 +71,7 @@ class LoginRegisterController extends Controller
             'google_id'=> $googleId,
             'settings' => $settings,
             'remember_token' => $remember,
-            'profile_pic' => $profile_pic,
+            'profile_pic' =>  "/public/assets/logo.png",
             'streak' => $streak,
         ]);
     }
@@ -93,7 +93,7 @@ class LoginRegisterController extends Controller
         }
 
         $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, 
-    $request->klass, $request->googleid, $request->settings, $request->remember_token, $request->profile_pic, 0);
+    $request->klass, $request->googleid, $request->settings, $request->remember_token, 0);
 
         Auth::login($user);
 
@@ -139,7 +139,7 @@ class LoginRegisterController extends Controller
         );
 
         $this->createUser($request->email, $request->eesnimi, $request->perenimi, 
-        $request->password, $request->klass, null, $request->settings, $request->remember_token, $request->profile_pic, 0);
+        $request->password, $request->klass, null, $request->settings, $request->remember_token, 0);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
@@ -210,14 +210,14 @@ class LoginRegisterController extends Controller
                 $teacher = User::select(["eesnimi", "perenimi"])->where("role", "teacher")->where("klass", Auth::user()->klass)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
-                $leaderboardData = [];
-                foreach($students as $õp){
-                    array_push($leaderboardData, ["user"=>$õp->id, "score"=>app('App\Http\Controllers\GameController')->getUserExp($õp->id)]);
-                }
+                // $leaderboardData = [];
+                // foreach($students as $õp){
+                //     array_push($leaderboardData, ["user"=>$õp->id, "score"=>app('App\Http\Controllers\GameController')->getUserExp($õp->id)]);
+                // }
 
-                usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
+                // usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
 
-                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "leaderboard"=>$leaderboardData];
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students),];
             }
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, 'classData'=>$classData])->with(['theme' => 'something']);
         }

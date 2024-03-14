@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
+use App\Models\Klass;
+
 
 class ProfileController extends Controller
 {
@@ -63,15 +66,18 @@ class ProfileController extends Controller
     }
 
     public function checkStreak(){
-        $user = Mang::select('user_id');
+        $user = User::all();
 
         foreach($user as $j){
-            if(strtotime($j->get('dt'))<(strtotime('now')-86400)){
-                $j->streak = 0;
-            }else{
-                $j->streak += 1;
+            $viimaseManguDt = Mang::select("dt")->where("user_id", $j->id)->orderBy("dt", "desc")->first();
+            if($viimaseManguDt){
+                if(strtotime($viimaseManguDt["dt"])<(strtotime('now')-86400)){
+                    $j->streak = 0;
+                }else{
+                    $j->streak += 1;
+                }
+                $j->save();
             }
-            $j->save();
         }
     }
     /**
@@ -94,5 +100,17 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/login');
+    }
+
+    public function show(){
+
+        $user = Auth::user();
+        $klass = null;
+
+        if($user->klass){
+            $klass = Klass::where("klass_id", $user->klass)->first()["klass_name"];
+        }
+
+        return Inertia::render("Profile/ProfilePage", ["className"=>$klass]);
     }
 }

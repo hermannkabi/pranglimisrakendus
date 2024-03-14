@@ -5,7 +5,7 @@ import SizedBox from "@/Components/SizedBox";
 import StatisticsWidget from "@/Components/StatisticsWidget";
 import { Head } from "@inertiajs/react";
 
-export default function GameHistoryPage({auth, games}){
+export default function GameHistoryPage({auth, games, stats}){
 
     console.log(games);
 
@@ -19,9 +19,9 @@ export default function GameHistoryPage({auth, games}){
             {/* DEMO section NOT real*/}
             <section>
                 <div className="history-statistics">
-                    <StatisticsWidget stat={27} desc={"Mängu"} />
-                    <StatisticsWidget stat={"87%"} desc={"Keskmine täpsus"} />
-                    <StatisticsWidget stat={"01:30"} desc={"Keskmine aeg"} />
+                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} />
+                    <StatisticsWidget stat={stats.accuracy + "%"} desc={"Keskmine täpsus"} />
+                    <StatisticsWidget stat={stats.average_time} desc={"Keskmine aeg"} />
                 </div>
             </section>
 

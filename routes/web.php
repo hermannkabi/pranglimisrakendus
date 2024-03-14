@@ -24,9 +24,9 @@ Route::get('/profile', function () {
 })->name("profilePage")->middleware('auth');
 
 Route::controller(App\Http\Controllers\ProfileController::class)->group(function() {
-    Route::get('/profile', function () {
-        return Inertia::render("Profile/ProfilePage");
-    })->name("profilePage");
+    Route::get('/profile', "show")->name("profilePage");
+
+    //Route::get('/checkstreak', "checkStreak")->name("checkstreak");
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
     Route::post('/profile/avatar', 'changeProfilePicture')->name('changeProfilePicture');
@@ -106,6 +106,7 @@ Route::controller(App\Http\Controllers\GameController::class)->group(function() 
     Route::post('/game/update', 'update')->name('gameUpdate');
     Route::get('/game/history', 'show')->name('gameHistory');
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
+    Route::get("game/{id}/details", "gameDetails");
 })->middleware('auth');
 
 //Classroom data

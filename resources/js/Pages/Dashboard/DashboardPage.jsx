@@ -10,7 +10,7 @@ export default function Dashboard({auth, stats, classData}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
-    console.log(classData);
+    console.log(stats);
 
     Mousetrap.bind("c h r i s e t t e", function (){
         $(".easteregg1").fadeIn(50, function (){
@@ -38,7 +38,7 @@ export default function Dashboard({auth, stats, classData}) {
                 <div className="stats-container">
                     <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treeningut"} oneDesc={"Treening"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
-                    <StatisticsWidget stat={stats.last_active ?? window.localStorage.getItem("last-active") ?? "-"} desc="Viimati aktiivne" />
+                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Streak" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>

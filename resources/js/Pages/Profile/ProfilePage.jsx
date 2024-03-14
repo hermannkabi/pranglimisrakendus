@@ -11,7 +11,7 @@ import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 
 
-export default function ProfilePage({auth}){
+export default function ProfilePage({auth, className}){
 
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
     const [primaryColor, setPrimaryColor] = useState(window.localStorage.getItem("app-primary-color") == null || window.localStorage.getItem("app-primary-color").length <= 0 ? "default" : window.localStorage.getItem("app-primary-color"));
@@ -188,9 +188,10 @@ export default function ProfilePage({auth}){
                             <p style={{color:'gray', marginBlock: "0"}}>KOOL</p>
                             <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
                         </div>
+                        
                         <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>LEND</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : auth.user.klass}</h3>
+                            <h3 style={{marginBlock:0}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className}</h3>
                         </div>
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>

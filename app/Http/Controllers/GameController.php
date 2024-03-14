@@ -93,7 +93,7 @@ class GameController extends Controller
         //Game history
         $mangud = DB::table('mangs')->where('user_id',Auth::id())->orderBy("dt", "desc")->paginate(10);
 
-        return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud]);
+        return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud, "stats"=>$this->getOverallStats(null)]);
     }
 
     /**
@@ -117,21 +117,36 @@ class GameController extends Controller
         $accuracy_sum = 0;
         $points_sum = 0;
 
+        $time_sum = 0;
+
 
         $count = sizeof($mangud);
         foreach($mangud as $mang){
             $accuracy_sum += $mang->accuracy_sum;
             $points_sum += $mang->score_sum;
 
+            $time_sum += $mang->time;
         }
 
         $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
+        $avg_time = $count > 0 ? round($time_sum / $count) : 0;
 
-        $streak = $user_id == null ? User::where('id', Auth::id()) : 0;
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 
-        "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y"), 
-        'streak'=>$streak];
 
+        $streak = User::select("streak")->where('id', $user_id == null ? Auth::id() : $user_id)->first()["streak"];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "average_time"=>$avg_time];
+
+    }
+
+
+    public function gameDetails($id){
+        $mang = Mang::where("game_id", $id)->first();
+
+        if($mang){
+
+            return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang]);
+        }
+
+        return redirect()->route("dashboard");
     }
 
     //Extra stats (total play time etc)
