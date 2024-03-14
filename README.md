@@ -2,9 +2,9 @@
 
 <p align="center"><a href="https://react.dev" target="_blank"><img src="https://www.fullstackpython.com/img/logos/react.png" width="250" alt="React Logo"></a></p>
 
-# Pranglimisrakendus
+# Reaaler
 
-Tere tulemast pranglimisrakenduse repositooriumisse! Pranglimisrakendus on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja tänapäevaseid, mugavaid tehnoloogiaid. Pranglimisrakenduse back end kood on kirjutatud PHP Laraveli raamistikus ja kasutajaliides Reactis.
+Tere tulemast Reaaleri repositooriumisse! Reaaler on gümnaasiumi uurimistööks arendatav pranglimiskeskkond, mis väärtustab lihtsat ja modernset kasutajaliidest ja tänapäevaseid, mugavaid tehnoloogiaid. Reaaleri back end kood on kirjutatud PHP Laraveli raamistikus ja kasutajaliides Reactis.
 
 ## Kasutus
 

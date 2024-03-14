@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('klass');
+        Schema::table('mangs', function (Blueprint $table) {
+
+            $table->text('game')->default(NULL);
+            $table->text('game_type')->default(NULL);
+            $table->text('log');
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };
