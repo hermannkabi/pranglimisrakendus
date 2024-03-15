@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="content-language" content="et" />
         <meta name="description" content="Reaaler on Tallinna Reaalkooli arvutusäpp"/>
+        <meta name="keywords" content="pranglimine, reaaler, arvutusäpp, Tallinna Reaalkool, reaalkool">
+
 
         <title inertia>{{ config('app.name', 'Reaaler') }}</title>
         <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">

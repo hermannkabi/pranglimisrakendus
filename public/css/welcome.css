@@ -1,0 +1,165 @@
+@keyframes size-change{
+    0%{
+        scale: 0.75;
+    }
+
+    50%{
+        scale: 0.85;
+        rotate: -145deg;
+    }
+
+    100%{
+        scale: 0.70;
+    }
+}
+
+@keyframes size-change2{
+    0%{
+        scale: 0.6;
+    }
+
+    50%{
+        scale: 0.7;
+        rotate: 15deg;
+    }
+
+    100%{
+        scale: 0.6;
+    }
+}
+
+@keyframes rotate-change{
+    0%{
+        rotate: 45deg;
+    }
+
+    25%{
+        rotate: 55deg;
+    }
+
+    50%{
+        rotate: 45deg;
+    }
+
+    75%{
+        rotate: 35deg;
+    }
+
+    100%{
+        rotate: 45deg;
+    }
+}
+
+
+.home-navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-navbar > .title-div{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+}
+
+.home-navbar > a{
+    all: unset;
+    cursor: pointer;
+    font-weight: bold;
+
+}
+
+.home-navbar > a:hover{
+    all: unset;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.main-content{
+    text-align: start;
+    margin: 5%;
+}
+
+h1{
+    font-size: 50px;
+}
+
+h1 .shine{
+    background: linear-gradient(207deg, rgba(255,245,139,1) 0%, rgba(226,133,23,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.sparkle{
+    opacity: 0;
+}
+
+.sparkle:nth-of-type(1){
+    scale: 0.5;
+    position: absolute;
+    top: -8px;
+    left: -2px;
+    rotate: 45deg;
+    animation: rotate-change 2000ms infinite;
+
+}
+
+
+.sparkle:nth-of-type(2){
+    scale: 0.75;
+    position: absolute;
+    top: -8px;
+    right: 4px;
+    rotate: -135deg;
+    animation: size-change 1500ms infinite;
+}
+
+.sparkle:nth-of-type(3){
+    scale: 0.6;
+    position: absolute;
+    bottom: -12px;
+    right: 80px;
+    rotate: -0;
+    animation: size-change2 3000ms infinite;
+
+}
+.game-img{
+    position: absolute;
+    height: 450px;
+    top: 50%;
+    right: 300px;
+    transform: translate(0, -50%);
+    transition: rotate 1000ms;
+    rotate: 17deg;
+}
+
+.game-img:hover{
+    rotate: 19deg;
+}
+
+
+@media only screen and (max-width:1100px){
+
+    .onboarding-btn{
+        margin-bottom: 16px;
+    }
+
+    .game-img{
+        position: initial;
+        margin-inline: auto;
+        display: block;
+        margin-top: 100px;
+        rotate: 0deg;
+        transform: rotate(8deg);
+        height: 400px;
+    }
+
+    h1{
+        font-size: 36px;
+    }
+}
