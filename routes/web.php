@@ -79,7 +79,6 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware('au
     Route::post('/delete-user',  'destroy')->name('delete-user');
 });
 
-
 Route::get('/ui', function () {
     return Inertia::render('UI/UIPage');
 })->name("ui");
@@ -111,7 +110,7 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 Route::controller(App\Http\Controllers\ClassController::class)->middleware(["auth"])->group(function (){
     //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
     Route::post('/classroom/search', 'index')->name('classSearch');
-    Route::get('/classroom/view/{id}', 'show')->name('classShow');
+    Route::get('/classroom/view/', 'show')->name('classShow');
     Route::post('/classroom/join', 'join')->name('classJoin');
     Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher']);
     Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');

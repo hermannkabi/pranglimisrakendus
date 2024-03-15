@@ -26,18 +26,17 @@ class GameController extends Controller
                 DB::table("users")->where('id',$game->user_id);
             }
         }); */
-        $koik = DB::table('users')->where('id', Mang::get('user_id'))->orderBy($search == null ? 'score_sum' : $search)
-        ->simplePaginate(25);
-        // Option 1
-        return redirect()->route("scoreboard")->with($koik);
-        //Option 2
-        return Inertia::render('scoreboard',$koik);
+        $koik = DB::table('users')->select('id')->orderBy($search == null ? 'experience' : $search, 'desc')
+        ->simplePaginate(5);
+        $user = Auth::user()->eesnimi;
+        return Inertia::render('scoreboard',['table'=>$koik, 'user'=>$user]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function createMang($game, $game_type, $score_sum, $experience,$accuracy_sum, $game_count, $equation_count,$last_level,$last_equation,$time, $log)
+    public function createMang($game, $game_type, $score_sum, $experience,$accuracy_sum, 
+    $game_count, $equation_count,$last_level,$last_equation,$time, $log)
     { 
         return Mang::create([
             'user_id' => Auth::id(),
@@ -80,6 +79,8 @@ class GameController extends Controller
         ]);
         $this->createMang($request->game, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
+        app('App\Http\Controllers\ProfileController')->checkStreak(Auth::id());
+
         //$resources = $request->only('game_id', 'user_id', 'game', 'game_type', 'score_sum', 'experience', 'accuracy_sum', 'equation_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
 
         return;

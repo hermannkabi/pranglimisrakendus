@@ -65,16 +65,17 @@ class ProfileController extends Controller
         return;
     }
 
-    public function checkStreak(){
-        $user = User::all();
+    public function checkStreak($user_id=null){
+        $user = $user_id != null ? User::where("id", $user_id)->get() : User::all();
 
         foreach($user as $j){
             $viimaseManguDt = Mang::select("dt")->where("user_id", $j->id)->orderBy("dt", "desc")->first();
             if($viimaseManguDt){
                 if(strtotime($viimaseManguDt["dt"])<(strtotime('now')-86400)){
                     $j->streak = 0;
-                }else{
-                    $j->streak += 1;
+                }else if($j->streak_active == 0){
+                    $j->streak ++;
+                    $j->streak_active = 1;
                 }
                 $j->save();
             }

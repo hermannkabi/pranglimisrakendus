@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\User;
 
 class Kernel extends ConsoleKernel
 {
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         // Streak tuleks aga kesköösel lõpetada küll
         $schedule->call(function () {
             app('App\Http\Controllers\ProfileController')->checkStreak();
+            User::query()->update(['streak_active' => false]);
         })->daily();
     }
 

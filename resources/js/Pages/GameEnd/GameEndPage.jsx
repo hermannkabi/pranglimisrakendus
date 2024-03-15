@@ -14,7 +14,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
 
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
-    const [gameSaved, setGameSaved] = useState(auth.user.role == "guest" || false);
+    const [gameSaved, setGameSaved] = useState(auth.user.role == "guest" || total == 0 || false);
     const [showGameSavedDialog, setShowGameSavedDialog] = useState(false);
 
 

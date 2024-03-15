@@ -102,12 +102,20 @@ class ClassController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $klass_id)
+    public function show(string $klass_id=null)
     {
-        $list = Klass::where('klass_id', $klass_id)->get();
-        $users = User::where('klass', $list->klass_name)->where('role', 'student');
-        $teacher = User::where('klass', $list->klass_name)->where('role', 'teacher');   
-        return ['students'=>$users, 'teacher'=>$teacher];
+        $klass = null;
+
+        if($klass_id==null){
+            $klass = Klass::where("klass_id", Auth::user()->klass)->first();
+        }else{
+            $klass = Klass::where('klass_id', $klass_id)->first();
+        }
+
+        // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
+        $leaderboard = app('App\Http\Controllers\LeaderboardController')->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
+        $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first();   
+        return Inertia::render("Classroom/ClassroomPage", ['leaderboard'=>$leaderboard, 'teacher'=>$teacher]);
     }
 
     /**
