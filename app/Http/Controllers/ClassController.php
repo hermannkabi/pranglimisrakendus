@@ -44,13 +44,6 @@ class ClassController extends Controller
 
     }
 
-    /**
-     * Join function for connecting with a classroom.
-     */
-    public function join(string $klass_name, $klass_password) {
-        //For later, when working with multiple schools
-    }
-
     public function remove(Request $request, $user) {
         if(!$user){
             $user = User::where('id',$request->input('Student', 'id'));
@@ -73,7 +66,7 @@ class ClassController extends Controller
         return Klass::create([
             'klass_id' => (string)Str::uuid(),
             'klass_name' => $klass_name,
-            'klass_password' => $klass_password == null ? null : Hash::make($klass_password),
+            'klass_password' => $klass_password,
         ]);
     }
 
@@ -84,19 +77,12 @@ class ClassController extends Controller
     {
         $request->validate([
             'klass_name' => 'required|string|max:256',
-            'klass_password' => 'required|string|min:8',
+            'klass_password' => 'required|string|min:4',
         ]);
 
         $this->createKlass($request->klass_name, $request->klass_password);
-        $question = $request->input('Answer', 'Jah');
-        if($question){
-            $this->add();
-        }
-        $resources = $request->all();
-        if($resources){
-            return Inertia::render('ClassroomPage',$resources);
-        }
-        return Inertia::render('DashboardPage', 'Midagi läks valesti!');
+
+        return Inertia::render('Dashboard/DashboardPage');
     }
 
     /**
@@ -114,8 +100,9 @@ class ClassController extends Controller
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
         $leaderboard = app('App\Http\Controllers\LeaderboardController')->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
-        $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first();   
-        return Inertia::render("Classroom/ClassroomPage", ['leaderboard'=>$leaderboard, 'teacher'=>$teacher]);
+        $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first(); 
+        $stats = $this->overallClassStats($klass->klass_id);  
+        return Inertia::render("Classroom/ClassroomPage", ['leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
     }
 
     /**
@@ -135,21 +122,43 @@ class ClassController extends Controller
        //
     }
 
+    public function overallClassStats($klass_id){
+        // Total no games
+        $total_game_count = 0;
+        // Total no points
+        $total_points_count = 0;
+
+        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "student")->get();
+
+        // Students count
+        $students_count = count($studentsInClass);
+
+        foreach($studentsInClass as $userId){
+            $gamesByUser = Mang::where("user_id", $userId->id)->get();
+            foreach($gamesByUser as $game){
+                $total_points_count += $game->experience;
+                $total_game_count ++;
+            }
+        }
+
+        return ["students"=>$studentsInClass, "studentsCount"=>$students_count, "totalGameCount"=>$total_game_count, "totalPointsCount"=>$total_points_count];
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
     public function classStats($klass, $õpilane /** Õpilase id */, $game, $game_type){
-        if($õpilane!=null){
-            
-            
-            //Overall stats of a student
-            $stats = app('App\Http\Controllers\GameController')->getOverallStats($õpilane);
+            if($õpilane!=null){
+                
+                
+                //Overall stats of a student
+                $stats = app('App\Http\Controllers\GameController')->getOverallStats($õpilane);
 
-            //Speficied stats - gameMode
+                //Speficied stats - gameMode
 
 
-            
-        }
+                
+            }
             
             $students = User::where('klass', $klass)->where('role', 'student')->get();
             $mangud = DB::table('mangs')->where('user_id',$students->id)->orderBy("dt", "desc")->get();
@@ -166,6 +175,40 @@ class ClassController extends Controller
             return [];
         
 
+    }
+
+    public function join(Request $request){
+        $request->validate([
+            'klass_id' => 'required|string|max:256',
+            'klass_password' => 'required|string|min:4',
+        ]);
+
+        $class = Klass::where("klass_id", $request->klass_id)->where("klass_password", $request->klass_password)->first();
+
+        if($class != null){
+            $user = Auth::user();
+            $user->klass = $request->klass_id;
+            $user->save();
+
+            return redirect()->route("dashboard");
+
+        }else{
+            return redirect()->back()->withErrors(["Sellist klassi ei leitud!"]);
+        }
+
+    }
+
+    public function showJoin(){
+
+        $user = Auth::user();
+        $klass = null;
+        if($user->klass != null){
+            $klass = Klass::where("klass_id", $user->klass)->first();
+        }
+
+        $classes = Klass::all();
+
+        return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
     }
 
     /**

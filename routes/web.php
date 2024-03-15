@@ -111,10 +111,11 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
     Route::post('/classroom/search', 'index')->name('classSearch');
     Route::get('/classroom/view/', 'show')->name('classShow');
-    Route::post('/classroom/join', 'join')->name('classJoin');
+    Route::get('/classroom/join', 'showJoin')->name('classJoin');
+    Route::post('/classroom/join', 'join')->name('join');
     Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher']);
     Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
-    Route::post('/classroom/remove}', 'destroy')->name('classRemove')->middleware('role:teacher');
+    Route::post('/classroom/remove', 'destroy')->name('classRemove')->middleware('role:teacher');
 });
 
 Route::get('/dashboard/old', function (){

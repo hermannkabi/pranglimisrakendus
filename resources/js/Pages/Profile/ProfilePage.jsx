@@ -190,8 +190,9 @@ export default function ProfilePage({auth, className}){
                         </div>
                         
                         <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>LEND</p>
-                            <h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3>
+                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
+                            {className == null && <button style={{marginRight:0}} onClick={()=>window.location.href = route("classJoin")}>Ühine klassiga</button> }
+                            {className != null && <h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3>}
                         </div>
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>

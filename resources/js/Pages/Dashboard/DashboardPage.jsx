@@ -39,7 +39,7 @@ export default function Dashboard({auth, stats, classData}) {
                     <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treeningut"} oneDesc={"Treening"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
                     {/* <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" /> */}
-                    <StatisticsWidget stat={stats.streak} desc="Streak" />
+                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Streak" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>
@@ -57,13 +57,13 @@ export default function Dashboard({auth, stats, classData}) {
             {auth.user.klass != null && <section>
                 <div className='header-container'>
                     <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
-                    <p style={{color:"grey", marginTop:"0"}}>õp {classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</p>
+                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp {classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</p>}
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget stat={"1."} desc="Koht klassis" />
-                    <StatisticsWidget stat={"38"} desc="Õpilast" oneDesc="Õpilane" />
-                    <StatisticsWidget stat={"89239823"} desc="Punkti kokku" oneDesc="Punkt kokku" />
+                    <StatisticsWidget stat={classData.myPlace + "."} desc="Koht klassis" />
+                    <StatisticsWidget stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
+                    <StatisticsWidget stat={classData.pointsCount} desc="XP kokku" />
                 </div>
                 <SizedBox height={24}/>
                 <a alone='true' href={route("classShow")}>Vaata klassi <span translate="no" className="material-icons">navigate_next</span></a>

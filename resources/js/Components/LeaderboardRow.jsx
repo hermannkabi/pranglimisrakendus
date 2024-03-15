@@ -1,8 +1,12 @@
-export default function leaderboardRow({name, points, index, player}){
+export default function leaderboardRow({points, index, player, user}){
     return (
         <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginBlock:"12px"}}> 
-            <p style={{textAlign:"start", marginBlock:"0", color: (player ? "rgb(var(--primary-color))" : "inherit"), fontWeight: (player ? "bold" : "normal")}}>{index + 1}. {name}</p>
-            <p style={{textAlign:"end", marginBlock:"0", color: (player ? "rgb(var(--primary-color))" : "inherit"), fontWeight: (player ? "bold" : "normal")}}>{points}</p>
+            <div style={{display:"flex", flexDirection:"row", gap:"8px", alignItems:"center"}}>
+                <span style={{color: (player ? "rgb(var(--primary-color))" : "inherit")}}>{index + 1}. </span>
+                <img src={user.profile_pic} alt={user.eesnimi + " " + user.perenimi} className="profile-pic" style={{height:"24px"}} />
+                <p style={{textAlign:"start", marginBlock:"0", color: (player ? "rgb(var(--primary-color))" : "inherit"), fontWeight: (player ? "bold" : "normal"), textTransform:"capitalize"}}> {user.eesnimi} {user.perenimi}</p>
+            </div>
+            <p style={{textAlign:"end", marginBlock:"0", color: (player ? "rgb(var(--primary-color))" : "inherit"), fontWeight: (player ? "bold" : "normal")}}>{points} XP</p>
         </div>
     );
 }

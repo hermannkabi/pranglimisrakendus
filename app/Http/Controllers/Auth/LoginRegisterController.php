@@ -209,14 +209,26 @@ class LoginRegisterController extends Controller
                 $teacher = User::select(["eesnimi", "perenimi"])->where("role", "teacher")->where("klass", Auth::user()->klass)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
-                // $leaderboardData = [];
-                // foreach($students as $õp){
-                //     array_push($leaderboardData, ["user"=>$õp->id, "score"=>app('App\Http\Controllers\GameController')->getUserExp($õp->id)]);
-                // }
+                $leaderboardData = [];
+                $total_count = 0;
+                foreach($students as $õp){
+                    $õpCount = app('App\Http\Controllers\GameController')->getUserExp($õp->id);
+                    $total_count += $õpCount;
+                    array_push($leaderboardData, ["user"=>$õp->id, "score"=>$õpCount]);
+                }
 
-                // usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
+                usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
 
-                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students),];
+                $place = 0;
+                $loggedInId = Auth::id();
+
+                for($i = 0; $i<count($leaderboardData); $i++){
+                    if($leaderboardData[$i]["user"] == $loggedInId){
+                        $place = $i + 1;
+                    }
+                }
+
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place];
             }
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, 'classData'=>$classData])->with(['theme' => 'something']);
         }
