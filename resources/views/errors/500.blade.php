@@ -11,7 +11,11 @@
 </head>
 <body>
     <div class="error-section">
-        <p class="operation">VIGA</p>
+        @php
+            $ops = ["555-55=", "66+6·(66+6)+(6+6):6=", "2·5·2·5·5=", "7·(77-7)+(77-7):7=", "8·8·8-(88+8):8=", "5555:55*5-5="];
+
+            echo $ops[array_rand($ops)];
+        @endphp
         <h1 class="code">500</h1>
         <p>SERVERIPOOLNE VIGA</p>
     </div>

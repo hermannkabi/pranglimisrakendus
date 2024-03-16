@@ -162,4 +162,8 @@ h1 .shine{
     h1{
         font-size: 36px;
     }
+
+    .symbs span:nth-child(1){
+        display: none;
+    }
 }

@@ -11,6 +11,13 @@
 </head>
 <body>
     <div class="error-section">
+        <p class="operation">
+            @php
+                $ops = ["400+20+9=", "136,624·3,14=", "3·11·13=", "429429:1001=", "(999-99·9)·4-3=", "(1+1+1)·(11+1+1+1)·11="];
+
+                echo $ops[array_rand($ops)];
+            @endphp
+        </p>
         <h1 class="code">429</h1>
         <p>LIIGA PALJU PÄRINGUID</p>
 
