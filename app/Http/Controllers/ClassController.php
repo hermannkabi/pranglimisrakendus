@@ -98,6 +98,8 @@ class ClassController extends Controller
             $klass = Klass::where('klass_id', $klass_id)->first();
         }
 
+        if($klass == null) abort(404);
+
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
         $leaderboard = app('App\Http\Controllers\LeaderboardController')->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
         $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first(); 
@@ -183,14 +185,19 @@ class ClassController extends Controller
             'klass_password' => 'required|string|min:4',
         ]);
 
-        $class = Klass::where("klass_id", $request->klass_id)->where("klass_password", $request->klass_password)->first();
+        $class = Klass::where("klass_id", $request->klass_id)->first();
 
         if($class != null){
-            $user = Auth::user();
-            $user->klass = $request->klass_id;
-            $user->save();
-
-            return redirect()->route("dashboard");
+            if($class->klass_password==$request->klass_password){
+                $user = Auth::user();
+                $user->klass = $request->klass_id;
+                $user->save();
+    
+                return redirect()->route("dashboard");
+    
+            }else{
+                return redirect()->back()->withErrors(["Parool ei ole õige"]);
+            }
 
         }else{
             return redirect()->back()->withErrors(["Sellist klassi ei leitud!"]);
@@ -209,6 +216,20 @@ class ClassController extends Controller
         $classes = Klass::all();
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
+    }
+
+    // Removes the currently authenticated user from their clas
+    public function classRemove(){
+        $user = Auth::user();
+
+        if($user != null){
+            $user->klass = null;
+            $user->save();
+
+            return redirect()->route("dashboard");
+        }
+        
+        return redirect()->back()->withErrors(["Sa pead selleks tegevuseks olema sisse logitud!"]);
     }
 
     /**

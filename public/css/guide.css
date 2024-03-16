@@ -1,0 +1,46 @@
+.guide-div{
+    text-align: start;
+}
+
+.before-example{
+    margin-bottom: 4px;
+}
+
+.example{
+    margin-top: 0;
+    color: grey;
+}
+
+p{
+    margin-block: 32px;
+}
+
+table{
+    border-radius: 4px;
+    margin: auto;
+}
+
+thead > th{
+    background-color: rgb(var(--primary-color));
+    color: rgb(var(--primary-btn-text-color));
+}
+
+tbody > tr:nth-of-type(2n){
+    background-color: rgb(var(--primary-color), var(--section-transparency));
+}
+
+tbody > tr:nth-of-type(2n+1){
+    background-color: transparent;
+}
+
+tbody > tr >td:nth-child(2n+1){
+    text-align: center;
+}
+
+table p{
+    margin-block: 4px;
+}
+
+td{
+    padding: 8px;
+}

@@ -36,14 +36,14 @@ export default function Dashboard({auth, stats, classData}) {
                     <h3 className='section-header'>Statistika</h3>
                 </div>
                 <div className="stats-container">
-                    <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Treeningut"} oneDesc={"Treening"} />
+                    <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Mängu"} oneDesc={"Mäng"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
                     {/* <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" /> */}
-                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Streak" />
+                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>
-                <a alone='true' href={route("gameHistory")}>Vaata täpsemalt <span translate="no" className="material-icons">navigate_next</span></a>
+                <a alone='true' href={route("gameHistory")}>Mängude ajalugu <span translate="no" className="material-icons">navigate_next</span></a>
                 <SizedBox height={8}/></>}
             </section>}
             {auth.user.role == "guest" && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>

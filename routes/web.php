@@ -100,27 +100,39 @@ Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth"])->group(function() {
     Route::post('/game/store', 'store')->name('gameStore');
+
     Route::post('/game/update', 'update')->name('gameUpdate');
+
     Route::get('/game/history', 'show')->name('gameHistory');
+
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
+    
     Route::get("game/{id}/details", "gameDetails");
 });
 
 //Classroom data
 Route::controller(App\Http\Controllers\ClassController::class)->middleware(["auth"])->group(function (){
-    //Route::get('/classroom/edit/{id}', 'edit')->name('classEdit');
     Route::post('/classroom/search', 'index')->name('classSearch');
+
     Route::get('/classroom/view/', 'show')->name('classShow');
+
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
     Route::post('/classroom/join', 'join')->name('join');
-    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['role:teacher']);
-    Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
-    Route::post('/classroom/remove', 'destroy')->name('classRemove')->middleware('role:teacher');
+
+    Route::post('/classroom/remove', 'classRemove')->name('classRemove');
+
+    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['teacher']);
+
+    Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('teacher');
 });
 
 Route::get('/dashboard/old', function (){
     return Inertia::render("Dashboard/OldDashboardPage");
 })->name("dashboard-old");
+
+Route::get('/how-to-play', function (){
+    return Inertia::render("Guide/GuidePage");
+})->name("guide");
 
 require __DIR__.'/auth.php';
 

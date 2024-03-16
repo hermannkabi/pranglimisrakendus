@@ -514,6 +514,7 @@ select:after{
 .math-style{
     font-family: "Lexend";
     font-weight: bold;
+    font-size: 40px;
 }
 
 .math-pow-transformed{

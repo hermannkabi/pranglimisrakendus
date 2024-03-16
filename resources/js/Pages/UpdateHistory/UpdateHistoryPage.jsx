@@ -63,6 +63,7 @@ export default function UpdateHistoryPage({auth}){
         "10.03.2024":["Uus seade klaviatuuri ümberpööramiseks (nii, nagu on kalkulaatoritel)"],
         "14.03.2024":["boldPranglimisrakendus saab nime – Reaaler", "Nime ja logo konkursi tulemused on avalikustatud", "Kuna logo vajab digitaliseerimist, ei ole need veel lehele üles pandud - seda teeme lähiajal", "Plaanime lisaks nime ja logo uuendamisele siis ka mõne teise suurema muudatuse teha", "boldMängude ajalugu võimaldab näha kõiki varasemalt mängitud kordi", "Lisaks saab oma paremate mängude linke teistele vaatamiseks jagada", "Ja lõpetuseks, head pii-päeva"],
         "15.03.2024":["boldStreak süsteem motiveerib igapäevaselt pranglima", "boldSamuti lisandus võimalus vaadata enda klassi andmeid ja edetabelit", "Kui sul veel klassi pole, saad selle profiililt lisada", "boldSamuti valmib esialgne koduleht", "Väga tihe päev täis põnevaid uuendusi", ],
+        "16.03.2024":["Uuendatud konto loomise flow – enam ei sisesta kasutaja kontot luues klassi, vaid selle saab lisada pärast profiili vaates", "Profiili vaatesse lisatud nupp kas klassiga liitumiseks või oma staatuse muutmiseks (saab end klassist maha võtta ja teise klassi minna)", "Oleme arvestanud ka inimestega, kes ei taha klassis avalikult osaleda, st klassis olemine ei ole rakenduse poole pealt kohustuslik", "Parandatud liidese viga, kus murrud renderdati kohati liiga väikeselt", "Semantilised parandused töölaual ja teised väiksemad parandused"],
     };
 
     return <>
