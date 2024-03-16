@@ -190,6 +190,11 @@ class ClassController extends Controller
         if($class != null){
             if($class->klass_password==$request->klass_password){
                 $user = Auth::user();
+
+                if($user->role == "guest"){
+                    return redirect()->back()->withErrors(["Külaliskontoga ei saa klassiga ühineda"]);
+                }
+
                 $user->klass = $request->klass_id;
                 $user->save();
     

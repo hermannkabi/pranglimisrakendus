@@ -9,6 +9,7 @@ import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import CheckboxTile from "@/Components/CheckboxTile";
+import InfoBanner from "@/Components/InfoBanner";
 
 export default function NewLoginPage({message, errors}){
 
@@ -38,9 +39,7 @@ export default function NewLoginPage({message, errors}){
                 <LoginHeader pageName={"Logi sisse"} />
 
                 <form method="post" action={route("authenticate")} className="login-container auth-main-content">
-                    {Object.keys(errors).length > 0 && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                        <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {errors.email}</p>
-                    </div>}
+                    {Object.keys(errors).length > 0 && <InfoBanner text={errors[Object.keys(errors)[0]]} />}
 
                     <button style={formChildrenStyle} type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button>
                     {/* <HorizontalRule /> */}

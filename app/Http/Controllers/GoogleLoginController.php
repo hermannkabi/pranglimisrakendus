@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\LoginRegisterController;
 
 
 class GoogleLoginController extends Controller
@@ -24,7 +25,18 @@ class GoogleLoginController extends Controller
             $user = User::where('email', $googleUser->email)->first();
             if(!$user)
             {
-                return redirect()->route("registerGoogle", ["email"=>$googleUser->email, "name"=>$googleUser->name, "googleId"=>$googleUser->id]);
+                if(!str_ends_with($googleUser->email, "real.edu.ee")){
+                    return redirect()->route("login")->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
+                }
+
+                $eesnimi = substr($googleUser->name, 0, strrpos($googleUser->name, " "));
+                $perenimi = substr($googleUser->name, strrpos($googleUser->name, " ")+1);
+                $user = app(\App\Http\Controllers\Auth\LoginRegisterController::class)->createUser($googleUser->email, $eesnimi, $perenimi, null, $googleUser->id, null);
+            
+                Auth::login($user);
+
+                return redirect()->route("dashboard");
+        
             }
 
             if($user->google_id != $googleUser->id){

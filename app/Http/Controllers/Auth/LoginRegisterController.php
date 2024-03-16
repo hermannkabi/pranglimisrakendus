@@ -39,8 +39,7 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
-    public function createUser($email, $eesnimi, $perenimi, $password, $klass, 
-    $googleId, $settings, $remember, $streak){
+    public function createUser($email, $eesnimi, $perenimi, $password, $googleId, $remember){
         $teachers = array(
         'andres.talts@real.edu.ee',
         'helen.kaasik@real.edu.ee',
@@ -51,7 +50,6 @@ class LoginRegisterController extends Controller
         'villu.raja@real.edu.ee',
         'jaanika.lukk@real.edu.ee',
     
-
         'aili.hobejarv@real.edu.ee',
         'kadri.pajo@real.edu.ee',
         'kati.kurim@real.edu.ee',
@@ -67,12 +65,12 @@ class LoginRegisterController extends Controller
             'eesnimi' => $eesnimi,    
             'perenimi' => $perenimi,    
             'password' => $password == null ? null : Hash::make($password),
-            'klass' => $klass,
+            'klass' => null,
             'google_id'=> $googleId,
-            'settings' => $settings,
+            'settings' => null,
             'remember_token' => $remember,
             'profile_pic' =>  "/assets/logo.png",
-            'streak' => $streak,
+            'streak' => 0,
         ]);
     }
 
@@ -84,16 +82,11 @@ class LoginRegisterController extends Controller
             'eesnimi' => 'required|string|max:250',
             'perenimi' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
-            'klass' => 'required|string|max:6',
             'googleid' => 'required',
         ]);
 
-        if(!str_ends_with($request->email, "real.edu.ee")){
-            return redirect()->back()->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
-        }
 
-        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, 
-    $request->klass, $request->googleid, $request->settings, $request->remember_token, 0);
+        $user = $this->createUser($request->email, $request->eesnimi, $request->perenimi, null, $request->googleid, $request->remember_token);
 
         Auth::login($user);
 
@@ -137,8 +130,7 @@ class LoginRegisterController extends Controller
             ]
         );
 
-        $this->createUser($request->email, $request->eesnimi, $request->perenimi, 
-        $request->password, $request->klass, null, $request->settings, $request->remember_token, 0);
+        $this->createUser($request->email, $request->eesnimi, $request->perenimi, $request->password, null, $request->remember_token);
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){

@@ -180,7 +180,7 @@ export default function ProfilePage({auth, className}){
 
                     <div className="stat-container" style={{width:"90%"}}>
                        {auth.user.role != "student" && <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KONTO</p>
+                            <p style={{color:'gray', marginBlock: "0"}}>KONTOTÜÜP</p>
                             <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role == null ? "Tavakonto" : auth.user.role}</h3>
                         </div>}
 
