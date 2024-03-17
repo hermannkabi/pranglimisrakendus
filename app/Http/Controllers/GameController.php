@@ -79,7 +79,7 @@ class GameController extends Controller
         ]);
         $this->createMang($request->game, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
-        app('App\Http\Controllers\ProfileController')->checkStreak(Auth::id());
+        app(ProfileController::class)->checkStreak(Auth::id());
 
         //$resources = $request->only('game_id', 'user_id', 'game', 'game_type', 'score_sum', 'experience', 'accuracy_sum', 'equation_count', 'last_level', 'last_equation', 'time', 'dt', 'log');
 

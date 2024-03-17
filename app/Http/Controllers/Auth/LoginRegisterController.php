@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use App\Http\Controllers\GameController;
 
 class LoginRegisterController extends Controller
 {
@@ -193,7 +194,7 @@ class LoginRegisterController extends Controller
     {
         if(Auth::check())
         {        
-            $stats = app("App\Http\Controllers\GameController")->getOverallStats(Auth::id());
+            $stats = app(GameController::class)->getOverallStats(Auth::id());
             $klass = Auth::user()->klass != null;
             $classData = false;
             if($klass){
@@ -204,7 +205,7 @@ class LoginRegisterController extends Controller
                 $leaderboardData = [];
                 $total_count = 0;
                 foreach($students as $õp){
-                    $õpCount = app('App\Http\Controllers\GameController')->getUserExp($õp->id);
+                    $õpCount = app(GameController::class)->getUserExp($õp->id);
                     $total_count += $õpCount;
                     array_push($leaderboardData, ["user"=>$õp->id, "score"=>$õpCount]);
                 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Mang;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -12,10 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
 use App\Models\Klass;
+use App\Models\Mang;
 
 
 class ProfileController extends Controller
@@ -58,7 +59,15 @@ class ProfileController extends Controller
     /**
      * Changes avatar to the one suggested by the user.
      */
-    public function changeProfilePicture($image){
+    public function changeProfilePicture($image, Request $request){
+
+        $request->validate([
+            'image' => 'file|max:10'
+        ],
+        [
+            'image.max' => 'Pilt on liiga suur'
+        ]);
+
         $user = User::where('id',Auth::id());
         $user->profile_pic = $image;
         $user->save();
@@ -93,8 +102,8 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-        app('App/Http/Controllers/ClassController')->remove(Auth::id(), true);
-        app('App/Http/Controllers/GameController')->destroy(Auth::id());
+        app(ClassController::class)->remove(Auth::id(), true);
+        app(GameController::class)->destroy(Auth::id());
         $user->delete();
         
         $request->session()->invalidate();

@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use DateTime,DateInterval,DatePeriod;
+
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\LeaderboardController;
+
 
 class ClassController extends Controller
 {
@@ -101,7 +106,7 @@ class ClassController extends Controller
         if($klass == null) abort(404);
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
-        $leaderboard = app('App\Http\Controllers\LeaderboardController')->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
+        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
         $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
         return Inertia::render("Classroom/ClassroomPage", ['leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
@@ -124,16 +129,33 @@ class ClassController extends Controller
        //
     }
 
-    public function overallClassStats($klass_id){
+    public function overallClassStats($klass_id, $aeg=null /* Time filter for statistics */){
         // Total no games
         $total_game_count = 0;
         // Total no points
         $total_points_count = 0;
+        // Points by timestamp
+        $points_by_timestamp = [];
 
         $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "student")->get();
 
         // Students count
         $students_count = count($studentsInClass);
+
+        $time = $aeg=='week' ? 7 : ($aeg=='month' ? 30 : ($aeg =='year' ? 365 : 1));
+        $begin = new DateTime(strtotime('now') - strtotime($time * 86400));
+        $end = new DateTime('now');
+
+        //Time interval, default value, which is meant for a weak of time, is 1 day
+        $interval = DateInterval::createFromDateString($aeg=='month' ? '7 days' : ($aeg=='year' ? '73 days' : ($aeg=='day' ? '2 hours' : '1 day')));
+        $period = new DatePeriod($begin, $interval, $end);
+
+        
+        $times = array();
+        foreach ($period as $dt) {
+            $date = $dt->format("Y-m-d H:i:s");
+            array_push($times, $date);
+        }
 
         foreach($studentsInClass as $userId){
             $gamesByUser = Mang::where("user_id", $userId->id)->get();
@@ -154,7 +176,7 @@ class ClassController extends Controller
                 
                 
                 //Overall stats of a student
-                $stats = app('App\Http\Controllers\GameController')->getOverallStats($õpilane);
+                $stats = app(GameController::class)->getOverallStats($õpilane);
 
                 //Speficied stats - gameMode
 
