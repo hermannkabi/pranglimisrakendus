@@ -431,6 +431,7 @@ select:after{
     vertical-align: middle;
     letter-spacing: 0.0001em;
     text-align: center;
+    font-size: 20px;
 }
 .frac > span {
     display: block;
@@ -512,9 +513,12 @@ select:after{
 
 
 .math-style{
+    display: math;
     font-family: "Lexend";
     font-weight: bold;
-    font-size: 40px;
+    /* font-size: 40px; */
+    line-height: 1;
+    scale: 1;
 }
 
 .math-pow-transformed{

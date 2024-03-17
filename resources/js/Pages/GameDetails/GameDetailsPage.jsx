@@ -35,6 +35,20 @@ export default function GameDetailsPage({game, auth, playedBy}){
     var name = game.game == null ? "Tundmatu" : game.game in gameNames ? gameNames[game.game] : game.game.substring(0, 1).toUpperCase() + game.game.substring(1);
     
 
+    function shareLink(){
+        const data = {
+            title: 'Mäng Reaaler',
+            url: window.location.href,
+        };
+
+        navigator.share(data)
+        .then(() => {
+            console.log('Sharing was successful');
+        })
+        .catch((error) => {
+            console.error('Sharing failed:', error);
+        });
+    }
 
     return <>
             <Head title={name == null ? "Mäng" : decodeURIComponent(name)} />
@@ -75,6 +89,9 @@ export default function GameDetailsPage({game, auth, playedBy}){
                 })}
             </div>
         </section>
+        {/* <SizedBox height={16} />
+        <a alone="" onClick={shareLink} >Jaga &nbsp; <span className="material-icons no-anim" translate="no">share</span></a>
+        <SizedBox height={16} /> */}
 
     </>;
 }
