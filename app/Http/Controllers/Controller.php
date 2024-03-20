@@ -19,6 +19,7 @@ class Controller extends BaseController
 class MathController extends Controller
 {
 
+    
     // KONSTANDID:
     const SAME_NUMBER_REPEAT_COUNT = 1;
     const OPERATION_COUNT = 25;
@@ -32,7 +33,7 @@ class MathController extends Controller
     const JUURIMINE = "juurimine";
     const ASTEJUURIMINE = "astejuurimine";
     const JAGUVUS = "jaguvus";
-    const LIHTSUSTAMINE = "lihtsustamine";
+    const MURRUTAANDAMINE = "murruTaandamine";
     const MULTIOPERAND = "multioperand";
     const ROMAN = "roman";
     const BOTS = "bots";
@@ -58,7 +59,6 @@ class MathController extends Controller
         }
         return $returnValue;
     }
-
     //Op1 = liitmine, korrutamine
     //Op2 = lahutamine, jagamine
     function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $aeg=1, $roman){
@@ -147,7 +147,7 @@ class MathController extends Controller
             }
 
             //Lihtustamine
-            if ($uusmis == MathController::LIHTSUSTAMINE){
+            if ($uusmis == MathController::MURRUTAANDAMINE){
                 $z = $opnames();
                 while ($z * $y == 1 || $x * $z == 1){
                     $z = $opnames();
@@ -455,8 +455,8 @@ class MathController extends Controller
         if ($level === "all" && ($tüüp ==='natural' || $tüüp == "roman")){
             do{
                 again4:
-                $x = random_int($add, 2 + $add);
-                $y = random_int($add, 2 + $add);
+                $x = random_int($add, 3 + $add);
+                $y = random_int($add, 3 + $add);
 
                 $tase = 1;
                 if ($count > 5){
@@ -1653,7 +1653,7 @@ class MathController extends Controller
         return $array;
     }
 
-    public function lihtsustamine($level, $tüüp, $aeg){
+    public function murruTaandamine($level, $tüüp, $aeg){
         $sama = $sama2 = $count = $max = 0;
         
         $xvalues = [
@@ -1751,7 +1751,7 @@ class MathController extends Controller
         $z = $zvalues[$level][$tüüp];
 
         if($level != "all"){
-            $returnData = MathController::generateOp($x, $x2, MathController::LIHTSUSTAMINE, function ($x, $y){
+            $returnData = MathController::generateOp($x, $x2, MathController::MURRUTAANDAMINE, function ($x, $y){
                 $gcd = MathController::gcd($x, $y);
                 return "(" . ($x / $gcd) . "/" . ($y / $gcd) . ")";
              }, $z, [], $level, $aeg, null);
@@ -1815,7 +1815,7 @@ class MathController extends Controller
     public function wrapper($tehe, $tasemed, $tüüp, $aeg){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "lihtsustamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
+        $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "murruTaandamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
         if ($koik && !in_array($tehe, $types_without_all)){
 
             // Funktsionaalseks (DRY)
@@ -1869,8 +1869,8 @@ class MathController extends Controller
                     $loend[$tasemed[$lugeja]] = $this->jagseadus($tasemed[$lugeja], $tüüp, $aeg);
                 }
 
-                if($tehe == MathController::LIHTSUSTAMINE){
-                    $loend[$tasemed[$lugeja]] = $this->lihtsustamine($tasemed[$lugeja], "natural", $aeg);
+                if($tehe == MathController::MURRUTAANDAMINE){
+                    $loend[$tasemed[$lugeja]] = $this->murruTaandamine($tasemed[$lugeja], "natural", $aeg);
                 }
 
                 if($tehe == 'kujundid'){
