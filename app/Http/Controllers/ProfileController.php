@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
 use App\Models\Klass;
@@ -47,7 +45,9 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
-    //User cookies
+    /**
+     * User cookies for saving information regarding website theme colour and personal preferences.
+     */
     public function settings(Request $request){
         $user = $request->user();
         
@@ -74,6 +74,9 @@ class ProfileController extends Controller
         return;
     }
 
+    /**
+     * Verify users streak (is used by Console\Kernel.php)
+    */
     public function checkStreak($user_id=null){
         $user = $user_id != null ? User::where("id", $user_id)->get() : User::all();
 
@@ -112,6 +115,9 @@ class ProfileController extends Controller
         return Redirect::to('/login');
     }
 
+    /**
+     * Display users qurrent class 
+     */
     public function show(){
 
         $user = Auth::user();

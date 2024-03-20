@@ -6,9 +6,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\LoginRegisterController;
+use App\Http\Controllers\Auth\LoginRegisterController;
 
-
+/**
+ * Google login system
+ */
 class GoogleLoginController extends Controller
 {
     public function redirectToGoogle(){
@@ -21,35 +23,31 @@ class GoogleLoginController extends Controller
 
     public function handleGoogleCallback()
     {
-            $googleUser = Socialite::driver('google')->stateless()->user();
-            $user = User::where('email', $googleUser->email)->first();
-            if(!$user)
-            {
-                if(!str_ends_with($googleUser->email, "real.edu.ee")){
-                    return redirect()->route("login")->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
-                }
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = User::where('email', $googleUser->email)->first();
+        if(!$user)
+        {
+            if(!str_ends_with($googleUser->email, "real.edu.ee")){
+                return redirect()->route("login")->withErrors(["Kasuta oma Reaalkooli e-posti aadressi"]);
+            }
 
-                $eesnimi = substr($googleUser->name, 0, strrpos($googleUser->name, " "));
-                $perenimi = substr($googleUser->name, strrpos($googleUser->name, " ")+1);
-                $user = app(\App\Http\Controllers\Auth\LoginRegisterController::class)->createUser($googleUser->email, $eesnimi, $perenimi, null, $googleUser->id, null);
-            
-                Auth::login($user);
-
-                return redirect()->route("dashboard");
+            $eesnimi = substr($googleUser->name, 0, strrpos($googleUser->name, " "));
+            $perenimi = substr($googleUser->name, strrpos($googleUser->name, " ")+1);
+            $user = app(LoginRegisterController::class)->createUser($googleUser->email, $eesnimi, $perenimi, null, $googleUser->id, null);
         
-            }
+            Auth::login($user);
 
-            if($user->google_id != $googleUser->id){
-                $user->google_id = $googleUser->id;
-                $user->save();    
-            }
+            return redirect()->route("dashboard");
     
-            Auth::login($user, true);
-    
-            return redirect()->intended(RouteServiceProvider::HOME);
-    
-        // }catch(\Throwable $e){
-        //     return redirect()->route("login")->withErrors(["email"=>"Google'ga sisselogimine ebaõnnestus"]);
-        // }
+        }
+
+        if($user->google_id != $googleUser->id){
+            $user->google_id = $googleUser->id;
+            $user->save();    
+        }
+
+        Auth::login($user, true);
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }        

@@ -28,14 +28,11 @@ class LoginRegisterController extends Controller
 
     /**
      * Display a registration form.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function register()
     {
         return Inertia::render('Register/NewRegisterPage');
     }
-
     public function registerGoogle(){
         return Inertia::render("Register/RegisterGooglePage");
     }
@@ -97,9 +94,6 @@ class LoginRegisterController extends Controller
 
     /**
      * Store a new user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -144,8 +138,6 @@ class LoginRegisterController extends Controller
 
     /**
      * Display a login form.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function login()
     {
@@ -154,9 +146,6 @@ class LoginRegisterController extends Controller
 
     /**
      * Authenticate the user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function authenticate(Request $request)
     {
@@ -187,8 +176,6 @@ class LoginRegisterController extends Controller
     
     /**
      * Display a dashboard to authenticated users.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function dashboard(Request $request)
     {
