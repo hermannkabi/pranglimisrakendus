@@ -51,6 +51,8 @@
 }
 
 
+
+
 .home-navbar{
     display: flex;
     flex-direction: row;
@@ -93,6 +95,11 @@ h1 .shine{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
+    transition: text-shadow 300ms;
+}
+
+.shine.extra{
+    text-shadow: 0px 0px 32px rgba(184, 188, 78, 0.75);
 }
 
 .sparkle{

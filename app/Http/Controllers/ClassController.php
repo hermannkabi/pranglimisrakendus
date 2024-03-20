@@ -63,6 +63,11 @@ class ClassController extends Controller
 
        
     }
+
+    public function newClass(){
+        return Inertia::render("NewClassroom/NewClassroomPage");
+    }
+
     /**
      * Show the form for creating a new resource.
      */

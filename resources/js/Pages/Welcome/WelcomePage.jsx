@@ -22,7 +22,7 @@ export default function WelcomePage(){
     }
 
     useEffect(()=>{
-        if(clickEaster2 == 3){
+        if(clickEaster2 == 5){
             setClickEaster2(0);
             showPriscAnimation();
         }
@@ -48,6 +48,8 @@ export default function WelcomePage(){
         
             setTimeout(() => {
                 $(".sparkle:nth-of-type(2)").animate({"opacity": "1"}, {"duration":"400"});
+                $("h1 .shine").addClass("extra");
+
             }, 550);
         }, 500);
 
@@ -65,7 +67,6 @@ export default function WelcomePage(){
                 <span>÷</span>
             </div>
 
-            <img loading="lazy" alt="Priscilla" id="priscilla" style={{zIndex:"1000", transition:"transform 1000ms", visibility:"hidden", position:"fixed", rotate:"20deg", height:"300px", bottom:"-300px", left:"-100px"}} src="/assets/eastereggs/priskilla.png" />
 
             <Head title="Tere tulemast" />
             <div className="home-navbar">
@@ -85,7 +86,9 @@ export default function WelcomePage(){
                 </div>
             </div>
 
-            <img loading="lazy" alt="Reaaleri mänguvaade" style={{display:"none"}} className="game-img" src={window.localStorage.getItem("app-theme") == "dark" ? "/assets/homepage/game-dark.png" : "/assets/homepage/game.png"} />
+            <img loading="lazy" style={{display:"none"}} className="game-img" src={window.localStorage.getItem("app-theme") == "dark" ? "/assets/homepage/game-dark.png" : "/assets/homepage/game.png"} />
+            <img loading="lazy" id="priscilla" style={{zIndex:"1000", transition:"transform 1000ms", visibility:"hidden", position:"fixed", rotate:"20deg", height:"300px", bottom:"-300px", left:"-100px"}} src="/assets/eastereggs/priskilla.png" />
+
         </>
     );
 }
