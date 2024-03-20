@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="content-language" content="et" />
-        <meta name="description" content="Reaaler on Tallinna Reaalkooli arvutusäpp"/>
+        <meta name="description" content="Reaaler muudab matemaatika säravaks. Reealer on Tallinna Reaalkooli arvutusäpp, millega õpilane saab peastarvutamist õppida moodsalt, mugavalt ja motiveeritult."/>
         <meta name="keywords" content="pranglimine, reaaler, arvutusäpp, Tallinna Reaalkool, reaalkool">
 
 
