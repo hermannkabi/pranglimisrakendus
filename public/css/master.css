@@ -24,6 +24,11 @@
 }
 
 @media only screen and (max-width: 600px){
+
+    body{
+        padding-inline: 4px !important;
+    }
+
     .stats-container{
         grid-template-columns: repeat(1, 1fr)  !important;
     }

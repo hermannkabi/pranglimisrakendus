@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
+import InfoBanner from "@/Components/InfoBanner";
 
 
 export default function ProfilePage({auth, className}){
@@ -20,6 +21,10 @@ export default function ProfilePage({auth, className}){
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
     const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
 
+
+    const [imageUploadFail, setImageUploadFail] = useState(false);
+
+    
 
     useEffect(()=>{
         saveSettings();
@@ -155,9 +160,11 @@ export default function ProfilePage({auth, className}){
             processData:false,
         }).done(function (data){
             console.log("Tehtud!");
+            setImageUploadFail(false);
             window.location.reload();
         }).fail(function (data){
             console.log(data);
+            setImageUploadFail(true);
         });
 
     }
@@ -174,6 +181,10 @@ export default function ProfilePage({auth, className}){
                 <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
             </section>}
 
+            {imageUploadFail && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Pilt, mida üritad üles laadida, on liiga suur!</p>
+            </section>}
+            
             <section>
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
                     <div className="big-container" style={{marginTop:"8px"}}>

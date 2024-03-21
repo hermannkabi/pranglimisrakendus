@@ -71,15 +71,14 @@ class ProfileController extends Controller
         ]);
         $user = Auth::user();
 
-        // Delete all existing profile images - for storage space 
+        // Delete all existing profile images - for saving storage space 
         File::cleanDirectory(storage_path("app/public/profile-imgs/".$user->id));
 
         $path = "public/profile-imgs/" . $user->id;
         $file = $request->image;
-        $fileName = $user->id . '.'. $file->clientExtension();
         $returnPath = Storage::putFile($path, $file);
 
-        $user->profile_pic = "storage/profile-imgs/".$user->id."/".basename($returnPath);
+        $user->profile_pic = "/storage/profile-imgs/".$user->id."/".basename($returnPath);
         $user->save();
         return;
     }

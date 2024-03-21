@@ -147,19 +147,21 @@ class ClassController extends Controller
         // Students count
         $students_count = count($studentsInClass);
 
-        $time = $aeg=='week' ? 7 : ($aeg=='month' ? 30 : ($aeg =='year' ? 365 : 1));
-        $begin = new DateTime(strtotime('now') - strtotime($time * 86400));
-        $end = new DateTime('now');
+        if($aeg != null){
+            $time = $aeg=='week' ? 7 : ($aeg=='month' ? 30 : ($aeg =='year' ? 365 : 1));
+            $begin = new DateTime(strtotime('now') - strtotime($time * 86400));
+            $end = new DateTime('now');
 
-        //Time interval, default value, which is meant for a weak of time, is 1 day
-        $interval = DateInterval::createFromDateString($aeg=='month' ? '7 days' : ($aeg=='year' ? '73 days' : ($aeg=='day' ? '2 hours' : '1 day')));
-        $period = new DatePeriod($begin, $interval, $end);
+            //Time interval, default value, which is meant for a weak of time, is 1 day
+            $interval = DateInterval::createFromDateString($aeg=='month' ? '7 days' : ($aeg=='year' ? '73 days' : ($aeg=='day' ? '2 hours' : '1 day')));
+            $period = new DatePeriod($begin, $interval, $end);
 
-        
-        $times = array();
-        foreach ($period as $dt) {
-            $date = $dt->format("Y-m-d H:i:s");
-            array_push($times, $date);
+            
+            $times = array();
+            foreach ($period as $dt) {
+                $date = $dt->format("Y-m-d H:i:s");
+                array_push($times, $date);
+            }
         }
 
         foreach($studentsInClass as $userId){
