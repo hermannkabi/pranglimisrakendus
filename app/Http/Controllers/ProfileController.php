@@ -70,6 +70,7 @@ class ProfileController extends Controller
 
         $user = Auth::user();
         $user->profile_pic = $request->file("image");
+        /** @var \App\Models\User $user **/
         $user->save();
         return;
     }

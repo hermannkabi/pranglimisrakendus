@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-
-
 
 
 class Controller extends BaseController     
@@ -18,7 +14,6 @@ class Controller extends BaseController
 
 class MathController extends Controller
 {
-
 
     // KONSTANDID:
     const SAME_NUMBER_REPEAT_COUNT = 1;
@@ -1503,7 +1498,7 @@ class MathController extends Controller
         
 
     }
-    public function võrdlemine($level, $aeg){
+    public function võrdlemine($level, $aeg, $random=false){
         $array = [];
         $count = 0;
         $xold = 0;
@@ -1646,7 +1641,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            }while ($count < 10 + ($aeg * 7)); 
+            }while ($random ? $count < 1 : $count < 10 + ($aeg * 7)); //TODO:
         }; 
     
 
@@ -1788,6 +1783,26 @@ class MathController extends Controller
         }while($count < 10 + ($aeg * 7));
 
         return $array;
+    }
+
+    //["liitmine"=>["level"=>2, "tüüp"=>naturaalarvud], "lahutamine"=>5]
+    public function random($tehted, $tase, $tüüp, $aeg){
+        $count=0;
+        $kogum = array();
+        $massiiv = array();
+
+        for($i=0;$i<count($tase);$i++){
+            $kogum[$tehted[$i]]=$tase[$i];
+            $massiiv[$tehted[$i]]=$tüüp[$i];
+        }
+    
+        do{
+            $random = $tehted[array_rand($tehted)];
+
+            $ans = $this->wrapper($random, $kogum[$random], $massiiv[$random], $aeg);
+            $count++;
+        }while($count < 10 + ($aeg * 7));
+        
     }
 
     public function bots($level, $tehe, $tasemed, $tüüp, $aeg){

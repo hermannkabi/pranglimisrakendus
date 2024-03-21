@@ -224,7 +224,7 @@ class ClassController extends Controller
 
                 $user->klass = $request->klass_id;
 
-                 /** @var \App\Models\MyUserModel $user **/
+                 /** @var \App\Models\User $user **/
                 $user->save();
     
                 return redirect()->route("dashboard");
@@ -259,7 +259,7 @@ class ClassController extends Controller
         if($user != null){
             $user->klass = null;
             
-             /** @var \App\Models\MyUserModel $user **/
+             /** @var \App\Models\User $user **/
             $user->save();
 
             return redirect()->route("dashboard");
