@@ -29,9 +29,13 @@ class MathController extends Controller
     const ASTEJUURIMINE = "astejuurimine";
     const JAGUVUS = "jaguvus";
     const MURRUTAANDAMINE = "murruTaandamine";
+    const VÕRDLEMINE = "võrdlemine";
+    const LÜNKAMINE = "lünkamine";
     const MULTIOPERAND = "multioperand";
     const ROMAN = "roman";
     const BOTS = "bots";
+    const KUJUNDID = "kujundid";
+    const SUVALISUS = "suvalisus";
     //....
 
     function gcd ($a, $b) {
@@ -172,7 +176,7 @@ class MathController extends Controller
     // Üritame kirjutada võimalikult DRY koodi
 
     //Addition and Substraction
-    public function liitlah($level, $mis, $tüüp, $aeg){
+    public function liitlah($level, $mis, $tüüp, $aeg, $random=false){
         $array = [];
         $x = 0;
         $y = 0;
@@ -357,7 +361,7 @@ class MathController extends Controller
 
                 $add += $max/5;
                 $count ++;
-            }while ($count < MathController::OPERATION_COUNT + ($aeg * 14));
+            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
             return $array;
         }
@@ -439,7 +443,7 @@ class MathController extends Controller
                 $add2 -= $max / 5;
                 $count ++;
             
-            } while ($count < MathController::OPERATION_COUNT + ($aeg * 7));
+            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
             return $array;
         }
@@ -512,7 +516,7 @@ class MathController extends Controller
 
                 $add += $max/5;
                 $count ++;
-            }while ($count < MathController::OPERATION_COUNT + ($aeg * 7));
+            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
             return $array;
         }            
@@ -521,7 +525,7 @@ class MathController extends Controller
 
 
 
-    public function korjag($level, $mis, $tüüp, $aeg){
+    public function korjag($level, $mis, $tüüp, $aeg, $random=false){
         $array = [];
         $x = 0;
        
@@ -774,7 +778,7 @@ class MathController extends Controller
 
                 $count ++;
             
-            } while ($count < MathController::OPERATION_COUNT + ($aeg * 14));
+            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT +  ($aeg*14));
             return $array;
         }
             
@@ -991,7 +995,7 @@ class MathController extends Controller
 
                 $count ++;
             
-            } while ($count < 25 + ($aeg * 14));
+            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
 
             return $array;
@@ -1000,7 +1004,7 @@ class MathController extends Controller
     }
 
     //Astenamine - Exponentiation
-    public function astendamine($level, $mis, $tüüp, $aeg){
+    public function astendamine($level, $mis, $tüüp, $aeg, $random=false){
         $xvalues = [];
 
         $opnames = [MathController::ASTENDAMINE, MathController::JUURIMINE];
@@ -1136,7 +1140,7 @@ class MathController extends Controller
                 return abs($num1); 
             }
 
-        }, $opnames, $tüüp == "fraction",  $level, $aeg, null);
+        }, $opnames, $tüüp == "fraction",  $level, $aeg, null, $random);
 
         return $returnData["array"];
         
@@ -1144,7 +1148,7 @@ class MathController extends Controller
 
 
     //lünkamine
-    public function lünkamine($level, $aeg){
+    public function lünkamine($level, $aeg, $random=false){
 
         // Lisasin A,B,C tasemed, kui tulevikus vaja neid väärtusi kasutada, siis tuleks muuta
         // $defaultMaxLiit = ["1"=>10, "2"=>10, "3"=>100, "4"=>500, "5"=>1000, "A"=>9999, "B"=>99999, "C"=>999999];
@@ -1256,11 +1260,11 @@ class MathController extends Controller
             }
             $count ++;
 
-        }while ($count < 10 + (4 * $aeg));
+        }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
         return $loendlünk;
     }
-    public function multioperand($level, $tüüp, $aeg){
+    public function multioperand($level, $tüüp, $aeg){ //TODO:
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 10);},
@@ -1379,7 +1383,7 @@ class MathController extends Controller
 
         return $returnData["array"];
     }
-    public function jagseadus($level, $tüüp, $aeg){
+    public function jagseadus($level, $tüüp, $aeg, $random=false){
         $xvalues = [
             "1"=>[
                 "natural"=>function (){return random_int(1, 10);},
@@ -1492,7 +1496,7 @@ class MathController extends Controller
         $returnData = MathController::generateOp($xvalues[$level][$tüüp], $yvalues[$level][$tüüp], MathController::JAGUVUS, function (){
             // Boolean, mis ütleb, kas vastus on tõene või mitte
             return random_int(0, 1) == 1;
-            }, [], [],  $level, $aeg, null);
+            }, [], [],  $level, $aeg, null, $random);
 
         return $returnData["array"];
         
@@ -1548,7 +1552,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($count < 10 + ($aeg * 7));    
+            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));    
         }
 
         if ($level === '2'){
@@ -1592,7 +1596,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($count < 10 + ($aeg * 7));
+            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
         }
 
         if ($level === '3'){
@@ -1641,14 +1645,14 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            }while ($random ? $count < 1 : $count < 10 + ($aeg * 7)); //TODO:
+            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14)); //TODO:
         }; 
     
 
         return $array;
     }
 
-    public function murruTaandamine($level, $tüüp, $aeg){
+    public function murruTaandamine($level, $tüüp, $aeg, $random=false){
         $sama = $sama2 = $count = $max = 0;
         
         $xvalues = [
@@ -1749,13 +1753,13 @@ class MathController extends Controller
             $returnData = MathController::generateOp($x, $x2, MathController::MURRUTAANDAMINE, function ($x, $y){
                 $gcd = MathController::gcd($x, $y);
                 return "(" . ($x / $gcd) . "/" . ($y / $gcd) . ")";
-             }, $z, [], $level, $aeg, null);
+             }, $z, [], $level, $aeg, null, $random);
 
              return $returnData["array"];
         }
     }
 
-    public function kujundid($level, $tüüp, $aeg){
+    public function kujundid($level, $tüüp, $aeg, $random=false){
         $array = [];
         $count = 0;
         $tasemax = ["1"=>9, "2"=>16, "3"=>25, "4"=>36, "5"=>49];
@@ -1780,28 +1784,19 @@ class MathController extends Controller
             array_push($array, ["operation"=> $suvaline, "answer"=>["ans"=>$anscount, "shape"=>$random_kujund, 'color'=>$random_color, 'size'=>$random_size], "level"=>$level]);
             $count ++;
     
-        }while($count < 10 + ($aeg * 7));
+        }while($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
 
         return $array;
     }
 
     //["liitmine"=>["level"=>2, "tüüp"=>naturaalarvud], "lahutamine"=>5]
-    public function random($tehted, $tase, $tüüp, $aeg){
+    public function random($tehted, $aeg){
         $count=0;
-        $kogum = array();
-        $massiiv = array();
-
-        for($i=0;$i<count($tase);$i++){
-            $kogum[$tehted[$i]]=$tase[$i];
-            $massiiv[$tehted[$i]]=$tüüp[$i];
-        }
-    
         do{
-            $random = $tehted[array_rand($tehted)];
-
-            $ans = $this->wrapper($random, $kogum[$random], $massiiv[$random], $aeg);
+            $suvaline = array_rand($tehted);
+            $ans = $this->wrapper($tehted[$suvaline], $tehted[$suvaline]['level'], $tehted[$suvaline]['tüüp'], $aeg);
             $count++;
-        }while($count < 10 + ($aeg * 7));
+        }while($count < MathController::OPERATION_COUNT + ($aeg*14));
         
     }
 
@@ -1816,7 +1811,7 @@ class MathController extends Controller
             //...
 
         ];
-        app("App\Http\Controllers\Controller")->wrapper($tehe, $tasemed, $tüüp, $aeg);
+        $this->wrapper($tehe, $tasemed, $tüüp, $aeg);
 
         $returnData = MathController::generateOp($raskus[$level], [], MathController::BOTS, function($kadu, $min, $botcheck){
             $accuracy = 1 - ($botcheck > $min ? $kadu : 0);
@@ -1827,7 +1822,7 @@ class MathController extends Controller
         return $returnData["array"];
     }
 
-    public function wrapper($tehe, $tasemed, $tüüp, $aeg){
+    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
         $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "murruTaandamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
@@ -1835,7 +1830,7 @@ class MathController extends Controller
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
-            if($tehe == "liitmine" || $tehe == "lahutamine" || $tehe == "liitlahutamine"){
+            if($tehe == MathController::LIITMINE || $tehe == MathController::JAGAMINE || $tehe == "liitlahutamine"){
 
                 if($tehe == "liitlahutamine"){
                     $tehe = "mõlemad";
@@ -1845,7 +1840,7 @@ class MathController extends Controller
                 $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg);
             }
 
-            if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){
+            if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == "korrujagamine"){
 
                 if($tehe == "korrujagamine"){
                     $tehe = "mõlemad";
@@ -1854,25 +1849,25 @@ class MathController extends Controller
                 $loend[0] = $this->korjag("all", $tehe, $tüüp, $aeg);
             }
 
-            if($tehe == "astendamine" || $tehe == "juurimine" || $tehe == "astejuurimine"){
+            if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE|| $tehe == "astejuurimine"){
                 $loend[0] = $this->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
             }
 
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
-                if($tehe == "liitmine" || $tehe == "lahutamine" || $tehe == "liitlahutamine"){   
+                if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == "liitlahutamine"){   
                     $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
-                if($tehe == "korrutamine" || $tehe == "jagamine" || $tehe == "korrujagamine"){    
+                if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == "korrujagamine"){    
                     $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
                 }
     
-                if($tehe == "lünkamine"){
+                if($tehe == MathController::LÜNKAMINE){
                     $loend[$tasemed[$lugeja]] = $this->lünkamine($tasemed[$lugeja], $aeg);
                 }
 
-                if($tehe == "võrdlemine"){
+                if($tehe == MathController::VÕRDLEMINE){
                     $loend[$tasemed[$lugeja]] = $this->võrdlemine($tasemed[$lugeja], $aeg);
                 }
 
@@ -1888,10 +1883,16 @@ class MathController extends Controller
                     $loend[$tasemed[$lugeja]] = $this->murruTaandamine($tasemed[$lugeja], "natural", $aeg);
                 }
 
-                if($tehe == 'kujundid'){
+                if($tehe == MathController::KUJUNDID){
                     $loend[$tasemed[$lugeja]] = $this->kujundid($tasemed[$lugeja], $tüüp, $aeg);
                 }
                 
+            }
+        }
+        
+        if($suvalisus){
+            for ($lugeja = 0; $lugeja < count($tehe['level']); $lugeja ++){
+            $loend[$tasemed[$lugeja]] = $this->random($tasemed, $aeg);
             }
         }
         return $loend;
