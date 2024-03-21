@@ -10,81 +10,49 @@ use App\Models\User;
 
 class QuestController extends Controller
 {
-    const QUEST_COUNT = 3;
+    //const QUEST_COUNT = 3;
 
-    public function activate($klass, $user){
-        $quests = [
-            1 =>['liitmine' || 'liitlahutamine' || 1 => [
-                    1 => 'Soorita 5 mängu liitmisega',
-                ],
-                'lahutamine' || 'liitlahutamine' || 2 => [
-                    1 => 'Soorita 5 mängu lahutamisega',
-                ],
-            ],
-            5 => []
-        
+    const KOGUM = [
+        'liitmine' => 5,
+        'lahutamine' => 5,
+        'korrutamine' => 4,
+        'jagamine' => 4,
+    ];
+    public function activate(){
+        $massiiv = [
+            'liitmine',
+            'lahutamine',
+            'korrutamine',
+            'jagamine',
         ];
-        $valim = array();
-        $kogum = array();
-        $array = array();
-        $Metsa = random_int(1,$klass);
-        for($i=0;$i<QuestController::QUEST_COUNT;$i++){
-            $tüüp = random_int(1,4);
-            $quest = random_int(1,3);
 
-            array_push($valim, $quests[$Metsa < 5 ? 1:
-            ($Metsa < 6 ? [1,5][array_rand([1,5])] : 
-            ($Metsa < 7 ? [1,5,6][array_rand([1,5,6])] : 
-            [1,5,6,7][array_rand([1,5,6,7])]))][$tüüp][$quest]);
+        
+        $võti = array_rand($massiiv, 2);
+        $ülesanne1 = $massiiv[$võti[0]];
+        $ülesanne2 = $massiiv[$võti[1]];
+        $ülesanne3 = $massiiv[$võti[2]];
 
-            array_push($kogum, $tüüp);
-            array_push($array, $quest);
-        }
-       
+        //Salvestab Andmebaasi...
+
         
-        
-        $return = User::select($user);
-        return 
-        $return -> quests = $valim;
-        $return -> quest_type = $kogum;
-        $return -> quest_num = $array;
-        $return -> quest_count_1 = 0;
-        $return -> quest_count_2 = 0;
-        $return -> quest_count_3 = 0;
+
+        $mituÜlesannet1 = QuestController::KOGUM[$ülesanne1];
+        $mituÜlesannet2 = QuestController::KOGUM[$ülesanne2];
+        $mituÜlesannet3 = QuestController::KOGUM[$ülesanne3];
+
+        //Salvestab Andmebaasi...
+
+        return ['quest'=>[$ülesanne1, $ülesanne2, $ülesanne3], 'measure'=>[$mituÜlesannet1, $mituÜlesannet2, $mituÜlesannet3]];
+
     }
     
-    public function check($user, $type){
-        $one = 0;
-        $two = 0;
-        $three = 0;
-        $quests = User::select($user)->get('quest_num');
-        $quest1 = User::select($user)->get('quest_count_1');
-        $quest2 = User::select($user)->get('quest_count_2');
-        $quest3 = User::select($user)->get('quest_count_3');
-        $quest_type = User::select($user)->get('quest_type');
-        if(in_array($type, $quest_type)){
-            if($quest_type == 1){
-                if ($quests == 1){
-                    $quest1 ++;
-                    $one ++;
-                }
-                if ($quests == 2){
-                    $one == 0 ? $quest1 ++ : $quest2 ++;
-                    $one == 0 ? $one ++ : $two ++;
-                }
-                if ($quests == 3){
-                    $one == 0 ? $quest1 ++ : ($two == 0 ? $quest2 ++ : $quest3 ++);
-                    $one == 0 ? $one ++ : ($two == 0 ? $two ++ : $three ++);
-                }
-            }
-            if($quest_type == 2){
-                if ($quests == 1){
-                    $one == 0 ? $quest1 ++ : ($two == 0 ? $quest2 ++ : ($three == 0 ? $quest3 ++ : 0));
-                    $one == 0 ? $one ++ : ($two == 0 ? $two ++ : ($three == 0 ? $three ++ : 0));
-                }
-            }
-            
-        }
+    public function check($tüüp){
+        //kui on andmebaasis see ülesanne
+            //Lisa juurde kogust
+            $kogus = QuestController::KOGUM[$tüüp]; //kogust vaja
+            //kui on piisavalt loe tehtuks
+
+
     }
     
     

@@ -11,8 +11,6 @@ Route::get('/', function () {
     return Inertia::render('Welcome/WelcomePage');
 })->name("welcome");
 
-Route::post("/handleForm", [App\Http\Controllers\ExampleFormController::class, "handleForm"])->name("saveItem");
-
 Route::get("/handleForm", function (){
     return redirect()->route("welcome");
 });
@@ -27,7 +25,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
     //Route::get('/checkstreak', "checkStreak")->name("checkstreak");
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
-    Route::post('/profile/avatar', 'changeProfilePicture')->name('changeProfilePicture');
+    Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
 
 });
 
@@ -121,7 +119,8 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
 
     Route::post('/classroom/remove', 'classRemove')->name('classRemove');
 
-    Route::post('/classroom/store', 'store')->name('classStore')->middleware(['teacher']);
+    Route::get('/classroom/new', 'newClass')->name('newClass');
+    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['teacher']); // See ei tootanud mul??
 
     Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('teacher');
 });

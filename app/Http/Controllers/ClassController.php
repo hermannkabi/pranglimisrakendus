@@ -63,6 +63,11 @@ class ClassController extends Controller
 
        
     }
+
+    public function newClass(){
+        return Inertia::render("NewClassroom/NewClassroomPage");
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -218,6 +223,8 @@ class ClassController extends Controller
                 }
 
                 $user->klass = $request->klass_id;
+
+                 /** @var \App\Models\MyUserModel $user **/
                 $user->save();
     
                 return redirect()->route("dashboard");
@@ -251,6 +258,8 @@ class ClassController extends Controller
 
         if($user != null){
             $user->klass = null;
+            
+             /** @var \App\Models\MyUserModel $user **/
             $user->save();
 
             return redirect()->route("dashboard");
