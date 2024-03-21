@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Nette\Utils\Random;
-use PhpParser\Node\Stmt\ElseIf_;
 
-use function PHPUnit\Framework\returnValue;
+
+
+
 
 class Controller extends BaseController     
 {
@@ -19,7 +19,7 @@ class Controller extends BaseController
 class MathController extends Controller
 {
 
-    
+
     // KONSTANDID:
     const SAME_NUMBER_REPEAT_COUNT = 1;
     const OPERATION_COUNT = 25;

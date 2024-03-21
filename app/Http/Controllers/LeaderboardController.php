@@ -7,6 +7,9 @@ use App\Models\Klass;
 use App\Models\User;
 use App\Models\Mang;
 
+/**
+ * Get and send data for displaying on the leaderboard
+*/
 class LeaderboardController extends Controller
 {
     public function getLeaderboardData($users){

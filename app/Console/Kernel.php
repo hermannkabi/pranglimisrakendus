@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\User;
+use App\Http\Controllers\ProfileController;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,11 +16,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
-        // See tuleks ümber teha
-        // Streak peaks ju uuenema kohe, kui kasutaja mängib, mitte ainult keskööl
-        // Streak tuleks aga kesköösel lõpetada küll
         $schedule->call(function () {
-            app('App\Http\Controllers\ProfileController')->checkStreak();
+            app(ProfileController::class)->checkStreak();
             User::query()->update(['streak_active' => false]);
         })->daily();
     }
