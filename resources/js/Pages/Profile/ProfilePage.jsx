@@ -2,14 +2,14 @@ import Navbar from "@/Components/Navbar";
 import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import "/public/css/game_end.css";
-import { pickFile } from 'js-pick-file';
 import SizedBox from "@/Components/SizedBox";
 import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
-import FilePicker from 'js-pick-file';
+import { pickFile } from 'js-pick-file';
+
 
 export default function ProfilePage({auth, className}){
 
@@ -133,45 +133,33 @@ export default function ProfilePage({auth, className}){
     }
 
     async function uploadFile() {
-        // https://www.npmjs.com/package/easy-file-picker
         var options = {
-            accept: '.jpg, .jpeg, .png',
+            accept: '.jpg, .jpeg, .png, .gif',
             multiple: false,
-            enctype:"multipart/form-data",
-            id:"profile-img-picker",
         }
-        
+    
         const filePromise = pickFile(options);
-        
-        try {
-            const file = (await filePromise)[0];
-        console.log($('#profile-img-picker').prop("files"));
 
-            console.log(file);
-            $.ajax({
-                url: route("changeProfilePicture"), 
-                type: 'post',
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    "X-CSRF-TOKEN":window.csrfToken,
-                },
-                data: {
-                    "_token":window.csrfToken,
-                    'image':file,
-                },
-                cache: false,
-                dataType: 'json',
-                processData:false,
-                contentType:false,
-            }).done(function (data){
-                console.log("Tehtud!");
-            }).fail(function (data){
-                console.log(data);
-            });
-        } catch (e) {
-            console.log(e);
-            console.error('file picker was closed without input');
-        }
+        const file = (await filePromise)[0];
+
+        var data = new FormData();
+
+        data.append("image", file);
+        data.append("_token", window.csrfToken);
+
+        $.ajax({
+            url:route("changeProfilePicture"),
+            type:"post",
+            data: data,
+            contentType: false,
+            processData:false,
+        }).done(function (data){
+            console.log("Tehtud!");
+            window.location.reload();
+        }).fail(function (data){
+            console.log(data);
+        });
+
     }
 
     return (
@@ -181,28 +169,6 @@ export default function ProfilePage({auth, className}){
 
             <SizedBox height={36} />
             <h2>Minu konto</h2>
-            {/* <section>
-                <div className="header-container">
-                    <h3 className="section-header">Profiil</h3>
-                </div>
-                <div className="" style={{display:'flex', flexWrap:"wrap"}}>
-                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input id="fname" type="text" placeholder="Eesnimi" defaultValue={auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} disabled />
-                        <input id="lname" type="text" placeholder="Perenimi" defaultValue={auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"} disabled />
-                    </div>
-                    <input type="text" placeholder="E-posti aadress" value={auth.user.email} disabled/>
-                    <div style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <input style={{flex:"5"}} type="text" placeholder="Kooli nimi" value="Tallinna Reaalkool" disabled/>
-                        <input type="text" placeholder="Klass" value={auth.user.klass} style={{minWidth:'100px'}} disabled/>
-                    </div>
-                    <div className="mobile-block" style={{display:"flex", justifyContent:"stretch", width:"100%", gap:"8px"}}>
-                        <button style={{flex:"1", width:'100%', marginLeft:"0px"}}>Muuda parooli</button>
-                        <button darkred="true" style={{flex:"1", width:'100%', marginRight:"8px"}} secondary="true" onClick={()=>window.location.href=route("logout")}>Logi välja</button>
-                    </div>
-                    <a alone="" style={{color:"rgb(var(--darkred-color))", marginInline:"auto", marginBlock:"16px"}}>Kustuta konto</a>
-                </div>
-            </section> */}
-            {/* A new design for the profile page */}
             
             {false && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
                 <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
@@ -212,7 +178,10 @@ export default function ProfilePage({auth, className}){
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
-                        <img onClick={uploadFile} style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
+                        <div style={{position:"relative", display:"inline"}} onClick={uploadFile}>
+                        <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
+                        <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color))", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>
+                        </div>
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>

@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -67,10 +69,17 @@ class ProfileController extends Controller
         [
             'image.max' => 'Pilt on liiga suur'
         ]);
-
         $user = Auth::user();
-        $user->profile_pic = $request->file("image");
-        /** @var \App\Models\User $user **/
+
+        // Delete all existing profile images - for storage space 
+        File::cleanDirectory(storage_path("app/public/profile-imgs/".$user->id));
+
+        $path = "public/profile-imgs/" . $user->id;
+        $file = $request->image;
+        $fileName = $user->id . '.'. $file->clientExtension();
+        $returnPath = Storage::putFile($path, $file);
+
+        $user->profile_pic = "storage/profile-imgs/".$user->id."/".basename($returnPath);
         $user->save();
         return;
     }
