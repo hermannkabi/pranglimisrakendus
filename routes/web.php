@@ -25,7 +25,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
     //Route::get('/checkstreak', "checkStreak")->name("checkstreak");
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
-    Route::post('/profile/avatar', 'changeProfilePicture')->name('changeProfilePicture');
+    Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
 
 });
 

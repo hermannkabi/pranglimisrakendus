@@ -2,14 +2,14 @@ import Navbar from "@/Components/Navbar";
 import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import "/public/css/game_end.css";
-
+import { pickFile } from 'js-pick-file';
 import SizedBox from "@/Components/SizedBox";
 import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
-
+import FilePicker from 'js-pick-file';
 
 export default function ProfilePage({auth, className}){
 
@@ -132,6 +132,48 @@ export default function ProfilePage({auth, className}){
         setPrimaryColor(color);
     }
 
+    async function uploadFile() {
+        // https://www.npmjs.com/package/easy-file-picker
+        var options = {
+            accept: '.jpg, .jpeg, .png',
+            multiple: false,
+            enctype:"multipart/form-data",
+            id:"profile-img-picker",
+        }
+        
+        const filePromise = pickFile(options);
+        
+        try {
+            const file = (await filePromise)[0];
+        console.log($('#profile-img-picker').prop("files"));
+
+            console.log(file);
+            $.ajax({
+                url: route("changeProfilePicture"), 
+                type: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    "X-CSRF-TOKEN":window.csrfToken,
+                },
+                data: {
+                    "_token":window.csrfToken,
+                    'image':file,
+                },
+                cache: false,
+                dataType: 'json',
+                processData:false,
+                contentType:false,
+            }).done(function (data){
+                console.log("Tehtud!");
+            }).fail(function (data){
+                console.log(data);
+            });
+        } catch (e) {
+            console.log(e);
+            console.error('file picker was closed without input');
+        }
+    }
+
     return (
         <>
             <Head title="Minu konto" />
@@ -167,12 +209,10 @@ export default function ProfilePage({auth, className}){
             </section>}
 
             <section>
-                
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
-
-                        <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
+                        <img onClick={uploadFile} style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
                         <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>

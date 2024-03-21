@@ -59,17 +59,17 @@ class ProfileController extends Controller
     /**
      * Changes avatar to the one suggested by the user.
      */
-    public function changeProfilePicture($image, Request $request){
+    public function changeProfilePicture(Request $request){
 
         $request->validate([
-            'image' => 'file|max:10'
+            'image' => 'required|file|max:1000|mimes:jpeg,png,jpg'
         ],
         [
             'image.max' => 'Pilt on liiga suur'
         ]);
 
-        $user = User::where('id',Auth::id());
-        $user->profile_pic = $image;
+        $user = Auth::user();
+        $user->profile_pic = $request->file("image");
         $user->save();
         return;
     }
