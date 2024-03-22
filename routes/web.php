@@ -133,6 +133,28 @@ Route::get('/how-to-play', function (){
     return Inertia::render("Guide/GuidePage");
 })->name("guide");
 
+Route::get("/down", function (){
+    
+    if(Auth::id() != 1000003 && Auth::id() != 9){
+        abort(404);
+        return;
+    }
+
+    Artisan::call("down --render='errors::503' --secret='1630542a-246b-4b66-afa1-dd72a4c43515'");
+    return "Rakendus on maas. Kasuta koodi 1630542a-246b-4b66-afa1-dd72a4c43515, et vaadata.";
+});
+
+Route::get("/up", function (){
+    
+    if(Auth::id() != 1000003 && Auth::id() != 9){
+        abort(404);
+        return;
+    }
+
+    Artisan::call("up");
+    return "Rakendus on taas avalikult nähtav.";
+});
+
 require __DIR__.'/auth.php';
 
 
