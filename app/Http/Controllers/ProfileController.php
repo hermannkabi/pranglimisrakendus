@@ -76,7 +76,8 @@ class ProfileController extends Controller
 
         $path = "public/profile-imgs/" . $user->id;
         $file = $request->image;
-        $returnPath = Storage::putFile($path, $file);
+        $returnPath = Storage::putFile($path, $file, "public");
+        File::chmod(storage_path("app/public/profile-imgs/".$user->id), 0755);
 
         $user->profile_pic = "/storage/profile-imgs/".$user->id."/".basename($returnPath);
         $user->save();
