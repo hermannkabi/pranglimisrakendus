@@ -117,11 +117,16 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
     Route::post('/classroom/join', 'join')->name('join');
 
+    Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink')->middleware(['role:student']);
+    Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLink')->middleware(['role:student']);
+
+
     Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher']);
     Route::post('/classroom/{id}/edit', 'edit')->name('classEdit')->middleware(['role:teacher']);
 
 
     Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
+
 
     Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
     Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
@@ -141,6 +146,7 @@ Route::get("/down", function (){
     
     $id = Auth::id();
     
+    // Minu ja Jarli ID-d (5 on Jarli arvutis tema id)
     if($id != 1000003 && $id != 9 && $id != 5){
         abort(404);
         return;

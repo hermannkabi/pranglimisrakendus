@@ -122,7 +122,7 @@ class ClassController extends Controller
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
         $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
-        $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first(); 
+        $teacher = User::where('id', $klass->teacher_id)->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
         $isTeacher = $teacher == null ? false : $request->user()->id == $teacher->id;
         return Inertia::render("Classroom/ClassroomPage", ['uuid'=>$uuid, 'isTeacher'=>$isTeacher, 'leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
@@ -317,6 +317,45 @@ class ClassController extends Controller
         $classes = Klass::all();
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
+    }
+
+    public function joinLink(Request $request, $id){
+
+        $klass = Klass::where("uuid", $id)->first();
+
+        if($klass == null){
+            abort(404);
+            return;
+        }
+
+        $invited_by = User::select(["eesnimi", "perenimi"])->where("id", $klass->teacher_id)->first();
+
+        $invited_by = $invited_by == null ? null : $invited_by->eesnimi . " " . $invited_by->perenimi;
+
+        $current_klass = $request->user()->klass == null ? null : Klass::where("klass_id", $request->user()->klass)->first();
+
+
+        if($current_klass->klass_id == $klass->klass_id){
+            return redirect()->route("dashboard");
+        }
+
+        return Inertia::render("JoinClass/JoinLinkPage", ["klass"=>$klass, "invited_by"=>$invited_by, "current_klass"=>$current_klass]);
+    }
+
+    public function joinLinkPost(Request $request, $id){
+        $klass = Klass::where("uuid", $id)->first();
+
+        if($klass != null){
+            $user = $request->user();
+
+            $user->klass = $klass->klass_id;
+
+            $user->save();
+
+            return;
+        }
+
+        abort(404);
     }
 
     // Removes the currently authenticated user from their clas

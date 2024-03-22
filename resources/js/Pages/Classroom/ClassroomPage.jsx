@@ -19,7 +19,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
 
                 <StatisticsWidget stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
             </div>
-            {teacher != null && <StatisticsWidget stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
+            {teacher != null && <StatisticsWidget name={true} stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
         
             
         </section>

@@ -11,7 +11,7 @@ export default function JoinClassPage({auth, classData, allClasses, errors}){
 
     function onClassRemove(){
         if(confirm("Kas oled kindel, et soovid end klassist eemaldada?")){
-            $.post(route("classRemove"), {"_token":window.csrfToken}).done(function (data){
+            $.post("/classroom/remove/" + auth.user.id , {"_token":window.csrfToken}).done(function (data){
                 window.location.href = route("dashboard");
             }).fail(function (data){
                 console.log(data);
