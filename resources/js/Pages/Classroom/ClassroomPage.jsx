@@ -4,7 +4,7 @@ import StatisticsWidget from "@/Components/StatisticsWidget";
 import LeaderboardRow from "@/Components/LeaderboardRow";
 import { Head } from "@inertiajs/react";
 
-export default function ClassroomPage({leaderboard, teacher, auth, className, stats}){
+export default function ClassroomPage({leaderboard, teacher, auth, className, stats, isTeacher, uuid}){
     return <>
     
         <Head title='Minu klass' />
@@ -19,7 +19,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
 
                 <StatisticsWidget stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
             </div>
-            {teacher != null && <StatisticsWidget stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
+            {teacher != null && <StatisticsWidget name={true} stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
         
             
         </section>
@@ -30,5 +30,11 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
             </div>
             {leaderboard.map((e, index)=><LeaderboardRow key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
         </section>
+
+        {isTeacher && <>
+            <SizedBox height="16px" />
+            <a alone=""  href={"/classroom/"+uuid+"/edit"}>Muuda klassi&nbsp;<span className="material-icons no-anim" translate="no">edit</span> </a> 
+        </>}
+
     </>;
 }

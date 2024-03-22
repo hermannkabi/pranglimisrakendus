@@ -64,10 +64,11 @@ class ProfileController extends Controller
     public function changeProfilePicture(Request $request){
 
         $request->validate([
-            'image' => 'required|file|max:1000|mimes:jpeg,png,jpg'
+            'image' => 'required|file|max:500|mimes:jpeg,png,jpg,gif'
         ],
         [
-            'image.max' => 'Pilt on liiga suur'
+            'image.max' => 'Pilt on liiga suur, maksimaalne suurus on 500kB',
+            'image.mimes' => 'Pildi formaat peab olema üks järgnevatest: jpg, jpeg, png, gif',
         ]);
         $user = Auth::user();
 
@@ -76,10 +77,11 @@ class ProfileController extends Controller
 
         $path = "public/profile-imgs/" . $user->id;
         $file = $request->image;
-        $returnPath = Storage::putFile($path, $file);
+        $returnPath = Storage::putFile($path, $file, "public");
+        File::chmod(storage_path("app/public/profile-imgs/".$user->id), 0755);
 
         $user->profile_pic = "/storage/profile-imgs/".$user->id."/".basename($returnPath);
-         /** @var \App\Models\User $user **/
+        /** @var \App\Models\User $user **/
         $user->save();
         return;
     }

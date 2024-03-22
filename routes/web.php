@@ -112,17 +112,26 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 Route::controller(App\Http\Controllers\ClassController::class)->middleware(["auth"])->group(function (){
     Route::post('/classroom/search', 'index')->name('classSearch');
 
-    Route::get('/classroom/view/', 'show')->name('classShow');
+    Route::get('/classroom/{id}/view/', 'show')->name('classShow');
 
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
     Route::post('/classroom/join', 'join')->name('join');
 
-    Route::post('/classroom/remove', 'classRemove')->name('classRemove');
+    Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink')->middleware(['role:student']);
+    Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLink')->middleware(['role:student']);
 
-    Route::get('/classroom/new', 'newClass')->name('newClass');
-    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['teacher']); // See ei tootanud mul??
 
-    Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('teacher');
+    Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher']);
+    Route::post('/classroom/{id}/edit', 'edit')->name('classEdit')->middleware(['role:teacher']);
+
+
+    Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
+
+
+    Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
+    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
+
+    Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
 });
 
 Route::get('/dashboard/old', function (){
@@ -132,6 +141,33 @@ Route::get('/dashboard/old', function (){
 Route::get('/how-to-play', function (){
     return Inertia::render("Guide/GuidePage");
 })->name("guide");
+
+Route::get("/down", function (){
+    
+    $id = Auth::id();
+    
+    // Minu ja Jarli ID-d (5 on Jarli arvutis tema id)
+    if($id != 1000003 && $id != 9 && $id != 5){
+        abort(404);
+        return;
+    }
+
+    Artisan::call("down --render='errors::503' --secret='1630542a-246b-4b66-afa1-dd72a4c43515'");
+    return "Rakendus on maas. Kasuta koodi 1630542a-246b-4b66-afa1-dd72a4c43515, et vaadata.";
+});
+
+Route::get("/up", function (){
+
+    $id = Auth::id();
+    
+    if($id != 1000003 && $id != 9 && $id != 5){
+        abort(404);
+        return;
+    }
+
+    Artisan::call("up");
+    return "Rakendus on taas avalikult nähtav.";
+});
 
 require __DIR__.'/auth.php';
 

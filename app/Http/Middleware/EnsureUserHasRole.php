@@ -16,8 +16,8 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (! $request->user()->hasRole($role)){
-            return Inertia::render('Dashboard');//Error: Pole õpetaja; pole õigusi vms.
+        if ($request->user()->role != ($role)){
+            abort(404);
         }
         return $next($request);
     }

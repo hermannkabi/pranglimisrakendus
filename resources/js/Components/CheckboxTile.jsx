@@ -17,7 +17,7 @@ export default function CheckboxTile({level, levelChar=level, forcedText=null, o
     return (
         <>
             <div className="checkbox-group" onClick={changeChecked} style={{...{display:"inline-block"}, ...style}}>
-                <input className={inputClass ?? ""} char={levelChar} level={levelChar} type="checkbox" checked={checked} onClick={changeChecked} onChange={changeChecked} />
+                <input name="checkbox" className={inputClass ?? ""} char={levelChar} level={levelChar} type="checkbox" checked={checked} onClick={changeChecked} onChange={changeChecked} />
                 <label style={{userSelect:"none"}}>{forcedText ?? (level + ". tase")}</label>
             </div>
         </>

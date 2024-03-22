@@ -16,14 +16,12 @@ class HandleSettings
     public function handle(Request $request, Closure $next): Response
     {
 
-        $response = $next($request);
-
         $user = $request->user();
         if($user != null){
             $settings = $request->user()->settings;
             setcookie("settings", $settings);    
         }
 
-        return $response;
+        return $next($request);
     }
 }

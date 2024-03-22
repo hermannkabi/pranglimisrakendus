@@ -22,7 +22,7 @@ export default function ProfilePage({auth, className}){
     const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
 
 
-    const [imageUploadFail, setImageUploadFail] = useState(false);
+    const [imageUploadErrors, setImageUploadErrors] = useState(null);
 
     
 
@@ -160,11 +160,11 @@ export default function ProfilePage({auth, className}){
             processData:false,
         }).done(function (data){
             console.log("Tehtud!");
-            setImageUploadFail(false);
+            setImageUploadErrors(null);
             window.location.reload();
         }).fail(function (data){
             console.log(data);
-            setImageUploadFail(true);
+            setImageUploadErrors(data.responseJSON);
         });
 
     }
@@ -181,17 +181,17 @@ export default function ProfilePage({auth, className}){
                 <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
             </section>}
 
-            {imageUploadFail && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Pilt, mida üritad üles laadida, on liiga suur!</p>
+            {imageUploadErrors != null && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
+                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span>{imageUploadErrors[Object.keys(imageUploadErrors)[0]]}</p>
             </section>}
             
             <section>
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
                     <div className="big-container" style={{marginTop:"8px"}}>
                         <SizedBox height={16} />
-                        <div style={{position:"relative", display:"inline"}} onClick={uploadFile}>
+                        <div style={{position:"relative", display:"inline"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
                         <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
-                        <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color))", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>
+                        {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color))", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
                         </div>
                         <SizedBox height={8} />
                         <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
@@ -209,16 +209,16 @@ export default function ProfilePage({auth, className}){
                             <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
                         </div>
                         
-                        <div style={profileTypeStyle}>
+                        {auth.user.role != "teacher" && auth.user.role != "guest" && <div style={profileTypeStyle}>
                             <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
                             {className == null && <button style={{marginRight:0}} onClick={()=>window.location.href = route("classJoin")}>Ühine klassiga</button> }
                             {className != null && <div style={{display:"flex", gap:"8px", flexDirection:"row", alignItems:"center"}} ><h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3> <a alone="" href={route("classJoin")}><span className="material-icons no-anim" style={{cursor:"pointer", color:"rgb(var(--text-color))"}} translate="no">edit</span></a> </div> }
-                        </div>
+                        </div>}
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
                         <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
                         <SizedBox height={8} />
-                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>Logi välja <SizedBox width={8} /> <span className="material-icons">logout</span></a>
+                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>{auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} <SizedBox width={8} /> <span className="material-icons">logout</span></a>
                         <SizedBox height={4} />
                     </div>
                 </div>

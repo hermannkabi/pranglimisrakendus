@@ -74,9 +74,10 @@ class ClassController extends Controller
     public function createKlass($klass_name, $klass_password)
     {
         return Klass::create([
-            'klass_id' => (string)Str::uuid(),
             'klass_name' => $klass_name,
             'klass_password' => $klass_password,
+            'teacher_id' => Auth::id(),
+            'uuid' => (string)Str::uuid(),
         ]);
     }
 
@@ -87,43 +88,107 @@ class ClassController extends Controller
     {
         $request->validate([
             'klass_name' => 'required|string|max:256',
-            'klass_password' => 'required|string|min:4',
+            'klass_password' => 'required|string|min:4|confirmed',
+            'klass_password_confirmation' => 'required|string|min:4',
+        
+        ], [
+            'klass_name.required'=>"Klassi nimi on kohustuslik väli",
+            'klass_password.required'=>"Klassi parool on kohustuslik väli",
+            'klass_password_confirmation.required'=>"Klassi parool on kohustuslik väli",
+            'klass_password.confirmed'=>"Paroolid ei kattu",
+            'klass_password.min'=>"Parool peab olema vähemalt 4 tähemärki pikk",
         ]);
 
         $this->createKlass($request->klass_name, $request->klass_password);
 
-        return Inertia::render('Dashboard/DashboardPage');
+        return redirect()->route("dashboard");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $klass_id=null)
+
+    public function show(Request $request, string $uuid=null)
     {
         $klass = null;
 
-        if($klass_id==null){
+        if($uuid==null){
             $klass = Klass::where("klass_id", Auth::user()->klass)->first();
         }else{
-            $klass = Klass::where('klass_id', $klass_id)->first();
+            $klass = Klass::where('uuid', $uuid)->first();
         }
 
         if($klass == null) abort(404);
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
         $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
-        $teacher = User::where('klass', $klass->klass_id)->where('role', 'teacher')->first(); 
+        $teacher = User::where('id', $klass->teacher_id)->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
-        return Inertia::render("Classroom/ClassroomPage", ['leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
+        $isTeacher = $teacher == null ? false : $request->user()->id == $teacher->id;
+        return Inertia::render("Classroom/ClassroomPage", ['uuid'=>$uuid, 'isTeacher'=>$isTeacher, 'leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
+    }
+
+
+    public function edit(Request $request, $id){
+        $class = Klass::where("uuid", $id)->first();
+
+        if($class == null){
+            abort(404);
+            return;
+        }
+
+        if($class->teacher_id != $request->user()->id){
+            abort(404);
+            return;
+        }
+
+        $request->validate([
+            "klass_name"=>"required|string|max:255",
+            "klass_password"=>"required|string|min:4",
+        ], [
+            "klass_name.required"=>"Klassi nimi on kohustuslik",
+            "klass_password.required"=>"Klassi parool on kohustuslik",
+            "klass_password.min"=>"Parool peab olema vähemalt 4 tähemärki",
+        ]);
+
+        if($request->removed_students != ""){
+            $ids = explode(",", $request->removed_students);
+
+            foreach($ids as $id){
+                $this->classRemove($id);
+            }
+        }
+
+        $class->klass_name = $request->klass_name;
+        $class->klass_password = $request->klass_password;
+
+        $class->save();
+
+        return redirect("/classroom/".$class->uuid."/view");
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-     public function edit($id)
+     public function showEdit(Request $request, $id)
     {
-    //     $item = Klass::find($id);
-    //     return Inertia::render('ClassroomEditPage', $item);
+        $class = Klass::where("uuid", $id)->first();
+
+        if($class == null){
+            abort(404);
+            return;
+        }
+
+
+        if($class->teacher_id != $request->user()->id){
+            abort(404);
+            return;
+        }
+
+        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "student")->get();
+        
+        return Inertia::render("Classroom/ClassroomEdit", ["klass"=>$class, "students"=>$students]);
+
     }
 
     /**
@@ -254,9 +319,48 @@ class ClassController extends Controller
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
     }
 
+    public function joinLink(Request $request, $id){
+
+        $klass = Klass::where("uuid", $id)->first();
+
+        if($klass == null){
+            abort(404);
+            return;
+        }
+
+        $invited_by = User::select(["eesnimi", "perenimi"])->where("id", $klass->teacher_id)->first();
+
+        $invited_by = $invited_by == null ? null : $invited_by->eesnimi . " " . $invited_by->perenimi;
+
+        $current_klass = $request->user()->klass == null ? null : Klass::where("klass_id", $request->user()->klass)->first();
+
+
+        if($current_klass->klass_id == $klass->klass_id){
+            return redirect()->route("dashboard");
+        }
+
+        return Inertia::render("JoinClass/JoinLinkPage", ["klass"=>$klass, "invited_by"=>$invited_by, "current_klass"=>$current_klass]);
+    }
+
+    public function joinLinkPost(Request $request, $id){
+        $klass = Klass::where("uuid", $id)->first();
+
+        if($klass != null){
+            $user = $request->user();
+
+            $user->klass = $klass->klass_id;
+
+            $user->save();
+
+            return;
+        }
+
+        abort(404);
+    }
+
     // Removes the currently authenticated user from their clas
-    public function classRemove(){
-        $user = Auth::user();
+    public function classRemove($id=null){
+        $user = $id == null ? Auth::user() : User::where("id", $id)->first();
 
         if($user != null){
             $user->klass = null;
@@ -264,23 +368,33 @@ class ClassController extends Controller
              /** @var \App\Models\User $user **/
             $user->save();
 
-            return redirect()->route("dashboard");
+            return;
         }
         
-        return redirect()->back()->withErrors(["Sa pead selleks tegevuseks olema sisse logitud!"]);
+        return;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $klass_name, $teacher, $all)
+    public function destroy(Request $request, string $id)
     {
+        
         //Delete one class
-        DB::table('klass')->where('klass_name',$klass_name)->get()->delete();
+        $klass = Klass::where('uuid', $id)->first();
 
-        //Delete all classes with that teacher
-        if($all==notNullValue()){
-            DB::table('klass')->where('teacher', $teacher)->get()->delete();
+        if($klass->teacher_id == $request->user()->id){
+            User::where("klass", $klass->klass_id)->update(["klass"=>null]);
+            $klass->delete();
+        }else{
+            abort(404);
         }
+
+        return;
+
+        // //Delete all classes with that teacher
+        // if($all==notNullValue()){
+        //     DB::table('klass')->where('teacher', $teacher)->get()->delete();
+        // }
     }
 }
