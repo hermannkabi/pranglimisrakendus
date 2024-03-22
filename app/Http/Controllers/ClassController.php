@@ -214,7 +214,7 @@ class ClassController extends Controller
 
         if($aeg != null){
             $time = $aeg=='week' ? 7 : ($aeg=='month' ? 30 : ($aeg =='year' ? 365 : 1));
-            $begin = new DateTime(strtotime('now') - strtotime($time * 86400));
+            $begin = new DateTime(strtotime('now') - strtotime("-".$time." days"));
             $end = new DateTime('now');
 
             //Time interval, default value, which is meant for a weak of time, is 1 day

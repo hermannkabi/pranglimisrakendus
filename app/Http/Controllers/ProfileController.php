@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -140,5 +141,28 @@ class ProfileController extends Controller
         }
 
         return Inertia::render("Profile/ProfilePage", ["className"=>$klass]);
+    }
+
+    public function showPublic(Request $request, $id){
+
+        $user = User::where("id", $id)->first();
+
+        $stats = null;
+        $lastGames = null;
+
+        $klass = null;
+
+        if($user != null){
+            $stats = app(GameController::class)->getOverallStats($user->id);
+
+            $lastGames = DB::table('mangs')->where('user_id', $user->id)->orderBy("dt", "desc")->take(5)->get();
+
+            $klass = Klass::where("klass_id", $user->klass)->first();
+        }else{
+            abort(404);
+        }
+
+
+        return Inertia::render("Profile/PublicProfilePage", ["user"=>$user, "stats"=>$stats, "lastGames"=>$lastGames, "klass"=>$klass]);
     }
 }

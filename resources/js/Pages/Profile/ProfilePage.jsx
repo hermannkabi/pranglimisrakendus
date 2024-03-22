@@ -216,6 +216,9 @@ export default function ProfilePage({auth, className}){
                         </div>}
                     </div>
                     <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
+                        <a alone="" style={{margin:'auto'}} href={"profile/"+auth.user.id}>Vaata avalikku profiili</a>
+                        <SizedBox height={8} />
+
                         <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
                         <SizedBox height={8} />
                         <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>{auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} <SizedBox width={8} /> <span className="material-icons">logout</span></a>

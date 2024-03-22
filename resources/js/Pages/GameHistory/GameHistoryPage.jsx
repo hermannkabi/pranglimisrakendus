@@ -17,6 +17,8 @@ export default function GameHistoryPage({auth, games, stats}){
         return minutes + ":" + seconds;
     }
 
+    console.log(games);
+
     return <>
             <Head title="Mängude ajalugu" />
             <Navbar title="Mängude ajalugu" user={auth.user} />
