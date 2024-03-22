@@ -15,7 +15,7 @@ export default function NewClassroomPage({auth}){
         <div className="container">
             <div className="preferences">
                 <section>
-                    <form method="post" autoComplete="off">
+                    <form method="post" action={route("classStore")} autoComplete="off">
                         <input type="hidden" name="_token" value={window.csrfToken}  />
                         <input type="text" name="klass_name" id="" placeholder="Klassi nimi" required style={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} />
                         <input autoComplete="new-password" required style={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} type="password" name="klass_password" placeholder="Parool klassiga ühinemiseks" />

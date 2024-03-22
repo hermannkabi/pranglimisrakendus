@@ -14,6 +14,8 @@ class Klass extends Model
         'klass_id', // Primary key
         'klass_name', // 140.a // 140.a mata
         'klass_password',
+        "teacher_id",
+        "uuid", // Kasutame linkides
     ];
 
 }

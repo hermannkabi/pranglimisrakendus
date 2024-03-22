@@ -29,7 +29,7 @@ export default function JoinClassPage({auth, classData, allClasses, errors}){
                 {Object.keys(errors).length > 0 && <InfoBanner text={errors[Object.keys(errors)[0]]} />}
                 {classData != null && <section>
                     <InfoBanner transparent={true} text={"Sa juba oled klassis ("+classData.klass_name+"). Vajutades 'Lahku klassist' või lisades end mõnda teise klassi eemaldatakse sind praegusest klassist."} />
-                    <button onClick={onClassRemove} style={{marginTop:"0", width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} secondary=""> <span className="material-icons" translate="no">close</span> Lahku klassist</button>
+                    <button red="" onClick={onClassRemove} style={{marginTop:"0", width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} secondary=""> <span className="material-icons" translate="no">close</span> Lahku klassist</button>
                 </section>}
                 <div className="preferences">
                     <section>

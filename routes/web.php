@@ -112,17 +112,21 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 Route::controller(App\Http\Controllers\ClassController::class)->middleware(["auth"])->group(function (){
     Route::post('/classroom/search', 'index')->name('classSearch');
 
-    Route::get('/classroom/view/', 'show')->name('classShow');
+    Route::get('/classroom/{id}/view/', 'show')->name('classShow');
 
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
     Route::post('/classroom/join', 'join')->name('join');
 
-    Route::post('/classroom/remove', 'classRemove')->name('classRemove');
+    Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher']);
+    Route::post('/classroom/{id}/edit', 'edit')->name('classEdit')->middleware(['role:teacher']);
 
-    Route::get('/classroom/new', 'newClass')->name('newClass');
-    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['teacher']); // See ei tootanud mul??
 
-    Route::post('/classroom/delete', 'destroy')->name('classDelete')->middleware('teacher');
+    Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
+
+    Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
+    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
+
+    Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
 });
 
 Route::get('/dashboard/old', function (){
@@ -135,7 +139,9 @@ Route::get('/how-to-play', function (){
 
 Route::get("/down", function (){
     
-    if(Auth::id() != 1000003 && Auth::id() != 9){
+    $id = Auth::id();
+    
+    if($id != 1000003 && $id != 9 && $id != 5){
         abort(404);
         return;
     }
@@ -145,8 +151,10 @@ Route::get("/down", function (){
 });
 
 Route::get("/up", function (){
+
+    $id = Auth::id();
     
-    if(Auth::id() != 1000003 && Auth::id() != 9){
+    if($id != 1000003 && $id != 9 && $id != 5){
         abort(404);
         return;
     }

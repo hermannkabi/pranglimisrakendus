@@ -184,9 +184,10 @@ class LoginRegisterController extends Controller
             $stats = app(GameController::class)->getOverallStats(Auth::id());
             $klass = Auth::user()->klass != null;
             $classData = false;
+            $teacherData = null;
             if($klass){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
-                $teacher = User::select(["eesnimi", "perenimi"])->where("role", "teacher")->where("klass", Auth::user()->klass)->get();
+                $teacher = User::select(["eesnimi", "perenimi"])->where("id", $class->teacher_id)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
                 $leaderboardData = [];
@@ -208,9 +209,18 @@ class LoginRegisterController extends Controller
                     }
                 }
 
-                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place];
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid];
             }
-            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, 'classData'=>$classData])->with(['theme' => 'something']);
+
+            if(Auth::user()->role == "teacher"){
+                $teacherData = [];
+                $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->get();
+                foreach($classes as $class){
+                    array_push($teacherData, $class);
+                }
+            }
+
+            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
         }
         
         return redirect()->route('login')

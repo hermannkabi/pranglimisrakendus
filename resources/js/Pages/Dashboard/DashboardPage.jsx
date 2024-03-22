@@ -6,7 +6,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/dashboard.css";
 import InfoBanner from "@/Components/InfoBanner";
 
-export default function Dashboard({auth, stats, classData}) {
+export default function Dashboard({auth, stats, classData, teacherData}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
@@ -31,6 +31,17 @@ export default function Dashboard({auth, stats, classData}) {
         
             <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default", textTransform:"capitalize"}}>{auth.user == null ? (window.localStorage.getItem("first-name") ?? "Mari") : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
 
+            {teacherData != null && <section>
+                <div className='header-container'>
+                    <h3 className='section-header'>Minu klassid</h3>
+                </div>
+                <div className="stats-container">
+                    {teacherData.map((e)=>{return <StatisticsWidget link={"classroom/"+e.uuid+"/view"} key={e.uuid} condensed={true} stat={e.klass_name} desc={"Klass"} /> })}
+                </div>
+                <><SizedBox height={24}/>
+                <a alone='true' href={route("newClass")}>Uus klass&nbsp;<span translate="no" className="material-icons no-anim">add</span></a>
+                <SizedBox height={8}/></>
+            </section>}
             {auth.user.role != "guest" && <section>
                 <div className='header-container'>
                     <h3 className='section-header'>Statistika</h3>
@@ -54,7 +65,7 @@ export default function Dashboard({auth, stats, classData}) {
                 <p style={{color:"rgb(var(--primary-color))", marginInline:"16px"}}><span translate="no">ⓘ</span> Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto</p>
             </section>}
 
-            {auth.user.klass != null && <section>
+            {auth.user.klass != null && teacherData == null && <section>
                 <div className='header-container'>
                     <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
                     {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp {classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</p>}
@@ -66,7 +77,7 @@ export default function Dashboard({auth, stats, classData}) {
                     <StatisticsWidget stat={classData.pointsCount} desc="XP kokku" />
                 </div>
                 <SizedBox height={24}/>
-                <a alone='true' href={route("classShow")}>Vaata klassi <span translate="no" className="material-icons">navigate_next</span></a>
+                <a alone='true' href={"classroom/"+classData.uuid+"/view"}>Vaata klassi <span translate="no" className="material-icons">navigate_next</span></a>
                 <SizedBox height={8}/>
 
             </section>} 

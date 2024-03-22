@@ -181,7 +181,7 @@ button[darkred]{
 }
 
 button[secondary][red]:hover{
-    background-color: rgba(var(--red-color), 0.75);
+    background-color: rgba(var(--red-color), 0.1);
 }
 
 button[secondary][darkred]:hover{
