@@ -79,6 +79,7 @@ class ProfileController extends Controller
         $returnPath = Storage::putFile($path, $file);
 
         $user->profile_pic = "/storage/profile-imgs/".$user->id."/".basename($returnPath);
+         /** @var \App\Models\User $user **/
         $user->save();
         return;
     }
