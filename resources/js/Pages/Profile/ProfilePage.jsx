@@ -3,13 +3,12 @@ import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
-import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
-import InfoBanner from "@/Components/InfoBanner";
+import ProfileAction from "@/Components/ProfileAction";
 
 
 export default function ProfilePage({auth, className}){
@@ -121,14 +120,6 @@ export default function ProfilePage({auth, className}){
         }
     }
 
-    const profileTypeStyle = {
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"baseline",
-        marginBlock:"32px",
-    };
-
     function logout(){
         window.location.href = route("logout");
     }
@@ -186,43 +177,28 @@ export default function ProfilePage({auth, className}){
             </section>}
             
             <section>
-                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
-                    <div className="big-container" style={{marginTop:"8px"}}>
-                        <SizedBox height={16} />
-                        <div style={{position:"relative", display:"inline"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
-                        <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
-                        {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color))", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
+                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"16px"}}>
+                   {/* Selle osa saaks lihtsasti teha eraldi komponendiks (sisse annad kasutaja) */}
+                    <div style={{overflow:"hidden"}}>
+                        <SizedBox height={32} />
+                        <div  className="profile-widget" style={{display:"flex", flexDirection:"row", gap:"16px", alignItems:"center"}}>
+                            <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
+                                <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
+                                {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
+                            </div>
+                            <div className="name-email" style={{textAlign:"start"}}>
+                                <div style={{}}><h1 translate="no" style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize", display:"inline", verticalAlign:"middle"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"} </h1> {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"12px", padding:"2px 4px", fontWeight:"normal", marginTop:"6px"}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role == null ? "Tavakonto" : auth.user.role}</span>}</div>
+                                {auth.user.email.length > 0 && <p translate="no" style={{marginBottom:"0", color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>}
+                            </div>
                         </div>
-                        <SizedBox height={8} />
-                        <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
-                        <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
-                    </div>                    
-
-                    <div className="stat-container" style={{width:"90%"}}>
-                       {auth.user.role != "student" && <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KONTOTÜÜP</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role == null ? "Tavakonto" : auth.user.role}</h3>
-                        </div>}
-
-                        <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KOOL</p>
-                            <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
-                        </div>
-                        
-                        {auth.user.role != "teacher" && auth.user.role != "guest" && <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
-                            {className == null && <button style={{marginRight:0}} onClick={()=>window.location.href = route("classJoin")}>Ühine klassiga</button> }
-                            {className != null && <div style={{display:"flex", gap:"8px", flexDirection:"row", alignItems:"center"}} ><h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3> <a alone="" href={route("classJoin")}><span className="material-icons no-anim" style={{cursor:"pointer", color:"rgb(var(--text-color))"}} translate="no">edit</span></a> </div> }
-                        </div>}
                     </div>
-                    <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
-                        <a alone="" style={{margin:'auto'}} href={"profile/"+auth.user.id}>Vaata avalikku profiili</a>
-                        <SizedBox height={8} />
-
-                        <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
-                        <SizedBox height={8} />
-                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>{auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} <SizedBox width={8} /> <span className="material-icons">logout</span></a>
-                        <SizedBox height={4} />
+                    
+                    <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
+                        <ProfileAction icon="public" label="Kuva avalik profiil" link={"profile/"+auth.user.id} />
+                        {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
+                        {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
+                        <ProfileAction icon="lock" label="Muuda parooli" />
+                        <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />
                     </div>
                 </div>
             </section>

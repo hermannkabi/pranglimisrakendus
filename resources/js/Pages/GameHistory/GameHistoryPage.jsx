@@ -1,4 +1,5 @@
 import GameTile from "@/Components/GameTile";
+import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 import Navbar from "@/Components/Navbar";
 import NavigatePagesButton from "@/Components/NavigatePagesButton";
 import SizedBox from "@/Components/SizedBox";
@@ -38,7 +39,7 @@ export default function GameHistoryPage({auth, games, stats}){
                 {games.data.map((e)=><GameTile data={e} key={e.game_id} />)}
 
                 {/* {games.data.map((e)=><p key={e.game_id} >{e.game_count} tehet ({(new Date(e.dt)).toLocaleString("et-EE").split(",")[0]})</p>)} */}
-                {games.data.length <= 0 && <p>Tingimustele vastavaid tulemusi ei leitud</p>}
+                {games.data.length <= 0 && <HorizontalInfoBanner text="Tingimustele vastavaid tulemusi ei leitud" />}
             </section>
 
             {/* You may ask - why 3? */}

@@ -4,9 +4,12 @@ import SizedBox from "@/Components/SizedBox";
 import StatisticsWidget from "@/Components/StatisticsWidget";
 import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
+import { useState } from "react";
 
 
 export default function GameDetailsPage({game, auth, playedBy}){
+
+    const [copyText, setCopyText] = useState("Jaga");
 
     function averageTime(timeInSeconds){
         var minutes = Math.floor(timeInSeconds / 60);
@@ -35,19 +38,14 @@ export default function GameDetailsPage({game, auth, playedBy}){
     var name = game.game == null ? "Tundmatu" : game.game in gameNames ? gameNames[game.game] : game.game.substring(0, 1).toUpperCase() + game.game.substring(1);
     
 
-    function shareLink(){
-        const data = {
-            title: 'Mäng Reaaler',
-            url: window.location.href,
-        };
 
-        navigator.share(data)
-        .then(() => {
-            console.log('Sharing was successful');
-        })
-        .catch((error) => {
-            console.error('Sharing failed:', error);
-        });
+    function copyToClipboard(){
+        navigator.clipboard.writeText(window.location.origin + "/game/" + game.game_id + "/details");
+        setCopyText("Link kopeeritud!");
+
+        setTimeout(() => {
+            setCopyText("Jaga");
+        }, 2000);
     }
 
     return <>
@@ -89,9 +87,9 @@ export default function GameDetailsPage({game, auth, playedBy}){
                 })}
             </div>
         </section>
-        {/* <SizedBox height={16} />
-        <a alone="" onClick={shareLink} >Jaga &nbsp; <span className="material-icons no-anim" translate="no">share</span></a>
-        <SizedBox height={16} /> */}
+        <SizedBox height={16} />
+        <a alone="" onClick={copyToClipboard} >{copyText}&nbsp;<span className="material-icons no-anim" translate="no">share</span></a>
+        <SizedBox height={16} />
 
     </>;
 }

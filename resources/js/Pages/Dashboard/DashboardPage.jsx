@@ -5,6 +5,7 @@ import StatisticsWidget from "@/Components/StatisticsWidget";
 import { Head } from "@inertiajs/react";
 import "/public/css/dashboard.css";
 import InfoBanner from "@/Components/InfoBanner";
+import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 
 export default function Dashboard({auth, stats, classData, teacherData}) {
 
@@ -35,6 +36,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 <div className='header-container'>
                     <h3 className='section-header'>Minu klassid</h3>
                 </div>
+                {teacherData.length <= 0 && <HorizontalInfoBanner text="Klasse veel pole. Loo uus allpool oleva lingiga" />}
                 <div className="stats-container">
                     {teacherData.map((e)=>{return <StatisticsWidget link={"classroom/"+e.uuid+"/view"} key={e.uuid} condensed={true} stat={e.klass_name} desc={"Klass"} /> })}
                 </div>
@@ -62,13 +64,13 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <h3 className='section-header'>Statistika</h3>
                 </div>
                 <i class="fa-solid fa-calculator"></i>
-                <p style={{color:"rgb(var(--primary-color))", marginInline:"16px"}}><span translate="no">ⓘ</span> Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto</p>
+                <HorizontalInfoBanner text="Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto" />
             </section>}
 
             {auth.user.klass != null && teacherData == null && <section>
                 <div className='header-container'>
                     <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
-                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp {classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</p>}
+                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp <span style={{textTransform:"capitalize"}}>{classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</span></p>}
                 </div>
 
                 <div className="history-statistics">

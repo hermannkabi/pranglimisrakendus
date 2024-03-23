@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Mang extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'game_id';
     public $timestamps = false;
     protected $fillable = [
         'game_id',

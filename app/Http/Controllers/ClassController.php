@@ -99,9 +99,9 @@ class ClassController extends Controller
             'klass_password.min'=>"Parool peab olema vähemalt 4 tähemärki pikk",
         ]);
 
-        $this->createKlass($request->klass_name, $request->klass_password);
+        $klass = $this->createKlass($request->klass_name, $request->klass_password);
 
-        return redirect()->route("dashboard");
+        return redirect("classroom/" . $klass->uuid . "/view");
     }
 
     /**
@@ -257,7 +257,7 @@ class ClassController extends Controller
             }
             
             $students = User::where('klass', $klass)->where('role', 'student')->get();
-            $mangud = DB::table('mangs')->where('user_id',$students->id)->orderBy("dt", "desc")->get();
+            $mangud = Mang::where('user_id',$students->id)->orderBy("dt", "desc")->get();
 
             $accuracy_sum = 0;
             $experience = 0;
@@ -335,7 +335,7 @@ class ClassController extends Controller
         $current_klass = $request->user()->klass == null ? null : Klass::where("klass_id", $request->user()->klass)->first();
 
 
-        if($current_klass->klass_id == $klass->klass_id){
+        if($current_klass != null && $current_klass->klass_id == $klass->klass_id){
             return redirect()->route("dashboard");
         }
 

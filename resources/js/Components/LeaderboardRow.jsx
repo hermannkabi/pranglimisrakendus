@@ -1,6 +1,6 @@
 export default function leaderboardRow({points, index, player, user}){
     return (
-        <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginBlock:"12px"}}> 
+        <div style={{display:"flex", flexDirection:'row', justifyContent:"space-between", gap:"16px", marginBlock:"24px"}}> 
             <div style={{display:"flex", flexDirection:"row", gap:"8px", alignItems:"center"}}>
                 <span style={{color: (player ? "rgb(var(--primary-color))" : "inherit")}}>{index + 1}. </span>
                 <img src={user.profile_pic} alt={user.eesnimi + " " + user.perenimi} className="profile-pic" style={{height:"24px"}} />

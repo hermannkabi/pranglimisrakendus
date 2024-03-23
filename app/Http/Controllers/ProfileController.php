@@ -147,17 +147,45 @@ class ProfileController extends Controller
 
         $user = User::where("id", $id)->first();
 
+        // Can be assumed to be non-null
+        $logged_in_user = Auth::user();
+
+        $logged_in_klass = Klass::where("klass_id", $logged_in_user->klass)->first();
+
+
         $stats = null;
         $lastGames = null;
 
         $klass = null;
 
         if($user != null){
+            // Kuna mulle siiski tundub, et lasta kõigil näha kasutaja andmeid on ebaõige (eriti nooremate laste puhul), siis teen niimoodi ümber, et näha saavad ainult klassikaaslased ja õpetaja
+            
+            $klass = Klass::where("klass_id", $user->klass)->first();
+
+            // You can see your own public profile, no matter what
+            if($user->id != $logged_in_user->id){
+                if($user->role == "teacher"){
+                    // A teacher can be seen only by their students
+                    if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
+                        abort(403);
+                    }
+                }else if($user->role == "student"){
+                    // A student can be seen by their teacher or their classmates
+                    if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
+                        abort(403);
+                    }
+                }else{
+                    // Dont show guest account
+                    abort(404);
+                }
+            }
+            
+            
             $stats = app(GameController::class)->getOverallStats($user->id);
 
-            $lastGames = DB::table('mangs')->where('user_id', $user->id)->orderBy("dt", "desc")->take(5)->get();
+            $lastGames = Mang::where('user_id', $user->id)->orderBy("dt", "desc")->take(5)->get();
 
-            $klass = Klass::where("klass_id", $user->klass)->first();
         }else{
             abort(404);
         }
