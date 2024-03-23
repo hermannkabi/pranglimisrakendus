@@ -194,10 +194,10 @@ export default function ProfilePage({auth, className}){
                     </div>
                     
                     <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
-                        <ProfileAction icon="public" label="Kuva avalik profiil" link={"profile/"+auth.user.id} />
+                        <ProfileAction icon="public" label="Kuva avalik profiil" link={"/profile/"+auth.user.id} />
                         {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
                         {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
-                        <ProfileAction icon="lock" label="Muuda parooli" />
+                        <ProfileAction disabled={true} icon="lock" label="Muuda parooli" />
                         <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />
                     </div>
                 </div>

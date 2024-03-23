@@ -83,7 +83,15 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                 </div>
 
                 {lastGames.map((e, ind)=><GameTile data={e} key={ind} />)}
-                {lastGames.length <= 0 && <HorizontalInfoBanner text={user.role == "teacher" ? "Õpetajal on kiire - ta ei ole veel jõudnud arvutamisega tegeleda 😊" : "Kasutajal ei ole veel mänge"} />}
+                {lastGames.length <= 0 && <HorizontalInfoBanner text={user.role == "teacher" ? "Õpetaja "+(user.eesnimi)+" peab õpilaste kontrolltöid parandama - ta ei ole veel jõudnud arvutamisega tegeleda 😊" : "Kasutajal ei ole veel mänge"} />}
+            
+                {lastGames.length > 0 && <>
+                    <SizedBox height={24} />
+                    <a href={"/game/history/"+user.id} alone="" >Kõik mängud&nbsp;<span className="material-icons" translate="no">navigate_next</span></a>
+                    <SizedBox height={8} />
+                    
+                </>}
             </section>
+            
     </>;
 }

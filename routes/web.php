@@ -102,7 +102,7 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 
     Route::post('/game/update', 'update')->name('gameUpdate');
 
-    Route::get('/game/history', 'show')->name('gameHistory');
+    Route::get('/game/history/{id?}', 'show')->name('gameHistory');
 
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
     

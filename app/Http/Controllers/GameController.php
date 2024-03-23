@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mang;
+use App\Models\Klass;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -79,12 +80,37 @@ class GameController extends Controller
     /**
      * Display game history.
      */
-    public function show()
+    public function show(?string $id=null)
     {
-        //Game history
-        $mangud = DB::table('mangs')->where('user_id',Auth::id())->orderBy("dt", "desc")->paginate(10);
+        $user = User::where("id", $id ?? Auth::id())->first();
+        $klass = Klass::where("klass_id", $user->klass)->first();
 
-        return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud, "stats"=>$this->getOverallStats(null)]);
+        $logged_in_user = Auth::user();
+        $logged_in_klass = Klass::where("klass_id", $logged_in_user->klass)->first();
+
+
+         // You can see your own public profile, no matter what
+         if($user->id != $logged_in_user->id){
+            if($user->role == "teacher"){
+                // A teacher can be seen only by their students
+                if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
+                    abort(403);
+                }
+            }else if($user->role == "student"){
+                // A student can be seen by their teacher or their classmates
+                if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
+                    abort(403);
+                }
+            }else{
+                // Dont show guest account
+                abort(404);
+            }
+        }
+
+        //Game history
+        $mangud = DB::table('mangs')->where('user_id', $user->id)->orderBy("dt", "desc")->paginate(10);
+
+        return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud, "stats"=>$this->getOverallStats($user->id)]);
     }
 
     /**
