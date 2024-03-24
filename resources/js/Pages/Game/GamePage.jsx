@@ -473,7 +473,7 @@ export default function GamePage({data, time, auth}){
                 // If the answer has an empty fraction, delete the whole fraction
                 if(answer.endsWith("(0/0)") && !simplify){
                     ans = answer.replace("(0/0)", "");
-                    setAnswer(ans);
+                    setAnswer(ans.length == 0 && isGap ? "_" : "");
                     setFractionState("off");
                     return;
                 }
@@ -798,7 +798,7 @@ export default function GamePage({data, time, auth}){
             });
         }
         
-        return ans === "" ? (isGap ? "_" : "") : ans;
+        return ans.length <= 0 || ans == "" ? (isGap ? "_" : "") : ans;
     }
 
     

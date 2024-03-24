@@ -68,7 +68,7 @@ export default function WelcomePage(){
             </div>
 
 
-            <Head title="Tere tulemast" />
+            <Head title="Tere tulemast!" />
             <div className="home-navbar">
                 <div className="title-div">
                     <ApplicationLogo height={50} />

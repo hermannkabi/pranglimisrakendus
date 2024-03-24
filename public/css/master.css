@@ -196,16 +196,16 @@ button[secondary]:hover > .lds-ring div{
 
 /* Custom buttons */
 .big-btn{
-    border: 2px solid rgb(var(--primary-color));
-    background-color: transparent;
+    background-color: rgb(var(--primary-color), var(--section-transparency));
     color:rgb(var(--primary-color));
     border-radius: 8px;
     height:60px;
     padding:8px 16px;
     margin:8px;
     display:inline-flex;
-    justify-content: center;
     align-items: center;
+    text-align: center;
+    justify-content: center;
     /* cursor:pointer; */
     user-select: none;
     transition: background-color 100ms;
@@ -216,10 +216,11 @@ button[secondary]:hover > .lds-ring div{
 .big-btn .symbol{
     transition: transform 200ms;
     position: absolute;
-    left: -8px;
-    bottom: -37px;
+    left: -6px;
+    bottom: -14px;
     overflow: hidden;
     color: rgb(var(--primary-color)) !important;
+    font-size: 60px;
 }
 
 .big-btn:hover{
@@ -284,7 +285,7 @@ a[red]:hover{
 /* Text input */
 
 input, textarea, select{
-    background-color: rgba(var(--input-color), 0.2);
+    background-color: rgba(var(--primary-color), 0.2);
     color: rgb(var(--primary-color));
     color: rgba(0, 0, 0, 0.8);
 
@@ -300,10 +301,10 @@ input, textarea, select{
     min-width: 50px;
 }
 
-select optgroup, select option {
+/* select optgroup, select option {
     color: black;
     border-radius: 0;
-}
+} */
 
 option{
     font-family: var(--main-font), sans-serif;
@@ -660,10 +661,18 @@ sdjkhskdsdsde::after{
     -webkit-text-fill-color: transparent;
 }
 
+.fancy-div{
+    background: linear-gradient(90deg, rgba(237,201,3, 0.1) 0%, rgba(164,134,6,0.1) 100%);
+}
+
 .fancy2{
     background: -webkit-linear-gradient(207deg, rgba(223,223,223,1) 0%, rgba(150,151,144,1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.fancy2-div{
+    background: linear-gradient(207deg, rgba(223,223,223, 0.1) 0%, rgba(150,151,144,0.1) 100%);
 }
 
 .fancy3{
@@ -672,6 +681,9 @@ sdjkhskdsdsde::after{
     -webkit-text-fill-color: transparent;
 }
 
+.fancy3-div{
+    background: linear-gradient(207deg, rgba(254,194,132, 0.1) 0%, rgba(147,75,26,0.1) 100%);
+}
 
 h3.inactive{
     color: grey !important;

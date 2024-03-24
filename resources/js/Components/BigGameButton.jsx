@@ -1,9 +1,4 @@
 export default function BigGameButton({symbol, text, value}){
-
-    function navigateToPreview(){
-        window.location.href=route("preview") + "?id="+value;
-    }
-
     return (
             // <button onClick={navigateToPreview} style={{paddingBlock:"4px", width:"100%", margin:"8px auto", justifyContent:'space-between'}}>
             //     <span className="big-btn-texst">{text}</span>
@@ -11,10 +6,11 @@ export default function BigGameButton({symbol, text, value}){
             //     <div className="big-btn-symbol" style={{marginBottom:"4px", lineHeight:'1'}}>{symbol}</div>
             // </button>
 
-            <div translate="no" onClick={navigateToPreview} className="big-btn">
-                <span className="symbol" style={{fontWeight:"normal", fontSize:"6rem", color:"#ffffff77"}}>{symbol}</span>
-                <span style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
-            </div>
+                <div translate="no" className="big-btn" style={{position:"relative"}} >
+                     <a style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}} href={route("preview") + "?id="+value}></a>
 
+                    <span className="symbol" style={{fontWeight:"normal", color:"#ffffff77"}}>{symbol}</span>
+                    <span style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
+                </div>            
     );
 }

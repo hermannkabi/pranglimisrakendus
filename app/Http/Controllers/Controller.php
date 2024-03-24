@@ -1830,7 +1830,7 @@ class MathController extends Controller
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
-            if($tehe == MathController::LIITMINE || $tehe == MathController::JAGAMINE || $tehe == "liitlahutamine"){
+            if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == "liitlahutamine"){
 
                 if($tehe == "liitlahutamine"){
                     $tehe = "mõlemad";

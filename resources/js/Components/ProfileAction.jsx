@@ -1,4 +1,4 @@
-export default function ProfileAction({red=false, selected=false, icon, label, link=null, onClick=null, smallLabel=null, disabled=false}){
+export default function ProfileAction({symbol=null, red=false, selected=false, icon, label, link=null, onClick=null, smallLabel=null, disabled=false}){
 
     const color = red ? "var(--darkred-color)" : "var(--primary-color)";
     
@@ -9,8 +9,9 @@ export default function ProfileAction({red=false, selected=false, icon, label, l
                 
                 {link && <a href={link} style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a> }
                 
-                <div style={{transition:"all 200ms", display:"flex", alignItems:"center", backgroundColor:"rgb("+color+", "+(selected ? "1" : "var(--section-transparency)"), padding:"8px", borderRadius:"50%"}}>
-                    <span className="material-icons" translate="no" style={{color: selected ? "white" : "rgb("+color+")"}}>{icon}</span>
+                <div style={{aspectRatio:"1", transition:"all 200ms", display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"rgb("+color+", "+(selected ? "1" : "var(--section-transparency)"), padding:"8px", borderRadius:"50%"}}>
+                    {symbol && <span className="material-icons" style={{fontSize:"32px", color: selected ? "white" : "rgb("+color+")"}}>{symbol}</span> }
+                    {icon && <span className="material-icons" translate="no" style={{color: selected ? "white" : "rgb("+color+")"}}>{icon}</span>}
                 </div>
 
                 <div style={{textAlign:"start", marginBlock: smallLabel ? "8px" : "0"}}>

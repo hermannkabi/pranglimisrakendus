@@ -1,2 +1,6 @@
 User-agent: *
 Disallow:
+
+# Eemalda kõik pildid Google otsingust
+User-agent: Googlebot-Image
+Disallow: /
