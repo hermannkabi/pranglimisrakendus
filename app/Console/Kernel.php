@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             app(ProfileController::class)->checkStreak();
-            User::query()->update(['streak_active' => false]);
         })->daily();
     }
 

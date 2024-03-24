@@ -8,8 +8,6 @@ import InfoBanner from "@/Components/InfoBanner";
 
 export default function NewClassroomPage({auth, errors}){
 
-    console.log(errors);
-
     return <>
         <Head title='Uus klass' />
         <Navbar user={auth.user} title="Uus klass" />

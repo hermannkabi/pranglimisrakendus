@@ -65,7 +65,6 @@ export default function OperationWidget({op}){
 
     // Returns an HTML code of the fraction
     function fracRender(operationString){
-        console.log("Here");
         var result = "";
         var matches = operationString.match(regex);
         if(matches != null){

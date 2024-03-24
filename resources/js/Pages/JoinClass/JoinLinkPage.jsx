@@ -14,7 +14,6 @@ export default function JoinLinkPage({auth, klass, current_klass, invited_by}){
                 "_token":window.csrfToken,
             },
         }).done(function (data){
-            console.log("Tehtud!");
             window.location.href = route("dashboard");
         }).fail(function (data){
             console.log(data);

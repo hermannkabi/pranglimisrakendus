@@ -7,8 +7,6 @@ import InfoBanner from "@/Components/InfoBanner";
 
 export default function JoinClassPage({auth, classData, allClasses, errors}){
 
-    console.log(errors);
-
     function onClassRemove(){
         if(confirm("Kas oled kindel, et soovid end klassist eemaldada?")){
             $.post("/classroom/remove/" + auth.user.id , {"_token":window.csrfToken}).done(function (data){

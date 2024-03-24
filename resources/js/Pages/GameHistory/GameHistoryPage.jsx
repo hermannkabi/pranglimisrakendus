@@ -18,8 +18,6 @@ export default function GameHistoryPage({auth, games, stats}){
         return minutes + ":" + seconds;
     }
 
-    console.log(games);
-
     return <>
             <Head title="Mängude ajalugu" />
             <Navbar title="Mängude ajalugu" user={auth.user} />
@@ -29,7 +27,7 @@ export default function GameHistoryPage({auth, games, stats}){
 
             <section>
                 <div className="history-statistics">
-                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} />
+                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} oneDesc={"Mäng"} />
                     <StatisticsWidget stat={stats.accuracy + "%"} desc={"Keskmine täpsus"} />
                     <StatisticsWidget stat={averageTime(stats.average_time)} desc={"Keskmine aeg"} />
                 </div>

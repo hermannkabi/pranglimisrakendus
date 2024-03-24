@@ -122,7 +122,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 'game':window.location.href.split("/")[5],
                 'game_type': window.location.href.split("/")[7],
             }).done(function (data){
-                console.log("Tehtud!");
                 setGameSaved(true);
             }).fail(function (data){
                 console.log(data);
@@ -137,7 +136,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
             opacity: 0,
 
         }, animationTime, function (){
-            console.log(log.filter((op) => op.isCorrect));
             setCurrentlyShownLog(log.filter((op) => ($(".correct-choice").is(":checked") && op.isCorrect) || ($(".incorrect-choice").is(":checked") && !op.isCorrect)));
 
             $(".ss .detailed-container").animate({

@@ -95,17 +95,33 @@ class ProfileController extends Controller
 
         foreach($user as $j){
             $viimaseManguDt = Mang::select("dt")->where("user_id", $j->id)->orderBy("dt", "desc")->first();
-            if($viimaseManguDt){
-                if(strtotime($viimaseManguDt["dt"])<(strtotime('now')-86400)){
-                    $j->streak = 0;
-                }else if($j->streak_active == 0){
-                    $j->streak ++;
-                    $j->streak_active = 1;
-                }
-                $j->save();
+            
+            if($viimaseManguDt == null){
+                $j->streak = null;
+            }else if(strtotime($viimaseManguDt["dt"])<(strtotime('now')-86400)){
+                $j->streak = 0;
+            }
+
+            $j->streak_active = 0;
+            $j->save();
+        }
+
+    }
+
+    // This function is called after completing a game and is used to set a streak for the player
+    public function updateStreak($user_id, $mang){
+        $user = User::where("id", $user_id)->first();
+
+        if($user){
+            $viimaseManguDt = $mang["dt"];
+            if($user->streak_active != 1){
+                $user->streak = $user->streak + 1;
+                $user->streak_active = 1;
+                $user->save();
             }
         }
     }
+
     /**
      * Delete the user's account.
      */

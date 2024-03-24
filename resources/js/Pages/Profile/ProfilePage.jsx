@@ -9,6 +9,7 @@ import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
 import ProfileAction from "@/Components/ProfileAction";
+import ProfileWidget from "@/Components/ProfileWidget";
 
 
 export default function ProfilePage({auth, className}){
@@ -107,7 +108,6 @@ export default function ProfilePage({auth, className}){
                 $("#save-btn .text").text("Salvesta seaded");
             }, 1500);
 
-            console.log("Saved");
             //window.location.href = route("dashboard");
             $.post(route("settingsAdd"), {
                 "_token":window.csrfToken,
@@ -150,7 +150,6 @@ export default function ProfilePage({auth, className}){
             contentType: false,
             processData:false,
         }).done(function (data){
-            console.log("Tehtud!");
             setImageUploadErrors(null);
             window.location.reload();
         }).fail(function (data){
@@ -180,21 +179,11 @@ export default function ProfilePage({auth, className}){
                 <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"16px"}}>
                    {/* Selle osa saaks lihtsasti teha eraldi komponendiks (sisse annad kasutaja) */}
                     <div style={{overflow:"hidden"}}>
-                        <SizedBox height={32} />
-                        <div  className="profile-widget" style={{display:"flex", flexDirection:"row", gap:"16px", alignItems:"center"}}>
-                            <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
-                                <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
-                                {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
-                            </div>
-                            <div className="name-email" style={{textAlign:"start"}}>
-                                <div style={{}}><h1 translate="no" style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize", display:"inline", verticalAlign:"middle"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"} </h1> {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"12px", padding:"2px 4px", fontWeight:"normal", marginTop:"6px"}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role == null ? "Tavakonto" : auth.user.role}</span>}</div>
-                                {auth.user.email.length > 0 && <p translate="no" style={{marginBottom:"0", color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>}
-                            </div>
-                        </div>
+                        <ProfileWidget auth={auth} user={auth.user} onImgChange={uploadFile} />
                     </div>
                     
                     <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
-                        <ProfileAction icon="public" label="Kuva avalik profiil" link={"/profile/"+auth.user.id} />
+                        <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
                         {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
                         {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
                         <ProfileAction disabled={true} icon="lock" label="Muuda parooli" />
@@ -253,8 +242,8 @@ export default function ProfilePage({auth, className}){
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Klaviatuur</p>
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
-                            <RadioChoice icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
+                            <RadioChoice smallLabel="Telefoni klaviatuur" icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
+                            <RadioChoice smallLabel="Kalkulaatori klaviatuur" icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
                         </div>
                     </div>
 

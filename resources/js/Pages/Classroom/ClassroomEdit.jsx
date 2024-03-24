@@ -8,8 +8,6 @@ import CheckboxTile from "@/Components/CheckboxTile";
 
 export default function ClassroomEdit({klass, auth, students}){
 
-    console.log(students);
-
     function submitData(e){
         e.preventDefault();
 
@@ -30,7 +28,6 @@ export default function ClassroomEdit({klass, auth, students}){
             "klass_password": $("#pass").val(),
             "removed_students": removeStudents,
         }).done(function (data){
-            console.log("Tehtud!");
             window.location.href = route("dashboard");
         }).fail(function (data){
             console.log(data);
@@ -42,7 +39,6 @@ export default function ClassroomEdit({klass, auth, students}){
             $.post("/classroom/"+klass.uuid+"/delete", {
                 "_token":window.csrfToken,
             }).done(function (data){
-                console.log("Tehtud!");
                 window.location.href = route("dashboard");
             }).fail(function (data){
                 console.log(data);

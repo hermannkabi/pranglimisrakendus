@@ -11,8 +11,6 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
-    console.log(classData);
-
     Mousetrap.bind("c h r i s e t t e", function (){
         $(".easteregg1").fadeIn(50, function (){
             setTimeout(() => {
@@ -52,7 +50,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Mängu"} oneDesc={"Mäng"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
                     {/* <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" /> */}
-                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
+                    <StatisticsWidget textClass={auth.user.streak_active ? null : "inactive"} stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>
@@ -74,7 +72,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget stat={classData.myPlace + "."} desc="Koht klassis" />
+                    <StatisticsWidget textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
                     <StatisticsWidget stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
                     <StatisticsWidget stat={classData.pointsCount} desc="XP kokku" />
                 </div>
