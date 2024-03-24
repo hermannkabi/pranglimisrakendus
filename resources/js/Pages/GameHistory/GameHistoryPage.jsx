@@ -1,4 +1,5 @@
 import GameTile from "@/Components/GameTile";
+import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 import Navbar from "@/Components/Navbar";
 import NavigatePagesButton from "@/Components/NavigatePagesButton";
 import SizedBox from "@/Components/SizedBox";
@@ -26,7 +27,7 @@ export default function GameHistoryPage({auth, games, stats}){
 
             <section>
                 <div className="history-statistics">
-                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} />
+                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} oneDesc={"Mäng"} />
                     <StatisticsWidget stat={stats.accuracy + "%"} desc={"Keskmine täpsus"} />
                     <StatisticsWidget stat={averageTime(stats.average_time)} desc={"Keskmine aeg"} />
                 </div>
@@ -36,7 +37,7 @@ export default function GameHistoryPage({auth, games, stats}){
                 {games.data.map((e)=><GameTile data={e} key={e.game_id} />)}
 
                 {/* {games.data.map((e)=><p key={e.game_id} >{e.game_count} tehet ({(new Date(e.dt)).toLocaleString("et-EE").split(",")[0]})</p>)} */}
-                {games.data.length <= 0 && <p>Tingimustele vastavaid tulemusi ei leitud</p>}
+                {games.data.length <= 0 && <HorizontalInfoBanner text="Mänge ei leitud. Aeg natuke peastarvutamist harjutada!" />}
             </section>
 
             {/* You may ask - why 3? */}

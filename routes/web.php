@@ -27,6 +27,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
     Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
 
+    Route::get('/profile/{id}', "showPublic")->name("profilePublic");
 });
 
 
@@ -101,7 +102,7 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 
     Route::post('/game/update', 'update')->name('gameUpdate');
 
-    Route::get('/game/history', 'show')->name('gameHistory');
+    Route::get('/game/history/{id?}', 'show')->name('gameHistory');
 
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
     

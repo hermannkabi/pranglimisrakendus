@@ -653,3 +653,26 @@ qdffgkfgkjgdf::after{
 sdjkhskdsdsde::after{
     content:"9";
 }
+
+.fancy{
+    background: -webkit-linear-gradient(0deg, rgba(237,201,3,1) 0%, rgba(164,134,6,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fancy2{
+    background: -webkit-linear-gradient(207deg, rgba(223,223,223,1) 0%, rgba(150,151,144,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fancy3{
+    background: -webkit-linear-gradient(207deg, rgba(254,194,132,1) 0%, rgba(147,75,26,1) 71%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+h3.inactive{
+    color: grey !important;
+}

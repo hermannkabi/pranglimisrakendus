@@ -5,12 +5,11 @@ import StatisticsWidget from "@/Components/StatisticsWidget";
 import { Head } from "@inertiajs/react";
 import "/public/css/dashboard.css";
 import InfoBanner from "@/Components/InfoBanner";
+import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 
 export default function Dashboard({auth, stats, classData, teacherData}) {
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
-
-    console.log(classData);
 
     Mousetrap.bind("c h r i s e t t e", function (){
         $(".easteregg1").fadeIn(50, function (){
@@ -35,6 +34,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 <div className='header-container'>
                     <h3 className='section-header'>Minu klassid</h3>
                 </div>
+                {teacherData.length <= 0 && <HorizontalInfoBanner text="Klasse veel pole. Loo uus allpool oleva lingiga" />}
                 <div className="stats-container">
                     {teacherData.map((e)=>{return <StatisticsWidget link={"classroom/"+e.uuid+"/view"} key={e.uuid} condensed={true} stat={e.klass_name} desc={"Klass"} /> })}
                 </div>
@@ -50,7 +50,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Mängu"} oneDesc={"Mäng"} />
                     <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
                     {/* <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" /> */}
-                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
+                    <StatisticsWidget textClass={auth.user.streak_active ? null : "inactive"} stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
                 {stats.total_training_count > 0 && <><SizedBox height={24}/>
@@ -62,17 +62,17 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <h3 className='section-header'>Statistika</h3>
                 </div>
                 <i class="fa-solid fa-calculator"></i>
-                <p style={{color:"rgb(var(--primary-color))", marginInline:"16px"}}><span translate="no">ⓘ</span> Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto</p>
+                <HorizontalInfoBanner text="Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto" />
             </section>}
 
             {auth.user.klass != null && teacherData == null && <section>
                 <div className='header-container'>
                     <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
-                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp {classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</p>}
+                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp <a style={{all:"unset", cursor:"pointer"}} href={"/profile/"+classData.teacher[0].id}><span style={{textTransform:"capitalize", fontWeight:"bold"}}>{classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</span></a></p>}
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget stat={classData.myPlace + "."} desc="Koht klassis" />
+                    <StatisticsWidget textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
                     <StatisticsWidget stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
                     <StatisticsWidget stat={classData.pointsCount} desc="XP kokku" />
                 </div>
@@ -84,7 +84,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
 
             <section>
                 <div className='header-container'>
-                    <h3 className='section-header'>Pranglimine</h3>
+                    <h3 className='section-header'>Arvutamine</h3>
                 </div>
 
                 <div className="big-btns">

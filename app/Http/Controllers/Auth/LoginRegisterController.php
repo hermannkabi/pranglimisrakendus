@@ -187,7 +187,7 @@ class LoginRegisterController extends Controller
             $teacherData = null;
             if($klass){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
-                $teacher = User::select(["eesnimi", "perenimi"])->where("id", $class->teacher_id)->get();
+                $teacher = User::select(["eesnimi", "perenimi", "id"])->where("id", $class->teacher_id)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
                 $leaderboardData = [];

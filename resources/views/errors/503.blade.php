@@ -26,7 +26,7 @@
     </div>
 
     <script src="{{ URL::asset('js/jquery.js') }}"></script>
-    <script src="{{ URL::asset('js/theme.js') }}" ></script>
+    <script src="{{ URL::asset('js/settings.js') }}" ></script>
 
 </body>
 </html>

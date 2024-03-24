@@ -5,6 +5,8 @@ export default function NumberChoice({defaultValue, id, maxValue=10, onChange=nu
     const [value, setValue] = useState(defaultValue ?? "");
 
     const delta = 0.5;
+    const color = "var(--primary-color)";
+
 
     useEffect(()=>{
         if(onChange != null) onChange();
@@ -19,6 +21,24 @@ export default function NumberChoice({defaultValue, id, maxValue=10, onChange=nu
         var newVal = Math.max(0, value - delta);
         setValue(newVal);
     }
+
+    return <>
+        <input type="hidden" id={id} value={value} />
+    
+        <div style={{display:"flex", flexGrow:"1", flexDirection:"row", boxSizing:"border-box" ,overflow:"hidden", userSelect:"none", backgroundColor:"rgb("+color+", var(--section-transparency))", borderRadius:"8px", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"space-between", position:"relative"}}>                
+            <div onClick={subtractFromValue} style={{cursor:"pointer", transition:"all 200ms", display:"flex", alignItems:"center", backgroundColor:"rgb("+color+", 1", padding:"8px", borderRadius:"50%"}}>
+                <span className="material-icons" translate="no" style={{color: "white"}}>remove</span>
+            </div>
+
+            <div style={{textAlign:"center"}}>
+                <p style={{wordWrap:"anywhere", lineHeight:"1", color:"rgb("+color+")", fontWeight: "normal", marginBlock: "16px"}}>{value == 0 ? "-" : value.toString().replace(".", ",") ?? "-"} {value == 0 || value == null ? "" : "min"}</p>
+            </div>
+
+            <div onClick={addToValue} style={{cursor:"pointer", transition:"all 200ms", display:"flex", alignItems:"center", backgroundColor:"rgb("+color+", 1", padding:"8px", borderRadius:"50%"}}>
+                <span className="material-icons" translate="no" style={{color: "white"}}>add</span>
+            </div>
+        </div>
+    </> ;
 
     return (
         <>

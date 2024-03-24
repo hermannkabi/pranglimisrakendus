@@ -3,13 +3,13 @@ import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
-import NumberInput from "@/Components/NumberInput";
 import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
 import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
-import InfoBanner from "@/Components/InfoBanner";
+import ProfileAction from "@/Components/ProfileAction";
+import ProfileWidget from "@/Components/ProfileWidget";
 
 
 export default function ProfilePage({auth, className}){
@@ -108,7 +108,6 @@ export default function ProfilePage({auth, className}){
                 $("#save-btn .text").text("Salvesta seaded");
             }, 1500);
 
-            console.log("Saved");
             //window.location.href = route("dashboard");
             $.post(route("settingsAdd"), {
                 "_token":window.csrfToken,
@@ -120,14 +119,6 @@ export default function ProfilePage({auth, className}){
             });
         }
     }
-
-    const profileTypeStyle = {
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"baseline",
-        marginBlock:"32px",
-    };
 
     function logout(){
         window.location.href = route("logout");
@@ -159,7 +150,6 @@ export default function ProfilePage({auth, className}){
             contentType: false,
             processData:false,
         }).done(function (data){
-            console.log("Tehtud!");
             setImageUploadErrors(null);
             window.location.reload();
         }).fail(function (data){
@@ -186,40 +176,18 @@ export default function ProfilePage({auth, className}){
             </section>}
             
             <section>
-                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center"}}>
-                    <div className="big-container" style={{marginTop:"8px"}}>
-                        <SizedBox height={16} />
-                        <div style={{position:"relative", display:"inline"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
-                        <img style={{height:"64px", userSelect:"none"}} className="profile-pic" src={auth.user.profile_pic} alt={auth.user.eesnimi + " " + auth.user.perenimi} />
-                        {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"0", right:"0", backgroundColor:"rgb(var(--primary-color))", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
-                        </div>
-                        <SizedBox height={8} />
-                        <h1 style={{marginTop:"4px", marginBottom:"0", textTransform:"capitalize"}}>{auth.user == null ? window.localStorage.getItem("first-name") ?? "Mari" : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"} {auth.user == null ? window.localStorage.getItem("last-name") ?? "Maasikas" : auth.user.perenimi ?? window.localStorage.getItem("last-name") ?? "Maasikas"}</h1>
-                        <p style={{color:"grey", fontSize:"20px", marginTop:"0"}}>{auth.user == null ? "mari.maasikas@real.edu.ee" : auth.user.email}</p>
-                    </div>                    
-
-                    <div className="stat-container" style={{width:"90%"}}>
-                       {auth.user.role != "student" && <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KONTOTÜÜP</p>
-                            <h3 style={{marginBlock:0}}>{auth.user == null ? "Õpilane" : auth.user.role == "teacher" ? "Õpetaja" : auth.user.role == "guest" ? "Külaline" : auth.user.role == null ? "Tavakonto" : auth.user.role}</h3>
-                        </div>}
-
-                        <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KOOL</p>
-                            <h3 style={{marginBlock:0}}>Tallinna Reaalkool</h3>
-                        </div>
-                        
-                        {auth.user.role != "teacher" && auth.user.role != "guest" && <div style={profileTypeStyle}>
-                            <p style={{color:'gray', marginBlock: "0"}}>KLASS</p>
-                            {className == null && <button style={{marginRight:0}} onClick={()=>window.location.href = route("classJoin")}>Ühine klassiga</button> }
-                            {className != null && <div style={{display:"flex", gap:"8px", flexDirection:"row", alignItems:"center"}} ><h3 style={{marginBlock:0, color: className == null ? "grey" : "inherit"}}>{auth.user == null ? "140.a" : auth.user.klass == "õpetaja" ? "Õpetajakonto" : className ?? "Pole lisatud"}</h3> <a alone="" href={route("classJoin")}><span className="material-icons no-anim" style={{cursor:"pointer", color:"rgb(var(--text-color))"}} translate="no">edit</span></a> </div> }
-                        </div>}
+                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"16px"}}>
+                   {/* Selle osa saaks lihtsasti teha eraldi komponendiks (sisse annad kasutaja) */}
+                    <div style={{overflow:"hidden"}}>
+                        <ProfileWidget auth={auth} user={auth.user} onImgChange={uploadFile} />
                     </div>
-                    <div className="mobile-block" style={{display:"grid", gridTemplate:"1fr", width:"90%", gap:"8px", margin:'auto'}}>
-                        <a alone="" style={{margin:'auto'}}>Muuda parooli</a>
-                        <SizedBox height={8} />
-                        <a translate="no" style={{display:"inline-flex", margin:'auto'}} alone="" red="" onClick={logout}>{auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} <SizedBox width={8} /> <span className="material-icons">logout</span></a>
-                        <SizedBox height={4} />
+                    
+                    <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
+                        <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
+                        {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
+                        {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
+                        <ProfileAction disabled={true} icon="lock" label="Muuda parooli" />
+                        <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />
                     </div>
                 </div>
             </section>
@@ -274,8 +242,8 @@ export default function ProfilePage({auth, className}){
                     <div style={{width:"100%"}}>
                         <p style={{color:"grey"}}>Klaviatuur</p>
                         <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
-                            <RadioChoice icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
+                            <RadioChoice smallLabel="Telefoni klaviatuur" icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
+                            <RadioChoice smallLabel="Kalkulaatori klaviatuur" icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
                         </div>
                     </div>
 

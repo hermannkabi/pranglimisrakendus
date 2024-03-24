@@ -40,6 +40,41 @@
     .app-theme-group{
         grid-template-columns: repeat(1, 1fr) !important;
     }
+
+    .profile-widget{
+        display: block !important;
+    }
+
+    .profile-widget .name-email{
+        margin-top: 16px !important;
+        text-align: center !important;
+    }
+
+    .actions-container{
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.hero {
+    position: relative; 
+}
+
+.hero::before {    
+      content: "";
+      background-image: var(--background);
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.08;
+      border-radius: 8px;
+      background-position: center;
+}
+
+.actions-container{
+    width: 100%;
 }
 
 

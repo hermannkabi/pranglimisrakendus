@@ -181,6 +181,7 @@ export default function NewRegisterPage({message, errors}){
                         <p>Olen...</p>
                         <button onClick={()=>setTeacherStatus(false)}>Õpilane</button>
                         <button onClick={()=>setTeacherStatus(true)} secondary="">Õpetaja</button>
+                        <a style={{display:"block", textAlign:"right"}} alone="" onClick={()=>window.location.href = route("authenticateGuest")}>Sisene külalisena</a>
                     </div>
 
                     <div className="register-step name-email-container" hidden>

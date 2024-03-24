@@ -288,17 +288,17 @@ export default function GamePreviewPage({auth}){
                             <option value="kujundid">Kujundid</option>
                         </select>
 
-                        <select name="" id="" style={{display:"none"}}>
-                            <option disabled selected>Vali mängurežiim</option>
+                        <select defaultValue="null" name="" id="" style={{display:"none"}}>
+                            <option value="null" disabled>Vali mängurežiim</option>
                             <option value="normal">Tavamäng</option>
                             <option value="sprint">Sprint</option>
                         </select>
-                        <select defaultValue={urlParams.get("type") ?? ""} name="" id="number-type">
-                            <option disabled selected value="choose">Vali arvuhulk</option>
+                        <select defaultValue={urlParams.get("type") ?? "choose"} name="" id="number-type">
+                            <option disabled value="choose">Vali arvuhulk</option>
                             {types.map((e)=>typeof e == "string" ? <option value={e} key={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option> : <option key={e.value} value={e.value}>{e.label}</option>)}                            
                         </select>
 
-                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} defaultValue={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
+                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} default={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
 
                         {levels.length > 0 && <SizedBox height={16} />}
                         <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
