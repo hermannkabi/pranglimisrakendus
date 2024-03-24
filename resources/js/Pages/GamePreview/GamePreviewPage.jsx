@@ -11,7 +11,7 @@ export default function GamePreviewPage({auth}){
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    const typeIndependents = ["lünkamine", "võrdlemine", "choose", "lihtsustamine"];
+    const typeIndependents = ["lünkamine", "võrdlemine", "choose", "murruTaandamine"];
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState([]);
@@ -170,7 +170,7 @@ export default function GamePreviewPage({auth}){
                 "extra":["A", "B", "C"],
                 "types":["natural", "integer"],
             },
-            "lihtsustamine":{
+            "murruTaandamine":{
                 "lvls":6,
                 "extra":["A", "B", "C"],
                 "types":[],
@@ -284,7 +284,7 @@ export default function GamePreviewPage({auth}){
                             <option value="võrdlemine">Võrdlemine</option>
                             <option value="lünkamine">Lünkamine</option>
                             <option value="jaguvus">Jaguvusseadused</option>
-                            <option value="lihtsustamine">Murru taandamine</option>
+                            <option value="murruTaandamine">Murru taandamine</option>
                             <option value="kujundid">Kujundid</option>
                         </select>
 
