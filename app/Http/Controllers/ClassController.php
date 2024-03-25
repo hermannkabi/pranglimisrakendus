@@ -120,6 +120,9 @@ class ClassController extends Controller
 
         if($klass == null) abort(404);
 
+        // A student should only be able to view their own class
+        if($request->user()->role == "student" && $request->user()->klass != $klass->klass_id) abort(403);
+
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
         $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
         $teacher = User::where('id', $klass->teacher_id)->first(); 

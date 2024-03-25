@@ -159,6 +159,18 @@ export default function ProfilePage({auth, className}){
 
     }
 
+
+    function verifyEmail(){
+        $.post(route("verification.resend"), {
+            "_token":window.csrfToken,
+        }).done(function (data){
+            console.log("Tehtud!");
+            setImageUploadErrors({"success":"Link e-posti aadressi kinnitamiseks on saadetud meilile!"});
+        }).fail(function (data){
+            console.log(data);
+        });
+    }
+
     return (
         <>
             <Head title="Minu konto" />
@@ -186,7 +198,9 @@ export default function ProfilePage({auth, className}){
                         <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
                         {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
                         {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
-                        <ProfileAction disabled={true} icon="lock" label="Muuda parooli" />
+                        {auth.user.email_verified_at &&<ProfileAction disabled={true} icon="lock" label="Muuda parooli" />}
+                        {!auth.user.email_verified_at && <ProfileAction onClick={verifyEmail} icon="verified" label="Kinnita e-post" />}
+
                         <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />
                     </div>
                 </div>

@@ -55,7 +55,6 @@ Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(func
 
 //Email verification
 Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
-    Route::get('/email/verify', 'notice')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
     Route::post('/email/resend', 'resend')->name('verification.resend');
 });
