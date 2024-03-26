@@ -57,12 +57,17 @@ Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(func
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
 });
 
-// //Email verification
-// Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
-//     Route::get('/email/verify', 'notice')->name('verification.notice');
-//     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
-//     Route::post('/email/resend', 'resend')->name('verification.resend');
-// });
+//Email verification
+Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
+    Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
+    Route::post('/email/resend', 'resend')->name('verification.resend');
+});
+
+//Password reset
+Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
+    Route::get('/forgot-password', 'create')->name('password.request');
+    Route::get('/forgot-password', 'store')->name('password.email');
+});
 
 // //Password reset form
 // Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {

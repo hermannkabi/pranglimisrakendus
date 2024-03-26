@@ -19,7 +19,7 @@
             @endphp
         </p>
         <h1 class="code">404</h1>
-        <p style="text-transform: uppercase;">{{ $exception->getMessage() }}</p>
+        <p style="text-transform: uppercase">{{ str_ends_with($exception->getMessage(), "found.") ? "Sellist lehekülge ei leitud" : $exception->getMessage()}}</p>
 
     </div>
 

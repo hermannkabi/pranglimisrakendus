@@ -639,12 +639,18 @@ export default function GamePage({data, time, auth}){
                 return;
             }
 
+            
+
             const correct = operations.data[currentLevel.current][index].answer.toString();
 
             var formattedAnswer = answer.replace(",", ".");
 
             // Don't continue if the answer is empty
             if(formattedAnswer.length <= 0){
+                return;
+            }
+            // Don't continue if the answer is 0/0
+            if(formattedAnswer.trim() == "(0/0)"){
                 return;
             }
 

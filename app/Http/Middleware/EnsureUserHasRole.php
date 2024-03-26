@@ -20,8 +20,8 @@ class EnsureUserHasRole
             abort(404);
         }
 
-        if($role == "teacher" && !$request->user()->hasVerifiedEmail()){
-            abort(404, "Palun kinnita oma e-posti aadress");
+        if($role == "teacher" && !$request->user()->email_verified_at){
+            abort(404, "Selleks tegevuseks pead oma e-posti kinnitama!");
         }
 
         return $next($request);

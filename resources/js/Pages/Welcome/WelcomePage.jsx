@@ -22,6 +22,10 @@ export default function WelcomePage(){
     }
 
     useEffect(()=>{
+        $("#easteregg").append('<img loading="lazy" id="priscilla" style="z-index: 1000; transition: transform 1000ms; visibility: hidden; position:fixed; rotate:20deg; height:300px; bottom: -300px; left: -100px" src="/assets/eastereggs/priskilla.png" />');
+    }, []);
+
+    useEffect(()=>{
         if(clickEaster2 == 5){
             setClickEaster2(0);
             showPriscAnimation();
@@ -87,7 +91,9 @@ export default function WelcomePage(){
             </div>
 
             <img loading="lazy" style={{display:"none"}} className="game-img" src={window.localStorage.getItem("app-theme") == "dark" ? "/assets/homepage/game-dark.png" : "/assets/homepage/game.png"} />
-            <img loading="lazy" id="priscilla" style={{zIndex:"1000", transition:"transform 1000ms", visibility:"hidden", position:"fixed", rotate:"20deg", height:"300px", bottom:"-300px", left:"-100px"}} src="/assets/eastereggs/priskilla.png" />
+            <div id="easteregg">
+
+            </div>
 
         </>
     );

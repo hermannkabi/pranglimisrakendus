@@ -29,7 +29,11 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
 
             <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
         
+
             <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default", textTransform:"capitalize"}}>{auth.user == null ? (window.localStorage.getItem("first-name") ?? "Mari") : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
+            {(new URLSearchParams(window.location.search)).get("verified") != null && <section>
+                <HorizontalInfoBanner text={"Sinu e-posti aadress on kinnitatud!"} />
+            </section>}
             {teacherData != null && <section>
                 <div className='header-container'>
                     <h3 className='section-header'>Minu klassid</h3>
@@ -49,7 +53,6 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="big-btns">
-                    {/* Ma hullult vihkan kuidas need nupud välja näevad */}
                     <BigGameButton symbol="+" text="Liitmine" value={"liitmine"}/>
                     <BigGameButton symbol="–" text="Lahutamine" value={"lahutamine"}/>
                     <BigGameButton symbol="×" text="Korrutamine" value={"korrutamine"}/>
@@ -60,6 +63,23 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 <SizedBox height={8}/>
 
             </section>
+
+            {auth.user.klass != null && teacherData == null && <section>
+                <div className='header-container'>
+                    <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
+                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp <a style={{all:"unset", cursor:"pointer"}} href={"/profile/"+classData.teacher[0].id}><span style={{textTransform:"capitalize"}}>{classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</span></a></p>}
+                </div>
+
+                <div className="history-statistics">
+                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
+                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
+                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.pointsCount} desc="XP kokku" />
+                </div>
+                <SizedBox height={24}/>
+                <a alone='true' href={"classroom/"+classData.uuid+"/view"}>Vaata klassi <span translate="no" className="material-icons">navigate_next</span></a>
+                <SizedBox height={8}/>
+
+            </section>} 
 
             {auth.user.role != "guest" && <section>
                 <div className='header-container'>
@@ -82,23 +102,6 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 <i class="fa-solid fa-calculator"></i>
                 <HorizontalInfoBanner text="Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto" />
             </section>}
-
-            {auth.user.klass != null && teacherData == null && <section>
-                <div className='header-container'>
-                    <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
-                    {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp <a style={{all:"unset", cursor:"pointer"}} href={"/profile/"+classData.teacher[0].id}><span style={{textTransform:"capitalize"}}>{classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</span></a></p>}
-                </div>
-
-                <div className="history-statistics">
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.pointsCount} desc="XP kokku" />
-                </div>
-                <SizedBox height={24}/>
-                <a alone='true' href={"classroom/"+classData.uuid+"/view"}>Vaata klassi <span translate="no" className="material-icons">navigate_next</span></a>
-                <SizedBox height={8}/>
-
-            </section>} 
         </>
     )
 }
