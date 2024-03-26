@@ -5,7 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\User;
-use App\Http\Controllers\ProfileController;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,9 +15,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
-        $schedule->call(function () {
-            app(ProfileController::class)->checkStreak();
-        })->daily();
+        $schedule->call("\App\Http\Controllers\ProfileController@checkStreak")->daily();
     }
 
     /**

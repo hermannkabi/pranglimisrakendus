@@ -10,6 +10,7 @@ import ProfileAction from "@/Components/ProfileAction";
 
 export default function Dashboard({auth, stats, classData, teacherData}) {
 
+
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
     Mousetrap.bind("c h r i s e t t e", function (){

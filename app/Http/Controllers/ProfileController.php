@@ -90,8 +90,8 @@ class ProfileController extends Controller
     /**
      * Verify users streak (is used by Console\Kernel.php)
     */
-    public function checkStreak($user_id=null){
-        $user = $user_id != null ? User::where("id", $user_id)->get() : User::all();
+    public static function checkStreak(){
+        $user = User::all();
 
         foreach($user as $j){
             $viimaseManguDt = Mang::select("dt")->where("user_id", $j->id)->orderBy("dt", "desc")->first();
@@ -105,7 +105,6 @@ class ProfileController extends Controller
             $j->streak_active = 0;
             $j->save();
         }
-
     }
 
     // This function is called after completing a game and is used to set a streak for the player

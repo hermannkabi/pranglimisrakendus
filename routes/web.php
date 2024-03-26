@@ -32,6 +32,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
     Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
 
     Route::get('/profile/{id}', "showPublic")->name("profilePublic");
+
 });
 
 
@@ -90,7 +91,7 @@ Route::get("/preview", function (){
 //Game part of PRANGLIMISRAKENDUS
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
-    return Inertia::render("Game/GamePage", ["data" => app('App\Http\Controllers\MathController')->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
+    return Inertia::render("Game/GamePage", ["data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew")->middleware(['auth']);
 
 //Game data

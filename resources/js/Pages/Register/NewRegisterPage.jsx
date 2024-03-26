@@ -7,6 +7,7 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import { useState } from "react";
 import InfoBanner from "@/Components/InfoBanner";
 import BigGameButton from "@/Components/BigGameButton";
+import HorizontalRule from "@/Components/HorizontalRule";
 
 export default function NewRegisterPage({message, errors}){
 
@@ -165,6 +166,8 @@ export default function NewRegisterPage({message, errors}){
         navigateToNext(null);
     }
 
+    const googleLogo = "/assets/google_logo.png";
+
 
     return (
         <>
@@ -178,7 +181,9 @@ export default function NewRegisterPage({message, errors}){
                 <div className="auth-main-content">
                     {errorMessages && <InfoBanner text={errorMessages}/>}
                     <div className="register-step account-type-container">
-                        <p>Olen...</p>
+                        <button type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button>
+                        <HorizontalRule />
+                    
                         <button onClick={()=>setTeacherStatus(false)}>Õpilane</button>
                         <button onClick={()=>setTeacherStatus(true)} secondary="">Õpetaja</button>
                         <a style={{display:"block", textAlign:"right"}} alone="" onClick={()=>window.location.href = route("authenticateGuest")}>Sisene külalisena</a>

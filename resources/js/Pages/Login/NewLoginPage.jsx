@@ -14,6 +14,8 @@ import InfoBanner from "@/Components/InfoBanner";
 export default function NewLoginPage({message, errors}){
 
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(errors);
+
 
     function handleSubmit(e){
 
@@ -32,6 +34,29 @@ export default function NewLoginPage({message, errors}){
 
     const windowWidth = window.innerWidth;
 
+    function requestNewPassword(){
+        
+        if(!$("#email").val()){
+            setError({"error":"Palun sisesta esmalt enda e-posti aadress"});
+            return;
+        }
+
+        $.post(route("password.store"), {
+            "_token":window.csrfToken,
+            "email":$("#email").val(),
+        }).done(function (data){
+            console.log("Tehtud!");
+            errors = ({"success":"Sinu e-posti aadressile on saadetud kiri parooli muutmiseks"});
+        }).fail(function (data){
+            console.log(data);
+            if(data.responseJSON.message == "Please wait before retrying."){
+                setError({"error":"Liiga palju päringuid, palun oota mõni minut!"})
+            }else{
+                setError(data.responseJSON)
+            }
+        }); 
+    }
+
     return (
         <>
             <Head title="Logi sisse" />
@@ -39,7 +64,7 @@ export default function NewLoginPage({message, errors}){
                 <LoginHeader pageName={"Logi sisse"} />
 
                 <form method="post" action={route("authenticate")} className="login-container auth-main-content">
-                    {Object.keys(errors).length > 0 && <InfoBanner text={errors[Object.keys(errors)[0]]} />}
+                    {Object.keys(error).length > 0 && <InfoBanner text={error[Object.keys(error)[0]]} />}
 
                     <button style={formChildrenStyle} type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button>
                     {/* <HorizontalRule /> */}
@@ -49,6 +74,7 @@ export default function NewLoginPage({message, errors}){
                     <input style={formChildrenStyle} id="email" name="email" type="email" placeholder="E-posti aadress" required />
                     <br />
                     <PasswordInput name="password" divstyle={{width:"100%"}} style={formChildrenStyle} placeholder="Parool" required />
+                    <a onClick={requestNewPassword} style={{display:"block", textAlign:"right"}} alone="">Unustasin salasõna</a>
                     <button type="submit" onClick={handleSubmit} style={formChildrenStyle}>{loading && <LoadingSpinner />} Logi sisse</button>                    
                     
                     <SizedBox height={8} />

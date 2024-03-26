@@ -36,6 +36,9 @@ class PasswordResetLinkController extends Controller
             'token' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
+        ], [
+            "password.min" => "Parool peab olema vähemalt 8 tähemärgi pikkune",
+            "password.confirmed" => "Paroolid ei kattu",
         ]);
      
         $status = Password::reset(
@@ -79,7 +82,7 @@ class PasswordResetLinkController extends Controller
 
 
         if ($status == Password::RESET_LINK_SENT) {
-            return "Tubli!";
+            return;
         }
         
 

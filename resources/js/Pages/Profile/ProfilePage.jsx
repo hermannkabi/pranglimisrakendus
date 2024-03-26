@@ -165,9 +165,14 @@ export default function ProfilePage({auth, className}){
             "email":auth.user.email,
         }).done(function (data){
             console.log("Tehtud!");
-            console.log(data);
+            setImageUploadErrors({"success":"Sinu e-posti aadressile on saadetud kiri parooli muutmiseks"});
         }).fail(function (data){
             console.log(data);
+            if(data.responseJSON.message == "Please wait before retrying."){
+                setImageUploadErrors({"error":"Liiga palju päringuid, palun oota mõni minut!"})
+            }else{
+                setImageUploadErrors(data.responseJSON)
+            }
         });
     }
 
