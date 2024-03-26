@@ -1,8 +1,12 @@
 <?php
 
+use App\Mail\TestMail;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     if(Auth::check()){
@@ -53,24 +57,18 @@ Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(func
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
 });
 
-//Email verification
-Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
-    Route::get('/email/verify', 'notice')->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
-    Route::post('/email/resend', 'resend')->name('verification.resend');
-});
+// //Email verification
+// Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
+//     Route::get('/email/verify', 'notice')->name('verification.notice');
+//     Route::get('/email/verify/{id}/{hash}', 'verify')->name('verification.verify');
+//     Route::post('/email/resend', 'resend')->name('verification.resend');
+// });
 
-//Password reset
-Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
-    Route::get('/forgot-password', 'create')->name('password.request');
-    Route::get('/forgot-password', 'store')->name('password.email');
-});
-
-//Password reset form
-Route::controller(App\Http\Controllers\Auth\NewPasswordController::class)->middleware(['guest'])->group(function() {
-    Route::get('/reset-password/{token}', 'create')->name('password.reset');
-    Route::get('/reset-password', 'store')->name('password.update');
-});
+// //Password reset form
+// Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
+//     Route::get('/reset/password/{token}', 'create')->name('passwordReset');
+//     Route::post("/password/reset", 'store')->name("passwordReset");
+// });
 
 //User information
 Route::controller(App\Http\Controllers\ProfileController::class)->middleware('auth')->group(function() {
@@ -169,6 +167,8 @@ Route::get("/up", function (){
     Artisan::call("up");
     return "Rakendus on taas avalikult nähtav.";
 });
+
+
 
 require __DIR__.'/auth.php';
 

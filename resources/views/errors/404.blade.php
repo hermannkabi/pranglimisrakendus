@@ -19,7 +19,7 @@
             @endphp
         </p>
         <h1 class="code">404</h1>
-        <p>SELLIST LEHEKÜLGE EI LEITUD</p>
+        <p style="text-transform: uppercase;">{{ $exception->getMessage() }}</p>
 
     </div>
 

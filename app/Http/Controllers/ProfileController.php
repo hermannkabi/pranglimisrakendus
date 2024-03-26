@@ -98,7 +98,7 @@ class ProfileController extends Controller
             
             if($viimaseManguDt == null){
                 $j->streak = null;
-            }else if(strtotime($viimaseManguDt["dt"])<(strtotime('now')-86400)){
+            }else if(strtotime($viimaseManguDt["dt"])<(strtotime('-1 day'))){
                 $j->streak = 0;
             }
 

@@ -48,6 +48,10 @@ class AuthVerificationController extends Controller
      */
     public function resend(Request $request)
     {
+        if($request->user()->hasVerifiedEmail()){
+            return redirect()->route("dashboard");
+        }
+
         $request->user()->sendEmailVerificationNotification();
         return back()
         ->withSuccess('A fresh verification link has been sent to your email address.');
