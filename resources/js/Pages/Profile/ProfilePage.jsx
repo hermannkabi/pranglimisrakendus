@@ -160,8 +160,7 @@ export default function ProfilePage({auth, className}){
     }
 
     function sendPwdResetLink(){
-        console.log(route("passwordReset"));
-        $.post(route("passwordReset"), {
+        $.post(route("password.store"), {
             "_token":window.csrfToken,
             "email":auth.user.email,
         }).done(function (data){
@@ -211,7 +210,7 @@ export default function ProfilePage({auth, className}){
                         <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
                         {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} />}
                         {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
-                        {auth.user.email_verified_at &&<ProfileAction disabled={true} icon="lock" label="Muuda parooli" />}
+                        {auth.user.email_verified_at &&<ProfileAction onClick={sendPwdResetLink} icon="lock" label="Muuda parooli" />}
                         {!auth.user.email_verified_at && <ProfileAction onClick={verifyEmail} icon="verified" label="Kinnita e-post" />}
 
                         <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />

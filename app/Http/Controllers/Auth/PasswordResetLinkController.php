@@ -10,17 +10,50 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Auth\Events\PasswordReset;
+
+
 
 class PasswordResetLinkController extends Controller
 {
     /**
      * Display the password reset link request view.
      */
-    public function create(): Response
+    public function create(Request $request, $token): Response
     {
-        return Inertia::render('Auth/ForgotPassword', [
-            'status' => session('status'),
+        Log::debug($token);
+        return Inertia::render('ForgotPassword/ForgotPasswordPage', [
+            "token"=>$token,
+
         ]);
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+     
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+     
+                $user->save();
+     
+                event(new PasswordReset($user));
+            }
+        );
+     
+        return $status === Password::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withErrors(['email' => [__($status)]]);
     }
 
     /**
@@ -30,9 +63,6 @@ class PasswordResetLinkController extends Controller
      */
     public function store(Request $request)
     {
-
-        Log::debug("Midagi");
-        return "jdsjd";
 
         $request->validate([
             'email' => 'required|email',
@@ -49,7 +79,7 @@ class PasswordResetLinkController extends Controller
 
 
         if ($status == Password::RESET_LINK_SENT) {
-            abort(404);
+            return "Tubli!";
         }
         
 
@@ -57,6 +87,5 @@ class PasswordResetLinkController extends Controller
             'email' => [trans($status)],
         ]);
 
-        abort(404);
     }
 }

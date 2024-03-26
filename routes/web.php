@@ -63,12 +63,6 @@ Route::controller(App\Http\Controllers\AuthVerificationController::class)->middl
     Route::post('/email/resend', 'resend')->name('verification.resend');
 });
 
-//Password reset
-Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
-    Route::get('/forgot-password', 'create')->name('password.request');
-    Route::get('/forgot-password', 'store')->name('password.email');
-});
-
 // //Password reset form
 // Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
 //     Route::get('/reset/password/{token}', 'create')->name('passwordReset');
@@ -122,11 +116,11 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/join', 'join')->name('join');
 
     Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink')->middleware(['role:student']);
-    Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLink')->middleware(['role:student']);
+    Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLinkPost')->middleware(['role:student']);
 
 
     Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher']);
-    Route::post('/classroom/{id}/edit', 'edit')->name('classEdit')->middleware(['role:teacher']);
+    Route::post('/classroom/{id}/edit', 'edit')->name('classEditPost')->middleware(['role:teacher']);
 
 
     Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
