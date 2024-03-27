@@ -35,7 +35,12 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
             {(new URLSearchParams(window.location.search)).get("verified") != null && <section>
                 <HorizontalInfoBanner text={"Sinu e-posti aadress on kinnitatud!"} />
             </section>}
-            {teacherData != null && <section>
+
+            {auth.user.role == "teacher" && !auth.user.email_verified_at && <section>
+                <HorizontalInfoBanner text={"Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress"} />
+            </section>}
+
+            {teacherData != null && auth.user.email_verified_at && <section>
                 <div className='header-container'>
                     <h3 className='section-header'>Minu klassid</h3>
                 </div>

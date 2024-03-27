@@ -7,7 +7,7 @@ export default function ProfileAction({symbol=null, red=false, selected=false, i
     return <>
             <div onClick={onClicked} style={{boxShadow: selected ? "0px 0px 12px 7px rgba(var(--text-color),0.05)" : null, overflow:"hidden", opacity: !disabled ? "1" : "0.5", cursor: link || onClick ? "pointer" : "default", userSelect:"none", backgroundColor:"rgb("+color+", var(--section-transparency))", borderRadius:"8px", display:"inline-flex", flexDirection:"row", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"stretch", paddingRight:"24px", position:"relative"}}>
                 
-                {link && <a href={link} style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a> }
+                {link && <a href={disabled ? null : link} style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a> }
                 
                 <div style={{aspectRatio:"1", transition:"all 200ms", display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"rgb("+color+", "+(selected ? "1" : "var(--section-transparency)"), padding:"8px", borderRadius:"50%"}}>
                     {symbol && <span className="material-icons" style={{fontSize:"32px", color: selected ? "white" : "rgb("+color+")"}}>{symbol}</span> }

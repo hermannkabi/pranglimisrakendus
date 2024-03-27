@@ -46,7 +46,7 @@ export default function NewLoginPage({message, errors}){
             "email":$("#email").val(),
         }).done(function (data){
             console.log("Tehtud!");
-            errors = ({"success":"Sinu e-posti aadressile on saadetud kiri parooli muutmiseks"});
+            setError({"success":"Sinu e-posti aadressile on saadetud kiri parooli muutmiseks"});
         }).fail(function (data){
             console.log(data);
             if(data.responseJSON.message == "Please wait before retrying."){
