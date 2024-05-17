@@ -5,7 +5,7 @@ export default function ProfileAction({symbol=null, red=false, selected=false, i
     var onClicked = disabled ? null : onClick;
 
     return <>
-            <div onClick={onClicked} style={{boxShadow: selected ? "0px 0px 12px 7px rgba(var(--text-color),0.05)" : null, overflow:"hidden", opacity: !disabled ? "1" : "0.5", cursor: link || onClick ? "pointer" : "default", userSelect:"none", backgroundColor:"rgb("+color+", var(--section-transparency))", borderRadius:"8px", display:"inline-flex", flexDirection:"row", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"stretch", paddingRight:"24px", position:"relative"}}>
+            <div onClick={onClicked} style={{boxShadow: selected ? "4px 4px 8px -2px rgba(var(--text-color),0.05)" : null, overflow:"hidden", opacity: !disabled ? "1" : "0.5", cursor: link || onClick ? "pointer" : "default", userSelect:"none", backgroundColor:"rgb("+color+", var(--section-transparency))", borderRadius:"8px", display:"inline-flex", flexDirection:"row", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"stretch", paddingRight:"24px", position:"relative"}}>
                 
                 {link && <a href={disabled ? null : link} style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a> }
                 

@@ -301,14 +301,9 @@ input, textarea, select{
     min-width: 50px;
 }
 
-/* select optgroup, select option {
+select optgroup, select option {
     color: black;
     border-radius: 0;
-} */
-
-option, optgroup{
-    background-color: rgb(var(--background-color));
-    font-family: var(--main-font), sans-serif;
 }
 
 input{

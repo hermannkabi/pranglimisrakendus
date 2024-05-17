@@ -32,7 +32,7 @@ export default function GamePreviewPage({auth}){
         // Whether or not the type select is shown
         showNumberType(true);
 
-        showLevels();
+        showLevels(true);
     }, []);
 
 
@@ -121,7 +121,7 @@ export default function GamePreviewPage({auth}){
         }
     }
 
-    function showLevels(){
+    function showLevels(firstTime=false){
 
         setLevels([]);
         setExtra([]);
@@ -183,6 +183,14 @@ export default function GamePreviewPage({auth}){
         };
 
         var type = $("#game-type").val();
+
+        const guideAvailable = ["liitmine", "korrutamine", "jaguvus", "kujundid", "astendamine", "võrdlemine"];
+
+        if(guideAvailable.includes(type)){
+            $("#guide").attr("href", "/how-to-play#"+type).slideDown(firstTime ? 0 : 200);
+        }else{
+            $("#guide").slideUp(firstTime ? 0 : 200);
+        }
 
         var typeData = data[type];
 
@@ -260,7 +268,7 @@ export default function GamePreviewPage({auth}){
                 <div className="preferences">
                     <section>
 
-                        <select defaultValue={id ?? "choose"} id="game-type">
+                        <select style={{marginBottom:"4px"}} defaultValue={id ?? "choose"} id="game-type">
                             <option value="choose"> Vali harjutusala</option>
 
                             <optgroup label="Liitmine/lahutamine">
@@ -287,6 +295,7 @@ export default function GamePreviewPage({auth}){
                             <option value="murruTaandamine">Murru taandamine</option>
                             <option value="kujundid">Kujundid</option>
                         </select>
+                        <a id="guide" style={{display:"none", fontSize:"16px", float: "right", marginBottom:"8px"}} alone="" href="/how-to-play">Kuidas mängida?</a>
 
                         <select defaultValue="null" name="" id="" style={{display:"none"}}>
                             <option value="null" disabled>Vali mängurežiim</option>

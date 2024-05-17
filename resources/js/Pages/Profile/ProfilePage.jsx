@@ -214,7 +214,7 @@ export default function ProfilePage({auth, className}){
                     <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
                         <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
                         {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} disabled={!auth.user.email_verified_at} />}
-                        {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} />}
+                        {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} disabled={auth.user.role == "guest"} />}
                         {auth.user.email_verified_at &&<ProfileAction onClick={sendPwdResetLink} icon="lock" label="Muuda parooli" />}
                         {!auth.user.email_verified_at && <ProfileAction onClick={verifyEmail} icon="verified" label="Kinnita e-post" />}
 

@@ -31,7 +31,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
             <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
         
 
-            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{color:"rgb(var(--primary-color))", cursor:"default", textTransform:"capitalize"}}>{auth.user == null ? (window.localStorage.getItem("first-name") ?? "Mari") : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
+            <h2>Tere, <span onClick={()=>window.location.href = route("profilePage")} style={{cursor:"default", textTransform:"capitalize"}}>{auth.user == null ? (window.localStorage.getItem("first-name") ?? "Mari") : auth.user.eesnimi ?? window.localStorage.getItem("first-name") ?? "Mari"}!</span></h2>
             {(new URLSearchParams(window.location.search)).get("verified") != null && <section>
                 <HorizontalInfoBanner text={"Sinu e-posti aadress on kinnitatud!"} />
             </section>}
