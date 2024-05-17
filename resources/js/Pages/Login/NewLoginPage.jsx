@@ -37,7 +37,7 @@ export default function NewLoginPage({message, errors}){
     function requestNewPassword(){
         
         if(!$("#email").val()){
-            setError({"error":"Palun sisesta esmalt enda e-posti aadress"});
+            window.location.href = route("forgotPassword");
             return;
         }
 

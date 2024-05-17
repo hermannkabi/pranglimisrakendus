@@ -1,4 +1,3 @@
-import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 import SizedBox from "@/Components/SizedBox";
 import { Head } from "@inertiajs/react";
 import "/public/css/auth_layout.css";

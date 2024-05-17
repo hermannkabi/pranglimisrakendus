@@ -37,6 +37,10 @@ class LoginRegisterController extends Controller
         return Inertia::render("Register/RegisterGooglePage");
     }
 
+    public function forgotPassword(){
+        return Inertia::render("Login/ResetPasswordPage");
+    }
+
     public function createUser($email, $eesnimi, $perenimi, $password, $googleId, $remember){
         $teachers = array(
         'andres.talts@real.edu.ee',

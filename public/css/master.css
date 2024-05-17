@@ -306,7 +306,8 @@ input, textarea, select{
     border-radius: 0;
 } */
 
-option{
+option, optgroup{
+    background-color: rgb(var(--background-color));
     font-family: var(--main-font), sans-serif;
 }
 
@@ -655,6 +656,7 @@ sdjkhskdsdsde::after{
     content:"9";
 }
 
+/* Gold, silver and bronze colored divs */
 .fancy{
     background: -webkit-linear-gradient(0deg, rgba(237,201,3,1) 0%, rgba(164,134,6,1) 100%);
     -webkit-background-clip: text;
