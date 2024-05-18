@@ -252,6 +252,11 @@ export default function GamePreviewPage({auth}){
 
     $("#number").change(onTimeChange);
 
+    function showMoreOptions(){
+        $("#more-options-arrow").css("transform", "rotate("+($(".more").is(":hidden") ? "-180deg" : "0deg")+")");
+        $(".more").slideToggle(200);
+    }
+
 
     return (
         <>
@@ -310,7 +315,7 @@ export default function GamePreviewPage({auth}){
                         <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} default={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
 
                         {levels.length > 0 && <SizedBox height={16} />}
-                        <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={()=>$(".more").slideToggle(200)}>Täpsemad valikud</a>
+                        <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={showMoreOptions}>Täpsemad valikud <i id="more-options-arrow" className="material-icons no-anim">keyboard_arrow_down</i> </a>
                         {levels.length > 0 && <SizedBox height={16} />}
                         <div className="more" hidden>
                             <div style={{textAlign:"start"}} className="lvls">

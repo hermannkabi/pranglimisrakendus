@@ -5,11 +5,15 @@ import StatisticsWidget from "@/Components/StatisticsWidget";
 import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import { useState } from "react";
+import CheckboxTile from "@/Components/CheckboxTile";
+import HorizontalRule from "@/Components/HorizontalRule";
 
 
 export default function GameDetailsPage({game, auth, playedBy}){
 
     const [copyText, setCopyText] = useState("Jaga");
+
+    const [currentlyShownLog, setCurrentlyShownLog] = useState(JSON.parse(game.log));
 
     function averageTime(timeInSeconds){
         var minutes = Math.floor(timeInSeconds / 60);
@@ -48,6 +52,20 @@ export default function GameDetailsPage({game, auth, playedBy}){
         }, 2000);
     }
 
+    function filterOperations(){
+        const animationTime = 150;
+        $(".detailed-container").animate({
+            opacity: 0,
+
+        }, animationTime, function (){
+            setCurrentlyShownLog(JSON.parse(game.log).filter((op) => ($(".correct-choice").is(":checked") && op.isCorrect) || ($(".incorrect-choice").is(":checked") && !op.isCorrect)));
+
+            $(".detailed-container").animate({
+                opacity: 1,
+            }, animationTime);
+        });
+    }
+
     return <>
             <Head title={name == null ? "Mäng" : decodeURIComponent(name)} />
             <Navbar title={name ?? "Mäng"} user={auth.user} />
@@ -78,10 +96,18 @@ export default function GameDetailsPage({game, auth, playedBy}){
 
         <section>
             <div className='header-container'>
-                <h3 className='section-header'>Täpsed tulemused</h3>
+                <h3 className='section-header'>Täpne tulemus</h3>
             </div>
+            {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <div>
+                <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
+                <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
+                <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                <br />
+                <HorizontalRule />
+            </div>}
+
             <div className="detailed-container">
-                {JSON.parse(game.log).map(function (op, i){
+                {currentlyShownLog.map(function (op, i){
                     return (
                         <OperationWidget op={op} key={i} />
                     );

@@ -123,3 +123,7 @@ section{
     text-decoration: line-through;
     text-decoration-thickness: 4px;
 }
+
+.stat-row h3{
+    font-weight: normal;
+}

@@ -152,6 +152,11 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         }
     }
 
+    function showDetailed(){
+        $("#show-detailed-arrow").css("transform", "rotate("+($(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
+        $(".ss").slideToggle(200);
+    }
+
     return (
         <>
             <Head title="Lõpeta mäng" />
@@ -186,11 +191,11 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
                         <div className="stat-row">
                             <p style={statNameStyle}><b>PUNKTE</b></p>
-                            <h3 style={{marginBlock:0}}>{points}</h3>
+                            <h3 style={{marginBlock:0, fontWeight:"bold"}}>{points}</h3>
                         </div>
 
                         {/* Detailed results toggle */}
-                        {total > 0 && <a alone="" onClick={()=>$(".ss").slideToggle(200)}>Täpne ülevaade</a>}
+                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i> </a>}
 
                         {/* Detailed resuls div */}
                         {/* Updated looks from 14.01.2024 */}
