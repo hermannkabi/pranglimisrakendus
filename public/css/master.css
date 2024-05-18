@@ -304,6 +304,7 @@ input, textarea, select{
 select optgroup, select option {
     color: black;
     border-radius: 0;
+    font-family: var(--main-font);
 }
 
 input{
