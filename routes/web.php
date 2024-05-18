@@ -119,7 +119,7 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
     Route::post('/classroom/join', 'join')->name('join');
 
-    Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink')->middleware(['role:student']);
+    Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink');
     Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLinkPost')->middleware(['role:student']);
 
 

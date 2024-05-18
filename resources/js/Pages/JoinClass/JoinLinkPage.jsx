@@ -31,7 +31,7 @@ export default function JoinLinkPage({auth, klass, current_klass, invited_by}){
 
             <p><span style={{textTransform:"capitalize"}}>{invited_by}</span> kutsus sind ühinema klassiga <b>{klass.klass_name}</b>. Kutse vastuvõtmiseks vajutage allolevat nuppu</p>
 
-            <button onClick={acceptInvitation}>Liitu klassiga</button>
+            <button style={{width: "min(400px, 100%)"}} onClick={acceptInvitation}>Liitu klassiga</button>
         </section>}
 
         {current_klass != null && current_klass.klass_id == klass.klass_id && <section>

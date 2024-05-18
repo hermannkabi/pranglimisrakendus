@@ -72,7 +72,8 @@ export default function GameDetailsPage({game, auth, playedBy}){
                 <StatisticsWidget stat={averageTime(game.time)} desc="Kulunud aeg" />
                 {/* <StatisticsWidget stat={typeToReadable[game.game_type]} desc="Arvuhulk" condensed={true}  /> */}
             </div>
-            {game.game_type != null && game.game_type in typeToReadable && <StatisticsWidget stat={typeToReadable[game.game_type]} desc="Arvuhulk"  condensed={true} />}
+            
+            {game.game_type != null && game.game_type in typeToReadable && <><SizedBox height="4px" /><StatisticsWidget stat={typeToReadable[game.game_type]} desc="Arvuhulk"  condensed={true} /></>}
         </section>
 
         <section>
