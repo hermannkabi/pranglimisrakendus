@@ -654,9 +654,7 @@ sdjkhskdsdsde::after{
 
 /* Gold, silver and bronze colored divs */
 .fancy{
-    background: -webkit-linear-gradient(0deg, rgba(237,201,3,1) 0%, rgba(164,134,6,1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(153, 130, 0) !important;
 }
 
 .fancy-div{
@@ -664,9 +662,7 @@ sdjkhskdsdsde::after{
 }
 
 .fancy2{
-    background: -webkit-linear-gradient(207deg, rgba(223,223,223,1) 0%, rgba(150,151,144,1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(129, 125, 125) !important;
 }
 
 .fancy2-div{
@@ -674,13 +670,29 @@ sdjkhskdsdsde::after{
 }
 
 .fancy3{
-    background: -webkit-linear-gradient(207deg, rgba(254,194,132,1) 0%, rgba(147,75,26,1) 71%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(189, 146, 103) !important;
 }
 
 .fancy3-div{
     background: linear-gradient(207deg, rgba(254,194,132, 0.1) 0%, rgba(147,75,26,0.1) 100%);
+}
+
+.leaderboard-row{
+    border-radius: 8px;
+    transition: background-color 200ms;
+    padding: 8px;
+}
+
+.leaderboard-row:hover{
+    background-color: rgb(var(--primary-color), 0.05);
+}
+
+.game-tile{
+    transition: background-color 200ms;
+}
+
+.game-tile:hover{
+    background-color: rgb(var(--primary-color), 0.1) !important;
 }
 
 h3.inactive{
