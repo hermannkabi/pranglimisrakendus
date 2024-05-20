@@ -35,7 +35,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                     <ProfileAction icon="school" label={klass == null ? "Klassi pole" : klass.klass_name} smallLabel="Klass" />
                 </div>}
                     
-                {user.role == "teacher" && <div style={{gridTemplateColumns:"1fr"}} className="actions-container">
+                {user.role == "teacher" && <div className="actions-container school-container">
                     <ProfileAction icon="apartment" label="Tallinna Reaalkool" smallLabel="Kool" />
                 </div>}
             </section>

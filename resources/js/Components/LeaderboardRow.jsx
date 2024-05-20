@@ -20,7 +20,7 @@ export default function leaderboardRow({points, index, player, user}){
                     <div style={{height:"36px", aspectRatio: "1", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: (index <= 2 ? "bold" : "normal")}} className={index == 0 ? "fancy-div fancy" : index == 1 ? "fancy2-div fancy2" : index == 2 ? "fancy3-div fancy3" : null}><span>{index + 1}</span></div>
                     <SizedBox width={12} />
                     <div style={{display:"flex", flexDirection:"column", alignItems:"start", fontSize:"18px", fontWeight: player ? "bold" : "normal"}}>
-                        <span style={{color: player ? "rgb(var(--primary-color))" : "inherit"}}>{user.eesnimi}</span><br />
+                        <span style={{color: player ? "rgb(var(--primary-color))" : "inherit", textTransform:"capitalize"}}>{user.eesnimi}</span>
                         <span style={{fontSize:"80%", textTransform:"uppercase", color: player ? "rgb(var(--primary-color), 0.5)" : "grey"}}>{user.perenimi}</span>
                     </div>
                 </div>

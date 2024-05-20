@@ -1,11 +1,11 @@
-export default function ProfileAction({symbol=null, red=false, selected=true, icon, label, link=null, onClick=null, smallLabel=null, disabled=false}){
+export default function ProfileAction({symbol=null, red=false, selected=true, icon, label, link=null, onClick=null, smallLabel=null, disabled=false, style=null}){
 
     const color = red ? "var(--darkred-color)" : "var(--primary-color)";
     
     var onClicked = disabled ? null : onClick;
 
     return <>
-            <div onClick={onClicked} style={{boxShadow: selected ? "4px 4px 8px -2px rgba(var(--text-color),0.05)" : null, overflow:"hidden", opacity: !disabled ? "1" : "0.5", cursor: link || onClick ? "pointer" : "default", userSelect:"none", backgroundColor: selected ? "rgb("+color+", var(--section-transparency))" : "transparent", borderRadius:"8px", display:"inline-flex", flexDirection:"row", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"stretch", paddingRight:"24px", position:"relative"}}>
+            <div onClick={onClicked} style={{boxShadow: selected ? "4px 4px 8px -2px rgba(var(--text-color),0.05)" : null, overflow:"hidden", opacity: !disabled ? "1" : "0.5", cursor: link || onClick ? "pointer" : "default", userSelect:"none", backgroundColor: selected ? "rgb("+color+", var(--section-transparency))" : "transparent", borderRadius:"8px", display:"inline-flex", flexDirection:"row", alignItems:"center", gap:"8px", margin:"8px", padding:"4px 8px", justifyContent:"stretch", paddingRight:"24px", position:"relative", ...style}}>
                 
                 {link && <a href={disabled ? null : link} style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a> }
                 

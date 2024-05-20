@@ -73,7 +73,7 @@ export default function UpdateHistoryPage({auth}){
         "17.05.2024":["Uuenenud ja kasutajasõbralikum kasutajaliides 'Unustasin parooli' nupu jaoks", "Parem rippmenüü kasutajaliides teatud operatsioonisüsteemidel ja tumedas teemas", "Pisiuuendused seadete vaates ja külalisvaates", "Veaparandused seadete laadimises konto vahetamisel", "boldEsialgne 'Kuidas mängida?' leht, kust leiab infot tehte kohta, aga ka nippe, kuidas kiiremaks saada ja areneda"],
         "18.05.2024":["Võimalus filtreerida õigete/valede vastuste vahel ka mängude ajaloos", "Väikesed lisandused mängu eelmängu ja kokkuvõtte kasutajaliidesele"],
         "19.05.2024":["Uuendatud edetabeli välimus – hierarhiliselt loogilisem ja esteetilisem", "Hõljumisanimatsioon mängude ajaloo vaates", "Väikesed uuendused mänguvaatesse ikoonide, värvide ja tekstisuurust näol"],
-        "20.05.2024":["Uuendatud kasutajaliides mängude ajaloos ja seadete vaadetes", "Ühtlustatud tekstisuurused üle terve rakenduse"],
+        "20.05.2024":["Uuendatud kasutajaliides mängude ajaloos ja seadete vaadetes", "Ühtlustatud tekstisuurused üle terve rakenduse ja teised väikesed UI parandused"],
     };
 
     return <>
