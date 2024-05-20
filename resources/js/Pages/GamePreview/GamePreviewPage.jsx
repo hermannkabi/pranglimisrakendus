@@ -330,7 +330,6 @@ export default function GamePreviewPage({auth}){
                 <SizedBox height="16px" />
                 <div className="start-btn">
                     <section>
-                        <p style={{fontSize:"1.5rem", color:"rgb(var(--primary-color))", marginBottom:"8px"}}>Harjutusmäng</p>
                         <button onClick={navigateToGame}>{loading && <LoadingSpinner />} Alusta mängu</button>
                         {/* <a alone="" href={route("guide")} style={{display:"block", textAlign:"end", fontSize:"14px"}}>Kuidas mängida?</a> */}
 

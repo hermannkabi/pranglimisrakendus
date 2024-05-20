@@ -692,7 +692,7 @@ sdjkhskdsdsde::after{
 }
 
 .game-tile:hover{
-    background-color: rgb(var(--primary-color), 0.1) !important;
+    background-color: rgb(var(--primary-color), 0.05) !important;
 }
 
 h3.inactive{
