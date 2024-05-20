@@ -9,8 +9,8 @@ export default function BigGameButton({symbol, text, value}){
                 <div translate="no" className="big-btn" style={{position:"relative"}} >
                      <a style={{all:"unset", cursor:"pointer", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}} href={route("preview") + "?id="+value}></a>
 
-                    <span className="symbol" style={{fontWeight:"normal", color:"#ffffff77"}}>{symbol}</span>
-                    <span style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
+                    <span className="symbol big-btn-symbol" style={{fontWeight:"normal", color:"#ffffff77"}}>{symbol}</span>
+                    <span className="big-btn-text" style={{fontWeight:"bold", fontSize:"1.1rem"}}>{text}</span>
                 </div>            
     );
 }

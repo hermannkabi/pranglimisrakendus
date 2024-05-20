@@ -77,8 +77,8 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
+                    <StatisticsWidget className={"place-stat"} link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
+                    {true && <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />}
                     <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.pointsCount} desc="XP kokku" />
                 </div>
                 <SizedBox height={24}/>

@@ -15,7 +15,7 @@ export default function Navbar({user}){
             <div className="navbar" style={{display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%"}}>
                 <a href={route("dashboard")} style={{all:"unset"}}>
                     <div className="header" style={{display:"inline-flex",}}>
-                        <ApplicationLogo style={{cursor:"pointer"}} height="60px"/>
+                        <ApplicationLogo style={{cursor:"pointer"}} height={window.innerWidth > 600 ? "60px" : "48px"}/>
                     </div>
                 </a>
                 <a href={route("profilePage")} style={{all:"unset"}}>

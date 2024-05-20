@@ -29,12 +29,28 @@
         padding-inline: 4px !important;
     }
 
-    .stats-container{
-        grid-template-columns: repeat(1, 1fr)  !important;
+    .history-statistics{
+        grid-template-columns: 1fr 1fr !important;
     }
 
-    .history-statistics{
-        grid-template-columns: 1fr !important;
+    .stats-container{
+        gap: 0 !important;
+    }
+
+    .place-stat{
+        grid-area: 1 / 1 / 2 / 3 !important; 
+    }
+
+    .xp-stat{
+        grid-area: 2 / 1 / 3 / 3 !important;
+    }
+
+    .stat-widget > h3{
+        font-size: 1.3rem !important;
+    }
+
+    .stat-widget > p{
+        font-size: 0.8rem !important;
     }
 }
 
@@ -58,7 +74,7 @@ body{
     color: rgb(var(--text-color));
     font-family: var(--main-font);
     padding-inline: 16px;
-    font-size: 20px;
+    font-size: var(--font-size);
     text-align: center;
     min-width: 250px;
     box-sizing: border-box;
@@ -100,6 +116,13 @@ h1, h2, h3, h4{
     font-family: var(--header-font);
 }
 
+h2{
+    font-size: 26px;
+}
+
+h3{
+    font-size: 20px;
+}
 
 
 /* WIDGETS */
@@ -114,7 +137,7 @@ button{
     padding-block: 14px;
     padding-inline: 32px;
     font-family: var(--main-font);
-    font-size: 20px;
+    font-size: var(--font-size);
     border: none;
     /* cursor: pointer; */
     transition: background-color 200ms;
@@ -294,7 +317,7 @@ input, textarea, select{
     border-radius: 8px;
     padding-block: 16px;
     padding-left: 8px;
-    font-size: 20px;
+    font-size: var(--font-size);
     margin-inline: 4px;
     vertical-align: middle;
     margin-block: 8px;

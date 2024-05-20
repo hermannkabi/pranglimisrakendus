@@ -31,7 +31,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                 <StatisticsWidget stat={stats.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
                 <StatisticsWidget stat={stats.totalGameCount} desc="Mängu kokku" oneDesc="Mäng kokku" />
 
-                <StatisticsWidget stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
+                <StatisticsWidget className="xp-stat" stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
             </div>
             {teacher != null && <StatisticsWidget link={"/profile/"+teacher.id} name={true} stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
         
