@@ -21,7 +21,6 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
         });
     });
 
-
     return (
         <>
             <Head title='Töölaud' />
@@ -77,7 +76,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget className={"place-stat"} link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
+                    <StatisticsWidget className={"place-stat"} link={"classroom/"+classData.uuid+"/view"} textClass={["1", "T1"].includes(classData.myPlace) ? "fancy" : ["2", "T2"].includes(classData.myPlace) ? "fancy2" : ["3", "T3"].includes(classData.myPlace) ? "fancy3" : null} stat={classData.myPlace + (classData.myPlace.startsWith("T") ? "" : ".")} desc="Koht klassis" />
                     {true && <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />}
                     <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.pointsCount} desc="XP kokku" />
                 </div>

@@ -43,7 +43,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                 <h3 className='section-header'>Edetabel</h3>
             </div>
             {leaderboard.length <= 0 && <HorizontalInfoBanner text="Hetkel ei ole siin kedagi..." />}
-            {leaderboard.map((e, index)=><LeaderboardRow key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
+            {leaderboard.map((e, index)=><LeaderboardRow place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
         </section>
 
         {isTeacher && <>

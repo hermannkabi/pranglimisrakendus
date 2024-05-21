@@ -1,6 +1,6 @@
 import SizedBox from "./SizedBox";
 
-export default function leaderboardRow({points, index, player, user}){
+export default function leaderboardRow({place, points, index, player, user}){
     // return (
     //     <div style={{display:"flex", flexDirection:'row', justifyContent:"space-between", gap:"16px", marginBlock:"24px"}}> 
     //         <div style={{display:"flex", flexDirection:"row", gap:"8px", alignItems:"center"}}>
@@ -13,11 +13,17 @@ export default function leaderboardRow({points, index, player, user}){
     //     </div>
     // );
 
+
+    var isPodium = ["1", "2", "3", "T1", "T2", "T3"].includes(place);
+    var isFirst = ["1", "T1"].includes(place);
+    var isSecond = ["2", "T2"].includes(place);
+    var isThird = ["3", "T3"].includes(place);
+
     return (
         <a style={{all:"unset", cursor:"pointer"}} href={"/profile/"+user.id}>
             <div className="leaderboard-row" style={{marginBlock:"8px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                 <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                    <div style={{height:"36px", aspectRatio: "1", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: (index <= 2 ? "bold" : "normal")}} className={index == 0 ? "fancy-div fancy" : index == 1 ? "fancy2-div fancy2" : index == 2 ? "fancy3-div fancy3" : null}><span>{index + 1}</span></div>
+                    <div style={{height:"36px", aspectRatio: "1", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: (isPodium ? "bold" : "normal")}} className={isFirst ? "fancy-div fancy" : isSecond ? "fancy2-div fancy2" : isThird ? "fancy3-div fancy3" : null}><span>{place ?? (index + 1)}</span></div>
                     <SizedBox width={12} />
                     <div style={{display:"flex", flexDirection:"column", alignItems:"start", fontSize:"18px", fontWeight: player ? "bold" : "normal"}}>
                         <span style={{color: player ? "rgb(var(--primary-color))" : "inherit", textTransform:"capitalize"}}>{user.eesnimi}</span>

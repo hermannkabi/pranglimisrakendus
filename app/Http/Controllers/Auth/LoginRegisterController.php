@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Models\Klass;
-
 use Inertia\Inertia;
+
+use App\Models\Klass;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -194,23 +195,14 @@ class LoginRegisterController extends Controller
                 $teacher = User::select(["eesnimi", "perenimi", "id"])->where("id", $class->teacher_id)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
-                $leaderboardData = [];
                 $total_count = 0;
-                foreach($students as $õp){
-                    $õpCount = app(GameController::class)->getUserExp($õp->id);
-                    $total_count += $õpCount;
-                    array_push($leaderboardData, ["user"=>$õp->id, "score"=>$õpCount]);
-                }
 
-                usort($leaderboardData, function ($a, $b){return ($a["score"] > $b["score"]) ? -1 : 1;});
+                $leaderboardData = app("App\Http\Controllers\LeaderboardController")->getLeaderboardData($students);
 
-                $place = 0;
-                $loggedInId = Auth::id();
-
-                for($i = 0; $i<count($leaderboardData); $i++){
-                    if($leaderboardData[$i]["user"] == $loggedInId){
-                        $place = $i + 1;
-                    }
+                $filtered = (array_filter($leaderboardData, function ($row){return $row["user"]->id == Auth::id();}));
+                $place = $filtered[array_keys($filtered)[0]]["place"];
+                foreach($leaderboardData as $dataRow){
+                    $total_count += $dataRow["xp"];
                 }
 
                 $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid];
