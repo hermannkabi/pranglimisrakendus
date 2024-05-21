@@ -40,7 +40,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                 </div>}
             </section>
 
-            <section>
+            {stats.total_training_count > 0 && <section>
                 <div className="header-container">
                     <h3 className="section-header">Statistika</h3>
                 </div>
@@ -52,7 +52,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                     <StatisticsWidget stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
                     <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
                 </div>
-            </section>
+            </section>}
 
             <section>
                 <div className="header-container">

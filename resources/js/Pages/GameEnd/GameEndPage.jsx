@@ -203,8 +203,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                             <SizedBox height={16} />
                             {accuracy != 0 && accuracy != 100 && <div>
                                 <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
-                                <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
-                                <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                                <CheckboxTile forcedText={"Õiged vastused ("+log.filter((op)=>op.isCorrect).length+")"} onChange={filterOperations} inputClass="correct-choice" />
+                                <CheckboxTile forcedText={"Valed vastused ("+log.filter((op)=>!op.isCorrect).length+")"} onChange={filterOperations} inputClass="incorrect-choice" />
                                 <br />
                                 <HorizontalRule />
                             </div>}

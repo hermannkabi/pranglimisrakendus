@@ -199,7 +199,7 @@ class ProfileController extends Controller
             
             $stats = app(GameController::class)->getOverallStats($user->id);
 
-            $lastGames = Mang::where('user_id', $user->id)->orderBy("dt", "desc")->take(5)->get();
+            $lastGames = Mang::where('user_id', $user->id)->orderBy("dt", "desc")->take(3)->get();
 
         }else{
             abort(404);

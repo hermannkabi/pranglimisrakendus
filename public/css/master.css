@@ -52,6 +52,17 @@
     .stat-widget > p{
         font-size: 0.8rem !important;
     }
+
+    .horizontal-info-banner{
+        flex-direction: column;
+        gap: 8px !important;
+        text-align: center !important;
+        margin-block: 4px !important;
+    }
+
+    .horizontal-info-banner > a{
+        padding-left: 0;
+    }
 }
 
 @media only screen and (max-width: 1100px){
@@ -720,4 +731,13 @@ sdjkhskdsdsde::after{
 
 h3.inactive{
     color: grey !important;
+}
+
+.horizontal-info-banner{
+    color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    text-align: start;
 }
