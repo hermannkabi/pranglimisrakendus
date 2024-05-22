@@ -190,7 +190,7 @@ class LoginRegisterController extends Controller
             $klass = Auth::user()->klass != null;
             $classData = false;
             $teacherData = null;
-            if($klass){
+            if($klass && Auth::user()->role == "student"){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
                 $teacher = User::select(["eesnimi", "perenimi", "id"])->where("id", $class->teacher_id)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
@@ -200,6 +200,8 @@ class LoginRegisterController extends Controller
                 $leaderboardData = app("App\Http\Controllers\LeaderboardController")->getLeaderboardData($students);
 
                 $filtered = (array_filter($leaderboardData, function ($row){return $row["user"]->id == Auth::id();}));
+                
+                Log::debug($filtered);
                 $place = $filtered[array_keys($filtered)[0]]["place"];
                 foreach($leaderboardData as $dataRow){
                     $total_count += $dataRow["xp"];

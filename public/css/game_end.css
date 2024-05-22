@@ -35,7 +35,7 @@
 @media only screen and (max-width: 475px){
     .stat-container{
         width: 100% !important;
-        margin: 0 !important;
+        margin: 0 0 8px 0 !important;
     }
     .stat-row{
         margin-inline: 16px !important;

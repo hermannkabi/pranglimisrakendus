@@ -21,8 +21,8 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
 
     return <>
     
-        <Head title='Minu klass' />
-        <Navbar user={auth.user} title="Minu klass" />
+        <Head title={className ?? "Minu klass"} />
+        <Navbar user={auth.user} title={className ?? "Minu klass"} />
         <SizedBox height={36} />
 
         <h2>{className}</h2>

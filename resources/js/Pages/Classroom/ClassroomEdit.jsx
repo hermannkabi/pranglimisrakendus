@@ -64,7 +64,7 @@ export default function ClassroomEdit({klass, auth, students}){
 
                             <SizedBox height="16px" />
 
-                            {students.length > 0 && <a alone="" onClick={()=>$("#remove-students").slideToggle(200)}>Eemalda õpilasi</a>}
+                            {students.length > 0 && <a alone="" onClick={()=>{$("#remove-students-arrow").css("transform", "rotate("+($("#remove-students").is(":hidden") ? "-180deg" : "0deg")+")"); $("#remove-students").slideToggle(200); }}>Eemalda õpilasi <i id="remove-students-arrow" className="material-icons no-anim">keyboard_arrow_down</i></a>}
 
                             <div id="remove-students" hidden>
                                 <p style={{color:"grey"}}>Vali need õpilased, keda soovid klassi nimekirjast eemaldada</p>

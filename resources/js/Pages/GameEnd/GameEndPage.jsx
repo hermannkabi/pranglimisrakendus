@@ -195,7 +195,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
 
                         {/* Detailed results toggle */}
-                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i> </a>}
+                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i></a>}
 
                         {/* Detailed resuls div */}
                         {/* Updated looks from 14.01.2024 */}
