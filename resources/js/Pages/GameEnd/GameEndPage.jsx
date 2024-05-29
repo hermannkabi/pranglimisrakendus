@@ -153,7 +153,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     }
 
     function showDetailed(){
-        $("#show-detailed-arrow").css("transform", "rotate("+($(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
+        $("#show-detailed-arrow").css("transform", "rotate("+(!$(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
         $(".ss").slideToggle(200);
     }
 

@@ -36,6 +36,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
 
     const gameNames = {
         "lihtsustamine":"Murru taandamine",
+        "murruTaandamine":"Murru taandamine",
         "jaguvus":"Jaguvusseadused"
     };
     

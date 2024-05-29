@@ -15,6 +15,7 @@ const isTypeShown = data.game_type != null && data.game_type in typeToReadable;
 
 const gameNames = {
     "lihtsustamine":"Murru taandamine",
+    "murruTaandamine":"Murru taandamine",
     "jaguvus":"Jaguvusseadused"
 };
 

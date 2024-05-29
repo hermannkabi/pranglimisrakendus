@@ -81,7 +81,7 @@ export default function OperationWidget({op}){
     }
 
     function fracHtml(op){
-        return fracRender(op.operation) + "<span> = </span>" + "<div class='"+(op.isCorrect ? "correct" : "incorrect strikethrough")+"' style='display:inline; font-size:1em;' />" + (op.answer == null ? "-" : fracRender(op.answer)) + "</div>" + (op.isCorrect ? "" : " <div class='correct' style='display:inline; font-size:1em;'>"+fracRender(op.correct)+"</div>");
+        return fracRender(op.operation) + "<span> = </span>" + "<div class='"+(op.isCorrect ? "correct" : "incorrect")+"' style='display:inline; font-size:1em;' />" + (op.answer == null ? "-" : fracRender(op.answer)) + "</div>" + (op.isCorrect ? "" : " <div class='correct' style='display:inline; font-size:1em;'>"+fracRender(op.correct)+"</div>");
     }
 
     return (

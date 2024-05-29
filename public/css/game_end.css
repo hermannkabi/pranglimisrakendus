@@ -99,6 +99,9 @@ section{
 
 .incorrect{
     color: red;
+}
+
+.incorrect:not( > math > mfrac){
     text-decoration: underline line-through;
     text-decoration-thickness: 4px;
 }

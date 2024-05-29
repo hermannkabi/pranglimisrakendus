@@ -245,16 +245,18 @@ button[secondary]:hover > .lds-ring div{
     transition: background-color 100ms;
     position: relative;
     overflow: hidden;
+    font-family: var(--main-font);
 }
 
 .big-btn .symbol{
-    transition: transform 200ms;
+    transition: transform 200ms, scale 200ms, translate 200ms;
     position: absolute;
-    left: -6px;
-    bottom: -14px;
-    overflow: hidden;
-    color: rgb(var(--primary-color)) !important;
-    font-size: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 4px;
+    z-index: -10;
+    height: 50px;
+    width: 50px;
 }
 
 .big-btn:hover{
@@ -262,7 +264,7 @@ button[secondary]:hover > .lds-ring div{
 }
 
 .big-btn:hover .symbol{
-    transform: translate(6px, -6px);
+    translate: 4px;
 }
 
 
@@ -482,8 +484,8 @@ select:after{
 }
 
 .frac span.bordered{
-    outline: 2px solid rgb(var(--primary-color));
-    border-radius: 8px;
+    outline: 1px solid rgb(var(--primary-color));
+    border-radius: 2px;
 }
 
 /* Game exponent rendering */
@@ -550,7 +552,6 @@ select:after{
 
 
 .math-style{
-    display: math;
     font-family: "Lexend";
     font-weight: bold;
     /* font-size: 40px; */
@@ -559,12 +560,18 @@ select:after{
 }
 
 .math-pow-transformed{
-    transform: translate(-10px, 10px);
+    transform: translate(-8px, 5px);
+    font-size: 14px;
 }
 
 .root-alignment{
-    transform: translateY(-4px);
-    font-size: .5em;
+    transform: translate(-6px, -4px);
+    font-size: 14px;
+}
+
+mfrac{
+    line-height: 1;
+    font-size: 28px !important;
 }
 
 /* Point animation */

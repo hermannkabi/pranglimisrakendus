@@ -58,10 +58,10 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="big-btns">
-                    <BigGameButton symbol="+" text="Liitmine" value={"liitmine"}/>
-                    <BigGameButton symbol="–" text="Lahutamine" value={"lahutamine"}/>
-                    <BigGameButton symbol="×" text="Korrutamine" value={"korrutamine"}/>
-                    <BigGameButton symbol="÷" text="Jagamine" value={"jagamine"}/>
+                    <BigGameButton symbol="plus" text="Liitmine" value={"liitmine"}/>
+                    <BigGameButton symbol="minus" text="Lahutamine" value={"lahutamine"}/>
+                    <BigGameButton symbol="multiply" text="Korrutamine" value={"korrutamine"}/>
+                    <BigGameButton symbol="divide" text="Jagamine" value={"jagamine"}/>
                 </div>
                 <SizedBox height={24}/>
                 <a alone='true' href={route("preview")}>Kõik harjutusalad <span translate="no" className="material-icons">navigate_next</span></a>
