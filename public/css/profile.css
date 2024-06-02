@@ -39,6 +39,7 @@
 @media only screen and (max-width: 600px){
     .app-theme-group{
         grid-template-columns: repeat(1, 1fr) !important;
+        gap: 0 !important;
     }
 
     .profile-widget{
@@ -52,6 +53,15 @@
 
     .actions-container{
         grid-template-columns: 1fr !important;
+    }
+
+    .school-container{
+        display: flex;
+        justify-content: stretch;
+    }
+
+    .school-container > div {
+        width: 100%;
     }
 }
 

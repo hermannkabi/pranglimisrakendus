@@ -1496,7 +1496,7 @@ class MathController extends Controller
         
 
     }
-    public function võrdlemine($level, $aeg, $random=false){
+    public function võrdlemine($level, $aeg, $randomOp=false){
         $array = [];
         $count = 0;
         $xold = 0;
@@ -1546,7 +1546,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));    
+            } while ($randomOp ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));    
         }
 
         if ($level === '2'){
@@ -1590,7 +1590,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
+            } while ($randomOp ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
         }
 
         if ($level === '3'){
@@ -1639,7 +1639,7 @@ class MathController extends Controller
                 array_push($array, ["operation1"=>$esimene["op"], "operation2"=>$teine["op"], "answer"=> $vastus, "level"=>$level]);
 
                 $count ++;
-            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14)); //TODO:
+            }while ($randomOp ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14)); //TODO:
         }; 
     
 

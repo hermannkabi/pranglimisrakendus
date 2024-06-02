@@ -21,8 +21,8 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
 
     return <>
     
-        <Head title='Minu klass' />
-        <Navbar user={auth.user} title="Minu klass" />
+        <Head title={className ?? "Minu klass"} />
+        <Navbar user={auth.user} title={className ?? "Minu klass"} />
         <SizedBox height={36} />
 
         <h2>{className}</h2>
@@ -31,7 +31,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                 <StatisticsWidget stat={stats.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
                 <StatisticsWidget stat={stats.totalGameCount} desc="Mängu kokku" oneDesc="Mäng kokku" />
 
-                <StatisticsWidget stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
+                <StatisticsWidget className="xp-stat" stat={stats.totalPointsCount} desc="XP kokku" oneDesc="XP kokku (nagu kuidas??)" />
             </div>
             {teacher != null && <StatisticsWidget link={"/profile/"+teacher.id} name={true} stat={teacher.eesnimi + " " + teacher.perenimi} condensed={true} desc="Õpetaja" />}
         
@@ -43,7 +43,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                 <h3 className='section-header'>Edetabel</h3>
             </div>
             {leaderboard.length <= 0 && <HorizontalInfoBanner text="Hetkel ei ole siin kedagi..." />}
-            {leaderboard.map((e, index)=><LeaderboardRow key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
+            {leaderboard.map((e, index)=><LeaderboardRow place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
         </section>
 
         {isTeacher && <>

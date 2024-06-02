@@ -21,7 +21,6 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
         });
     });
 
-
     return (
         <>
             <Head title='Töölaud' />
@@ -59,10 +58,10 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="big-btns">
-                    <BigGameButton symbol="+" text="Liitmine" value={"liitmine"}/>
-                    <BigGameButton symbol="–" text="Lahutamine" value={"lahutamine"}/>
-                    <BigGameButton symbol="×" text="Korrutamine" value={"korrutamine"}/>
-                    <BigGameButton symbol="÷" text="Jagamine" value={"jagamine"}/>
+                    <BigGameButton symbol="plus" text="Liitmine" value={"liitmine"}/>
+                    <BigGameButton symbol="minus" text="Lahutamine" value={"lahutamine"}/>
+                    <BigGameButton symbol="multiply" text="Korrutamine" value={"korrutamine"}/>
+                    <BigGameButton symbol="divide" text="Jagamine" value={"jagamine"}/>
                 </div>
                 <SizedBox height={24}/>
                 <a alone='true' href={route("preview")}>Kõik harjutusalad <span translate="no" className="material-icons">navigate_next</span></a>
@@ -77,8 +76,8 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>
 
                 <div className="history-statistics">
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} textClass={classData.myPlace == 1 ? "fancy" : classData.myPlace == 2 ? "fancy2" : classData.myPlace == 3 ? "fancy3" : null} stat={classData.myPlace + "."} desc="Koht klassis" />
-                    <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />
+                    <StatisticsWidget className={"place-stat"} link={"classroom/"+classData.uuid+"/view"} textClass={["1", "T1"].includes(classData.myPlace) ? "fancy" : ["2", "T2"].includes(classData.myPlace) ? "fancy2" : ["3", "T3"].includes(classData.myPlace) ? "fancy3" : null} stat={classData.myPlace + (classData.myPlace.startsWith("T") ? "" : ".")} desc="Koht klassis" />
+                    {true && <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.studentsCount} desc="Õpilast" oneDesc="Õpilane" />}
                     <StatisticsWidget link={"classroom/"+classData.uuid+"/view"} stat={classData.pointsCount} desc="XP kokku" />
                 </div>
                 <SizedBox height={24}/>

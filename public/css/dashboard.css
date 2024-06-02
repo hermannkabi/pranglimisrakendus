@@ -88,25 +88,17 @@
 
 @media only screen and (max-width: 600px) {
     .big-btn{
-        margin-inline: 4px !important;
+        margin: 4px !important;
         padding-inline: 8px !important;
     }
-
-    .big-btn-symbol{
-        font-size: 40px !important;
-    }
-
-    .big-btn-text{
-        font-size: 16px !important;
-    }
-
+    
     .small-btn{
         margin-inline: 4px !important;
         padding-inline: 8px !important;
     }
 
     .big-btns, .small-btns{
-        grid-template-columns: repeat(1, 1fr) !important;
+        /* grid-template-columns: repeat(1, 1fr) !important; */
         gap: 0 !important;
     }
 

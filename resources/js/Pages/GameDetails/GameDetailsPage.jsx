@@ -36,6 +36,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
 
     const gameNames = {
         "lihtsustamine":"Murru taandamine",
+        "murruTaandamine":"Murru taandamine",
         "jaguvus":"Jaguvusseadused"
     };
     
@@ -100,8 +101,8 @@ export default function GameDetailsPage({game, auth, playedBy}){
             </div>
             {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <div>
                 <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
-                <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
-                <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                <CheckboxTile forcedText={"Õiged vastused ("+JSON.parse(game.log).filter((op)=>op.isCorrect).length+")"} onChange={filterOperations} inputClass="correct-choice" />
+                <CheckboxTile forcedText={"Valed vastused ("+JSON.parse(game.log).filter((op)=>!op.isCorrect).length+")"} onChange={filterOperations} inputClass="incorrect-choice" />
                 <br />
                 <HorizontalRule />
             </div>}

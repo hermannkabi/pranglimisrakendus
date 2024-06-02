@@ -71,7 +71,12 @@ export default function UpdateHistoryPage({auth}){
         "25.03.2024":["Kasutajatel on nüüd võimalus kinnitada oma e-posti aadress", "Õpetajatele on see funktsioon turvakaalutlustel kohustuslik – enne, kui võimaldatakse klasside loomine/haldamine, peab e-posti aadress kinnitatud olema", "Õpilastel sellist kohustust hetkel pole, küll aga soovitame siiski e-posti kinnitada", "Uuendatud privaatsussõbralikum avalik profiili vaade ei näita enam ka e-posti aadressi", "Samuti ei saa õpilane enam ligi ühegi klassi andmetele peale tema enda oma"],
         "26.03.2024":["Tänasest saavad kasutajad oma parooli muuta", "Selleks tuleb esiteks oma e-posti aadress kinnitada ning seejärel saab tellida postkasti e-kirja, mis sisaldab parooli muutmiseks vajalikku linki", "Samuti lisandus sisselogimisvaatesse 'Unustasin salasõna' nupp"],
         "17.05.2024":["Uuenenud ja kasutajasõbralikum kasutajaliides 'Unustasin parooli' nupu jaoks", "Parem rippmenüü kasutajaliides teatud operatsioonisüsteemidel ja tumedas teemas", "Pisiuuendused seadete vaates ja külalisvaates", "Veaparandused seadete laadimises konto vahetamisel", "boldEsialgne 'Kuidas mängida?' leht, kust leiab infot tehte kohta, aga ka nippe, kuidas kiiremaks saada ja areneda"],
-        "18.05.2024":["Võimalus filtreerida õigete/valede vastuste vahel ka mängude ajaloos", "Väikesed lisandused mängu eelmängu ja kokkuvõtte kasutajaliidesele"]
+        "18.05.2024":["Võimalus filtreerida õigete/valede vastuste vahel ka mängude ajaloos", "Väikesed lisandused mängu eelmängu ja kokkuvõtte kasutajaliidesele"],
+        "19.05.2024":["Uuendatud edetabeli välimus – hierarhiliselt loogilisem ja esteetilisem", "Hõljumisanimatsioon mängude ajaloo vaates", "Väikesed uuendused mänguvaatesse ikoonide, värvide ja tekstisuurust näol"],
+        "20.05.2024":["Uuendatud kasutajaliides mängude ajaloos ja seadete vaadetes", "Ühtlustatud tekstisuurused üle terve rakenduse ja teised väikesed UI parandused", "Uuendatud mobiilivaade keskendub sarnaselt ülejäänud uuendustele kompaktsusele"],
+        "21.05.2024":["Edetabeli uuendus – sama XP-ga kasutajad jagavad nüüd ühte kohta. Varem sellist võimalust polnud, järjekord oli suvaline ja seega ebaõiglane", "Lisaks mitmed (eelkõige mobiilile suunatud) väiksemad kasutajaliidese parandused"],
+        "22.05.2024":["Parandatud viga, mis esines klassiga liitunud õpetajal", "Väikesed kasutajaliidese uuendused õpetaja vaadetes"],
+        "29.05.2024":["Täiustatud murru ja juure renderdamist – need on nüüd esteetilisemad ja töötavad paremini mitmes brauseris", "Parandatud viga mõne mängutüübi kuvamisel mängude ajaloos", "Uuendatud töölaua kasutajaliidest, mh ühtlustatud fonti", "Parandatud viga, kus võrdlemisel tagastati vaid 3 tehet"]
     };
 
     return <>

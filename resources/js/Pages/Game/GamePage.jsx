@@ -880,22 +880,22 @@ export default function GamePage({data, time, auth}){
                 
                 {/* Message on top of the page */}
                 {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))"}}> <span translate="no">ⓘ</span> {message}</p>
+                    <p style={{color:"rgb(var(--primary-color))", fontSize:"18px"}}> <span translate="no">ⓘ</span> {message}</p>
                 </div>}
 
                 {/* Cancel button */}
-                <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto"}} alone="">Katkesta</a>
+                <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto", fontSize:"18px"}} alone=""><i className="material-icons no-anim">close</i>&nbsp;Katkesta</a>
 
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px"}}>
+                <div style={{flex:'1', color: "rgb(var(--primary-color))", width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px"}}>
 
-                    <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
+                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"flex-start"}}>
 
                         {/* Current operation number & level, total points etc. */}
-                        <div style={{textAlign:"start"}}>
-                            <h2 style={{marginBlock:"0"}}>{operationCount + 1}<span style={{fontSize:"18px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2>
+                        <div style={{textAlign:"start", }}>
+                            <h2 style={{marginBlock:"0", color: "rgb(var(--primary-color))", fontSize:"26px"}}>{operationCount + 1}<span style={{fontSize:"16px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2>
                             <span className="point-span">+100</span>
-                            <p style={{marginBlock:"0", fontWeight:'bold'}}>{points} punkti</p>
+                            <p style={{marginBlock:"0", fontWeight:'bold', fontSize:"18px"}}>{points} punkti</p>
                         </div>
 
                         {/* Timer */}
@@ -907,11 +907,11 @@ export default function GamePage({data, time, auth}){
                     {/* The operation data  and answer*/}
                     {compare && <h2 translate="no" style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {shapes && <span translate="no"><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></span>}
-                    {!compare && !shapes && <h2 translate="no" style={{overflowWrap:'anywhere'}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {!compare && !shapes && <h2 translate="no" style={{overflowWrap:'anywhere', color: "rgb(var(--primary-color))"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                 </div>
 
                 {/* Skip button */}
-                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span translate="no" className="material-icons">fast_forward</span></a> : null}
+                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto", fontSize:"18px"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span translate="no" className="material-icons">fast_forward</span></a> : null}
                 
                 <SizedBox height="24px" />
                 

@@ -153,7 +153,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     }
 
     function showDetailed(){
-        $("#show-detailed-arrow").css("transform", "rotate("+($(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
+        $("#show-detailed-arrow").css("transform", "rotate("+(!$(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
         $(".ss").slideToggle(200);
     }
 
@@ -195,7 +195,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
 
                         {/* Detailed results toggle */}
-                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i> </a>}
+                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i></a>}
 
                         {/* Detailed resuls div */}
                         {/* Updated looks from 14.01.2024 */}
@@ -203,8 +203,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                             <SizedBox height={16} />
                             {accuracy != 0 && accuracy != 100 && <div>
                                 <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
-                                <CheckboxTile forcedText="Õiged vastused" onChange={filterOperations} inputClass="correct-choice" />
-                                <CheckboxTile forcedText="Valed vastused" onChange={filterOperations} inputClass="incorrect-choice" />
+                                <CheckboxTile forcedText={"Õiged vastused ("+log.filter((op)=>op.isCorrect).length+")"} onChange={filterOperations} inputClass="correct-choice" />
+                                <CheckboxTile forcedText={"Valed vastused ("+log.filter((op)=>!op.isCorrect).length+")"} onChange={filterOperations} inputClass="incorrect-choice" />
                                 <br />
                                 <HorizontalRule />
                             </div>}

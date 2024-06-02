@@ -1,3 +1,5 @@
+#Jooksuta skripti rakenduse root folderist
+
 import os
 
 total_count = 0
