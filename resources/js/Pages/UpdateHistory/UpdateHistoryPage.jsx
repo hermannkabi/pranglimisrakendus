@@ -76,8 +76,9 @@ export default function UpdateHistoryPage({auth}){
         "20.05.2024":["Uuendatud kasutajaliides mängude ajaloos ja seadete vaadetes", "Ühtlustatud tekstisuurused üle terve rakenduse ja teised väikesed UI parandused", "Uuendatud mobiilivaade keskendub sarnaselt ülejäänud uuendustele kompaktsusele"],
         "21.05.2024":["Edetabeli uuendus – sama XP-ga kasutajad jagavad nüüd ühte kohta. Varem sellist võimalust polnud, järjekord oli suvaline ja seega ebaõiglane", "Lisaks mitmed (eelkõige mobiilile suunatud) väiksemad kasutajaliidese parandused"],
         "22.05.2024":["Parandatud viga, mis esines klassiga liitunud õpetajal", "Väikesed kasutajaliidese uuendused õpetaja vaadetes"],
-        "29.05.2024":["Täiustatud murru ja juure renderdamist – need on nüüd esteetilisemad ja töötavad paremini mitmes brauseris", "Parandatud viga mõne mängutüübi kuvamisel mängude ajaloos", "Uuendatud töölaua kasutajaliidest, mh ühtlustatud fonti", "Parandatud viga, kus võrdlemisel tagastati vaid 3 tehet"]
-    };
+        "29.05.2024":["Täiustatud murru ja juure renderdamist – need on nüüd esteetilisemad ja töötavad paremini mitmes brauseris", "Parandatud viga mõne mängutüübi kuvamisel mängude ajaloos", "Uuendatud töölaua kasutajaliidest, mh ühtlustatud fonti", "Parandatud viga, kus võrdlemisel tagastati vaid 3 tehet"],
+        "06.06.2024":["boldReaaler saab endale logo!"]
+    };  
 
     return <>
         <Head title='Uuenduste ajalugu' />
