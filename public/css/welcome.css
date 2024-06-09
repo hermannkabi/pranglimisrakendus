@@ -63,8 +63,9 @@
 .home-navbar > .title-div{
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: 0px;
     align-items: center;
+    color: rgb(var(--primary-color));
 }
 
 .home-navbar > a{

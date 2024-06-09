@@ -27,7 +27,7 @@ export default function Navbar({user}){
                             </div>
                             <p className="school-text">Tallinna Reaalkool</p>
                         </div>}
-                        <img className="profile-pic" style={{height:"40px"}} src={user.profile_pic} alt="Kasutaja profiilipilt" />
+                        <img className="profile-pic" style={{height:"50px"}} src={user.profile_pic} alt="Kasutaja profiilipilt" />
 
                     </div>
                 </a>

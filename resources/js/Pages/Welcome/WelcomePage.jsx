@@ -86,7 +86,7 @@ export default function WelcomePage(){
                 <h1 style={{display:"none"}}><span style={{color:"rgb(var(--primary-color))"}}>Reaaler</span> muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
                 <div className="buttons" style={{display:"none"}}>
                     <button  className="onboarding-btn" onClick={()=>window.location.href = route("register")}> <span translate="no" className="material-icons">calculate</span> Alusta kohe</button>
-                    <span style={{userSelect:"none"}}>&nbsp;&nbsp;</span><a alone="" href={route("login")}>Logi sisse&nbsp;&nbsp;<span className="material-icons" translate="no">arrow_right_alt</span></a>
+                    <span style={{userSelect:"none"}}>&nbsp;&nbsp;</span><a alone="" href={route("login")}>Logi sisse <span className="material-icons" translate="no">chevron_right</span></a>
                 </div>
             </div>
 

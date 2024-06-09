@@ -77,7 +77,8 @@ export default function UpdateHistoryPage({auth}){
         "21.05.2024":["Edetabeli uuendus – sama XP-ga kasutajad jagavad nüüd ühte kohta. Varem sellist võimalust polnud, järjekord oli suvaline ja seega ebaõiglane", "Lisaks mitmed (eelkõige mobiilile suunatud) väiksemad kasutajaliidese parandused"],
         "22.05.2024":["Parandatud viga, mis esines klassiga liitunud õpetajal", "Väikesed kasutajaliidese uuendused õpetaja vaadetes"],
         "29.05.2024":["Täiustatud murru ja juure renderdamist – need on nüüd esteetilisemad ja töötavad paremini mitmes brauseris", "Parandatud viga mõne mängutüübi kuvamisel mängude ajaloos", "Uuendatud töölaua kasutajaliidest, mh ühtlustatud fonti", "Parandatud viga, kus võrdlemisel tagastati vaid 3 tehet"],
-        "06.06.2024":["boldReaaler saab endale logo!"]
+        "06.06.2024":["boldReaaler saab endale logo!"],
+        "09.06.2024":["Uuendatud töölaua arvutamisnuppude välimust nii mobiilil kui arvutis", "Uuendatud logo välimus lehel – nüüd erinevat värvi logo vastavalt kasutaja soovidele"]
     };  
 
     return <>

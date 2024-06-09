@@ -63,6 +63,20 @@
     .horizontal-info-banner > a{
         padding-left: 0;
     }
+
+    .big-btn .symbol{
+        height: 25px !important;
+        position: relative !important;
+        transform: none !important;
+        top: 0% !important;
+        left: -4px !important;
+    }
+
+    .big-btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 @media only screen and (max-width: 1100px){
@@ -109,6 +123,11 @@ body{
     border-radius: 50%;
     aspect-ratio: 1;
     object-fit: cover;
+}
+
+.application-logo:hover{
+    filter: brightness(80%);
+    cursor: pointer;
 }
 
 section, .section{
@@ -255,16 +274,12 @@ button[secondary]:hover > .lds-ring div{
     transform: translateY(-50%);
     left: 4px;
     z-index: -10;
+    aspect-ratio: 1;
     height: 50px;
-    width: 50px;
 }
 
 .big-btn:hover{
     filter: brightness(85%);
-}
-
-.big-btn:hover .symbol{
-    translate: 4px;
 }
 
 
