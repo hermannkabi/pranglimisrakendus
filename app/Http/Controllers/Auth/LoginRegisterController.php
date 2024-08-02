@@ -93,7 +93,7 @@ class LoginRegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route("dashboard");
+        return redirect()->intended("dashboard");
     }
 
 
@@ -135,7 +135,7 @@ class LoginRegisterController extends Controller
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
-            return redirect()->route("dashboard");
+            return redirect()->intended("dashboard");
         }
 
         return redirect()->route("register")->withErrors(['email' => 'Midagi läks valesti!']);

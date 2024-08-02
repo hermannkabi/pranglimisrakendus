@@ -1,12 +1,14 @@
 <?php
 
-use App\Mail\TestMail;
+use App\Models\Fox;
+use App\Models\User;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Artisan;
+use App\Mail\TestMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     if(Auth::check()){
@@ -171,6 +173,180 @@ Route::get("/up", function (){
     return "Rakendus on taas avalikult nähtav.";
 });
 
+
+//VALIMISED
+
+function opensAt(){
+    $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
+    return in_array(Auth::user()->role, ["valimised-vip", "valimised-admin"]) ? $opens_at - 5 : $opens_at;
+}
+
+function closesAt(){
+    return intval(DB::table('properties')->where("property", "closes_at")->first()->value);
+}
+
+Route::prefix("valimised")->name("valimised.")->group(function (){
+
+    Route::get("/notverified", function (){if(Auth::user()->email_verified_at != null){return redirect()->route("valimised.dashboard");} return view("notverified");})->middleware(["auth"])->name("notverified");
+
+    Route::middleware(['auth', 'notguest'])->group(function () {
+
+        Route::get("", function (){
+            return redirect()->route("valimised.dashboard");
+        });
+
+        Route::get("/logout", function (){
+            Auth::logout();
+    
+            return redirect()->route("valimised.dashboard");
+        })->name("logout");       
+    
+    
+        Route::get('/valimine', function () {
+
+            $OPENS_AT = opensAt();
+            $CLOSES_AT = closesAt();
+        
+
+            if(($OPENS_AT != null && time() < $OPENS_AT)){
+                return view("notyetopen", ["opens_at"=>$OPENS_AT]);
+            }
+    
+            if(($CLOSES_AT != null && time() > $CLOSES_AT)){
+                return view("notopen");
+            }
+    
+            return view('dashboard', ["foxes"=>Fox::orderBy('name')->get()]);
+        })->name("dashboard");
+    
+        Route::post("/rebane/vali", function (Request $request){
+
+            $OPENS_AT = opensAt();
+            $CLOSES_AT = closesAt();
+
+            if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
+                return view("notopen");
+            }
+    
+            $request->validate([
+                "id"=>"required",
+            ], [
+                "id.required"=>"Midagi läks valesti",
+            ]);
+    
+            $fox = Fox::where("id", $request->id)->first();
+    
+            $userId = Auth::id();
+    
+            if($fox == null){
+                return redirect()->back()->with("error", "Midagi läks valesti!");
+            }
+    
+            if($fox->chosen_by != null){
+                return redirect()->back()->with("error", "See rebane on paraku juba valitud!");
+            }
+    
+            Fox::where("chosen_by", $userId)->update(["chosen_by"=>null]);
+    
+            $fox->chosen_by = $userId;
+    
+            $fox->save();
+    
+            return redirect()->back()->withSuccess($fox->name . " on edukalt valitud!");
+        })->name("chooseFox");
+
+        Route::post("fox/random", function (Request $request){
+            $OPENS_AT = opensAt();
+            $CLOSES_AT = closesAt();
+
+            if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
+                return view("notopen");
+            }
+
+            $randomFox = Fox::where("chosen_by", null)->inRandomOrder()->first();
+            if($randomFox == null){
+                return redirect()->back()->with("error", "Kõik rebased on juba valitud!");
+            }
+
+            $currentFox = Fox::where("chosen_by", Auth::id())->first();
+
+            if($currentFox != null){
+                $currentFox->chosen_by = null;
+                $currentFox->save();
+            }
+
+            $randomFox->chosen_by = Auth::id();
+            $randomFox->save();
+
+            return redirect()->back()->withSuccess($randomFox->name . " on edukalt valitud!");
+        })->name("foxRandom");
+    
+        Route::post("fox/remove", function (Request $request){
+            Fox::where("chosen_by", $request->user()->id)->update(["chosen_by"=>null]);
+    
+            return redirect()->route("dashboard");
+        })->name("foxRemove");
+    
+        Route::get("/profile", function (){
+            return view("profile", ["name"=>ucwords(Auth::user()->eesnimi . " " . Auth::user()->perenimi), "fox"=>Fox::where("chosen_by", Auth::id())->first()]);
+        })->name("profile");
+    });
+
+    Route::middleware(['auth', 'role:valimised-admin'])->group(function () {
+        Route::get("/rebane/lisa", function (){
+            return view("addfox");
+        })->name("addFox");
+    
+        Route::post("/fox/add", function (Request $request){
+    
+            $request->validate([
+                "name"=>"required|min:4|string",
+            ], [
+                "name.required"=>"Nimi on kohustuslik väli",
+                "name.min"=>"Nimi peab olema vähemalt 4 tähemärki",
+            ]);
+    
+            Fox::create(["name"=>$request->name, "instagram"=>$request->instagram, "facebook"=>$request->facebook, "chosen_by"=>null]);
+    
+            return redirect()->route("valimised.addFox")->withSuccess("Rebane on lisatud!");
+        })->name("addFoxPost");
+    
+        Route::post("/fox/delete", function (Request $request){
+            $request->validate([
+                "id"=>"required",
+            ], [
+                "id.required"=>"Midagi läks valesti",
+            ]);
+    
+            Fox::where("id", $request->id)->delete();
+    
+            return redirect()->back()->withSuccess("Rebane eemaldatud!");
+        })->name("foxDelete");
+    
+        Route::get("/nimekiri", function (){
+    
+            $foxes = Fox::orderBy('name')->get();
+            $data = [];
+    
+            foreach($foxes as $fox){
+                
+                $chosen_by = $fox->chosen_by == null ? null : User::where("id", $fox->chosen_by)->first();
+                $chosen_by_name = null;
+                $chosen_by_email = null;
+    
+                if($chosen_by){
+                    $chosen_by_name = ucwords($chosen_by->eesnimi . " " . $chosen_by->perenimi);
+                    $chosen_by_email = $chosen_by->email;
+                }
+    
+                array_push($data, ["fox_name"=>$fox->name, "chosen_by_name"=>$chosen_by_name, "chosen_by_email"=>$chosen_by_email]);
+            }
+    
+            return view("foxlist", ["data"=>$data]);
+        })->name("foxList");
+    });
+    
+});
 
 
 require __DIR__.'/auth.php';

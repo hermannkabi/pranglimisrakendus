@@ -1,0 +1,81 @@
+/* Valimiste CSS kood */
+
+body{
+    font-family: "Inter";
+}
+
+
+button{
+    background-color: #3C72FF;
+    color: white;
+    font-family: "Inter";
+    border-radius: 4px;
+    font-size: 18px;
+    outline: none;
+    padding: 8px 40px;
+    border: none;
+    transition: background-color 200ms;
+}
+
+button:hover{
+    background-color: #0B43D2;
+}
+
+.red{
+    background-color: #DD4040;
+}
+
+.red:hover{
+    background-color: #C71E1E;
+}
+
+.google-btn{
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    margin-inline: 10%;
+}
+
+.google-btn:hover{
+    background-color: #CECECE50;
+}
+
+input{
+    display: block;
+    font-size: 24px;
+    font-family: "Inter";
+    margin-block: 8px;
+    padding: 4px;
+}
+
+.name-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px calc(10% - 8px);
+    font-size: 24px;
+    transition: background-color 200ms;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.name-row:hover{
+    background-color: #CECECE50;
+}
+
+.name-row .name{
+    font-size: 24px;
+    margin-block: 0;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .name-row{
+        display: block;
+    }
+
+    .name-row .name{
+        margin-block: 8px !important;
+    }
+}
