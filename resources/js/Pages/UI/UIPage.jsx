@@ -1,9 +1,18 @@
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import InfoBanner from "@/Components/InfoBanner";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import LoginHeader from "@/Components/LoginHeader";
 import NumberInput from "@/Components/NumberInput";
 import { Head } from "@inertiajs/react";
 
 export default function UIPage(){
+
+    return (
+        <Layout title="UI">
+            <InfoBanner text="Tere tulemast Reaalerisse! Nagu näha, on siin toimumas suured uuendused! Kiika peagi tagasi ja ehk leiad siit midagi rohkematki!" />
+        </Layout>
+    );
+
     return (
         <>
             <Head title="Kasutajaliides" />
@@ -31,7 +40,7 @@ export default function UIPage(){
                 <h3>Tekstisisene link</h3>
                 <p>Lorem ipsum dolor sit <a href="">amet</a> consectetur adipisicing elit. A, hic.</p>
                 <h3>Eraldiseisev link</h3>
-                <a href="" alone="true">Link <span class="material-icons">arrow_forward</span> </a>
+                <a href="" alone="true">Link <span className="material-icons">arrow_forward</span> </a>
                 <a href="" alone="true">Link</a>
             </section>
             <section>
@@ -42,8 +51,8 @@ export default function UIPage(){
                 <input type="text" placeholder="Kirjuta midagi..." />
                 <input type="text" placeholder="Muutmatu..." disabled="true" />
                 <h3>Numbriväli</h3>
-                <NumberInput placeholder="Number siia..." />
-                <NumberInput placeholder="Ei tööta..." disabled="true" />
+                <NumberInput default={1} placeholder="Number siia..." />
+                <NumberInput default={1} placeholder="Ei tööta..." disabled="true" />
                 <h3>Rippmenüü</h3>
                 <select>
                     <option>Lorem</option>

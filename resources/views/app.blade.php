@@ -13,6 +13,8 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}">
+
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">

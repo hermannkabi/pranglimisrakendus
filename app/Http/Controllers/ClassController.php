@@ -289,7 +289,7 @@ class ClassController extends Controller
                 $user = Auth::user();
 
                 if($user->role == "guest"){
-                    return redirect()->back()->withErrors(["Külaliskontoga ei saa klassiga ühineda"]);
+                    return "Külaliskontoga ei saa klassiga ühineda";
                 }
 
                 $user->klass = $request->klass_id;
@@ -297,14 +297,14 @@ class ClassController extends Controller
                  /** @var \App\Models\User $user **/
                 $user->save();
     
-                return redirect()->route("dashboard");
+                return 0;
     
             }else{
-                return redirect()->back()->withErrors(["Parool ei ole õige"]);
+                return "Parool ei ole õige";
             }
 
         }else{
-            return redirect()->back()->withErrors(["Sellist klassi ei leitud!"]);
+            return "Sellist klassi ei leitud!";
         }
 
     }
@@ -318,6 +318,12 @@ class ClassController extends Controller
         }
 
         $classes = Klass::all();
+
+        for($i = 0; $i < count($classes); $i++){
+            $teacher_name = User::where("id", $classes[$i]->teacher_id)->first();
+            $classes[$i]->teacher_name = ucwords($teacher_name->eesnimi . " " . $teacher_name->perenimi);
+            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->count();
+        }
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
     }

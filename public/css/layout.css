@@ -1,0 +1,67 @@
+.layout{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar-mobile{
+    display: none;
+}
+
+.sidebar-mobile-topbar{
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 8px;
+    display: flex;
+}
+
+.mobile-navigation-content{
+    display: none;
+    margin-inline: 16px;
+}
+
+.layout-main-content{
+    overflow: auto;
+    width: 100%;
+    padding-inline: 16px;
+}
+
+
+/* Two-column layout starts here */
+
+.two-column-layout{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+@media only screen and (max-width: 1000px){
+    .two-column-layout{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-width: 800px){
+
+    .layout{
+        height: auto;
+    }
+
+    .layout > .sidebar{
+        display: none;
+    }
+
+    .layout{
+        display: block;
+    }
+
+    .layout > .sidebar-mobile{
+        display: block;
+    }
+
+    .layout-main-content{
+        padding-inline: 8px;
+        width: calc(100vw - 16px);
+    }
+}

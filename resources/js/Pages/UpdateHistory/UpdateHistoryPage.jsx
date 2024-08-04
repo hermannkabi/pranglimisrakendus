@@ -1,3 +1,4 @@
+import Layout from "@/Components/2024SummerRedesign/Layout";
 import Navbar from "@/Components/Navbar";
 import SizedBox from "@/Components/SizedBox";
 import { Head } from "@inertiajs/react";
@@ -78,22 +79,22 @@ export default function UpdateHistoryPage({auth}){
         "22.05.2024":["Parandatud viga, mis esines klassiga liitunud õpetajal", "Väikesed kasutajaliidese uuendused õpetaja vaadetes"],
         "29.05.2024":["Täiustatud murru ja juure renderdamist – need on nüüd esteetilisemad ja töötavad paremini mitmes brauseris", "Parandatud viga mõne mängutüübi kuvamisel mängude ajaloos", "Uuendatud töölaua kasutajaliidest, mh ühtlustatud fonti", "Parandatud viga, kus võrdlemisel tagastati vaid 3 tehet"],
         "06.06.2024":["boldReaaler saab endale logo!"],
-        "09.06.2024":["Uuendatud töölaua arvutamisnuppude välimust nii mobiilil kui arvutis", "Uuendatud logo välimus lehel – nüüd erinevat värvi logo vastavalt kasutaja soovidele"]
+        "09.06.2024":["Uuendatud töölaua arvutamisnuppude välimust nii mobiilil kui arvutis", "Uuendatud logo välimus lehel – nüüd erinevat värvi logo vastavalt kasutaja soovidele"],
+        "04.08.2024-":["boldReaaleri välimuse suurim uuendus ajaloos!", "Algas Reaaleri kasutajaliidese täielik ümbertegemine. Uus liides on funktsionaalsem, mahutab rohkem infot paremini (mh nii, et ei tekiks visuaalset ülekoormatust). Kõik vaated on Figmas nüüdseks valmis disainitud, nüüd algab töö koodi kallal", "Esimesel päeval valmib klassiga liitumise (ka kutsega liitumise) uus välimus, kuidas mängida? leht ja seesama uuenduste ajaloo leht",  "Lisaks oli disainimine nii hea inspiratsioon, et suutsin streak'i esialgse süsteemi ära parandada!"]
     };  
 
     return <>
-        <Head title='Uuenduste ajalugu' />
-        {auth.user != null && <Navbar user={auth.user} />}
-        <SizedBox height={36} />
+        <Layout title="Uuenduste ajalugu">
+            {Object.keys(changelog).reverse().map((key)=><div className="changelog-tile">
+                <div className="section date">
+                    <p>Kuupäev</p>
+                    <p>{key}</p>
+                </div>
 
-        <h2>Uuendused</h2>
-
-        <section>
-            {Object.keys(changelog).reverse().map((key)=><div style={{textAlign:"start"}} key={key}>
-                <h3 style={{color:"rgb(var(--primary-color))", fontWeight:"bold"}}>{key}</h3>
-                <ul>{changelog[key].map((change)=><li style={{color:"grey", fontWeight:change.startsWith("bold") ? "bold" : "normal"}} key={change}>{change.startsWith("bold") ? change.substring(4) : change}</li>)}</ul>
+                <div className="section updates">
+                    {changelog[key].map((change)=><p style={{color:"grey", fontWeight:change.startsWith("bold") ? "bold" : "normal", marginBottom:"24px"}} key={change} >{change.startsWith("bold") ? change.substring(4) : change}</p>)}
+                </div>
             </div>)}
-        </section>
-
+        </Layout>
     </>;
 }

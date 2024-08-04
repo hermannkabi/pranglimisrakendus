@@ -1,4 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Lexend+Zetta:wght@400;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
 @font-face{
     font-family: "Lexend";
     font-weight: normal;
@@ -24,11 +26,6 @@
 }
 
 @media only screen and (max-width: 600px){
-
-    body{
-        padding-inline: 4px !important;
-    }
-
     .history-statistics{
         grid-template-columns: 1fr 1fr !important;
     }
@@ -77,19 +74,17 @@
         justify-content: center;
         align-items: center;
     }
+
+    .changelog-tile{
+        display: block !important;
+    }
 }
 
-@media only screen and (max-width: 1100px){
-
-    body{
-        padding-inline: 8px !important;
-    }
-    
+@media only screen and (max-width: 1100px){    
     section{
         width: 100% !important;
     }
 
-    
     .math-pow-transformed{
         transform: translate(-10px, 10px);
     }
@@ -98,14 +93,15 @@
 body{
     color: rgb(var(--text-color));
     font-family: var(--main-font);
-    padding-inline: 16px;
     font-size: var(--font-size);
-    text-align: center;
+    text-align: left;
     min-width: 250px;
     box-sizing: border-box;
     background-color: rgb(var(--background-color));
     transition: background-color 50ms ease-in;
     scrollbar-color: rgb(var(--primary-color));
+    margin: 0;
+    padding: 0;
 }
 
 /* User selection text color and background color */
@@ -131,18 +127,15 @@ body{
 }
 
 section, .section{
-    margin: auto;
     padding: 8px;
-    background-color: rgb(var(--section-color),  var(--section-transparency));
-    border-radius: 8px;
+    background-color: var(--section-color);
+    border-radius: 6px;
     margin-block: 8px;
-    /* That is going to cause problems */
-    width: 35%;
-    box-sizing: border-box;
+    transition: filter 100ms;
 }
 
 h1, h2, h3, h4{
-    color: rgb(var(--primary-header-color));
+    color: var(--primary-header-color);
     font-family: var(--header-font);
 }
 
@@ -154,6 +147,9 @@ h3{
     font-size: 20px;
 }
 
+.material-icons{
+    user-select: none;
+}
 
 /* WIDGETS */
 
@@ -282,6 +278,56 @@ button[secondary]:hover > .lds-ring div{
     filter: brightness(85%);
 }
 
+.two-row-text-button{
+    font-weight: bold;
+    font-size: 24px;
+    text-align: left;
+    margin: 16px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.two-row-text-button p {
+    margin-block: 0;
+}
+.two-row-text-button p:last-of-type{
+    color: var(--grey-color);
+}
+
+.two-row-text-button .material-icons{
+    font-size: 40px;
+    color: var(--lightgrey-color);
+    font-weight: normal;
+}
+
+.clickable{
+    cursor: pointer;
+    transition: filter 100ms;
+    user-select: none;
+}
+
+.clickable.section:hover{
+    filter: brightness(95%);
+}
+
+.clickable.section:active{
+    filter: brightness(90%);
+}
+
+.section[disabled]{
+    filter: opacity(60%) !important;
+    cursor: initial;
+    pointer-events: none;
+}
+
+.tile-selected{
+    background-color: rgb(var(--primary-color));
+}
+
+.tile-selected .two-row-text-button p:first-of-type{
+    color: white;
+}
+
 
 /* Links */
 
@@ -340,7 +386,7 @@ input, textarea, select{
     color: rgb(var(--primary-color));
     color: rgba(0, 0, 0, 0.8);
 
-    font-family: "Lexend";
+    font-family: var(--main-font);
     border: none;
     border-radius: 8px;
     padding-block: 16px;
@@ -351,6 +397,15 @@ input, textarea, select{
     margin-block: 8px;
     min-width: 50px;
 }
+
+::placeholder {
+    color: var(--grey-color);
+    opacity: 1; /* Firefox */
+  }
+  
+  ::-ms-input-placeholder { /* Edge 12-18 */
+    color: var(--grey-color);
+  }
 
 select optgroup, select option {
     color: black;
@@ -376,7 +431,7 @@ select{
 }
 
 input:focus, textarea:focus{
-    outline: 2px solid rgb(var(--primary-btn-color));
+    outline: 1px solid var(--grey-color);
 }
 
 input:disabled, textarea:disabled, .field-disabled{
@@ -475,6 +530,34 @@ select:after{
     display: none;
 }
 
+.changelog-tile{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: start;
+    margin-block: 16px;
+}
+
+.changelog-tile div{
+    flex: 1;
+}
+
+.changelog-tile .date p:nth-of-type(1){
+    margin-bottom: 4px;
+}
+
+.changelog-tile .date p:nth-of-type(2){
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--lightgrey-color);
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.guide-tile .guide p,span{
+    max-width: 75%;
+}
+
 /* GAME STUFF STARTS HERE */
 
 /* Game fraction rendering */
@@ -567,7 +650,7 @@ select:after{
 
 
 .math-style{
-    font-family: "Lexend";
+    font-family: var(--main-font);
     font-weight: bold;
     /* font-size: 40px; */
     line-height: 1;

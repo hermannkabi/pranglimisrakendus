@@ -21,6 +21,8 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
         });
     });
 
+    console.log(classData);
+
     return (
         <>
             <Head title='Töölaud' />
@@ -69,7 +71,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
 
             </section>
 
-            {auth.user.klass != null && teacherData == null && <section>
+            {auth.user.klass != null && teacherData == null && classData != null && <section>
                 <div className='header-container'>
                     <h3 style={{marginBottom:"0"}} className='section-header'>{classData.name}</h3>
                     {classData.teacher.length > 0 && <p style={{color:"grey", marginTop:"0"}}>õp <a style={{all:"unset", cursor:"pointer"}} href={"/profile/"+classData.teacher[0].id}><span style={{textTransform:"capitalize"}}>{classData.teacher[0].eesnimi} {classData.teacher[0].perenimi}</span></a></p>}

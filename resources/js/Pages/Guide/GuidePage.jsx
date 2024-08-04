@@ -3,87 +3,117 @@ import SizedBox from "@/Components/SizedBox";
 import { Head } from "@inertiajs/react";
 import "/public/css/guide.css";
 import HorizontalRule from "@/Components/HorizontalRule";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 export default function GuidePage({auth}){
+
     return <>
-        <Head title="Kuidas mängida?" />
-        {auth.user != null && <Navbar title="Kuidas mängida" user={auth.user} />}
-
-        <SizedBox height={36} />
-
-        <h2>Kuidas mängida?</h2>
-
-        <section id="liitmine">
-            <div className='header-container'>
-                <h3 className='section-header'>Liitmine</h3>
+        <Layout title="Kuidas mängida?">
+            <div className="changelog-tile guide-tile" id="liitmine">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Liitmine</p>
+                        <p>Ühelised</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Alguseks on hea teha sõrmede peal.</p>
+                    <span className="example">3 + 4 = 3 sõrme + 4 sõrme = 5 sõrme + 2 sõrme = 7 sõrme = 7</span>
+                    <p className="before-example">Kui liitmine jäeb kümneliste piirile, siis esimesena liitke ühele arvule piisav summa, et jõuaksite kümneni ja siis ülejäänu.</p>
+                    <span className="example">7+8 = 7+3+5 = 10 + 5 = 15</span>
+                </div>
             </div>
 
-            <div className="guide-div">
-                <h4>Ühelised</h4>
-                <p className="before-example">Alguseks on hea teha sõrmede peal.</p>
-                <span className="example">3 + 4 = 3 sõrme + 4 sõrme = 5 sõrme + 2 sõrme = 7 sõrme = 7</span>
-                <p className="before-example">Kui liitmine jäeb kümneliste piirile, siis esimesena liitge ühele arvule piisav summa, et jõuaksite kümneni ja siis ülejäänu.</p>
-                <span className="example">7+8 = 7+3+5 = 10 + 5 = 15</span>
+            <div className="changelog-tile guide-tile">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Liitmine</p>
+                        <p>Kümnelised</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Esmalt jätke meelde mitu kümnelist teil on, siis tehke ühelistega tehe.</p>
+                    <span className="example">37+35 = (30+30) + (7+5) = 60+12 = 72</span>
+                </div>
             </div>
 
-            <div className="guide-div">
-                <h4>Kümnelised</h4>
-                <p className="before-example">Esmalt jätke meelde mitu kümnelist teil on, siis tehke ühelistega tehe.</p>
-                <span className="example">37+35 = (30+30) + (7+5) = 60+12 = 72</span>
+            <div className="changelog-tile guide-tile">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Liitmine</p>
+                        <p>Sajalised ja suuremad</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Sajaliste ja suurtemate arvudega tuleb jätta meelde kõige suuremad arvuhulgad, siis järjest väiksemad.</p>
+                    <span className="example">430+146 = 400+100 + 30+40 + 0+6 = 500 + 70 + 6 = 576</span>
+                </div>
             </div>
 
-            <div className="guide-div">
-                <h4>Sajalised ja suuremad</h4>
-                <p className="before-example">Sajaliste ja suurtemate arvudega tuleb jätta meelde kõige suuremad arvuhulgad, siis järjest väiksemad.</p>
-                <span className="example">430+146 = 400+100 + 30+40 + 0+6 = 500 + 70 + 6 = 576</span>
-            </div>
-        </section>
-
-        <section id="korrutamine">
-            <div className='header-container'>
-                <h3 className='section-header'>Korrutamine</h3>
-            </div>
-
-            <div className="guide-div">
-                <h4>Põhiline</h4>
-                <p className="before-example">Korrutamine on veidikene raskem liitmine. Vaatame mõnda näidet:</p>
-                <span className="example">3·4 = 4+4+4 = 12, samas ka 3·4 = 3+3+3+3 = 12</span>
-                <p className="before-example">Üldreegel:</p>
-                <span className="example">tegur · tegur = korrutis</span>
-                <p className="before-example">Seega näitab üks tegur mitu korda peab teist tegurit liitma iseendaga.</p>
-            </div>
-        </section>
-
-        <section id="astendamine">
-        <div className='header-container'>
-                <h3 className='section-header'>Astendamine</h3>
+            <SizedBox height="64px" />
+            <div className="changelog-tile guide-tile" id="korrutamine">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Korrutamine</p>
+                        <p>Põhiline</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Korrutamine on veidikene raskem liitmine. Vaatame mõnda näidet:</p>
+                    <span className="example">3·4 = 4+4+4 = 12, samas ka 3·4 = 3+3+3+3 = 12</span>
+                    <p className="before-example">Üldreegel:</p>
+                    <span className="example">tegur · tegur = korrutis</span>
+                    <p className="before-example">Seega näitab üks tegur mitu korda peab teist tegurit liitma iseendaga.</p>
+                </div>
             </div>
 
-            <div className="guide-div">
-                <h4>Põhiline</h4>
-                <p className="before-example">Astendamine on iseendaga korrutamine. Esmalt vaatame, kuidas astendamine käib:</p>
-                <span className="example">3<sup>2</sup> = 3 · 3 = 9</span>
-                <span className="example">5<sup>4</sup> = 5 · 5 · 5 · 5 = 625</span>
-                <p className="before-example">Üritame nüüd astendada arvu 1. Teeme näiteks järgmise tehte</p>
-                <span className="example">1<sup>3</sup> = 1 · 1 · 1 = 1</span>
-                <p className="before-example">Märkame, et kui palju me ka ühte iseendaga ei korrutaks, on vastuseks ikka 1. Seega: <b>Üks astmes mis tahes arv on üks!</b></p>
-                <p className="before-example">Mis aga juhtuks, kui astendada arvuga 0? Kuidas saaks üldse mingit arvu iseendaga 0 korda korrutada? Selgub, et sellel tehtel on loogiline vastus. Vaatleme järgmisi tehteid:</p>
-                <span className="example">6<sup>3</sup> = 6 · 6 · 6 = 216</span><br />
-                <span className="example">6<sup>2</sup> = 6 · 6 = 36</span><br />
-                <span className="example">6<sup>1</sup> = 6 = 6</span>
-                <p className="before-example">Nähtub, et iga kord, kui astendame ühe võrra väiksema arvuga, on vastus 6 korda väiksem. Seega loogiliselt peaks nulliga astendamine olema sisuliselt iseendaga jagamine ehk vastuseks peaks olema üks. <b>Mis tahes arv astmes null on üks!</b></p>
+            <SizedBox height="64px" />
+            <div className="changelog-tile guide-tile" id="astendamine">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Astendamine</p>
+                        <p>Põhiline</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Astendamine on iseendaga korrutamine. Esmalt vaatame, kuidas astendamine käib:</p>
+                    <span className="example">3<sup>2</sup> = 3 · 3 = 9</span>
+                    <span className="example">5<sup>4</sup> = 5 · 5 · 5 · 5 = 625</span>
+                    <p className="before-example">Üritame nüüd astendada arvu 1. Teeme näiteks järgmise tehte</p>
+                    <span className="example">1<sup>3</sup> = 1 · 1 · 1 = 1</span>
+                    <p className="before-example">Märkame, et kui palju me ka ühte iseendaga ei korrutaks, on vastuseks ikka 1. Seega: <b>Üks astmes mis tahes arv on üks!</b></p>
+                    <p className="before-example">Mis aga juhtuks, kui astendada arvuga 0? Kuidas saaks üldse mingit arvu iseendaga 0 korda korrutada? Selgub, et sellel tehtel on loogiline vastus. Vaatleme järgmisi tehteid:</p>
+                    <span className="example">6<sup>3</sup> = 6 · 6 · 6 = 216</span><br />
+                    <span className="example">6<sup>2</sup> = 6 · 6 = 36</span><br />
+                    <span className="example">6<sup>1</sup> = 6 = 6</span>
+                    <p className="before-example">Nähtub, et iga kord, kui astendame ühe võrra väiksema arvuga, on vastus 6 korda väiksem. Seega loogiliselt peaks nulliga astendamine olema sisuliselt iseendaga jagamine ehk vastuseks peaks olema üks. <b>Mis tahes arv astmes null on üks!</b></p>
+                </div>
             </div>
-        </section>
 
-        <section id="jaguvus">
-            <div className='header-container'>
-                <h3 className='section-header'>Jaguvusseadused</h3>
-            </div>
-
-            <div className="guide-div">
+            <SizedBox height="64px" />
+            <div className="changelog-tile guide-tile" id="jaguvus">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Jaguvusseadused</p>
+                        <p>Tabel</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
                 <table>
                     <thead>
-                        <th>Millega jagub</th>
+                        <th>Jagaja</th>
                         <th>Jaguvustunnus</th>
                     </thead>
                     <tbody>
@@ -194,24 +224,67 @@ export default function GuidePage({auth}){
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </section>
-
-        <section id="võrdlemine">
-            <div className='header-container'>
-                <h3 className='section-header'>Võrdlemine</h3>
+                </div>
             </div>
 
-            <p className="before-example">Esmalt tuleb leida korrutamis- või jagamistehe. Seejärel saab oletada, kumb pooltest on suurem. Madalamate tasemete korral tuleb liitmis- ja lahutamistehted välja arvutada. Vaatleme näidet:</p>
-            <span className="example">8+9 <span style={{fontSize:"0.8em"}}>?</span> 6:2</span>
-            <p className="before-example">8+9 peab olema suurem, sest 6 jagada ükskõik mis arvuga on väiksem kui 8.</p>
-            <p className="before-example">Kõrgemates tasemetes saab juba oletada</p>
-            <span className="example">17+24 <span style={{fontSize:"0.8em"}}>?</span> 408:24</span>
-            <p className="before-example">Mõelda saab näiteks nii:</p>
-            <span className="example">17+24 = üle 40</span><br />
-            <span className="example">408 : 24  = vähem kui 20, sest 24 · 20 &gt; 408 </span><br />
-            <span className="example"><b>Järelikult peab vasak pool olema suurem</b></span>
-        </section>
+            <SizedBox height="64px" />
+            <div className="changelog-tile guide-tile" id="võrdlemine">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Võrdlemine</p>
+                        <p>Põhiline</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Esmalt tuleb leida korrutamis- või jagamistehe. Seejärel saab oletada, kumb pooltest on suurem. Madalamate tasemete korral tuleb liitmis- ja lahutamistehted välja arvutada. Vaatleme näidet:</p>
+                    <span className="example">8+9 <span style={{fontSize:"0.8em"}}>?</span> 6:2</span>
+                    <p className="before-example">8+9 peab olema suurem, sest 6 jagada ükskõik mis arvuga on väiksem kui 8.</p>
+                    <p className="before-example">Kõrgemates tasemetes saab juba oletada</p>
+                    <span className="example">17+24 <span style={{fontSize:"0.8em"}}>?</span> 408:24</span>
+                    <p className="before-example">Mõelda saab näiteks nii:</p>
+                    <span className="example">17+24 = üle 40</span><br />
+                    <span className="example">408 : 24  = vähem kui 20, sest 24 · 20 &gt; 408 </span><br />
+                    <span className="example"><b>Järelikult peab vasak pool olema suurem</b></span>
+                </div>
+            </div>
+
+            <SizedBox height="64px" />
+            <div className="changelog-tile guide-tile" id="kujundid">
+                <div className="section">
+                    <div className="two-row-text-button">
+                        <div>
+                        <p>Kujundid</p>
+                        <p>Põhiline</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="section guide">
+                    <p style={{marginTop:"8px"}}>Mida täpsemalt vaatad, seda vähem näed. Soovitan jälgida kõiki kujundeid kui tervikut, mitte keskenduda igaühele eraldi.</p>
+                    <img style={{height:"200px"}} src="/assets/guide/kujundid1.png" alt="" />
+                    <p className="before-example">Esmalt tean, et kujundid on moodustavad ruudu ehk iga külg on võrdne. Seega kui näen silmanurgast, et ülemise rea vasakpoolne, alumise rea vasakpoolne ja keskmine kujund on suurem ja nurgeline, siis tean, et see on ruut. Ehk tunnen mingi eripära järgi kujundi ära.</p>
+                    <span className="example">Kujundeid kokku 3 · 3 = 9</span><br />
+                    <span className="example">Hindan ülevaates, et kokku on 3 kujundit. Täpsemalt, näen ruutu üleval vasakul nurgas ja hiljem kahte ruutu all. Seega kokku on ruute 1+2=3.</span><br />
+
+                    <img style={{height:"200px"}} src="/assets/guide/kujundid2.png" alt="" />
+                    <p className="before-example">Raskemates tasemetes tuleb hinnata kujunditest moodustunud ruudu suurust. Seejärel käia silmaga üle kujundite hulk. Piisavalt harjutades õpid silmaga hindama kujundite hulka.</p>
+                    <span className="example">Kujundeid pildil on 5 · 5 = 25</span><br />
+                    <span className="example">Otsin nurgelist suurt kujundit ehk ruutu.</span><br />
+                    <span className="example">Esmalt näen alumistes nurkades kahte ruutu. Hiljem vasakul üleval nurgas kahte ruutu. Viimaks alles paremal keskel kahte.</span><br />
+                </div>
+            </div>
+
+        </Layout>
+    </>;
+
+    return <>
+        <Head title="Kuidas mängida?" />
+        {auth.user != null && <Navbar title="Kuidas mängida" user={auth.user} />}
+
+        <SizedBox height={36} />
+
+        <h2>Kuidas mängida?</h2>
 
         <section id="kujundid">
             <div className='header-container'>

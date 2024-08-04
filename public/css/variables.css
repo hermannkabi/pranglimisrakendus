@@ -1,18 +1,20 @@
 :root{
     --text-color: 0, 0, 0;
-    --main-font: "Lexend", sans-serif;
-    --header-font: "Lexend", serif;
+    --main-font: "Sora", sans-serif;
+    --header-font: "Sora", serif;
     /* Colors */
     --primary-color: 53, 81, 80;
     --btn-hover-color: 36,57,57;
-    --primary-header-color: 0, 0, 0;
+    --primary-header-color: rgb(var(--text-color));
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: 255, 255, 255;
     --primary-btn-border-radius: 8px;
-    --red-color: 239, 131, 131;
+    --red-color: rgb(239, 131, 131);
     --darkred-color: 226, 81, 81;
+    --grey-color: #868686;
+    --lightgrey-color: #9F9F9F;
     --background-color: 255, 255, 255;
-    --section-color: var(--primary-btn-color);
+    --section-color: #f3f3f3;
     --section-transparency: 0.05;
     --input-color: var(--primary-color);
     --select-arrow: url("data:image/svg+xml,<svg height='24px' width='24px' viewBox='0 0 16 16' fill='b' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
@@ -24,21 +26,20 @@
 [data-theme="dark"] {
     --white: 230,230,230;
     --text-color: var(--white);
-    --main-font: "Lexend", sans-serif;
-    --header-font: "Lexend", serif;
     /* Colors */
     --primary-color: 70, 107, 106;
-    --primary-header-color: var(--white);
+    --primary-header-color: var(--lightgrey-color);
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: var(--white);
     --primary-btn-border-radius: 8px;
-    --red-color: 239, 131, 131;
+    --red-color: rgb(239, 131, 131);
     --darkred-color: 226, 81, 81;
     --background-color: 25, 26, 28;
-    --section-color: var(--primary-color);
+    --section-color: #202020;
     --section-transparency: 0.15;
     --input-color: 150, 150, 150;
     --select-arrow: url("data:image/svg+xml,<svg height='24px' width='24px' viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
     --btn-hover-color: 51, 79, 79;
-
+    --grey-color: #868686;
+    --lightgrey-color: #9F9F9F;
 }

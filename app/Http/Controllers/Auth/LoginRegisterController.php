@@ -188,7 +188,7 @@ class LoginRegisterController extends Controller
         {        
             $stats = app(GameController::class)->getOverallStats(Auth::id());
             $klass = Auth::user()->klass != null;
-            $classData = false;
+            $classData = null;
             $teacherData = null;
             if($klass && Auth::user()->role == "student"){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
@@ -218,6 +218,8 @@ class LoginRegisterController extends Controller
                 }
             }
 
+            app("App\Http\Controllers\ProfileController")->viewstreak(Auth::id());
+            
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
         }
         
