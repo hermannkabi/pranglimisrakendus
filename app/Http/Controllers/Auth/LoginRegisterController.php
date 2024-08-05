@@ -192,7 +192,7 @@ class LoginRegisterController extends Controller
             $teacherData = null;
             if($klass && Auth::user()->role == "student"){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
-                $teacher = User::select(["eesnimi", "perenimi", "id"])->where("id", $class->teacher_id)->get();
+                $teacher = User::select(["eesnimi", "perenimi", "profile_pic", "id"])->where("id", $class->teacher_id)->get();
                 $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
 
                 $total_count = 0;
@@ -201,13 +201,12 @@ class LoginRegisterController extends Controller
 
                 $filtered = (array_filter($leaderboardData, function ($row){return $row["user"]->id == Auth::id();}));
                 
-                Log::debug($filtered);
                 $place = $filtered[array_keys($filtered)[0]]["place"];
                 foreach($leaderboardData as $dataRow){
                     $total_count += $dataRow["xp"];
                 }
 
-                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid];
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid, "threeBest"=>array_slice($leaderboardData, 0, 3)];
             }
 
             if(Auth::user()->role == "teacher"){

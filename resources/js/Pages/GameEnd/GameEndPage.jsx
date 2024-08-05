@@ -106,7 +106,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
 
         // Save the game type as 'last used'
-        var lastUsed = JSON.parse(window.localStorage.getItem("last-used").length == 0 || window.localStorage.getItem("last-used") == null ? "[]" : window.localStorage.getItem("last-used"));
+        var lastUsed = JSON.parse(window.localStorage.getItem("last-used") == null || window.localStorage.getItem("last-used").length == 0 ? "[]" : window.localStorage.getItem("last-used"));
         var gameType = decodeURIComponent(window.location.href.split("/")[5]);
         if(!lastUsed.includes(gameType)){
             if(lastUsed.length >= 3) lastUsed.pop();

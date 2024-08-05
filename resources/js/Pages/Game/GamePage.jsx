@@ -5,6 +5,7 @@ import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
+import InfoBanner from "@/Components/InfoBanner";
 
 export default function GamePage({data, time, auth}){
 
@@ -873,29 +874,39 @@ export default function GamePage({data, time, auth}){
         <div>
 
             <Head title="Mäng" />
-            <Navbar title="Mäng" user={auth.user} />
-            <SizedBox height="36px" />
+            <SizedBox height="72px" />
 
             <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
                 
                 {/* Message on top of the page */}
-                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))", fontSize:"18px"}}> <span translate="no">ⓘ</span> {message}</p>
+                {message && <div className="section" style={{marginBlock:"8px"}}>
+                    <InfoBanner text={message} />
                 </div>}
 
-                {/* Cancel button */}
-                <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto", fontSize:"18px"}} alone=""><i className="material-icons no-anim">close</i>&nbsp;Katkesta</a>
+                <div style={{fontSize:"16px", display:"flex", flexDirection:"row", justifyContent:"stretch", alignItems:"stretch", gap:"8px"}}>
+                    <div onClick={cancelGame} style={{display:"flex",flexShrink:"2", color:"var(--red-color)", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
+                        <p>Katkesta</p>
+                        <i className="material-icons">close</i>
+                    </div>
+                    <div onClick={skipOperation} disabled={maxSkip - skippedAmount <= 0} style={{display:"flex", flex:"1", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
+                        <div>
+                            <p style={{marginBlock:"0"}}>Jäta vahele</p>
+                            <p style={{marginBlock:"0", color:"var(--grey-color)", fontSize:"14px"}}>{Math.max(maxSkip - skippedAmount, 0)} jäänud</p>
+                        </div>
+                        <i className="material-icons-outlined">fast_forward</i>
+                    </div>
+                </div>
 
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', color: "rgb(var(--primary-color))", width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px"}}>
+                <div className="section" style={{flex:'1', width:"auto", padding:"8px"}}>
+                    <SizedBox height="8px" />
 
-                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"flex-start"}}>
-
+                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                         {/* Current operation number & level, total points etc. */}
                         <div style={{textAlign:"start", }}>
-                            <h2 style={{marginBlock:"0", color: "rgb(var(--primary-color))", fontSize:"26px"}}>{operationCount + 1}<span style={{fontSize:"16px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2>
+                            {/* <h2 style={{marginBlock:"0", color: "rgb(var(--primary-color))", fontSize:"26px"}}>{operationCount + 1}<span style={{fontSize:"16px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2> */}
                             <span className="point-span">+100</span>
-                            <p style={{marginBlock:"0", fontWeight:'bold', fontSize:"18px"}}>{points} punkti</p>
+                            <p style={{marginBlock:"0", fontSize:"18px"}}>{points} punkti</p>
                         </div>
 
                         {/* Timer */}
@@ -903,20 +914,18 @@ export default function GamePage({data, time, auth}){
                             {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
                         </div>
                     </div>
-
+                    <SizedBox height="16px" />
                     {/* The operation data  and answer*/}
                     {compare && <h2 translate="no" style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {shapes && <span translate="no"><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></span>}
-                    {!compare && !shapes && <h2 translate="no" style={{overflowWrap:'anywhere', color: "rgb(var(--primary-color))"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {!compare && !shapes && <h2 translate="no" style={{textAlign:"center", overflowWrap:'anywhere', fontWeight:"bold", fontSize:"28px"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span style={{color:"var(--grey-color)"}} id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    <SizedBox height="16px" />
                 </div>
-
-                {/* Skip button */}
-                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto", fontSize:"18px"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span translate="no" className="material-icons">fast_forward</span></a> : null}
                 
-                <SizedBox height="24px" />
+                <SizedBox height="8px" />
                 
                 {/* On-screen keyboard */}
-                {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
+                {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto", marginInline:"-4px"}}>
                     {flippedKeyboardKey(1)}
                     {flippedKeyboardKey(2)}
                     {flippedKeyboardKey(3)}
@@ -932,7 +941,7 @@ export default function GamePage({data, time, auth}){
                     {flippedKeyboardKey(9)}
                     <NumberButton disabled={!commaAllowed} content="," onClick={()=>handleNumberClick(",")} />
 
-                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />
+                    <NumberButton backgroundColor="var(--red-color)" textColor="white" lineHeight="1.7" fontSize="20px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
                     <NumberButton backgroundColor="rgb(var(--primary-color))" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="check" icon={true} onClick={checkAnswer} />
                 </div>}

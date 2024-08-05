@@ -147,7 +147,7 @@ h3{
     font-size: 20px;
 }
 
-.material-icons{
+.material-icons, .material-icons-outlined{
     user-select: none;
 }
 
@@ -554,7 +554,7 @@ select:after{
     margin-bottom: 8px;
 }
 
-.guide-tile .guide p,span{
+.guide-tile .guide p, .guide-tile .guide span{
     max-width: 75%;
 }
 
@@ -567,12 +567,12 @@ select:after{
     position: relative;
     vertical-align: middle;
     letter-spacing: 0.0001em;
-    text-align: center;
     font-size: 20px;
 }
 .frac > span {
     display: block;
-    padding: 0.05em;
+    padding: 2px 4px;
+    white-space: nowrap;
 }
 .frac span.bottom {
     border-top: 2px solid rgb(var(--primary-color));
@@ -583,7 +583,7 @@ select:after{
 
 .frac span.bordered{
     outline: 1px solid rgb(var(--primary-color));
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 /* Game exponent rendering */
@@ -675,7 +675,7 @@ mfrac{
 /* Point animation */
 .point-span{
     display: none;
-    color: green;
+    color: #355150;
     position: absolute;
     z-index: 1000;
     transform: translateY(-64px);
@@ -683,7 +683,7 @@ mfrac{
 }
 
 .point-span.red{
-    color: rgb(var(--red-color));
+    color: var(--red-color);
 }
 
 .frac span{

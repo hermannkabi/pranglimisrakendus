@@ -94,11 +94,11 @@ section{
 }
 
 .correct{
-    color: green;
+    color: #445F5E;
 }
 
 .incorrect{
-    color: red;
+    color: var(--red-color);
 }
 
 .incorrect:not( > math > mfrac){

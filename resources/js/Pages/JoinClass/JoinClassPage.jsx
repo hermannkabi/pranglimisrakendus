@@ -1,13 +1,10 @@
-import Navbar from "@/Components/Navbar";
 import SizedBox from "@/Components/SizedBox";
-import { Head } from "@inertiajs/react";
 import "/public/css/preview.css";
 import InfoBanner from "@/Components/InfoBanner";
-import Sidebar from "@/Components/2024SummerRedesign/Sidebar";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import { useRef, useState } from "react";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
-
+import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 
 export default function JoinClassPage({auth, classData, allClasses}){
 
@@ -66,14 +63,9 @@ export default function JoinClassPage({auth, classData, allClasses}){
 
                 {/* Class list */}
                 <div>
-                {classData != null && <div onClick={onClassRemove} style={{marginTop:"0", paddingBlock:"32px", marginBottom:"32px"}} className="section clickable">
-                    <div className="two-row-text-button">
-                        <div>
-                            <p>Lahku klassist</p>
-                            <p>{classData.klass_name}</p>
-                        </div>
-                        <i className="material-icons">arrow_forward_ios</i>
-                    </div>
+                {classData != null && <div onClick={onClassRemove} style={{marginTop:"0", paddingBlock:"32px", marginBottom:"32px", display:"flex", justifyContent:"space-between", alignItems:"center"}} className="section clickable">
+                    <TwoRowTextButton upperText="Lahku klassist" lowerText={classData.klass_name} showArrow={false} />
+                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons">logout</i>
                 </div>}
 
                 {/* Search input */}
@@ -88,13 +80,7 @@ export default function JoinClassPage({auth, classData, allClasses}){
                         if(selectedClass != e) setPasswordFocus();
                         return setSelectedClass(selectedClass => selectedClass == e ? null : e);
                     }} class_id={e.klass_id} key={e.klass_id} style={{display:"flex", flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between"}} className={"clickable section class-tile" + (selectedClass == e ? " tile-selected" : "")}>
-                    <div className="two-row-text-button">
-                        <div>
-                            <p>{e.klass_name}</p>
-                            <p>{e.teacher_name}</p>
-                        </div>
-                        <i className="material-icons">arrow_forward_ios</i>
-                    </div>
+                    <TwoRowTextButton upperText={e.klass_name} lowerText={e.teacher_name} showArrow={false} />
                     <p style={{textAlign:"right", color:"var(--grey-color)", marginBottom:"0", marginRight:"8px"}}>{e.student_count} õpilast</p>
                     </div> )}
                 </div>

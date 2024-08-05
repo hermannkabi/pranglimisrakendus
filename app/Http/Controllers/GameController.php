@@ -151,7 +151,7 @@ class GameController extends Controller
         //Average time
         $avg_time = $count > 0 ? round($time_sum / $count) : 0;
 
-        $streak = User::select("streak")->where('id', $user_id == null ? Auth::id() : $user_id)->first()["streak"];
+        $streak = app(ProfileController::class)->viewStreak(Auth::id());
 
         //Send all gathered information to frontend
         return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];

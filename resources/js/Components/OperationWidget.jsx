@@ -3,8 +3,8 @@
 export default function OperationWidget({op}){
 
     const size = "40px";
-    const correctColor = "green";
-    const incorrectColor = "red";
+    const correctColor = "#445F5E";
+    const incorrectColor = "var(--red-color)";
 
     const color = op.isCorrect ? correctColor : incorrectColor;
 
@@ -86,11 +86,11 @@ export default function OperationWidget({op}){
 
     return (
     <>
-        <div translate="no" style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", display:"inline-flex", borderRadius:"8px", alignItems:"center", margin:"8px", padding:"8px", paddingRight:"16px"}}>
+        <div className="section" translate="no" style={{display:"inline-flex", alignItems:"center", padding:"16px 8px"}}>
             <div style={resultCircle}><span style={{color:"white", userSelect:"none"}} className="material-icons">{char}</span></div>
             <div style={{textAlign: "left", marginInline:"8px"}}>
-                <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"20px", wordWrap:"anywhere"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.includes("EXP") ? expHtml(op) : op.operation.includes("RAD") ? radHtml(op) : op.operation.includes("LIHT") ? fracHtml(op) : op.operation.match(regex) != null ? fracRender(op.operation) : op.operation.toString().replaceAll(".", ",")}}></p>
-                {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && !op.operation.includes("LIHT") && <p style={{marginBlock:"2px", color:color, fontSize:"18px"}}>{op.answer != null && op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.replaceAll(".", ",")+")"}</span></p>}
+                <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px", wordWrap:"anywhere"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.includes("EXP") ? expHtml(op) : op.operation.includes("RAD") ? radHtml(op) : op.operation.includes("LIHT") ? fracHtml(op) : op.operation.match(regex) != null ? fracRender(op.operation) : op.operation.toString().replaceAll(".", ",")}}></p>
+                {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && !op.operation.includes("LIHT") && <p style={{marginBlock:"2px", color:color, fontSize:"24px", fontWeight:"bold"}}>{op.answer != null && op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.replaceAll(".", ",")+")"}</span></p>}
             </div>
         </div>
     </>);

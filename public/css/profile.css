@@ -133,3 +133,7 @@ input{
 .settings-padding{
     padding-inline: 8px;
 }
+
+.two-column-layout > .section{
+    margin-block: 0;
+}

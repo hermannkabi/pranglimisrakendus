@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/guide.css";
 import HorizontalRule from "@/Components/HorizontalRule";
 import Layout from "@/Components/2024SummerRedesign/Layout";
+import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 
 export default function GuidePage({auth}){
 
@@ -11,12 +12,7 @@ export default function GuidePage({auth}){
         <Layout title="Kuidas mängida?">
             <div className="changelog-tile guide-tile" id="liitmine">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Liitmine</p>
-                        <p>Ühelised</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Liitmine" lowerText="Ühelised" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Alguseks on hea teha sõrmede peal.</p>
@@ -28,12 +24,7 @@ export default function GuidePage({auth}){
 
             <div className="changelog-tile guide-tile">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Liitmine</p>
-                        <p>Kümnelised</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Liitmine" lowerText="Kümnelised" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Esmalt jätke meelde mitu kümnelist teil on, siis tehke ühelistega tehe.</p>
@@ -43,12 +34,7 @@ export default function GuidePage({auth}){
 
             <div className="changelog-tile guide-tile">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Liitmine</p>
-                        <p>Sajalised ja suuremad</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Liitmine" lowerText="Sajalised ja suuremad" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Sajaliste ja suurtemate arvudega tuleb jätta meelde kõige suuremad arvuhulgad, siis järjest väiksemad.</p>
@@ -59,12 +45,7 @@ export default function GuidePage({auth}){
             <SizedBox height="64px" />
             <div className="changelog-tile guide-tile" id="korrutamine">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Korrutamine</p>
-                        <p>Põhiline</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Korrutamine" lowerText="Põhiline" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Korrutamine on veidikene raskem liitmine. Vaatame mõnda näidet:</p>
@@ -78,12 +59,7 @@ export default function GuidePage({auth}){
             <SizedBox height="64px" />
             <div className="changelog-tile guide-tile" id="astendamine">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Astendamine</p>
-                        <p>Põhiline</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Astendamine" lowerText="Põhiline" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Astendamine on iseendaga korrutamine. Esmalt vaatame, kuidas astendamine käib:</p>
@@ -103,12 +79,7 @@ export default function GuidePage({auth}){
             <SizedBox height="64px" />
             <div className="changelog-tile guide-tile" id="jaguvus">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Jaguvusseadused</p>
-                        <p>Tabel</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Jaguvusseadused" lowerText="Tabel" showArrow={false} />
                 </div>
                 <div className="section guide">
                 <table>
@@ -230,12 +201,7 @@ export default function GuidePage({auth}){
             <SizedBox height="64px" />
             <div className="changelog-tile guide-tile" id="võrdlemine">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Võrdlemine</p>
-                        <p>Põhiline</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Võrdlemine" lowerText="Põhiline" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Esmalt tuleb leida korrutamis- või jagamistehe. Seejärel saab oletada, kumb pooltest on suurem. Madalamate tasemete korral tuleb liitmis- ja lahutamistehted välja arvutada. Vaatleme näidet:</p>
@@ -253,12 +219,7 @@ export default function GuidePage({auth}){
             <SizedBox height="64px" />
             <div className="changelog-tile guide-tile" id="kujundid">
                 <div className="section">
-                    <div className="two-row-text-button">
-                        <div>
-                        <p>Kujundid</p>
-                        <p>Põhiline</p>
-                        </div>
-                    </div>
+                    <TwoRowTextButton upperText="Kujundid" lowerText="Põhiline" showArrow={false} />
                 </div>
                 <div className="section guide">
                     <p style={{marginTop:"8px"}}>Mida täpsemalt vaatad, seda vähem näed. Soovitan jälgida kõiki kujundeid kui tervikut, mitte keskenduda igaühele eraldi.</p>

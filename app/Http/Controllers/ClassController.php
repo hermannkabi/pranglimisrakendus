@@ -322,7 +322,7 @@ class ClassController extends Controller
         for($i = 0; $i < count($classes); $i++){
             $teacher_name = User::where("id", $classes[$i]->teacher_id)->first();
             $classes[$i]->teacher_name = ucwords($teacher_name->eesnimi . " " . $teacher_name->perenimi);
-            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->count();
+            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->where("role", "!=", "teacher")->count();
         }
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);

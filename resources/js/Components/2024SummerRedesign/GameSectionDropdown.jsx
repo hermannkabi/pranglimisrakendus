@@ -29,7 +29,7 @@ export default function GameSectionDropdown({title, gameTypes=[]}){
         <div>
             <div onClick={toggleCollapsed} style={{display:"flex", flexDirection:"row", gap:"8px", cursor:"pointer"}}>
                 <h3 style={{marginBlock:"0", textAlign:"left"}}>{title}</h3>
-                <i ref={iconRef} style={{transition:"transform 200ms", height:"24px", width:"24px"}} className="material-icons">keyboard_arrow_up</i>
+                <i ref={iconRef} style={{transition:"transform 200ms", height:"24px", width:"24px", color:"var(--primary-header-color)"}} className="material-icons">keyboard_arrow_up</i>
             </div>
 
             <div ref={collapsibleRef}>

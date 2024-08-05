@@ -1,5 +1,8 @@
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import GameTile from "@/Components/GameTile";
 import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
+import InfoBanner from "@/Components/InfoBanner";
 import Navbar from "@/Components/Navbar";
 import NavigatePagesButton from "@/Components/NavigatePagesButton";
 import SizedBox from "@/Components/SizedBox";
@@ -19,35 +22,41 @@ export default function GameHistoryPage({auth, games, stats}){
     }
 
     return <>
-            <Head title="Mängude ajalugu" />
-            <Navbar title="Mängude ajalugu" user={auth.user} />
-            <SizedBox height={36} />
-
-            <h2>Mängude ajalugu</h2>
-
-            <section>
-                <div className="history-statistics">
-                    <StatisticsWidget stat={stats.total_training_count} desc={"Mängu"} oneDesc={"Mäng"} />
-                    <StatisticsWidget stat={stats.accuracy + "%"} desc={"Keskmine täpsus"} />
-                    <StatisticsWidget className="xp-stat" stat={averageTime(stats.average_time)} desc={"Keskmine aeg"} />
+        <Layout title="Mängude ajalugu">
+            <div className="four-stat-row">
+                <StatisticsTile stat={stats.total_training_count} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
+                <StatisticsTile stat={(stats.accuracy ?? "0") + "%"} label={"Vastamistäpsus"}icon={"percent"} />
+                <StatisticsTile stat={averageTime(stats.average_time)} label={"Keskmine aeg"} icon={"hourglass_top"} />
+                <StatisticsTile stat={stats.points ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />
+            </div>
+            <SizedBox height="16px" />
+            <div className="two-column-layout">
+                <div>
+                    {games.data.map((e)=><GameTile data={e} key={e.game_id} />)}
+                    {games.data.length <= 0 && <InfoBanner text="Mänge ei leitud. Aeg natuke peastarvutamisega tegeleda!" />}
                 </div>
-            </section>
+
+                <div>
+                    {/* You may ask - why 3? */}
+                    {/* Because Laravel gives the previous and next page links as well as the page 1 link (so 3 in total) */}
+                    {games.links.length > 3 && <div className="section">
+                        <SizedBox height="8px" />
+                        <i className="material-icons-outlined">explore</i>
+                        <p style={{marginTop:"4px"}}>Navigeeri lehel</p>
+                        {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <NavigatePagesButton data={e} key={e.label} />)}
+                    </div>}
+                </div>
+            </div>
+        </Layout>
+    </>;
+
+    return <>
+
 
             <section>
-                {games.data.map((e)=><GameTile data={e} key={e.game_id} />)}
-
-                {/* {games.data.map((e)=><p key={e.game_id} >{e.game_count} tehet ({(new Date(e.dt)).toLocaleString("et-EE").split(",")[0]})</p>)} */}
-                {games.data.length <= 0 && <HorizontalInfoBanner text="Mänge ei leitud. Aeg natuke peastarvutamist harjutada!" />}
             </section>
 
-            {/* You may ask - why 3? */}
-            {/* Because Laravel gives the previous and next page links as well as the page 1 link (so 3 in total) */}
-            {games.links.length > 3 && <section>
-                <p style={{color:"grey"}}>Navigeeri lehel</p>
-                {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <NavigatePagesButton data={e} key={e.label} />)}
-
-                {/* {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <a style={{border: e.active ? "2px solid rgb(var(--primary-color))" : "", borderRadius:"4px", marginInline:"4px"}} href={e.url} alone="" className="no-anim" key={e.label}>{e.label.replace("&laquo; Previous", "Eelmine").replace("Next &raquo;", "Järgmine")}</a>)} */}
-            </section>}
+            
 
     </>;
 }

@@ -9,7 +9,7 @@ export default function Sidebar({title}){
         $("#mobile-hamburger-menu").text($("#mobile-hamburger-menu").text() == "menu" ? "close" : "menu");
     }
 
-    var lastUsed = JSON.parse(window.localStorage.getItem("last-used").length == 0 || window.localStorage.getItem("last-used") == null ? "[]" : window.localStorage.getItem("last-used"));
+    var lastUsed = JSON.parse(window.localStorage.getItem("last-used") == null || window.localStorage.getItem("last-used").length == 0 ? "[]" : window.localStorage.getItem("last-used"));
 
     return (<>
 
@@ -19,7 +19,7 @@ export default function Sidebar({title}){
                 <div className="topbar" style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
                     <ApplicationLogo />
                     <div style={{marginBlock:"0", textAlign:'left'}}>
-                        <h2 style={{marginBlock:"0", fontSize:"20px"}}>Reaaler</h2>
+                        <h2 style={{marginBlock:"0", fontSize:"20px", color:"rgb(var(--text-color))"}}>Reaaler</h2>
                         <p style={{marginBlock:"0", fontSize:"16px"}}>{title}</p>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ export default function Sidebar({title}){
             <div className="topbar" style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
                 <ApplicationLogo />
                 <div style={{marginBlock:"0", textAlign:'left'}}>
-                    <h2 style={{marginBlock:"0", fontSize:"20px"}}>Reaaler</h2>
+                    <h2 style={{marginBlock:"0", fontSize:"20px", color:"rgb(var(--text-color))"}}>Reaaler</h2>
                     <p style={{marginBlock:"0", fontSize:"16px"}}>{title}</p>
                 </div>
             </div>

@@ -114,7 +114,9 @@ class ProfileController extends Controller
         $user = User::where("id", $user_id)->first();
 
         if($user){
-            $viimaseDt = Mang::where("user_id", $user_id)->orderBy("dt", "DESC")->first()->dt;
+            $viimane = Mang::where("user_id", $user_id)->orderBy("dt", "DESC")->first();
+            if(!$viimane) return 0;
+            $viimaseDt = $viimane->dt;
 
             // Streak on aktiive, kui viimane mäng on tehtud täna
             $diff = date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a");
@@ -159,8 +161,8 @@ class ProfileController extends Controller
                 $user->streak = $user->streak + 1;
                 $user->save();
             }else if($diff > 1){
-                $user->streak_active = 1;
-                $user->streak = 1;
+                $user->streak_active = 0;
+                $user->streak = 0;
                 $user->save();
             }
         }
@@ -250,6 +252,7 @@ class ProfileController extends Controller
             abort(404);
         }
 
+        $stats["streak"] = app(ProfileController::class)->viewStreak($id);
 
         return Inertia::render("Profile/PublicProfilePage", ["user"=>$user, "stats"=>$stats, "lastGames"=>$lastGames, "klass"=>$klass]);
     }

@@ -8,67 +8,73 @@ import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import { useEffect } from "react";
 import ProfileWidget from "@/Components/ProfileWidget";
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import InfoBanner from "@/Components/InfoBanner";
+import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
+import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 
 
 export default function PublicProfilePage({auth, user, klass, stats, lastGames}){
 
-    useEffect(()=>{
-        var style = document.querySelector('.hero').style;
-        style.setProperty('--background', user.profile_pic == null ? "" : "url("+user.profile_pic+")");
+    // useEffect(()=>{
+    //     var style = document.querySelector('.hero').style;
+    //     style.setProperty('--background', user.profile_pic == null ? "" : "url("+user.profile_pic+")");
     
-    }, []);
+    // }, []);
 
     return <>
-            <Head title="Kontovaade" />
-            <Navbar title="Kontovaade"  user={auth.user} />
+        <Layout title="Avalik profiil">
+            {auth.user.id == user.id && <div className="section" style={{marginBottom:'16px'}}>
+                <InfoBanner text={"Oled enda profiili avalikus vaates. Selliselt saavad sind vaadata sinu "+(auth.user.role == "teacher" ? "õpilased" : "õpetaja ja klassikaaslased")+". Profiili muutmiseks mine profiilivaatesse"} />
+            </div>} 
+            {stats.total_training_count > 0 && <div className="four-stat-row" style={{marginBottom:"16px"}}>
+                <StatisticsTile iconColor="#F3AF71" disabled={user.streak_active == 0} stat={user.streak ?? "-"} label={"Järjestikust päeva"} oneLabel={"Järjestikune päev"} icon={"local_fire_department"} />
+                <StatisticsTile stat={stats.total_training_count ?? "0"} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
+                <StatisticsTile stat={(stats.accuracy ?? "0") + "%"} label={"Vastamistäpsus"}icon={"percent"} />
+                <StatisticsTile stat={stats.points ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />
+            </div>}
 
-            <SizedBox height={36} />
-            <h2>Kontovaade</h2>
-            {auth.user.id == user.id && <section>
-                <HorizontalInfoBanner text={"Oled enda profiili avalikus vaates. Selliselt saavad sind vaadata sinu "+(auth.user.role == "teacher" ? "õpilased" : "õpetaja ja klassikaaslased")+". Profiili muutmiseks mine profiilivaatesse"} link={route("profilePage")} />
-            </section>} 
-
-            <section className="hero">
-                <ProfileWidget user={user} auth={auth} isPublic={true} />
-                {user.role != "teacher" && <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
-                    <ProfileAction icon="apartment" label="Tallinna Reaalkool" smallLabel="Kool" />
-                    <ProfileAction icon="school" label={klass == null ? "Klassi pole" : klass.klass_name} smallLabel="Klass" />
-                </div>}
-                    
-                {user.role == "teacher" && <div className="actions-container school-container">
-                    <ProfileAction icon="apartment" label="Tallinna Reaalkool" smallLabel="Kool" />
-                </div>}
-            </section>
-
-            {stats.total_training_count > 0 && <section>
-                <div className="header-container">
-                    <h3 className="section-header">Statistika</h3>
+            <div className="two-column-layout">
+                <div>
+                    <div className="section" style={{position:"relative"}}>
+                        <div style={{position:"absolute", right:"24px", top:"24px",}}>
+                            <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
+                        </div>
+                        <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
+                        <SizedBox height="150px" />
+                        <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>Reaaleris alates {(new Date(user.created_at)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>
+                    </div>
+                    <SizedBox height="8px" />
+                    {lastGames.map((e, ind)=><GameTile data={e} key={ind} />)}
+                    {lastGames.length <= 0 && <div className="section">
+                        <InfoBanner text={user.eesnimi + " ei ole veel mängida jõudnud. Vaata veidi aja pärast uuesti!"} />
+                    </div> }
                 </div>
 
-                <div className="stats-container">
-                    <StatisticsWidget stat={stats.total_training_count ?? totalTrainingCount} desc={"Mängu"} oneDesc={"Mäng"} />
-                    <StatisticsWidget stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} desc="Vastamistäpsus" />
-                    {/* <StatisticsWidget stat={stats.last_active ?? "-"} desc="Viimati aktiivne" /> */}
-                    <StatisticsWidget stat={stats.streak ?? "-"} desc="Järjestikust päeva" oneDesc="Järjestikune päev" />
-                    <StatisticsWidget stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} desc="Punkti" oneDesc={"Punkt"} />
-                </div>
-            </section>}
+                <div>
+                    <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}> 
+                        <div className="section class-stat" style={{padding:"16px"}}>
+                            <div className="stat-desc">
+                                <i className="material-icons-outlined">school</i>
+                                <p style={{marginTop:"4px"}}>Klass</p>
+                            </div>
+                            <p style={{marginBottom:"8px", fontWeight:"bold", color:"var(--lightgrey-color)", fontSize:"24px"}}>{klass == null ? "Klassi pole" : klass.klass_name}</p>
+                        </div>
 
-            <section>
-                <div className="header-container">
-                    <h3 className="section-header">Viimased mängud</h3>
-                </div>
+                        <div className="section class-stat" style={{padding:"16px"}}>
+                            <div className="stat-desc">
+                                <i className="material-icons-outlined">apartment</i>
+                                <p style={{marginTop:"4px"}}>Kool</p>
+                            </div>
+                            <p style={{display:"flex", alignItems:"center", gap:"8px", marginBottom:"8px", fontWeight:"bold", color:"var(--lightgrey-color)", fontSize:"24px"}}> <img style={{borderRadius:"50%", objectFit:"cover", height:"24px", aspectRatio:"1", margin:"0"}} src="https://reaaler.real.edu.ee/assets/logo.png" alt="" /> Tallinna Reaalkool</p>
+                        </div>
+                    </div>
 
-                {lastGames.map((e, ind)=><GameTile data={e} key={ind} />)}
-                {lastGames.length <= 0 && <HorizontalInfoBanner text={user.role == "teacher" ? "Õpetaja "+(user.eesnimi)+" peab õpilaste kontrolltöid parandama - ta ei ole veel jõudnud arvutamisega tegeleda 😊" : "Kasutajal ei ole veel mänge"} />}
-            
-                {lastGames.length > 0 && <>
-                    <SizedBox height={24} />
-                    <a href={"/game/history/"+user.id} alone="" >Kõik mängud&nbsp;<span className="material-icons" translate="no">navigate_next</span></a>
-                    <SizedBox height={8} />
-                    
-                </>}
-            </section>
-            
+                    {lastGames.length > 0 && <div onClick={()=>window.location.href = "/game/history/"+user.id} className="section clickable">
+                        <TwoRowTextButton upperText="Mängude ajalugu" lowerText="Vaata kõiki" />
+                    </div>}
+                </div>
+            </div>
+        </Layout>
     </>;
 }

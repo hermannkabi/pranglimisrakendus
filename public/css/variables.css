@@ -9,7 +9,7 @@
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: 255, 255, 255;
     --primary-btn-border-radius: 8px;
-    --red-color: rgb(239, 131, 131);
+    --red-color: #ef8383;
     --darkred-color: 226, 81, 81;
     --grey-color: #868686;
     --lightgrey-color: #9F9F9F;
@@ -20,6 +20,7 @@
     --select-arrow: url("data:image/svg+xml,<svg height='24px' width='24px' viewBox='0 0 16 16' fill='b' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
 
     --font-size: 18px;
+    --chip-color: #D9D9D9;
 }
 
 
@@ -32,7 +33,7 @@
     --primary-btn-color: var(--primary-color);
     --primary-btn-text-color: var(--white);
     --primary-btn-border-radius: 8px;
-    --red-color: rgb(239, 131, 131);
+    --red-color: #ef8383;
     --darkred-color: 226, 81, 81;
     --background-color: 25, 26, 28;
     --section-color: #202020;
@@ -42,4 +43,6 @@
     --btn-hover-color: 51, 79, 79;
     --grey-color: #868686;
     --lightgrey-color: #9F9F9F;
+    --chip-color: #2F2F2F;
+
 }
