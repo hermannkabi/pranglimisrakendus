@@ -87,8 +87,10 @@ Route::get('/changelog', function () {
     return Inertia::render('UpdateHistory/UpdateHistoryPage');
 })->name("changelog");
 
-Route::get("/preview", function (){
-    return Inertia::render("GamePreview/GamePreviewPage");
+Route::get("/preview/{type}", function ($type){
+    $supportedTypes = ["liitmine", "lahutamine", "korrutamine", "jagamine", "liitlahutamine", "korrujagamine", "astendamine", "juurimine", "astejuurimine", "võrdlemine", "lünkamine", "murruTaandamine", "kujundid", "jaguvus"];
+    if(!in_array($type, $supportedTypes)) abort(404);
+    return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
 //Game part of PRANGLIMISRAKENDUS

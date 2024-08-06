@@ -604,7 +604,8 @@ export default function GamePage({data, time, auth}){
             "operation":operations.data[currentLevel.current][index].operation1 + " %SYMB% " + operations.data[currentLevel.current][index].operation2,
             "correct":symbs[operations.data[currentLevel.current][index].answer],
             "answer":symbs[answered],
-            "isCorrect":isCorrect
+            "isCorrect":isCorrect,
+            "level":currentLevel.current,
         });
     }
 
@@ -615,7 +616,8 @@ export default function GamePage({data, time, auth}){
             "operation":operations.data[currentLevel.current][index].operation.replaceAll(" ", ""),
             "correct":operations.data[currentLevel.current][index].answer ? "Jah" : "Ei",
             "answer":ans ? "Jah" : "Ei",
-            "isCorrect":isCorrect
+            "isCorrect":isCorrect,
+            "level":currentLevel.current,
         });
     }
 
@@ -636,6 +638,7 @@ export default function GamePage({data, time, auth}){
                     "correct":correct.toString(),
                     "answer": answer.toString(),
                     "isCorrect":isCorrect,
+                    "level":currentLevel.current,
                 });
                 return;
             }
@@ -697,6 +700,7 @@ export default function GamePage({data, time, auth}){
                 "correct": simplify ? correct : parseFloat(correct).toFixed(2).replace(".00", ""),
                 "answer": simplify ? formattedAnswer : parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect,
+                "level":currentLevel.current,
             });
 
         }else{
@@ -714,11 +718,12 @@ export default function GamePage({data, time, auth}){
         // Total answer count is increased
         setTotalAnsCount(totalAnsCount + 1);
 
+        var level = operations.data[currentLevel.current][index].level ?? 1;
+
         if(isCorrect){
 
             var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
 
-            var level = operations.data[currentLevel.current][index].level ?? 1;
 
             if(["A", "B", "C"].includes(level)){
                 level = {"A":10, "B":15, "C":20}[level];
@@ -760,6 +765,7 @@ export default function GamePage({data, time, auth}){
 
 
         // Add data to the list of operations that have been answered
+        data["level"] = level;
         operationLog.current.push(data);
 
         // Get a new operation and set the default answer to it
@@ -772,8 +778,13 @@ export default function GamePage({data, time, auth}){
     // A function that is called:
     // 1. When the timer ends
     // 2. When the operations run out (then with endedBefore = true)
-    function onTimerFinished(message){
+    function onTimerFinished(message, dontSave=false){
 
+
+        if(dontSave){
+            window.location.href = route('dashboard');
+            return;
+        }
         // IMPORTANT!!!
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
 
@@ -781,7 +792,7 @@ export default function GamePage({data, time, auth}){
         setMessage(message ?? "Aeg sai otsa!");
 
         // Wait for a moment before rendering the results page
-        setTimeout(() => {
+        setTimeout(() => {    
             setShowResults(true);
         }, 750);
     }
@@ -826,7 +837,7 @@ export default function GamePage({data, time, auth}){
     // Alternatively, navigate to the results page
     function cancelGame(){
         // window.location.href = route("dashboard");
-        onTimerFinished("Mäng on katkestatud!");
+        onTimerFinished("Mäng on katkestatud!", totalAnsCount <= 0);
     }
 
 

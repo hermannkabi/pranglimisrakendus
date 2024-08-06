@@ -143,6 +143,14 @@ export default function GameDetailsPage({game, auth, playedBy}){
                         </div>
                     </div>
 
+                    <div className="section class-stat" style={{padding:"16px"}}>
+                        <div className="stat-desc">
+                            <i className="material-icons-outlined">calendar_month</i>
+                            <p style={{marginTop:"4px"}}>Kuupäev</p>
+                        </div>
+                        <p style={{display:"flex", alignItems:"center", gap:"8px", marginBottom:"8px", fontWeight:"bold", color:"var(--lightgrey-color)", fontSize:"24px"}}>{(new Date(game.dt)).toLocaleString("et-EE", {month:"long", day:"2-digit", year:"numeric"}).split(",")[0]}</p>
+                    </div>
+
                     <a alone="" style={{color:"var(--grey-color)"}} onClick={copyToClipboard}> <i className="material-icons no-anim">share</i>&nbsp; {copyText}</a>
                 </div>
             </div>

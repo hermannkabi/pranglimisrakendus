@@ -88,6 +88,28 @@
     .math-pow-transformed{
         transform: translate(-10px, 10px);
     }
+
+    .podium{
+        display: grid !important;
+        gap: 0 !important;
+    }
+
+    .podium > div{
+        margin-block: 0 !important;
+    }
+
+    .podium > div > span{
+        display: none;
+    }
+
+    .podium > div:nth-of-type(1){
+        order: 2;
+    }
+    .podium > div:nth-of-type(2){
+        order: 1;
+    }.podium > div:nth-of-type(3){
+        order: 3;
+    }
 }
 
 body{
@@ -307,11 +329,11 @@ button[secondary]:hover > .lds-ring div{
 }
 
 .clickable.section:hover{
-    filter: brightness(95%);
+    filter: brightness(var(--hover-brightness));
 }
 
 .clickable.section:active{
-    filter: brightness(90%);
+    filter: brightness(var(--focus-brightness));
 }
 
 .section[disabled]{
@@ -556,6 +578,14 @@ select:after{
 
 .guide-tile .guide p, .guide-tile .guide span{
     max-width: 75%;
+}
+
+.podium{
+    display: flex;
+    align-items: end;
+    gap: 8px;
+    justify-content: stretch;
+    flex-direction: row;
 }
 
 /* GAME STUFF STARTS HERE */

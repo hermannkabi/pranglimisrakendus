@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Klass;
-use App\Models\User;
+use DateTime;
 use App\Models\Mang;
+use App\Models\User;
+use App\Models\Klass;
+use Illuminate\Http\Request;
 
 /**
  * Get and send data for displaying on the leaderboard
@@ -17,14 +18,14 @@ class LeaderboardController extends Controller
         $data = [];
 
         foreach($users as $user){
-            $kasutaja_mangud = Mang::select("experience")->where("user_id", $user->id)->get();
+            $kasutaja_mangud = Mang::orderBy("dt", "desc")->select("experience", "dt")->where("user_id", $user->id)->get();
             $kokku = 0;
 
             foreach($kasutaja_mangud as $mang){
                 $kokku += $mang->experience;
             }
 
-            array_push($data, ["user"=>$user, "xp"=>$kokku, "place"=>"0"]);
+            array_push($data, ["user"=>$user, "xp"=>$kokku, "place"=>"0", "playedToday"=> count($kasutaja_mangud) <= 0 ? false : (new DateTime($kasutaja_mangud[0]->dt))->format('d.m.Y') == (new DateTime("today"))->format('d.m.Y')]);
         }
 
         usort($data, function ($a, $b){

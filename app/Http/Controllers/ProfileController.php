@@ -119,7 +119,7 @@ class ProfileController extends Controller
             $viimaseDt = $viimane->dt;
 
             // Streak on aktiive, kui viimane mäng on tehtud täna
-            $diff = date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a");
+            $diff = abs(date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a"));
 
             $streakActive = $diff == 0;
             $user->streak_active = $streakActive;
@@ -154,17 +154,22 @@ class ProfileController extends Controller
             $viimaseDt = $andmed[0]->dt;
             $eelviimaseDt = $andmed[1]->dt;
 
-            $diff = date_diff(new DateTime($eelviimaseDt), new DateTime($viimaseDt))->format("%a");
+            $diff = abs(date_diff(new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $eelviimaseDt)->format("Y-m-d")), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a"));
+
+            Log::debug("OLEN SIIN!!!");
+            Log::debug($diff);
             // Streak on mitteaktiivne, aga ka mitteaegunud, kui selle läbib (ehk saab suurendada)
             if($diff == 1){
                 $user->streak_active = 1;
-                $user->streak = $user->streak + 1;
+                $user->streak += 1;
                 $user->save();
             }else if($diff > 1){
                 $user->streak_active = 0;
                 $user->streak = 0;
                 $user->save();
             }
+
+            return;
         }
     }
 

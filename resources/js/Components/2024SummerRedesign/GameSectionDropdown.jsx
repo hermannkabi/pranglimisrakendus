@@ -35,7 +35,7 @@ export default function GameSectionDropdown({title, gameTypes=[]}){
             <div ref={collapsibleRef}>
                 <SizedBox height="8px" />
                 <div >
-                    {gameTypes.map((e)=><a key={e} href={"/preview?id="+e} style={{all:"unset", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>)}
+                    {gameTypes.map((e)=><a key={e} href={"/preview/"+e} style={{all:"unset", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>)}
                 </div>
             </div>
             <SizedBox height="24px" />

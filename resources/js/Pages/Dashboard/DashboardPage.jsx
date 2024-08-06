@@ -25,7 +25,12 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
         <>
             <Layout title="Töölaud">
                 <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
-                
+                <div className="section" style={{marginBottom:"16px"}}>
+                <InfoBanner>
+                    <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
+                </InfoBanner>
+                </div>
+
                 {auth.user.role == "teacher" && !auth.user.email_verified_at && <div className="section" style={{marginBottom:"16px"}}><InfoBanner type="error" text="Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress" /></div> }
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
                     <InfoBanner text={"Sinu e-posti aadress on kinnitatud!"} />

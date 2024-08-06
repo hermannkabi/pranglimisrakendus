@@ -18,9 +18,11 @@
     --section-transparency: 0.05;
     --input-color: var(--primary-color);
     --select-arrow: url("data:image/svg+xml,<svg height='24px' width='24px' viewBox='0 0 16 16' fill='b' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
-
     --font-size: 18px;
     --chip-color: #D9D9D9;
+    --hover-brightness: 95%;
+    --focus-brightness: 90%;
+
 }
 
 
@@ -44,5 +46,7 @@
     --grey-color: #868686;
     --lightgrey-color: #9F9F9F;
     --chip-color: #2F2F2F;
+    --hover-brightness: 80%;
+    --focus-brightness: 75%;
 
 }

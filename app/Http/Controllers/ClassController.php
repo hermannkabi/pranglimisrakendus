@@ -205,6 +205,10 @@ class ClassController extends Controller
     public function overallClassStats($klass_id, $aeg=null /* Time filter for statistics */){
         // Total no games
         $total_game_count = 0;
+
+        // Games played today
+        $today_game_count = 0;
+
         // Total no points
         $total_points_count = 0;
         // Points by timestamp
@@ -237,10 +241,13 @@ class ClassController extends Controller
             foreach($gamesByUser as $game){
                 $total_points_count += $game->experience;
                 $total_game_count ++;
+                if(date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $game->dt)->format("Y-m-d")))->format("%a") == 0){
+                    $today_game_count ++;
+                }
             }
         }
 
-        return ["students"=>$studentsInClass, "studentsCount"=>$students_count, "totalGameCount"=>$total_game_count, "totalPointsCount"=>$total_points_count];
+        return ["students"=>$studentsInClass, "studentsCount"=>$students_count, "totalGameCount"=>$total_game_count, "totalPointsCount"=>$total_points_count, "gamesToday"=>$today_game_count];
     }
 
     /**
