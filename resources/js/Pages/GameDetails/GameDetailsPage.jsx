@@ -115,7 +115,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
                 </div>
 
                 <div>
-                    <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}> 
+                    <div className="two-column-layout"> 
                         <VerticalStatTile icon="calculate" text="Mängutüüp" value={decodeURIComponent(name)} />
                         <VerticalStatTile icon="pin" text="Arvuhulk" value={typeToReadable[game.game_type] ?? "N/A"} />
                     </div>

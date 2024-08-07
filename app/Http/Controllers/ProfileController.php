@@ -171,7 +171,8 @@ class ProfileController extends Controller
                 $user->save();
             }else if($diff > 1){
                 $user->streak_active = 0;
-                $user->streak = 0;
+                // 1 is correct here because we just played a game so it cannot be 0
+                $user->streak = 1;
                 $user->save();
             }
 
