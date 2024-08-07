@@ -27,6 +27,8 @@ return <>
     <div style={{position:'relative'}} onClick={()=>window.location.href = "/game/"+data.game_id+"/details"} className="section clickable">
         <TwoRowTextButton upperText={data.game == null ? "Tundmatu" : decodeURIComponent(gameName)} lowerText={isTypeShown ? typeToReadable[data.game_type] : (data.score_sum+" punkt"+(data.score_sum == 1 ? "" : "i"))} />
         <p style={{marginBlock:"0", color:"var(--grey-color)", position:"absolute", bottom:"8px", right:"8px"}}>{(new Date(data.dt)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>
+    
+        <a href={"/game/"+data.game_id+"/details"} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
     </div>
 </>;
 }

@@ -1,13 +1,9 @@
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import GameTile from "@/Components/GameTile";
-import HorizontalInfoBanner from "@/Components/HorizontalInfoBanner";
 import InfoBanner from "@/Components/InfoBanner";
-import Navbar from "@/Components/Navbar";
 import NavigatePagesButton from "@/Components/NavigatePagesButton";
 import SizedBox from "@/Components/SizedBox";
-import StatisticsWidget from "@/Components/StatisticsWidget";
-import { Head } from "@inertiajs/react";
 
 export default function GameHistoryPage({auth, games, stats}){
 
@@ -41,7 +37,7 @@ export default function GameHistoryPage({auth, games, stats}){
                     {/* Because Laravel gives the previous and next page links as well as the page 1 link (so 3 in total) */}
                     {games.links.length > 3 && <div className="section">
                         <SizedBox height="8px" />
-                        <i className="material-icons-outlined">explore</i>
+                        <i translate="no" className="material-icons-outlined">explore</i>
                         <p style={{marginTop:"4px"}}>Navigeeri lehel</p>
                         {games.links.map((e)=>e.label != "&laquo; Previous" && e.label != "Next &raquo;" && <NavigatePagesButton data={e} key={e.label} />)}
                     </div>}

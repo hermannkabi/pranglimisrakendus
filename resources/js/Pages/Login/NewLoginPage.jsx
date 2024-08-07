@@ -2,13 +2,11 @@ import LoginHeader from "@/Components/LoginHeader";
 import { Head } from "@inertiajs/react";
 import "/public/css/login.css";
 import "/public/css/auth_layout.css";
-
 import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";
 import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
-import CheckboxTile from "@/Components/CheckboxTile";
 import InfoBanner from "@/Components/InfoBanner";
 
 export default function NewLoginPage({message, errors}){

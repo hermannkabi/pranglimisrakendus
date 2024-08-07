@@ -5,6 +5,7 @@ import Layout from "@/Components/2024SummerRedesign/Layout";
 import { useRef, useState } from "react";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
+import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
 
 export default function JoinClassPage({auth, classData, allClasses}){
 
@@ -31,13 +32,6 @@ export default function JoinClassPage({auth, classData, allClasses}){
         }
     }   
 
-    function toggleVisibility(){
-        var isVisible = document.getElementById("password").type == "text";
-        document.getElementById("toggle-visibility").innerHTML = isVisible ? "visibility" : "visibility_off";
-        document.getElementById("password").type = isVisible ? "password" : "text";
-    
-    }
-
     function joinClass(){
         if(selectedClass != null && password != null){
             $.post(route("join"), {
@@ -58,19 +52,19 @@ export default function JoinClassPage({auth, classData, allClasses}){
     }
 
     return (
-        <Layout title="Liitu klassiga">
+        <Layout title={classData != null ? "Muuda klassi" : "Liitu klassiga"}>
             <div className="two-column-layout">
 
                 {/* Class list */}
                 <div>
                 {classData != null && <div onClick={onClassRemove} style={{marginTop:"0", paddingBlock:"32px", marginBottom:"32px", display:"flex", justifyContent:"space-between", alignItems:"center"}} className="section clickable">
                     <TwoRowTextButton upperText="Lahku klassist" lowerText={classData.klass_name} showArrow={false} />
-                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons">logout</i>
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons">logout</i>
                 </div>}
 
                 {/* Search input */}
                 <div style={{position:'relative', marginBottom:"16px"}}>
-                    <i style={{position:"absolute", top:"50%", transform:"translateY(-50%)", left:"8px", color:"var(--grey-color)", fontSize:"28px"}} className="material-icons">search</i>
+                    <i translate="no" style={{position:"absolute", top:"50%", transform:"translateY(-50%)", left:"8px", color:"var(--grey-color)", fontSize:"28px"}} className="material-icons">search</i>
                     <input onChange={(e)=>setSearch(e.target.value)} autoComplete="off" placeholder="Otsi klassi" style={{backgroundColor: "var(--section-color)", borderRadius:"6px", padding:"32px 16px", paddingLeft:"50px", width:"100%", boxSizing:"border-box", margin:"0"}} className="search" type="search" />
                 </div>
 
@@ -89,13 +83,7 @@ export default function JoinClassPage({auth, classData, allClasses}){
 
                 {/* Actions (password  & submit) */}
                 <div>
-                    <div style={{textAlign:"left", position:"relative", backgroundColor:"var(--section-color)", borderRadius:"6px", padding:"16px"}}>
-                        <i className="material-icons" style={{color:"var(--lightgrey-color)"}}>lock_outlined</i>
-
-                        <p style={{marginTop:"6px", marginBottom:'24px'}}>Klassi salasõna</p>
-                        <input ref={passwordRef} onChange={(e)=>setPassword(e.target.value)} autoComplete="new-password" id="password" style={{all:"unset", fontWeight:"bold", width:"100%"}} placeholder="Sisesta salasõna..." type="password" />
-                        <i onClick={toggleVisibility} id="toggle-visibility" className="material-icons" style={{color:"var(--grey-color)", position:"absolute", bottom:"16px", right:"16px", cursor:"pointer"}}>visibility</i>
-                    </div>
+                    <PasswordWidget text="Klassi salasõna" ref={passwordRef} onChange={(e)=>setPassword(e.target.value)} />
                     <SizedBox height="8px" />
                     {error && <InfoBanner type="error" text={error} />}
                     <SizedBox height="2px" />

@@ -1,18 +1,24 @@
 <?php
 
-use App\Mail\TestMail;
+use App\Models\Mang;
+use App\Models\User;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Artisan;
+use App\Mail\TestMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     if(Auth::check()){
         return redirect()->route("dashboard");
     }
-    return Inertia::render('Welcome/WelcomePage');
+
+    $totalUsers = User::count();
+    $totalGames = Mang::count();
+    $totalPoints = Mang::sum("score_sum");
+    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
 })->name("welcome");
 
 Route::get("/handleForm", function (){
@@ -39,7 +45,6 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
 //Login and registration
 Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
-    Route::get('/register/google', 'registerGoogle')->name('registerGoogle');
 
     Route::post('/store', 'store')->name('store');
     Route::post('/store/google', 'storeGoogle')->name('storeGoogle');
@@ -136,6 +141,9 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
 
     Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
+
+    Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
+
 });
 
 Route::get('/dashboard/old', function (){

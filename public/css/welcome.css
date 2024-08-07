@@ -50,14 +50,48 @@
     }
 }
 
+@keyframes wave{
+    0%{
+        rotate: 0;
+    }
 
+    25%{
+        rotate: 12deg;
+    }
+
+    75%{
+        rotate: -13deg;
+    }
+
+    100%{
+        rotate: 0deg;
+    }
+}
+
+body, html{
+    scroll-behavior: smooth;
+}
+
+.onboarding-btn > .material-icons{
+    transition: rotate 100ms;
+}
+
+.onboarding-btn:hover > .material-icons{
+    animation: wave 500ms;
+    animation-iteration-count: 2;
+}
 
 
 .home-navbar{
+    position: sticky;
+    top: 16px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3.4px);
+    -webkit-backdrop-filter: blur(3.4px);
 }
 
 .home-navbar > .title-div{
@@ -68,14 +102,14 @@
     color: rgb(var(--primary-color));
 }
 
-.home-navbar > a{
+.home-navbar a{
     all: unset;
     cursor: pointer;
     font-weight: bold;
 
 }
 
-.home-navbar > a:hover{
+.home-navbar a:hover{
     all: unset;
     font-weight: bold;
     cursor: pointer;
@@ -150,8 +184,61 @@ h1 .shine{
     rotate: 19deg;
 }
 
+.features{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 75px;
+}
+
+.feature{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: max(35%, 250px);
+    gap: 36px;
+}
+
+.feature-left{
+    flex-direction: row;
+    text-align: left;
+}
+
+.feature-right{
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.feature > .section{
+    aspect-ratio: 1;
+}
+
+.feature .material-icons, .feature .material-icons-outlined{
+    font-size: 75px;
+}
+
+.feature p{
+    color: var(--grey-color);
+}
+
+.section.onboarding{
+    width: max(300px, 60%);
+    margin: auto;
+}
+
+.onboarding-text{
+    width: max(300px, 40%);
+    margin: auto;
+    color: var(--grey-color);
+}
+
 
 @media only screen and (max-width:1100px){
+
+    .feature{
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
 
     .onboarding-btn{
         margin-bottom: 16px;
@@ -172,6 +259,14 @@ h1 .shine{
     }
 
     .symbs span:nth-child(1){
+        display: none;
+    }
+
+    #statistics{
+        display: block !important;
+    }
+
+    .title-div .title{
         display: none;
     }
 }

@@ -92,7 +92,7 @@ export default function OperationWidget({op}){
                 <p style={{fontWeight:"bold", marginBlock:"0", fontSize:"24px", wordWrap:"anywhere"}} dangerouslySetInnerHTML={{"__html":op.operation.includes("Lünk") ? gapHtml(op) : op.operation.includes("%SYMB%") ? compareHtml(op) : op.operation.includes("EXP") ? expHtml(op) : op.operation.includes("RAD") ? radHtml(op) : op.operation.includes("LIHT") ? fracHtml(op) : op.operation.match(regex) != null ? fracRender(op.operation) : op.operation.toString().replaceAll(".", ",")}}></p>
                 {!op.operation.includes("Lünk") && !op.operation.includes("%SYMB%") && !op.operation.includes("LIHT") && <p style={{marginBlock:"2px", color:color, fontSize:"24px", fontWeight:"bold"}}>{op.answer != null && op.answer.toString().replaceAll(".", ",")} <span style={{color:correctColor}}>{op.isCorrect ? "" : "("+op.correct.replaceAll(".", ",")+")"}</span></p>}            
             </div>
-            {op.level && <p title="Tehte tase" style={{color:"var(--grey-color)", marginBottom:"0", display:"flex", alignItems:"center", gap:"6px", position:"absolute", right:"8px", bottom:"8px"}}> <i style={{fontSize:"20px"}} className="material-icons-outlined">exercise</i> {op.level.toString().replaceAll("A", "★ 1").replaceAll("B", "★ 2").replaceAll("C", "★ 3")}</p>}
+            {op.level && <p title="Tehte tase" style={{color:"var(--grey-color)", marginBottom:"0", display:"flex", alignItems:"center", gap:"6px", position:"absolute", right:"8px", bottom:"8px"}}> <i translate="no" style={{fontSize:"20px"}} className="material-icons-outlined">exercise</i> {op.level.toString().replaceAll("A", "★ 1").replaceAll("B", "★ 2").replaceAll("C", "★ 3")}</p>}
         </div>
     </>);
 }

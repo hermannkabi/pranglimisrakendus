@@ -723,6 +723,10 @@ mfrac{
 
 /* Shapes type */
 
+.red{
+    color: var(--red-color);
+}
+
 .shapes-container{
     display: inline-grid;
     grid-template-columns: repeat(3, 1fr);
@@ -778,11 +782,11 @@ mfrac{
 }
 
 .shape:not(.triangle).red{
-    background-color: rgb(var(--red-color));
+    background-color: var(--red-color);
 }
 
 .shape.triangle.red{
-    border-bottom: 24px solid rgb(var(--red-color));
+    border-bottom: 24px solid var(--red-color);
 }
 
 .shape:not(.triangle).blue{

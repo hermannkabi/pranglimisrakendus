@@ -6,6 +6,7 @@ import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
+import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 
 
 // Type in this context is the type of game (e.g. liitmine), not types as in natural, fraction etc
@@ -114,7 +115,7 @@ export default function GamePreviewPage({auth, type}){
 
     const [message, setMessage] = useState();
     const [levels, setLevels] = useState(Array.from(Array((typeof data[type] == "string" ? data[data[type]] : data[type])["lvls"])).map((x,i)=>i+1));
-    const [gameTime, setGameTime] = useState(Math.min(Math.max(urlParams.get("time"), 0.5) ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : ""), 10));
+    const [gameTime, setGameTime] = useState(Math.min((Math.max(0.5, urlParams.get("time") != null ? urlParams.get("time") : (window.localStorage.getItem("default-time") ?? "0.5"))), 10));
     const [selectedGameMode, setSelectedGameMode] = useState(getInitialGameMode());
 
     useEffect(function (){
@@ -144,38 +145,26 @@ export default function GamePreviewPage({auth, type}){
                         <TwoRowTextButton showArrow={false} upperText="Mänguaeg" lowerText="Kui pikalt mängid?" />
 
                         <div style={{display:"inline-flex", flexDirection:"row", alignItems:'center', gap:"8px", marginRight:"8px"}}>
-                            <i onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: gameTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
+                            <i translate="no" onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: gameTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
                             <div style={{width:"75px", textAlign:"center", marginBlock:"8px", }}>
                                 <h2 style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontSize:"40px"}}>{gameTime == "0" ? "-" : gameTime.toString().replaceAll(".", ",")}</h2>
                                 <p style={{color:"var(--grey-color)", marginBlock:"0"}}>min</p>
                             </div>
-                            <i onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) <= 0.5 ? 0.5 : parseFloat(defaultTime) - 0.5)} style={{color: gameTime <= 0.5 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
+                            <i translate="no" onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) <= 0.5 ? 0.5 : parseFloat(defaultTime) - 0.5)} style={{color: gameTime <= 0.5 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
                         </div>
                     </div>
 
                     {!(typeIndependents.includes(type)) && <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-                        <div>
-                            <SizedBox height="8px" />
+                        <VerticalStatTile padding="8px 0" icon="pin" text="Arvuhulk" customValue={true} value={<>
                             <div>
-                                <i style={{fontSize:"32px"}} className="material-icons-outlined">pin</i>
-                                <p style={{marginTop:"4px"}}>Arvuhulk</p>
+                                {(typeof data[type] == "string" ? data[data[type]]["types"] : data[type]["types"]).map((e)=> <Chip key={e} onClick={()=>setSelectedGameMode(typeof e == "string" ? e : e["value"])} label={typeof e == "string" ? typeToName[e] : e["label"]} active={typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]} /> )}
                             </div>
-
-                            <div>
-                                {(typeof data[type] == "string" ? data[data[type]]["types"] : data[type]["types"]).map((e)=> <Chip onClick={()=>setSelectedGameMode(typeof e == "string" ? e : e["value"])} label={typeof e == "string" ? typeToName[e] : e["label"]} active={typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]} /> )}
-                            </div>
-                        </div>
+                        </>} />
                     </div>}
                     {typeIndependents.includes(type) && <div className="section"><InfoBanner text={"Sellel mängutüübil ei ole võimalik arvuhulka muuta"} /></div> }
 
                     <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-                        <div>
-                            <SizedBox height="8px" />
-                            <div>
-                                <i style={{fontSize:"32px"}} className="material-icons-outlined">exercise</i>
-                                <p style={{marginTop:"4px"}}>Tasemed</p>
-                            </div>
-
+                        <VerticalStatTile padding="8px 0" icon="exercise" text="Tasemed" customValue={true} value={
                             <div>
                                 {Array.from(Array((typeof data[type] == "string" ? data[data[type]] : data[type])["lvls"])).map((x, e)=><Chip key={e} onClick={()=>{
 
@@ -194,7 +183,7 @@ export default function GamePreviewPage({auth, type}){
                                 }} label={(e+1)+". tase"} active={levels.includes(e+1)} /> )}
                                 <br /><br/>
 
-                                {(typeof data[type] != "string" ? data[type]["extra"] : data[data[type]]["extra"]).map((e, ind)=> <Chip icon={"star"} label={(ind + 1) +". tase"} active={levels.includes(e)} onClick={()=>{
+                                {(typeof data[type] != "string" ? data[type]["extra"] : data[data[type]]["extra"]).map((e, ind)=> <Chip key={ind} icon={"star"} label={(ind + 1) +". tase"} active={levels.includes(e)} onClick={()=>{
                                     var newLevels = [...levels];
 
                                     if(newLevels.includes(e)){
@@ -208,25 +197,15 @@ export default function GamePreviewPage({auth, type}){
                                     
                                     return setLevels(newLevels);
                                 }} />)}
-                            </div>
-                        </div>
+                            </div>} />                        
                     </div>
-
-
                 </div>
 
                 {/* Teine tulp */}
                 <div>
                     <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-                        <div>
-                            <SizedBox height="8px" />
-                            <div>
-                                <i style={{fontSize:"32px"}} className="material-icons-outlined">calculate</i>
-                                <p style={{marginTop:"4px"}}>Mängutüüp</p>
-                            </div>
-                            <p style={{marginBottom:"8px", fontWeight:"bold", color:"var(--lightgrey-color)", fontSize:"24px"}}>{getGameName(type)}</p>
-                        </div>
-                        {guideAvailable.includes(type) && <a style={{all:"unset"}} href={route("guide") + "#"+type}><i style={{fontSize:"40px"}} className="material-icons-outlined clickable">info</i></a> }
+                        <VerticalStatTile padding="8px 0" icon="calculate" text="Mängutüüp" value={getGameName(type)} />
+                        {guideAvailable.includes(type) && <a style={{all:"unset"}} href={route("guide") + "#"+type}><i translate="no" style={{fontSize:"40px"}} className="material-icons-outlined clickable">info</i></a> }
                     </div>
 
                     <BigButton onClick={navigateToGame} title={"Alusta"} subtitle={"Head mängu!"} />

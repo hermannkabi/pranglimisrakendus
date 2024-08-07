@@ -120,15 +120,26 @@ class ClassController extends Controller
 
         if($klass == null) abort(404);
 
-        // A student should only be able to view their own class
-        if($request->user()->role == "student" && $request->user()->klass != $klass->klass_id) abort(403);
+        // A student (someone who is not a teacher) should only be able to view their own class
+        if($request->user()->role != "teacher" && $request->user()->klass != $klass->klass_id) abort(403);
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
-        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
+        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi","asc")->get());
         $teacher = User::where('id', $klass->teacher_id)->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
         $isTeacher = $teacher == null ? false : $request->user()->id == $teacher->id;
         return Inertia::render("Classroom/ClassroomPage", ['uuid'=>$uuid, 'isTeacher'=>$isTeacher, 'leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
+    }
+
+    public function showAll(Request $request){
+        $classes = Klass::where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
+
+        foreach($classes as $class){
+            $studentsCount = User::where("klass", $class->klass_id)->where("role", "!=", "teacher")->count();
+            $class->studentsCount = $studentsCount;
+        }
+
+        return Inertia::render("AllClasses/AllClassesPage", ["classes"=>$classes]);
     }
 
 
@@ -188,7 +199,7 @@ class ClassController extends Controller
             return;
         }
 
-        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "student")->get();
+        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi", "asc")->get();
         
         return Inertia::render("Classroom/ClassroomEdit", ["klass"=>$class, "students"=>$students]);
 
@@ -214,7 +225,7 @@ class ClassController extends Controller
         // Points by timestamp
         $points_by_timestamp = [];
 
-        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "student")->get();
+        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "!=", "teacher")->get();
 
         // Students count
         $students_count = count($studentsInClass);

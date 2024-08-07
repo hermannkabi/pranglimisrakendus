@@ -1,34 +1,28 @@
-import Navbar from "@/Components/Navbar";
-import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";
-import { Head } from "@inertiajs/react";
 import "/public/css/preview.css";
-import CheckboxTile from "@/Components/CheckboxTile";
-
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
+import { useState } from "react";
+import Chip from "@/Components/2024SummerRedesign/Chip";
+import BigButton from "@/Components/2024SummerRedesign/BigButton";
 
 export default function ClassroomEdit({klass, auth, students}){
 
-    function submitData(e){
-        e.preventDefault();
+    const [klassName, setKlassName] = useState(null);
+    const [newPassword, setNewPassword] = useState(null);
+    const [studentsToRemove, setStudentsToRemove] = useState([]);
 
-        var removeStudents = "";
+    const isDisabled = (klassName == null || klassName.length <= 0) && (newPassword == null || newPassword.length <= 0) && studentsToRemove.length <= 0;
 
-        $("input[type='checkbox']").each(function (){
-            if($(this).is(":checked")){
-                removeStudents += $(this).attr("level"); 
-                removeStudents += ",";
-            }
-        });
 
-        removeStudents = removeStudents.substring(0, removeStudents.length - 1);
-
+    function submitData(){
         $.post("/classroom/"+klass.uuid+"/edit", {
             "_token":window.csrfToken,
-            "klass_name": $("#name").val(),
-            "klass_password": $("#pass").val(),
-            "removed_students": removeStudents,
+            "klass_name": klassName == null || klassName.length <= 0 ? klass.klass_name : klassName,
+            "klass_password": newPassword == null || newPassword.length <= 0 ? klass.klass_password : newPassword,
+            "removed_students": studentsToRemove.join(","),
         }).done(function (data){
-            window.location.href = route("dashboard");
+            window.location.reload();
         }).fail(function (data){
             console.log(data);
         });
@@ -46,45 +40,45 @@ export default function ClassroomEdit({klass, auth, students}){
         }
     }
 
+
     return <>
-            <Head title='Muuda klassi' />
-            <Navbar user={auth.user} />
-            <SizedBox height={36} />
+        <Layout title="Muuda klassi">
+            <div className="two-column-layout">
+                <div>
+                    <PasswordWidget onChange={(e)=>setKlassName(e.target.value)} inputName="klass_name" style={{marginBlock: "8px"}} isPassword={false} icon="edit" text="Klassi nimi" hintText={klass.klass_name} />
+                    <PasswordWidget onChange={(e)=>setNewPassword(e.target.value)} inputName="klass_password" style={{marginBlock: "8px"}} text="Parool klassiga ühinemiseks" hintText={klass.klass_password} />
 
-            <h2>Muuda klassi</h2>
-
-            <div className="container">
-                <div className="preferences">
-                    <section>
-                        <form onSubmit={submitData} method="post" autoComplete="off">
-                            <input type="hidden" name="_token" value={window.csrfToken}  />
-                            
-                            <input id="name" required style={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} type="text" name="klass_name" placeholder="Klassi nimi" defaultValue={klass.klass_name} />
-                            <PasswordInput id="pass" name="klass_password" value={klass.klass_password} divstyle={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} style={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} />  
-
-                            <SizedBox height="16px" />
-
-                            {students.length > 0 && <a alone="" onClick={()=>{$("#remove-students-arrow").css("transform", "rotate("+($("#remove-students").is(":hidden") ? "-180deg" : "0deg")+")"); $("#remove-students").slideToggle(200); }}>Eemalda õpilasi <i id="remove-students-arrow" className="material-icons no-anim">keyboard_arrow_down</i></a>}
-
-                            <div id="remove-students" hidden>
-                                <p style={{color:"grey"}}>Vali need õpilased, keda soovid klassi nimekirjast eemaldada</p>
-
-                                <div>
-                                    {students.map((e)=>{
-                                       return <CheckboxTile key={e.id} level={"A"} levelChar={e.id} style={{textTransform:"capitalize"}} forcedText={e.eesnimi + " " + e.perenimi} />
-                                    })}
-                                </div>
-                            </div>
-
-                            <SizedBox height="16px" />
-
-                            <button style={{width:"100%", height:"100%", boxSizing:"border-box", marginInline:"-8px"}} type="submit">Muuda</button>
-                        </form>
-                    </section>
                     <SizedBox height="16px" />
-                    <a onClick={deleteClass} red="" alone="">Kustuta klass&nbsp;<span translate="no" className="material-icons no-anim">delete</span> </a>
+                    <p style={{color:"var(--lightgrey-color)", textAlign:'left', width:"75%"}}>Vali need õpilased, kelle soovid klassi nimekirjast eemaldada</p>
+                    <div>
+                    {students.map((e)=>{
+                        return <Chip key={e.id} onClick={()=>{
+                            var newList = [...studentsToRemove];
+
+                            if(newList.includes(e.id)){
+                                newList = newList.filter(i=>i != e.id);
+                            }else{
+                                newList.push(e.id);
+                            }
+
+                            setStudentsToRemove(newList);
+                        }} active={studentsToRemove.includes(e.id)} capitalize={true} label={e.eesnimi} alt={e.perenimi} />
+                    })}
+                    </div>
+                </div>
+
+
+                <div>
+                    <div onClick={deleteClass} className="section clickable red" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
+                        <div style={{color:"var(--red-color)",}}>
+                            <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">delete</i>
+                            <p style={{marginTop:"8px", marginBottom:"0"}}>Kustuta klass</p>
+                        </div>
+                    </div>
+
+                    <BigButton onClick={submitData} disabled={isDisabled} title="Muuda klassi" subtitle={klassName == null || klassName.length <= 0 ? klass.klass_name : klassName} />
                 </div>
             </div>
-            
+        </Layout>
     </>;
 }

@@ -1,4 +1,3 @@
-import Navbar from "@/Components/Navbar";
 import NumberButton from "@/Components/NumberButton";
 import SizedBox from "@/Components/SizedBox";
 import Timer from "@/Components/Timer";
@@ -725,12 +724,13 @@ export default function GamePage({data, time, auth}){
             var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
 
 
+            var levelPoints = level;
             if(["A", "B", "C"].includes(level)){
-                level = {"A":10, "B":15, "C":20}[level];
+                levelPoints = {"A":10, "B":15, "C":20}[level];
             }
 
             // 100 points per level (e.g. level 3 gets 300 points)
-            var basePoints = 100*level - pointsLost;
+            var basePoints = 100*levelPoints - pointsLost;
 
             // A floating point count animation
             if(showAnimation){
@@ -887,42 +887,44 @@ export default function GamePage({data, time, auth}){
             <Head title="Mäng" />
             <SizedBox height="72px" />
 
-            <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
+            <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto", alignItems:'center'}}>
                 
-                {/* Message on top of the page */}
-                {message && <div className="section" style={{marginBlock:"8px"}}>
-                    <InfoBanner text={message} />
-                </div>}
+                
 
-                <div style={{fontSize:"16px", display:"flex", flexDirection:"row", justifyContent:"stretch", alignItems:"stretch", gap:"8px"}}>
+                <div style={{minWidth:"100%", fontSize:"16px", display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"stretch", gap:"8px"}}>
                     <div onClick={cancelGame} style={{display:"flex",flexShrink:"2", color:"var(--red-color)", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
                         <p>Katkesta</p>
-                        <i className="material-icons">close</i>
+                        <i translate="no" className="material-icons">close</i>
                     </div>
-                    <div onClick={skipOperation} disabled={maxSkip - skippedAmount <= 0} style={{display:"flex", flex:"1", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
+                    <div onClick={skipOperation} disabled={maxSkip - skippedAmount <= 0} style={{maxWidth:"200px", display:"flex", flex:"1", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
                         <div>
                             <p style={{marginBlock:"0"}}>Jäta vahele</p>
                             <p style={{marginBlock:"0", color:"var(--grey-color)", fontSize:"14px"}}>{Math.max(maxSkip - skippedAmount, 0)} jäänud</p>
                         </div>
-                        <i className="material-icons-outlined">fast_forward</i>
+                        <i translate="no" className="material-icons-outlined">fast_forward</i>
                     </div>
                 </div>
-
+                {/* Message on top of the page */}
+                {message && <div className="section" style={{marginBlock:"8px", minWidth:"100%", paddingInline:"0"}}>
+                    <InfoBanner text={message} />
+                </div>}
                 {/* A backgrounded section containing all the data */}
-                <div className="section" style={{flex:'1', width:"auto", padding:"8px"}}>
+                <div className="section" style={{textAlign:"center", flex:'1', width:"auto", padding:"8px", paddingInline:"0", minWidth:"100%"}}>
+                    <div style={{paddingInline:"8px"}}>
                     <SizedBox height="8px" />
 
                     <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                         {/* Current operation number & level, total points etc. */}
                         <div style={{textAlign:"start", }}>
-                            {/* <h2 style={{marginBlock:"0", color: "rgb(var(--primary-color))", fontSize:"26px"}}>{operationCount + 1}<span style={{fontSize:"16px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2> */}
-                            <span className="point-span">+100</span>
-                            <p style={{marginBlock:"0", fontSize:"18px"}}>{points} punkti</p>
+                            <span style={{fontSize:"24px"}}>{operationCount + 1}</span>
+                            <p style={{display:"flex", alignItems:"center", gap:"6px", marginBlock:"0"}}> <i translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">exercise</i> {level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</p>
+                            <span style={{marginLeft:"24px"}} className="point-span">+100</span>
+                            <p style={{marginBlock:"0", fontSize:"18px", display:"flex", alignItems:"center", gap:"6px"}}><i translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">trophy</i> {points}</p>
                         </div>
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 30)} />}
                         </div>
                     </div>
                     <SizedBox height="16px" />
@@ -931,6 +933,7 @@ export default function GamePage({data, time, auth}){
                     {shapes && <span translate="no"><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></span>}
                     {!compare && !shapes && <h2 translate="no" style={{textAlign:"center", overflowWrap:'anywhere', fontWeight:"bold", fontSize:"28px"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span style={{color:"var(--grey-color)"}} id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
                     <SizedBox height="16px" />
+                    </div>
                 </div>
                 
                 <SizedBox height="8px" />

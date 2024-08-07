@@ -1,3 +1,4 @@
+import StreakActiveWidget from "./2024SummerRedesign/StreakActiveWidget";
 import TwoRowTextButton from "./2024SummerRedesign/TwoRowTextButton";
 import SizedBox from "./SizedBox";
 
@@ -15,7 +16,7 @@ export default function leaderboardRow({place, points, index, player, user, play
                     <SizedBox width={12} />
                     <TwoRowTextButton upperColor={player ? "rgb(var(--primary-color))" : null} lowerColor={player ? "rgba(var(--primary-color), 0.65)" : null} showArrow={false} capitalizeLower={true} capitalizeUpper={true} upperText={user.eesnimi} lowerText={user.perenimi} />
                     <SizedBox width="4px" />
-                    {playedToday && <i title="Täna Reaalerit kasutanud" style={{color:"#F3AF71", fontSize:"32px"}} className="material-icons-outlined">local_fire_department</i> }
+                    {playedToday && <StreakActiveWidget />}
                 </div>
 
                 <div style={{position:"absolute", bottom:"8px", right:"8px", color:"var(--grey-color)"}}>

@@ -34,9 +34,6 @@ class LoginRegisterController extends Controller
     {
         return Inertia::render('Register/NewRegisterPage');
     }
-    public function registerGoogle(){
-        return Inertia::render("Register/RegisterGooglePage");
-    }
 
     public function forgotPassword(){
         return Inertia::render("Login/ResetPasswordPage");
@@ -190,10 +187,10 @@ class LoginRegisterController extends Controller
             $klass = Auth::user()->klass != null;
             $classData = null;
             $teacherData = null;
-            if($klass && Auth::user()->role == "student"){
+            if($klass && Auth::user()->role != "teacher"){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
                 $teacher = User::select(["eesnimi", "perenimi", "profile_pic", "id"])->where("id", $class->teacher_id)->get();
-                $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
+                $students = User::where("role", "!=", "teacher")->where("klass", Auth::user()->klass)->get();
 
                 $total_count = 0;
 
@@ -211,13 +208,13 @@ class LoginRegisterController extends Controller
 
             if(Auth::user()->role == "teacher"){
                 $teacherData = [];
-                $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->get();
+                $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
                 foreach($classes as $class){
                     array_push($teacherData, $class);
                 }
             }
 
-            app("App\Http\Controllers\ProfileController")->viewstreak(Auth::id());
+            app("App\Http\Controllers\ProfileController")->viewStreak(Auth::id());
             
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
         }

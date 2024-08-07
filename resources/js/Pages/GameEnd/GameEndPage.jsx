@@ -6,6 +6,8 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import Chip from "@/Components/2024SummerRedesign/Chip";
+import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
+import InfoBanner from "@/Components/InfoBanner";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
@@ -181,7 +183,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     return <>
         <Layout title={"Lõpeta mäng"}>
             {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
-                {gameSaved ? <i className="material-icons">check</i> : <LoadingSpinner color={true} />}
+                {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
                 <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
             </div>}
             <div className="four-stat-row">
@@ -193,23 +195,22 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
             <SizedBox height="16px" />
             <div className="two-column-layout reverse">
                 <div>
-                    {accuracy != 0 && accuracy != 100 && <div className="section">
-                        <SizedBox height="16px" />
-                        <div className="stat-desc">
-                            <i className="material-icons-outlined">filter_alt</i>
-                            <p style={{marginTop:"4px"}}>Filtreeri</p>
-                        </div>
+                    {accuracy != 0 && accuracy != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
                         <div>
                             <Chip onClick={()=>updateChip(0)} alt={log.filter((op)=>op.isCorrect).length} label={"Õiged vastused"} active={filter[0]} />
                             <Chip onClick={()=>updateChip(1)} alt={log.filter((op)=>!op.isCorrect).length} label={"Valed vastused"} active={filter[1]} />
                         </div>
-                    </div>}
+                    </>} />}
+
                     <div className="detailed-container" style={{gridTemplateColumns:"1fr"}}>
                         {currentlyShownLog.map(function (op, i){
                             return (
                                 <OperationWidget op={op} key={i} />
                             );
                         })}
+                        {currentlyShownLog.length <= 0 && <div className="section">
+                            <InfoBanner text="Sa ei esitanud vastust ühelegi tehtele" />
+                        </div> }
                     </div>
                 </div>
 
@@ -219,13 +220,13 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                     <div className="two-column-layout">
                         <div onClick={()=>navigateAway(()=>location.reload())} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
                             <div>
-                                <i style={{fontSize:"32px"}} className="material-icons-outlined">refresh</i>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">refresh</i>
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Mängi uuesti</p>
                             </div>
                         </div>
                         <div onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", backgroundColor:"rgb(var(--primary-color))", color:"white", marginBlock:"0"}}>
                             <div>
-                                <i style={{fontSize:"32px"}} className="material-icons-outlined">save</i>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">save</i>
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Edasi</p>
                             </div>
                         </div>

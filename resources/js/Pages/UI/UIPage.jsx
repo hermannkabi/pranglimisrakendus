@@ -1,65 +1,46 @@
+import BigButton from "@/Components/2024SummerRedesign/BigButton";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import InfoBanner from "@/Components/InfoBanner";
-import LoadingSpinner from "@/Components/LoadingSpinner";
-import LoginHeader from "@/Components/LoginHeader";
-import NumberInput from "@/Components/NumberInput";
-import { Head } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export default function UIPage(){
 
+    const [color, setColor] = useState(null);
+
+    function hexToRgb(hex) {
+        if(hex == null) return null;
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+        } : null;
+      }
+
+    useEffect(()=>{
+        var r = document.querySelector(':root');
+
+        var result = hexToRgb(color);
+
+        if(result != null){
+            r.style.setProperty('--primary-color', result.r + ","+result.g+","+result.b);
+        }
+
+    }, [color]);
+
     return (
         <Layout title="UI">
-            <InfoBanner text="Tere tulemast Reaalerisse! Nagu näha, on siin toimumas suured uuendused! Kiika peagi tagasi ja ehk leiad siit midagi rohkematki!" />
+            <InfoBanner text="Tere tulemast Reaalerisse! Siin lehel saad testida erineva põhivärvi mõju komponentidele. Kleebi HEX värv allolevasse kasti, et testima hakata!" />
+            <div style={{position:'relative', marginBottom:"16px"}}>
+                <i translate="no" style={{position:"absolute", top:"50%", transform:"translateY(-50%)", left:"8px", color:"var(--grey-color)", fontSize:"28px"}} className="material-icons">palette</i>
+                <input onChange={(e)=>setColor(e.target.value)} autoComplete="off" placeholder="Kleebi värv siia" style={{backgroundColor: "var(--section-color)", borderRadius:"6px", padding:"32px 16px", paddingLeft:"50px", width:"100%", boxSizing:"border-box", margin:"0"}} className="search" type="search" />
+            </div>
+            <div className="section clickable">
+                <h1>Siin on natuke teksti</h1>
+                <p>Ja tavaline tekst oleks selline...</p>
+                <p>(PS! Seda kasti saab vajutada)</p>
+            </div>
+            <BigButton title="Nupp" subtitle="Alapealkirjaga" />
         </Layout>
-    );
-
-    return (
-        <>
-            <Head title="Kasutajaliides" />
-            <section>
-                <LoginHeader pageName="Kasutajaliides" description="Siin on erinevad kasutajaliidese elemendid" topMargin="20px" />
-            </section>
-            <section id="btns">
-                <section>
-                    <h1>Nupud</h1>
-                </section>
-                <h3>Peamine nupp</h3>
-                <button>Peamine nupp</button>
-                <button><span className="material-icons">mouse</span> Ikooniga nupp</button>
-                <button><LoadingSpinner /> Laadimisega nupp</button>
-                <h3>Sekundaarne nupp</h3>
-                <button secondary="true">Sekundaarne nupp</button>
-                <button secondary="true"><span className="material-icons">mouse</span> Ikooniga nupp</button>
-                <button secondary="true"><LoadingSpinner /> Laadimisega nupp</button>
-            </section>
-
-            <section>
-                <section>
-                    <h1>Lingid</h1>
-                </section>
-                <h3>Tekstisisene link</h3>
-                <p>Lorem ipsum dolor sit <a href="">amet</a> consectetur adipisicing elit. A, hic.</p>
-                <h3>Eraldiseisev link</h3>
-                <a href="" alone="true">Link <span className="material-icons">arrow_forward</span> </a>
-                <a href="" alone="true">Link</a>
-            </section>
-            <section>
-                <section>
-                    <h1>Sisendiväljad</h1>
-                </section>
-                <h3>Tekstiväli</h3>
-                <input type="text" placeholder="Kirjuta midagi..." />
-                <input type="text" placeholder="Muutmatu..." disabled="true" />
-                <h3>Numbriväli</h3>
-                <NumberInput default={1} placeholder="Number siia..." />
-                <NumberInput default={1} placeholder="Ei tööta..." disabled="true" />
-                <h3>Rippmenüü</h3>
-                <select>
-                    <option>Lorem</option>
-                    <option>Ipsum</option>
-                    <option>Dolor</option>
-                </select>
-            </section>
-        </>
     );
 }

@@ -1,8 +1,5 @@
-import Navbar from "@/Components/Navbar";
 import SizedBox from "@/Components/SizedBox";
-import { Head } from "@inertiajs/react";
 import "/public/css/guide.css";
-import HorizontalRule from "@/Components/HorizontalRule";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 
@@ -237,32 +234,5 @@ export default function GuidePage({auth}){
             </div>
 
         </Layout>
-    </>;
-
-    return <>
-        <Head title="Kuidas mängida?" />
-        {auth.user != null && <Navbar title="Kuidas mängida" user={auth.user} />}
-
-        <SizedBox height={36} />
-
-        <h2>Kuidas mängida?</h2>
-
-        <section id="kujundid">
-            <div className='header-container'>
-                <h3 className='section-header'>Kujundid</h3>
-            </div>
-
-            <p className="before-example">Mida täpsemalt vaatad, seda vähem näed. Soovitan jälgida kõiki kujundeid kui tervikut, mitte keskenduda igaühele eraldi.</p>
-            <img style={{height:"200px"}} src="/assets/guide/kujundid1.png" alt="" />
-            <p className="before-example">Esmalt tean, et kujundid on moodustavad ruudu ehk iga külg on võrdne. Seega kui näen silmanurgast, et ülemise rea vasakpoolne, alumise rea vasakpoolne ja keskmine kujund on suurem ja nurgeline, siis tean, et see on ruut. Ehk tunnen mingi eripära järgi kujundi ära.</p>
-            <span className="example">Kujundeid kokku 3 · 3 = 9</span><br />
-            <span className="example">Hindan ülevaates, et kokku on 3 kujundit. Täpsemalt, näen ruutu üleval vasakul nurgas ja hiljem kahte ruutu all. Seega kokku on ruute 1+2=3.</span><br />
-
-            <img style={{height:"200px"}} src="/assets/guide/kujundid2.png" alt="" />
-            <p className="before-example">Raskemates tasemetes tuleb hinnata kujunditest moodustunud ruudu suurust. Seejärel käia silmaga üle kujundite hulk. Piisavalt harjutades õpid silmaga hindama kujundite hulka.</p>
-            <span className="example">Kujundeid pildil on 5 · 5 = 25</span><br />
-            <span className="example">Otsin nurgelist suurt kujundit ehk ruutu.</span><br />
-            <span className="example">Esmalt näen alumistes nurkades kahte ruutu. Hiljem vasakul üleval nurgas kahte ruutu. Viimaks alles paremal keskel kahte.</span><br />
-        </section>
     </>;
 }

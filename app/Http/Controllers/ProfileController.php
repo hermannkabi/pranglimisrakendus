@@ -151,13 +151,19 @@ class ProfileController extends Controller
 
         if($user){
             $andmed = Mang::where("user_id", $user_id)->orderBy("dt", "DESC")->take(2)->get();
-            $viimaseDt = $andmed[0]->dt;
-            $eelviimaseDt = $andmed[1]->dt;
+            $viimaseDt = count($andmed) > 0 ? $andmed[0]->dt : null;
+            $eelviimaseDt = count($andmed) > 1 ? $andmed[1]->dt : null;
+
+            // Viimase dt ei saa vist null olla, aga ikkagi
+            if($eelviimaseDt == null || $viimaseDt == null){
+                $user->streak_active = 1;
+                $user->streak = 1;
+                $user->save();
+                return;
+            }
 
             $diff = abs(date_diff(new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $eelviimaseDt)->format("Y-m-d")), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a"));
 
-            Log::debug("OLEN SIIN!!!");
-            Log::debug($diff);
             // Streak on mitteaktiivne, aga ka mitteaegunud, kui selle läbib (ehk saab suurendada)
             if($diff == 1){
                 $user->streak_active = 1;

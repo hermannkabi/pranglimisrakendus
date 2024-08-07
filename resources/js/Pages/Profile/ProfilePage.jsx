@@ -1,19 +1,14 @@
-import Navbar from "@/Components/Navbar";
-import { Head } from "@inertiajs/react";
 import "/public/css/profile.css";
 import "/public/css/game_end.css";
 import "/public/css/dashboard.css";
 import SizedBox from "@/Components/SizedBox";
-import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
-import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
-import ProfileAction from "@/Components/ProfileAction";
-import ProfileWidget from "@/Components/ProfileWidget";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
+import Chip from "@/Components/2024SummerRedesign/Chip";
 
 
 export default function ProfilePage({auth, className}){
@@ -23,7 +18,7 @@ export default function ProfilePage({auth, className}){
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
     const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
-    const [defaultTime, setDefaultTime] = useState(window.localStorage.getItem("default-time") ?? "1");
+    const [defaultTime, setDefaultTime] = useState(window.localStorage.getItem("default-time") ?? "0.5");
 
 
     const [imageUploadErrors, setImageUploadErrors] = useState(null);
@@ -186,6 +181,13 @@ export default function ProfilePage({auth, className}){
         });
     }
 
+    const roles = {
+        "teacher":"Õpetaja",
+        "guest":"Külaline",
+        "valimised-admin":"Rebased (admin)",
+        "valimised-vip":"Rebased (VIP) 🤫",
+    };
+
     return <>
         <Layout title="Profiil & seaded">
             {imageUploadErrors != null && <div className="section" style={{marginBottom:"16px"}}>
@@ -197,44 +199,51 @@ export default function ProfilePage({auth, className}){
                     <div style={{position:"absolute", right:"24px", top:"24px",}}>
                         <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
                             <img src={auth.user.profile_pic} style={{position:"relative", borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
-                            {auth.user.role != "guest" && <span style={{cursor:"pointer", position:"absolute", bottom:"4px", left:"12px", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
+                            {auth.user.role != "guest" && <span translate="no" style={{cursor:"pointer", position:"absolute", bottom:"4px", left:"12px", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
                         </div>
                     </div>
                     <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
+                    {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{roles[auth.user.role] ?? auth.user.role ?? "Tavakonto"}</span>}
                     <SizedBox height="32px" />
-                    {auth.user.role != "teacher" && <div onClick={()=>window.location.href = route("classJoin")} className="section clickable" style={{margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
+                    {auth.user.role != "teacher" && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
                         {className != null && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
                             <div>
                                 <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{className}</h2>
                                 <SizedBox height="8px" />
                                 <p style={{color:"var(--grey-color)", marginBlock:"0"}}>Muuda</p>
                             </div>
-                            <i style={{fontSize:"48px", color:"var(--lightgrey-color)"}} className="material-icons">arrow_forward_ios</i>
+                            <i translate="no" style={{fontSize:"48px", color:"var(--lightgrey-color)"}} className="material-icons">arrow_forward_ios</i>
                         </div>}
                         {className == null && <TwoRowTextButton upperText="Liitu klassiga" lowerText="Vali klass" />}
+                    
+                        <a href={route("classJoin")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>}
-                    {auth.user.role == "teacher" && <div onClick={()=>window.location.href = route("newClass")} className="section clickable" style={{display:"inline-flex"}}>
+                    {auth.user.role == "teacher" && <div className="section clickable" style={{display:"inline-flex", position:"relative"}}>
                         <TwoRowTextButton upperText="Loo uus klass" lowerText="Uus klass" />
+
+                        <a href={route("newClass")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div> }
 
                     <SizedBox height="16px" />
-                    <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email} {auth.user.email_verified_at != null && <i title="E-posti aadress kinnitatud" style={{marginLeft:"4px"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a onClick={verifyEmail} alone="">(Kinnita)</a>} </p>
+                    <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email} {auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a onClick={verifyEmail} alone="">(Kinnita)</a>} </p>
                 </div>
                 <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div>
-                        <i style={{fontSize:"32px"}} className="material-icons-outlined">lock</i>
+                        <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">lock</i>
                         <p style={{marginTop:"8px", marginBottom:"0"}}>Muuda parooli</p>
                     </div>
                 </div>
                 <div onClick={logout} className="section clickable red" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div style={{color:"var(--red-color)",}}>
-                        <i style={{fontSize:"32px"}} className="material-icons-outlined">logout</i>
+                        <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">logout</i>
                         <p style={{marginTop:"8px", marginBottom:"0"}}>{auth.user.role == "guest" ? "Lahku külalisvaatest" : "Logi välja"}</p>
                     </div>
                 </div>
-                <div onClick={()=>window.location.href = "/profile/"+auth.user.id} className="section clickable" style={{padding:"16px"}}>
-                    <i className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>language</i>
+                <div className="section clickable" style={{padding:"16px", position:'relative'}}>
+                    <i translate="no" className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>language</i>
                     <TwoRowTextButton upperText="Avalik profiil" lowerText="Vaata, kuidas teised sind näevad" showArrow={false} />
+
+                    <a href={"/profile/"+auth.user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                 </div>
             </div>
             <SizedBox height="16px" />
@@ -243,7 +252,7 @@ export default function ProfilePage({auth, className}){
                 <div onClick={()=>setLightTheme(lightTheme => !lightTheme)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Rakenduse teema" lowerText={lightTheme ? "Hele teema" : "Tume teema"} />
 
-                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{lightTheme ? "light_mode" : "brightness_2"}</i>
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{lightTheme ? "light_mode" : "brightness_2"}</i>
                 </div>
                 <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Peamine värv" lowerText="Muuda" />
@@ -251,10 +260,10 @@ export default function ProfilePage({auth, className}){
                             <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"102, 127, 153"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"182, 146, 194"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"121, 160, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
-                            <ColorPicker color={"208, 72, 72"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"125, 10, 10"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"90, 92, 60"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"133, 199, 195"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
@@ -265,30 +274,30 @@ export default function ProfilePage({auth, className}){
                 <div onClick={()=>setTimerVisible(timerVisible => !timerVisible)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Taimer" lowerText={timerVisible ? "Taimer nähtav" : "Taimer peidetud"} />
 
-                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{timerVisible ? "timer" : "timer_off"}</i>
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{timerVisible ? "timer" : "timer_off"}</i>
                 </div>
                 <div onClick={()=>setPointsAnimation(pointsAnimation => !pointsAnimation)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Punktianimatsioon" lowerText={pointsAnimation ? "Näita" : "Peida"} />
 
-                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{pointsAnimation ? "visibility" : "visibility_off"}</i>
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{pointsAnimation ? "visibility" : "visibility_off"}</i>
                 </div>
 
                 <div onClick={()=>setFlipKeyboard(flipKeyboard => !flipKeyboard)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Klaviatuur" lowerText={flipKeyboard ? "Ümberpööratud" : "Tavaline"} />
 
-                    <i style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{"dialpad"}</i>
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{"dialpad"}</i>
                 </div>
 
                 <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Vaikimisi aeg" lowerText="Muuda" />
 
                     <div style={{display:"inline-flex", flexDirection:"row", alignItems:'center', gap:"8px", marginRight:"8px"}}>
-                        <i onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: defaultTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
+                        <i translate="no" onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: defaultTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
                         <div style={{width:"75px", textAlign:"center", marginBlock:"8px", }}>
                             <h2 style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontSize:"40px"}}>{defaultTime == "0" ? "-" : defaultTime.toString().replaceAll(".", ",")}</h2>
                             <p style={{color:"var(--grey-color)", marginBlock:"0"}}>min</p>
                         </div>
-                        <i onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) < 0.5 ? 0 : parseFloat(defaultTime) - 0.5)} style={{color: defaultTime <= 0 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
+                        <i translate="no" onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) < 0.5 ? 0 : parseFloat(defaultTime) - 0.5)} style={{color: defaultTime <= 0 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
                     </div>
                 </div>
             </div>
