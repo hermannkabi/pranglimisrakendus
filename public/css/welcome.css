@@ -92,6 +92,7 @@ body, html{
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(3.4px);
     -webkit-backdrop-filter: blur(3.4px);
+    z-index: 10;
 }
 
 .home-navbar > .title-div{
@@ -106,7 +107,6 @@ body, html{
     all: unset;
     cursor: pointer;
     font-weight: bold;
-
 }
 
 .home-navbar a:hover{
@@ -114,7 +114,6 @@ body, html{
     font-weight: bold;
     cursor: pointer;
 }
-
 
 .main-content{
     text-align: start;
@@ -169,19 +168,6 @@ h1 .shine{
     rotate: -0;
     animation: size-change2 3000ms infinite;
 
-}
-.game-img{
-    position: absolute;
-    height: 450px;
-    top: 50%;
-    right: 300px;
-    transform: translate(0, -50%);
-    transition: rotate 1000ms;
-    rotate: 17deg;
-}
-
-.game-img:hover{
-    rotate: 19deg;
 }
 
 .features{
@@ -256,10 +242,6 @@ h1 .shine{
 
     h1{
         font-size: 36px;
-    }
-
-    .symbs span:nth-child(1){
-        display: none;
     }
 
     #statistics{

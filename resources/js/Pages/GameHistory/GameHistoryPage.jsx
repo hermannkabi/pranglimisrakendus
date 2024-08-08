@@ -18,7 +18,7 @@ export default function GameHistoryPage({auth, games, stats}){
     }
 
     return <>
-        <Layout title="Mängude ajalugu">
+        <Layout title="Mängude ajalugu" auth={auth}>
             <div className="four-stat-row">
                 <StatisticsTile stat={stats.total_training_count} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                 <StatisticsTile stat={(stats.accuracy ?? "0") + "%"} label={"Vastamistäpsus"}icon={"percent"} />
@@ -44,15 +44,5 @@ export default function GameHistoryPage({auth, games, stats}){
                 </div>
             </div>
         </Layout>
-    </>;
-
-    return <>
-
-
-            <section>
-            </section>
-
-            
-
     </>;
 }

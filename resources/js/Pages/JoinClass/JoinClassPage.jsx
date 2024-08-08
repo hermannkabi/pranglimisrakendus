@@ -1,5 +1,4 @@
 import SizedBox from "@/Components/SizedBox";
-import "/public/css/preview.css";
 import InfoBanner from "@/Components/InfoBanner";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import { useRef, useState } from "react";
@@ -52,7 +51,7 @@ export default function JoinClassPage({auth, classData, allClasses}){
     }
 
     return (
-        <Layout title={classData != null ? "Muuda klassi" : "Liitu klassiga"}>
+        <Layout title={classData != null ? "Muuda klassi" : "Liitu klassiga"} auth={auth}>
             <div className="two-column-layout">
 
                 {/* Class list */}

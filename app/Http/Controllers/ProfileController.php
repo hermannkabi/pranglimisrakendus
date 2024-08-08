@@ -265,6 +265,7 @@ class ProfileController extends Controller
         }
 
         $stats["streak"] = app(ProfileController::class)->viewStreak($id);
+        $user = User::where("id", $id)->first();
 
         return Inertia::render("Profile/PublicProfilePage", ["user"=>$user, "stats"=>$stats, "lastGames"=>$lastGames, "klass"=>$klass]);
     }

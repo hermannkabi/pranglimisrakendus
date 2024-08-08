@@ -1,10 +1,10 @@
 import SizedBox from "@/Components/SizedBox";
-import "/public/css/preview.css";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
 import { useState } from "react";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
+import InfoBanner from "@/Components/InfoBanner";
 
 export default function ClassroomEdit({klass, auth, students}){
 
@@ -42,29 +42,33 @@ export default function ClassroomEdit({klass, auth, students}){
 
 
     return <>
-        <Layout title="Muuda klassi">
+        <Layout title="Muuda klassi" auth={auth}>
             <div className="two-column-layout">
                 <div>
                     <PasswordWidget onChange={(e)=>setKlassName(e.target.value)} inputName="klass_name" style={{marginBlock: "8px"}} isPassword={false} icon="edit" text="Klassi nimi" hintText={klass.klass_name} />
                     <PasswordWidget onChange={(e)=>setNewPassword(e.target.value)} inputName="klass_password" style={{marginBlock: "8px"}} text="Parool klassiga ühinemiseks" hintText={klass.klass_password} />
 
-                    <SizedBox height="16px" />
-                    <p style={{color:"var(--lightgrey-color)", textAlign:'left', width:"75%"}}>Vali need õpilased, kelle soovid klassi nimekirjast eemaldada</p>
-                    <div>
-                    {students.map((e)=>{
-                        return <Chip key={e.id} onClick={()=>{
-                            var newList = [...studentsToRemove];
+                    {students.length > 0 && <>
+                        <SizedBox height="16px" />
+                        <p style={{color:"var(--lightgrey-color)", textAlign:'left', width:"75%"}}>Vali need õpilased, kelle soovid klassi nimekirjast eemaldada</p>
+                        <div>
+                            {students.map((e)=>{
+                                return <Chip key={e.id} onClick={()=>{
+                                    var newList = [...studentsToRemove];
 
-                            if(newList.includes(e.id)){
-                                newList = newList.filter(i=>i != e.id);
-                            }else{
-                                newList.push(e.id);
-                            }
+                                    if(newList.includes(e.id)){
+                                        newList = newList.filter(i=>i != e.id);
+                                    }else{
+                                        newList.push(e.id);
+                                    }
 
-                            setStudentsToRemove(newList);
-                        }} active={studentsToRemove.includes(e.id)} capitalize={true} label={e.eesnimi} alt={e.perenimi} />
-                    })}
-                    </div>
+                                    setStudentsToRemove(newList);
+                                }} active={studentsToRemove.includes(e.id)} capitalize={true} label={e.eesnimi} alt={e.perenimi} />
+                            })}
+
+                            {students.length <= 0 && <InfoBanner text="Selles klassis ei ole veel ühtegi õpilast" />}
+                        </div>
+                    </>}
                 </div>
 
 

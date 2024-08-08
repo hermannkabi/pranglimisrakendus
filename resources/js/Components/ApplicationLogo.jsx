@@ -1,6 +1,6 @@
 export default function ApplicationLogo(props) {
     return (
-        <svg style={{marginLeft:"-12px", ...props.style}} className="application-logo " version="1.0" xmlns="http://www.w3.org/2000/svg"
+        <svg onClick={props.onClick} style={{marginLeft:"-12px", ...props.style}} className="application-logo " version="1.0" xmlns="http://www.w3.org/2000/svg"
  width={props.size ?? "60px"} height={props.size ?? "60px"} viewBox="0 0 500 500"
  preserveAspectRatio="xMidYMid meet">
 

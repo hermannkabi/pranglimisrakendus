@@ -6,7 +6,7 @@ import InfoBanner from "@/Components/InfoBanner";
 export default function AllClassesPage({auth, classes}){
 
     return <>
-        <Layout title="Minu klassid">
+        <Layout title="Minu klassid" auth={auth}>
             <div className="two-column-layout">
                 <div>
                     {classes.map(e=> <div className="section clickable" style={{position:"relative"}}>

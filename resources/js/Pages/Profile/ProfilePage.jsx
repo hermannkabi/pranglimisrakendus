@@ -1,4 +1,3 @@
-import "/public/css/profile.css";
 import "/public/css/game_end.css";
 import "/public/css/dashboard.css";
 import SizedBox from "@/Components/SizedBox";
@@ -8,8 +7,6 @@ import { pickFile } from 'js-pick-file';
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
-import Chip from "@/Components/2024SummerRedesign/Chip";
-
 
 export default function ProfilePage({auth, className}){
 
@@ -225,7 +222,7 @@ export default function ProfilePage({auth, className}){
                     </div> }
 
                     <SizedBox height="16px" />
-                    <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email} {auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a onClick={verifyEmail} alone="">(Kinnita)</a>} </p>
+                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:'flex', alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email} {auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a onClick={verifyEmail} alone="">(Kinnita)</a>} </p>
                 </div>
                 <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div>
@@ -260,7 +257,7 @@ export default function ProfilePage({auth, className}){
                             <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"182, 146, 194"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"82, 34, 88"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"121, 160, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
                             <ColorPicker color={"125, 10, 10"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />

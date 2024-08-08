@@ -3,7 +3,7 @@ import Layout from "@/Components/2024SummerRedesign/Layout";
 import InfoBanner from "@/Components/InfoBanner";
 import { useEffect, useState } from "react";
 
-export default function UIPage(){
+export default function UIPage({auth}){
 
     const [color, setColor] = useState(null);
 
@@ -29,7 +29,7 @@ export default function UIPage(){
     }, [color]);
 
     return (
-        <Layout title="UI">
+        <Layout title="UI" auth={auth}>
             <InfoBanner text="Tere tulemast Reaalerisse! Siin lehel saad testida erineva põhivärvi mõju komponentidele. Kleebi HEX värv allolevasse kasti, et testima hakata!" />
             <div style={{position:'relative', marginBottom:"16px"}}>
                 <i translate="no" style={{position:"absolute", top:"50%", transform:"translateY(-50%)", left:"8px", color:"var(--grey-color)", fontSize:"28px"}} className="material-icons">palette</i>

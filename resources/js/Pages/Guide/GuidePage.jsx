@@ -6,7 +6,7 @@ import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 export default function GuidePage({auth}){
 
     return <>
-        <Layout title="Kuidas mängida?">
+        <Layout title="Kuidas mängida?" auth={auth}>
             <div className="changelog-tile guide-tile" id="liitmine">
                 <div className="section">
                     <TwoRowTextButton upperText="Liitmine" lowerText="Ühelised" showArrow={false} />

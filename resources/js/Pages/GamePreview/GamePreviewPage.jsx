@@ -1,5 +1,3 @@
-import "/public/css/preview.css";
-import SizedBox from "@/Components/SizedBox";
 import { useState, useEffect, useRef } from "react";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
@@ -135,7 +133,7 @@ export default function GamePreviewPage({auth, type}){
     }
 
     return <>
-        <Layout title="Mängu eelvaade">
+        <Layout title="Mängu eelvaade" auth={auth}>
             <div className="two-column-layout">
                 <div>
                     {message && <div className="section">

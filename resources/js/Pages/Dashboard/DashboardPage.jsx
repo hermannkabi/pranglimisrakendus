@@ -25,7 +25,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
 
     return (
         <>
-            <Layout title="Töölaud">
+            <Layout title="Töölaud" auth={auth}>
                 <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
                 <div className="section" style={{marginBottom:"16px"}}>
                 <InfoBanner>

@@ -181,7 +181,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     }
 
     return <>
-        <Layout title={"Lõpeta mäng"}>
+        <Layout title={"Lõpeta mäng"} auth={auth}>
             {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
                 {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
                 <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
@@ -202,7 +202,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
                     </>} />}
 
-                    <div className="detailed-container" style={{gridTemplateColumns:"1fr"}}>
+                    <div className="detailed-container" style={{display:"grid", gridTemplateColumns:"1fr"}}>
                         {currentlyShownLog.map(function (op, i){
                             return (
                                 <OperationWidget op={op} key={i} />

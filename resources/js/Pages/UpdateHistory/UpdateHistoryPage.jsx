@@ -1,5 +1,5 @@
 import Layout from "@/Components/2024SummerRedesign/Layout";
-
+import "/public/css/guide.css";
 
 export default function UpdateHistoryPage({auth}){
 
@@ -85,7 +85,7 @@ export default function UpdateHistoryPage({auth}){
     };  
 
     return <>
-        <Layout title="Uuenduste ajalugu">
+        <Layout title="Uuenduste ajalugu" auth={auth}>
             {Object.keys(changelog).reverse().map((key)=><div className="changelog-tile">
                 <div className="section date">
                     <p>Kuupäev</p>

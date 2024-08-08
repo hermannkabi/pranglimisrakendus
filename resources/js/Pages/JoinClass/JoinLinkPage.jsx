@@ -19,7 +19,7 @@ export default function JoinLinkPage({auth, klass, current_klass, invited_by}){
     }
 
     return <>
-        <Layout title="Kutse klassiga liitumiseks">
+        <Layout title="Kutse klassiga liitumiseks" auth={auth}>
             <div className="two-column-layout">
                 <div>
                     <div className="section">

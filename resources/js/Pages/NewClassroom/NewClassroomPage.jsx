@@ -1,4 +1,3 @@
-import "/public/css/preview.css";
 import InfoBanner from "@/Components/InfoBanner";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
@@ -10,7 +9,7 @@ export default function NewClassroomPage({auth, errors}){
     const [klassName, setKlassName] = useState(null);
 
     return <>
-        <Layout title="Uus klass">
+        <Layout title="Uus klass" auth={auth}>
             <form id="new-class-form" method="post" action={route("classStore")} autoComplete="off">
                 <input type="hidden" name="_token" value={window.csrfToken}  />
                 <div className="two-column-layout">

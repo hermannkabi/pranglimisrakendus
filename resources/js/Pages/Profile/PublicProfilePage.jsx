@@ -1,6 +1,5 @@
 import GameTile from "@/Components/GameTile";
 import SizedBox from "@/Components/SizedBox";
-import "/public/css/profile.css";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import InfoBanner from "@/Components/InfoBanner";
 import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
@@ -10,12 +9,6 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 
 export default function PublicProfilePage({auth, user, klass, stats, lastGames}){
 
-    // useEffect(()=>{
-    //     var style = document.querySelector('.hero').style;
-    //     style.setProperty('--background', user.profile_pic == null ? "" : "url("+user.profile_pic+")");
-    
-    // }, []);
-
     const roles = {
         "teacher":"Õpetaja",
         "guest":"Külaline",
@@ -24,7 +17,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
     };
 
     return <>
-        <Layout title="Avalik profiil">
+        <Layout title="Avalik profiil" auth={auth}>
             {auth.user.id == user.id && <div className="section" style={{marginBottom:'16px'}}>
                 <InfoBanner text={"Oled enda profiili avalikus vaates. Selliselt saavad sind vaadata sinu "+(auth.user.role == "teacher" ? "õpilased" : "õpetaja ja klassikaaslased")+". Profiili muutmiseks mine profiilivaatesse"} />
             </div>} 

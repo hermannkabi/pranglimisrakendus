@@ -81,7 +81,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
     }
 
     return <>
-        <Layout title="Detailne vaade">
+        <Layout title="Detailne vaade" auth={auth}>
             <div className="four-stat-row">
                 <StatisticsTile stat={averageTime(game.time)} label={"Keskmine aeg"} icon={"hourglass_top"} />
                 <StatisticsTile stat={game.game_count ?? "0"} label={"Tehete arv"} icon={"calculate"} />
@@ -115,11 +115,12 @@ export default function GameDetailsPage({game, auth, playedBy}){
                 </div>
 
                 <div>
+                    <SizedBox height={8} />
                     <div className="two-column-layout"> 
-                        <VerticalStatTile icon="calculate" text="Mängutüüp" value={decodeURIComponent(name)} />
-                        <VerticalStatTile icon="pin" text="Arvuhulk" value={typeToReadable[game.game_type] ?? "N/A"} />
+                        <VerticalStatTile marginBlock={0} icon="calculate" text="Mängutüüp" value={decodeURIComponent(name)} />
+                        <VerticalStatTile marginBlock={0} icon="pin" text="Arvuhulk" value={typeToReadable[game.game_type] ?? "N/A"} />
                     </div>
-        
+                    <SizedBox height={8} />
                     <VerticalStatTile icon="calendar_month" text="Kuupäev" value={(new Date(game.dt)).toLocaleString("et-EE", {month:"long", day:"2-digit", year:"numeric"}).split(",")[0]} />
 
                     <a alone="" style={{color:"var(--grey-color)"}} onClick={copyToClipboard}> <i translate="no" className="material-icons no-anim">share</i>&nbsp; {copyText}</a>

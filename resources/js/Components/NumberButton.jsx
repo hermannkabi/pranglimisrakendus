@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import '/public/css/number_button.css';
-
 export default function NumberButton({content, style, backgroundColor, textColor, lineHeight, fontSize, onClick, keyId = content, icon = false, disabled=false}){
 
     return (

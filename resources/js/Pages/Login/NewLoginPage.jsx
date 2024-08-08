@@ -1,6 +1,5 @@
 import LoginHeader from "@/Components/LoginHeader";
 import { Head } from "@inertiajs/react";
-import "/public/css/login.css";
 import "/public/css/auth_layout.css";
 import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";

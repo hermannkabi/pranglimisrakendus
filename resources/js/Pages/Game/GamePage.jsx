@@ -915,11 +915,13 @@ export default function GamePage({data, time, auth}){
 
                     <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                         {/* Current operation number & level, total points etc. */}
-                        <div style={{textAlign:"start", }}>
-                            <span style={{fontSize:"24px"}}>{operationCount + 1}</span>
-                            <p style={{display:"flex", alignItems:"center", gap:"6px", marginBlock:"0"}}> <i translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">exercise</i> {level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</p>
-                            <span style={{marginLeft:"24px"}} className="point-span">+100</span>
-                            <p style={{marginBlock:"0", fontSize:"18px", display:"flex", alignItems:"center", gap:"6px"}}><i translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">trophy</i> {points}</p>
+                        <div style={{textAlign:"start", display:"flex", justifyContent:"start", flexDirection:"row", alignItems:'center', gap:"16px"}}>
+                            <span title={operationCount + 1 + ". tase"} style={{fontSize:"24px", fontWeight:"bold"}}>{operationCount + 1}</span>
+                            <div>
+                                <p style={{display:"flex", alignItems:"center", gap:"6px", marginBlock:"0"}}> <i title="Tehte tase" translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">exercise</i> {level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</p>
+                                <span style={{marginLeft:"24px"}} className="point-span">+100</span>
+                                <p style={{marginBlock:"0", fontSize:"18px", display:"flex", alignItems:"center", gap:"6px"}}><i title={points + " punkti"} translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">trophy</i> {points}</p>
+                            </div>
                         </div>
 
                         {/* Timer */}

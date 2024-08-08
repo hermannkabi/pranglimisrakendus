@@ -22,7 +22,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
     }
 
     return <>
-        <Layout title="Minu klass">
+        <Layout title="Minu klass" auth={auth}>
             <div className="four-stat-row">
                 <StatisticsTile stat={stats.gamesToday} label={"Mängu täna"} oneLabel={"Mäng täna"} icon={"schedule"} />
                 <StatisticsTile stat={stats.totalGameCount} label={"Mängu kokku"} oneLabel={"Mäng kokku"} icon={"sports_esports"} />

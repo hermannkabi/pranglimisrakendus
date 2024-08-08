@@ -65,12 +65,13 @@ export default function WelcomePage({users, games, points}){
             <Head title="Tere tulemast!" />
             <div className="home-navbar" style={{margin:"16px 24px", paddingInline:"24px", borderRadius:"60px", background:"rgba(255, 255, 255, 0.14)"}}>
                 <div className="title-div">
-                    <ApplicationLogo height={50} />
+                    <ApplicationLogo onClick={()=>window.location.href="#"} height={50} />
                     <p className="title" style={{fontWeight:"bold", fontSize:"24px", color:"var(--primary-header-color)", marginLeft:"16px"}}>Reaaler</p>
                 </div>
 
-                <div style={{display:"flex", alignItems:'center', gap:"16px"}}>
+                <div style={{display:"flex", alignItems:'center', gap:"24px"}}>
                     <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons">{isDarkTheme ? "light_mode" : "brightness_2"}</i>
+                    
                     <a href={route("login")}>Logi sisse</a>
                 </div>
             </div>

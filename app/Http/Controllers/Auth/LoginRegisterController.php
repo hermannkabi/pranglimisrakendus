@@ -214,7 +214,7 @@ class LoginRegisterController extends Controller
                 }
             }
 
-            app("App\Http\Controllers\ProfileController")->viewStreak(Auth::id());
+            $streak = app("App\Http\Controllers\ProfileController")->viewStreak(Auth::id());
             
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
         }

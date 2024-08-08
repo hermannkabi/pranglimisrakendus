@@ -66,6 +66,7 @@
 
     .four-stat-row{
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 
     .statistics-tile h2{
