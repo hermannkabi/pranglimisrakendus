@@ -322,6 +322,17 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
     
             return redirect()->back()->withSuccess("Rebane eemaldatud!");
         })->name("foxDelete");
+        Route::post("/fox/clear", function (Request $request){
+            $request->validate([
+                "id"=>"required",
+            ], [
+                "id.required"=>"Midagi läks valesti",
+            ]);
+    
+            Fox::where("id", $request->id)->update(["chosen_by"=>null]);
+    
+            return redirect()->back()->withSuccess("Rebane valimiseks saadaval!");
+        })->name("foxClear");
     
         Route::get("/nimekiri", function (){
     

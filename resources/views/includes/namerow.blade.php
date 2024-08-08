@@ -1,6 +1,5 @@
 <div class="name-row" style="min-height: 75px; font-weight: {{$chosen_id == Auth::id() ? "bold" : "normal"}}">
     <div style="display: flex; gap: 16px; align-items: center">
-        {{-- <img src="https://hermannkabi.com/assets/hermann.jpg" style="height: 50px; border-radius: 4px;"> --}}
         <div>
             <p style="margin-bottom: 0" class="name">{{ $name }}</p>  
             @if ( $instagram || $facebook )
@@ -28,6 +27,13 @@
         @endif
 
         @if (Auth::user()->role == "valimised-admin")
+            @if ($chosen_id)
+                <form action="{{ route("valimised.foxClear") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $id }}">
+                    <button style="padding-inline: 16px" type="submit"><i style="font-size: 16px; " class="material-icons">close</i></button>
+                </form>
+            @endif
             <form action="{{ route("valimised.foxDelete") }}" method="post">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id }}">
