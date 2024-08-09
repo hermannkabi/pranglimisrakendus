@@ -88,7 +88,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <div style={{position:"relative"}} className="section clickable">
                         <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                             <div>
-                                <TwoRowTextButton upperText="Minu klass" lowerText={classData.name} showArrow={window.innerWidth > 600} />
+                                <TwoRowTextButton upperText="Minu klass" lowerText={classData.name} showArrow={window.innerWidth > 600 && !(window.innerWidth > 1000 && window.innerWidth < 1300)} />
                                 <SizedBox height="32px" />
                                 <div style={{margin:"8px"}}>
                                     <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{classData.myPlace + (classData.myPlace.startsWith("T") ? "" : ".")}</h2>

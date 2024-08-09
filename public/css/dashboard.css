@@ -25,6 +25,17 @@
     font-size: 32px;
 }
 
+
+@media only screen and (max-width: 1300px){
+    .class-grid .class-stat{
+        display: block !important;
+    }
+    
+    .class-grid .class-stat h2{
+        font-size: 40px;
+    }
+}
+
 @media only screen and (max-width: 1000px){
     .class-grid{
         grid-template-columns: repeat(4, 1fr);
@@ -35,12 +46,4 @@
     .class-grid>.section:nth-of-type(2) { grid-area: 5 / 1 / 7 / 3; }
     .class-grid>.section:nth-of-type(3) { grid-area: 5 / 3 / 7 / 5; }
     .class-grid>.section:nth-of-type(4) { grid-area: 7 / 1 / 9 / 5; } 
-
-    .class-grid .class-stat{
-        display: block !important;
-    }
-
-    .class-grid .class-stat h2{
-        font-size: 40px;
-    }
 }

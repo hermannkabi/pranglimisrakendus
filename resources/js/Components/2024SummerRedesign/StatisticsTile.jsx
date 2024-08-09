@@ -8,8 +8,8 @@ export default function StatisticsTile({stat, label, icon, iconColor=null, disab
                 <SizedBox height={8} />
                 <p style={{marginBlock:"0", color: "var(--grey-color)", fontSize:"18px"}}>{stat == "1" && oneLabel ? oneLabel : label}</p>
             </div>
-
-            <i translate="no" className="material-icons-outlined" style={{color:iconColor == null || disabled ? "var(--grey-color)" : iconColor, position:"absolute", right:"8px", top:"8px"}}>{icon}</i>
+            
+            {!(window.innerWidth > 1000 && window.innerWidth < 1300) && <i translate="no" className="material-icons-outlined" style={{color:iconColor == null || disabled ? "var(--grey-color)" : iconColor, position:"absolute", right:"8px", top:"8px"}}>{icon}</i>}
         </div>
     </>;
 }

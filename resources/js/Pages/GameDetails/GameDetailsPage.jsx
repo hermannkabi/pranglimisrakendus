@@ -105,7 +105,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
                         </div>
                     </>} />}
 
-                    <div className="detailed-container" style={{gridTemplateColumns:"1fr"}}>
+                    <div className="detailed-container" style={{display:"grid", gridTemplateColumns:"1fr"}}>
                         {currentlyShownLog.map(function (op, i){
                             return (
                                 <OperationWidget op={op} key={i} />
@@ -121,7 +121,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
                         <VerticalStatTile marginBlock={0} icon="pin" text="Arvuhulk" value={typeToReadable[game.game_type] ?? "N/A"} />
                     </div>
                     <SizedBox height={8} />
-                    <VerticalStatTile icon="calendar_month" text="Kuupäev" value={(new Date(game.dt)).toLocaleString("et-EE", {month:"long", day:"2-digit", year:"numeric"}).split(",")[0]} />
+                    <VerticalStatTile icon="calendar_month" text="Kuupäev" value={(new Date(game.dt.replace(/-/g, "/"))).toLocaleString("et-EE", {month:"long", day:"2-digit", year:"numeric"}).split(",")[0]} />
 
                     <a alone="" style={{color:"var(--grey-color)"}} onClick={copyToClipboard}> <i translate="no" className="material-icons no-anim">share</i>&nbsp; {copyText}</a>
                 </div>

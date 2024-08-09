@@ -222,7 +222,7 @@ export default function ProfilePage({auth, className}){
                     </div> }
 
                     <SizedBox height="16px" />
-                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:'flex', alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email} {auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a onClick={verifyEmail} alone="">(Kinnita)</a>} </p>
+                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:((window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : 'flex'), flexDirection:"row-reverse", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px", display: (window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a style={{display:(window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} onClick={verifyEmail} alone="">(Kinnita)</a>} {auth.user.email}</p>
                 </div>
                 <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div>
