@@ -22,7 +22,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                 <InfoBanner text={"Oled enda profiili avalikus vaates. Selliselt saavad sind vaadata sinu "+(auth.user.role == "teacher" ? "õpilased" : "õpetaja ja klassikaaslased")+". Profiili muutmiseks mine profiilivaatesse"} />
             </div>} 
             {stats.total_training_count > 0 && <div className="four-stat-row" style={{marginBottom:"16px"}}>
-                <StatisticsTile iconColor="#F3AF71" disabled={user.streak_active == 0} stat={user.streak ?? "-"} label={"Järjestikust päeva"} oneLabel={"Järjestikune päev"} icon={"local_fire_department"} />
+                <StatisticsTile iconColor="#F3AF71" disabled={stats.streak_active == 0} stat={stats.streak ?? "-"} label={"Järjestikust päeva"} oneLabel={"Järjestikune päev"} icon={"local_fire_department"} />
                 <StatisticsTile stat={stats.total_training_count ?? "0"} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                 <StatisticsTile stat={(stats.accuracy ?? "0") + "%"} label={"Vastamistäpsus"}icon={"percent"} />
                 <StatisticsTile stat={stats.points ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />

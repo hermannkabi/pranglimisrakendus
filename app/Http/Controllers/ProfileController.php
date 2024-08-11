@@ -244,7 +244,7 @@ class ProfileController extends Controller
                     if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
                         abort(403);
                     }
-                }else if($user->role == "student"){
+                }else if($user->role != "guest"){
                     // A student can be seen by their teacher or their classmates
                     if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
                         abort(403);
