@@ -221,6 +221,8 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
     
         Route::post("/rebane/vali", function (Request $request){
 
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase valimiseks käsitsi");
+
             $OPENS_AT = opensAt();
             $CLOSES_AT = closesAt();
 
@@ -235,27 +237,35 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
             ]);
     
             $fox = Fox::where("id", $request->id)->first();
-    
+
             $userId = Auth::id();
     
             if($fox == null){
+                Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring ebaõnnestub: rebast ei leitud!");
                 return redirect()->back()->with("error", "Midagi läks valesti!");
             }
+
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Tuvastatud valik on ". $fox->name . "(" . $fox->id .")");
     
             if($fox->chosen_by != null){
+                Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring ebaõnnestub: rebane juba valitud!");
+
                 return redirect()->back()->with("error", "See rebane on paraku juba valitud!");
             }
     
             Fox::where("chosen_by", $userId)->update(["chosen_by"=>null]);
     
             $fox->chosen_by = $userId;
-    
             $fox->save();
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Uus rebane on ". $fox->name . "(" . $fox->id .")");
+
     
             return redirect()->back()->withSuccess($fox->name . " on edukalt valitud!");
         })->name("chooseFox");
 
         Route::post("fox/random", function (Request $request){
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase valimiseks juhuslikult");
+
             $OPENS_AT = opensAt();
             $CLOSES_AT = closesAt();
 
@@ -265,8 +275,11 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
 
             $randomFox = Fox::where("chosen_by", null)->inRandomOrder()->first();
             if($randomFox == null){
+                Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Juhusliku rebase valik ebaõnnestub!");
                 return redirect()->back()->with("error", "Kõik rebased on juba valitud!");
             }
+
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Juhuslik rebane valitud! Valitud rebane on ". $randomFox->name . "(" . $randomFox->id .")");
 
             $currentFox = Fox::where("chosen_by", Auth::id())->first();
 
@@ -278,14 +291,10 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
             $randomFox->chosen_by = Auth::id();
             $randomFox->save();
 
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Uus rebane on ". $randomFox->name . "(" . $randomFox->id .")");
+
             return redirect()->back()->withSuccess($randomFox->name . " on edukalt valitud!");
         })->name("foxRandom");
-    
-        Route::post("fox/remove", function (Request $request){
-            Fox::where("chosen_by", $request->user()->id)->update(["chosen_by"=>null]);
-    
-            return redirect()->route("dashboard");
-        })->name("foxRemove");
     
         Route::get("/profile", function (){
             return view("profile", ["name"=>ucwords(Auth::user()->eesnimi . " " . Auth::user()->perenimi), "fox"=>Fox::where("chosen_by", Auth::id())->first()]);
@@ -298,6 +307,7 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
         })->name("addFox");
     
         Route::post("/fox/add", function (Request $request){
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase lisamiseks!");
     
             $request->validate([
                 "name"=>"required|min:4|string",
@@ -306,30 +316,41 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
                 "name.min"=>"Nimi peab olema vähemalt 4 tähemärki",
             ]);
     
-            Fox::create(["name"=>$request->name, "instagram"=>$request->instagram, "facebook"=>$request->facebook, "chosen_by"=>null]);
+            $fox = Fox::create(["name"=>$request->name, "instagram"=>$request->instagram, "facebook"=>$request->facebook, "chosen_by"=>null]);
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Loodud rebane ". $fox->name . "(" . $fox->id .")");
     
             return redirect()->route("valimised.addFox")->withSuccess("Rebane on lisatud!");
         })->name("addFoxPost");
     
         Route::post("/fox/delete", function (Request $request){
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase kustutamiseks!");
+
             $request->validate([
                 "id"=>"required",
             ], [
                 "id.required"=>"Midagi läks valesti",
             ]);
     
-            Fox::where("id", $request->id)->delete();
+            $fox = Fox::where("id", $request->id)->first();
+            $fox->delete();
+
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Kustutatud rebane ". $fox->name . "(" . $fox->id .")");
     
             return redirect()->back()->withSuccess("Rebane eemaldatud!");
         })->name("foxDelete");
+
         Route::post("/fox/clear", function (Request $request){
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebaselt jumala eemaldamiseks!");
+
             $request->validate([
                 "id"=>"required",
             ], [
                 "id.required"=>"Midagi läks valesti",
             ]);
     
-            Fox::where("id", $request->id)->update(["chosen_by"=>null]);
+            $fox = Fox::where("id", $request->id)->first();
+            $fox->update(["chosen_by"=>null]);
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Valimiseks on avatud rebane ". $fox->name . "(" . $fox->id .")");
     
             return redirect()->back()->withSuccess("Rebane valimiseks saadaval!");
         })->name("foxClear");
