@@ -27,15 +27,14 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
         <>
             <Layout title="Töölaud" auth={auth}>
                 <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
-                <div className="section" style={{marginBottom:"16px"}}>
-                <InfoBanner>
-                    <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
-                </InfoBanner>
-                </div>
-
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
-                    <InfoBanner text={"Sinu e-posti aadress on kinnitatud!"} />
+                    <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
                 </div>}
+                <div className="section" style={{marginBottom:"16px"}}>
+                    <InfoBanner>
+                        <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
+                    </InfoBanner>
+                </div>
                 {auth.user.role != "guest" && <div className="four-stat-row">
                     <StatisticsTile iconColor="#F3AF71" disabled={stats.streak_active == 0} stat={stats.streak} label={"Järjestikust päeva"} oneLabel={"Järjestikune päev"} icon={"local_fire_department"} />
                     <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />

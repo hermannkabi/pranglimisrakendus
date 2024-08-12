@@ -74,10 +74,15 @@ export default function GameDetailsPage({game, auth, playedBy}){
     function updateChip(index){
         var newValue = !filter[index];
         var newFilter = [...filter];
-        newFilter[index] = newFilter.includes(false) && newValue == false ? !newValue : newValue;
+
+        var shouldNotChange = newFilter.includes(false) && newValue == false;
+
+        newFilter[index] = shouldNotChange ? !newValue : newValue;
 
         setFilter(newFilter);
-        filterOperations(newFilter);
+        if(!shouldNotChange){
+            filterOperations(newFilter);
+        }
     }
 
     return <>
@@ -91,12 +96,12 @@ export default function GameDetailsPage({game, auth, playedBy}){
             <SizedBox height="16px" />
             <div className="two-column-layout">
                 <div>
-                    {playedBy != null && playedBy.id != auth.user.id && <div className="clickable section" style={{position:"relative", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"24px", paddingRight:"16px"}}>
+                    {playedBy != null && playedBy.id != auth.user.id && <><SizedBox height="8px" /> <div className="clickable section" style={{position:"relative", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"16px", paddingRight:"16px"}}>
                         <VerticalStatTile marginBlock={0} capitalize={true} icon="person" text="Mängija" value={userName} />                    
                         <img style={{height:"75px"}} className="profile-pic" src={playedBy.profile_pic} alt={userName} />
 
                         <a href={"/profile/"+playedBy.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
-                    </div>}
+                    </div></>}
 
                     {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
                         <div>

@@ -73,21 +73,6 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         
     }, []);
 
-    // Style of the description of the statistic
-    const statNameStyle = {color:'gray', marginBlock: "0"};
-
-    // Returns a string of human readable time (e.g. 1 min 30 sec)
-    function getHumanReadableTime(){
-        if(time < 60){
-            return Math.round(time) + " s";
-        }else if(time%60 == 0){
-            return time/60 + " min";
-        }else{
-
-            return Math.floor(time/60) + " min " + (time%60) +" s";
-        }
-    }
-
     function getTime(timeInSeconds){
         var minutes = Math.floor(timeInSeconds / 60);
         var seconds = timeInSeconds - 60*minutes;
@@ -98,16 +83,17 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         return minutes + ":" + seconds;
     }
 
-
-    
-
     function dateToString(date){
         return (date.getDate() + 1 < 9 ? "0" : "") + date.getDate().toString() + "." + (date.getMonth() + 1 < 9 ? "0" : "") + (date.getMonth() + 1).toString() + "." + date.getFullYear();
     }
     
     function saveGame(){
-        // Only save such games that at least tried one operation
+        // Only save such games that at least tried one operation and are at least 30 sec long
         if(total <= 0) return;
+        if(time < 30){
+            setGameSaved(true);
+            return;
+        };
 
         window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
         window.localStorage.setItem("total-training-count", parseInt(window.localStorage.getItem("total-training-count") ?? 0)+1);
@@ -174,14 +160,19 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     function updateChip(index){
         var newValue = !filter[index];
         var newFilter = [...filter];
-        newFilter[index] = newFilter.includes(false) && newValue == false ? !newValue : newValue;
+
+        var shouldNotChange = newFilter.includes(false) && newValue == false;
+        newFilter[index] = shouldNotChange ? !newValue : newValue;
 
         setFilter(newFilter);
-        filterOperations(newFilter);
+        if(!shouldNotChange){
+            filterOperations(newFilter);
+        }
     }
 
     return <>
         <Layout title={"Lõpeta mäng"} auth={auth}>
+            {time < 30 && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
             {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
                 {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
                 <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
@@ -226,7 +217,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                         </div>
                         <div onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", backgroundColor:"rgb(var(--primary-color))", color:"white", marginBlock:"0"}}>
                             <div>
-                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">save</i>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">{time < 30 ? "home" : "save"}</i>
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Edasi</p>
                             </div>
                         </div>

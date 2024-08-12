@@ -105,7 +105,7 @@ export default function ProfilePage({auth, className}){
             }).fail(function (data){
                 console.log(data);
                 setImageUploadErrors({"error":"Midagi on valesti. Sinu eelistusi ei pruugita praegu kontole salvestada. Selles seadmes töötavad siiski sinu valitud seaded!"})
-
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
     }
@@ -145,6 +145,7 @@ export default function ProfilePage({auth, className}){
         }).fail(function (data){
             console.log(data);
             setImageUploadErrors(data.responseJSON);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
     }
@@ -222,7 +223,7 @@ export default function ProfilePage({auth, className}){
                     </div> }
 
                     <SizedBox height="16px" />
-                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:((window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : 'flex'), flexDirection:"row-reverse", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email_verified_at != null && <i translate="no" title="E-posti aadress kinnitatud" style={{marginLeft:"4px", display: (window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} className="material-icons">verified</i> } {auth.user.email_verified_at == null && auth.user.role != "guest" && <a style={{display:(window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} onClick={verifyEmail} alone="">(Kinnita)</a>} {auth.user.email}</p>
+                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:((window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : 'flex'), flexDirection:"row-reverse", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email_verified_at == null && auth.user.role != "guest" && <a style={{display:(window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} onClick={verifyEmail} alone="">(Kinnita)</a>} {auth.user.email}</p>
                 </div>
                 <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div>
@@ -299,7 +300,7 @@ export default function ProfilePage({auth, className}){
                 </div>
             </div>
             <SizedBox height="8px" />
-            <p style={{color:"var(--lightgrey-color)", display:"flex", alignItems:'center'}}> <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)", flex:"1"}} href={route("changelog")}>Uuenduste ajalugu</a> &nbsp;&nbsp; <span>Tallinna Reaalkool 2024 © </span></p>
+            <p style={{color:"var(--lightgrey-color)", display:"flex", alignItems:'center'}}> <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)", flex:"1"}} href={route("changelog")}>Uuenduste ajalugu</a> &nbsp;&nbsp; <span>© 2024</span></p>
         </Layout>
     </>;
 }
