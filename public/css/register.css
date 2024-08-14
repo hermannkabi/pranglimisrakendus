@@ -5,22 +5,9 @@
     .register-row > input{
         margin-inline: 0 !important;
     }
-
-    .container{
-        width: 100% !important;
-    }
-
 }
-
-
-.container{
-    width: 450px;
-    margin: auto;
-}
-
 
 .register-container{
-    /* width: max(20%, 300px); */
     margin: auto;
 }
 

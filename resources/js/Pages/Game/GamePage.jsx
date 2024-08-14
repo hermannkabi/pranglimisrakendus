@@ -1,10 +1,10 @@
-import Navbar from "@/Components/Navbar";
 import NumberButton from "@/Components/NumberButton";
 import SizedBox from "@/Components/SizedBox";
 import Timer from "@/Components/Timer";
 import { Head } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
+import InfoBanner from "@/Components/InfoBanner";
 
 export default function GamePage({data, time, auth}){
 
@@ -603,7 +603,8 @@ export default function GamePage({data, time, auth}){
             "operation":operations.data[currentLevel.current][index].operation1 + " %SYMB% " + operations.data[currentLevel.current][index].operation2,
             "correct":symbs[operations.data[currentLevel.current][index].answer],
             "answer":symbs[answered],
-            "isCorrect":isCorrect
+            "isCorrect":isCorrect,
+            "level":currentLevel.current,
         });
     }
 
@@ -614,7 +615,8 @@ export default function GamePage({data, time, auth}){
             "operation":operations.data[currentLevel.current][index].operation.replaceAll(" ", ""),
             "correct":operations.data[currentLevel.current][index].answer ? "Jah" : "Ei",
             "answer":ans ? "Jah" : "Ei",
-            "isCorrect":isCorrect
+            "isCorrect":isCorrect,
+            "level":currentLevel.current,
         });
     }
 
@@ -635,6 +637,7 @@ export default function GamePage({data, time, auth}){
                     "correct":correct.toString(),
                     "answer": answer.toString(),
                     "isCorrect":isCorrect,
+                    "level":currentLevel.current,
                 });
                 return;
             }
@@ -696,6 +699,7 @@ export default function GamePage({data, time, auth}){
                 "correct": simplify ? correct : parseFloat(correct).toFixed(2).replace(".00", ""),
                 "answer": simplify ? formattedAnswer : parseFloat(parseFloat(formattedAnswer).toFixed(2)),
                 "isCorrect":isCorrect,
+                "level":currentLevel.current,
             });
 
         }else{
@@ -713,18 +717,20 @@ export default function GamePage({data, time, auth}){
         // Total answer count is increased
         setTotalAnsCount(totalAnsCount + 1);
 
+        var level = operations.data[currentLevel.current][index].level ?? 1;
+
         if(isCorrect){
 
             var pointsLost = pointsLostPerSec * Math.round((Date.now() - dtStartedLast)/1000);
 
-            var level = operations.data[currentLevel.current][index].level ?? 1;
 
+            var levelPoints = level;
             if(["A", "B", "C"].includes(level)){
-                level = {"A":10, "B":15, "C":20}[level];
+                levelPoints = {"A":10, "B":15, "C":20}[level];
             }
 
             // 100 points per level (e.g. level 3 gets 300 points)
-            var basePoints = 100*level - pointsLost;
+            var basePoints = 100*levelPoints - pointsLost;
 
             // A floating point count animation
             if(showAnimation){
@@ -759,6 +765,7 @@ export default function GamePage({data, time, auth}){
 
 
         // Add data to the list of operations that have been answered
+        data["level"] = level;
         operationLog.current.push(data);
 
         // Get a new operation and set the default answer to it
@@ -771,8 +778,13 @@ export default function GamePage({data, time, auth}){
     // A function that is called:
     // 1. When the timer ends
     // 2. When the operations run out (then with endedBefore = true)
-    function onTimerFinished(message){
+    function onTimerFinished(message, dontSave=false){
 
+
+        if(dontSave){
+            window.location.href = route('dashboard');
+            return;
+        }
         // IMPORTANT!!!
         // You should cancel any interval/etc here as the game end page is essentially rendered on top of this page
 
@@ -780,7 +792,7 @@ export default function GamePage({data, time, auth}){
         setMessage(message ?? "Aeg sai otsa!");
 
         // Wait for a moment before rendering the results page
-        setTimeout(() => {
+        setTimeout(() => {    
             setShowResults(true);
         }, 750);
     }
@@ -825,7 +837,7 @@ export default function GamePage({data, time, auth}){
     // Alternatively, navigate to the results page
     function cancelGame(){
         // window.location.href = route("dashboard");
-        onTimerFinished("Mäng on katkestatud!");
+        onTimerFinished("Mäng on katkestatud!", totalAnsCount <= 0);
     }
 
 
@@ -873,50 +885,63 @@ export default function GamePage({data, time, auth}){
         <div>
 
             <Head title="Mäng" />
-            <Navbar title="Mäng" user={auth.user} />
-            <SizedBox height="36px" />
+            <SizedBox height="72px" />
 
-            <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto"}}>
+            <div style={{display:"flex", flexDirection: "column", width:"max-content", maxWidth:"100%", margin:"auto", alignItems:'center'}}>
                 
+                
+
+                <div style={{minWidth:"100%", fontSize:"16px", display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"stretch", gap:"8px"}}>
+                    <div onClick={cancelGame} style={{display:"flex",flexShrink:"2", color:"var(--red-color)", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
+                        <p>Katkesta</p>
+                        <i translate="no" className="material-icons">close</i>
+                    </div>
+                    <div onClick={skipOperation} disabled={maxSkip - skippedAmount <= 0} style={{maxWidth:"200px", display:"flex", flex:"1", justifyContent:"space-between", padding:"8px 12px", alignItems:"center"}} className="section clickable">
+                        <div>
+                            <p style={{marginBlock:"0"}}>Jäta vahele</p>
+                            <p style={{marginBlock:"0", color:"var(--grey-color)", fontSize:"14px"}}>{Math.max(maxSkip - skippedAmount, 0)} jäänud</p>
+                        </div>
+                        <i translate="no" className="material-icons-outlined">fast_forward</i>
+                    </div>
+                </div>
                 {/* Message on top of the page */}
-                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))", fontSize:"18px"}}> <span translate="no">ⓘ</span> {message}</p>
+                {message && <div className="section" style={{marginBlock:"8px", minWidth:"100%", paddingInline:"0"}}>
+                    <InfoBanner text={message} />
                 </div>}
-
-                {/* Cancel button */}
-                <a onClick={()=>cancelGame()} style={{color:"rgb(var(--red-color))", marginLeft:"auto", fontSize:"18px"}} alone=""><i className="material-icons no-anim">close</i>&nbsp;Katkesta</a>
-
                 {/* A backgrounded section containing all the data */}
-                <div style={{flex:'1', color: "rgb(var(--primary-color))", width:"auto", backgroundColor:"rgb(var(--section-color), var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px"}}>
+                <div className="section" style={{textAlign:"center", flex:'1', width:"auto", padding:"8px", paddingInline:"0", minWidth:"100%"}}>
+                    <div style={{paddingInline:"8px"}}>
+                    <SizedBox height="8px" />
 
-                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"flex-start"}}>
-
+                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                         {/* Current operation number & level, total points etc. */}
-                        <div style={{textAlign:"start", }}>
-                            <h2 style={{marginBlock:"0", color: "rgb(var(--primary-color))", fontSize:"26px"}}>{operationCount + 1}<span style={{fontSize:"16px", color:"grey"}}>{level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</span></h2>
-                            <span className="point-span">+100</span>
-                            <p style={{marginBlock:"0", fontWeight:'bold', fontSize:"18px"}}>{points} punkti</p>
+                        <div style={{textAlign:"start", display:"flex", justifyContent:"start", flexDirection:"row", alignItems:'center', gap:"16px"}}>
+                            <span title={operationCount + 1 + ". tase"} style={{fontSize:"24px", fontWeight:"bold"}}>{operationCount + 1}</span>
+                            <div>
+                                <p style={{display:"flex", alignItems:"center", gap:"6px", marginBlock:"0"}}> <i title="Tehte tase" translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">exercise</i> {level.toString().replace("A", " ★1").replace("B", " ★2").replace("C", " ★3")}</p>
+                                <span style={{marginLeft:"24px"}} className="point-span">+100</span>
+                                <p style={{marginBlock:"0", fontSize:"18px", display:"flex", alignItems:"center", gap:"6px"}}><i title={points + " punkti"} translate="no" style={{fontSize:"18px"}} className="material-icons-outlined">trophy</i> {points}</p>
+                            </div>
                         </div>
 
                         {/* Timer */}
                         <div style={{textAlign:'end'}} id="timer-div">
-                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 10)} />}
+                            {!timeOver && <Timer visible={window.localStorage.getItem("timer-visibility") != "hidden"} getCurrentTime={getCurrentTime} cancel={timeOver} onTimerFinished={()=>onTimerFinished()} time={Math.max(Math.round(time), 30)} />}
                         </div>
                     </div>
-
+                    <SizedBox height="16px" />
                     {/* The operation data  and answer*/}
                     {compare && <h2 translate="no" style={{overflowWrap:'anywhere'}}><><span id="operation1" dangerouslySetInnerHTML={{__html: operation1}}></span> <span> <span style={{color:"gray", fontSize:"0.8em"}}>?</span> </span> <span id="operation2" dangerouslySetInnerHTML={{__html: operation2}}></span></></h2>}
                     {shapes && <span translate="no"><span id="operation" dangerouslySetInnerHTML={{__html: operation}}></span> <br /> <br /> <span style={{display:"inline-flex"}}>Mitu <span className="what-shape" dangerouslySetInnerHTML={{__html: whatShape}}></span>? <SizedBox width={8} /> </span><span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span></span>}
-                    {!compare && !shapes && <h2 translate="no" style={{overflowWrap:'anywhere', color: "rgb(var(--primary-color))"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    {!compare && !shapes && <h2 translate="no" style={{textAlign:"center", overflowWrap:'anywhere', fontWeight:"bold", fontSize:"28px"}}>{!isGap ? (<>{Math.random() > 0.5 ? <span></span> : null}<span dangerouslySetInnerHTML={{__html: obfuscateOperation(operation)}}></span> {!divisionLaw && !shapes && <span>=</span>} <span style={{color:"var(--grey-color)"}} id="answer" dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span>{Math.random() > 0.5 ? <span></span> : null}</>) : <><span id="operation-pre" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[0]}}></span> <span id="answer" style={{textDecoration:"underline", textDecorationThickness:"4px", textUnderlineOffset:"2px", textDecorationSkipInk:"none"}} dangerouslySetInnerHTML={{__html: renderAnswer(answer)}}></span> <span id="operation-post" dangerouslySetInnerHTML={{__html: operation.split("Lünk")[1]}}></span></>}</h2>}
+                    <SizedBox height="16px" />
+                    </div>
                 </div>
-
-                {/* Skip button */}
-                {skippedAmount < maxSkip ? <a onClick={skipOperation} style={{color:"grey", marginLeft:"auto", fontSize:"18px"}} alone="">Jäta vahele ({Math.max(maxSkip - skippedAmount, 0)}) {"\u00A0"} <span translate="no" className="material-icons">fast_forward</span></a> : null}
                 
-                <SizedBox height="24px" />
+                <SizedBox height="8px" />
                 
                 {/* On-screen keyboard */}
-                {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto"}}>
+                {!compare && !divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', width:'fit-content', margin:"auto", marginInline:"-4px"}}>
                     {flippedKeyboardKey(1)}
                     {flippedKeyboardKey(2)}
                     {flippedKeyboardKey(3)}
@@ -932,7 +957,7 @@ export default function GamePage({data, time, auth}){
                     {flippedKeyboardKey(9)}
                     <NumberButton disabled={!commaAllowed} content="," onClick={()=>handleNumberClick(",")} />
 
-                    <NumberButton backgroundColor="#f3a3a4" textColor="white" lineHeight="2.25" fontSize="16px" content="backspace" icon={true} onClick={handleRemoveClick} />
+                    <NumberButton backgroundColor="var(--red-color)" textColor="white" lineHeight="1.7" fontSize="20px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
                     <NumberButton backgroundColor="rgb(var(--primary-color))" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="check" icon={true} onClick={checkAnswer} />
                 </div>}

@@ -1,0 +1,107 @@
+.layout{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar-mobile{
+    display: none;
+}
+
+.sidebar-mobile-topbar{
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 8px;
+    display: flex;
+}
+
+.mobile-navigation-content{
+    display: none;
+    margin-inline: 16px;
+}
+
+.layout-main-content{
+    overflow: auto;
+    width: 100%;
+    padding-inline: 16px;
+}
+
+
+/* Two-column layout starts here */
+
+.two-column-layout{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* Four stat row */
+
+.four-stat-row{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.statistics-tile h2{
+    font-size: 56px;
+}
+
+.statistics-tile .material-icons-outlined{
+    font-size: 48px;
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1300px){
+    .statistics-tile .material-icons-outlined{
+        display: none;
+    }
+}
+
+
+@media only screen and (max-width: 1000px){
+    .two-column-layout{
+        grid-template-columns: 1fr;
+    }
+
+    .two-column-layout.reverse > div:nth-of-type(1){
+        order: 2;
+    }
+    .two-column-layout.reverse> div:nth-of-type(2){
+        order: 1;
+    }
+
+    .four-stat-row{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .statistics-tile h2{
+        font-size: 36px;
+    }
+
+    .statistics-tile .material-icons-outlined{
+        font-size: 40px;
+    }
+}
+
+@media only screen and (max-width: 800px){
+
+    .layout{
+        height: auto;
+        display: block;
+    }
+
+    .layout > .sidebar{
+        display: none;
+    }
+
+    .layout > .sidebar-mobile{
+        display: block;
+    }
+
+    .layout-main-content{
+        padding-inline: 8px;
+        width: calc(100vw - 16px);
+    }
+}

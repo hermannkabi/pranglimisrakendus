@@ -1,6 +1,4 @@
 import { useState } from "react";
-import "/public/css/login.css";
-
 
 export default function PasswordInput(props){
 

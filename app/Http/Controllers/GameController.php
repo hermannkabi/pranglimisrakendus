@@ -73,7 +73,7 @@ class GameController extends Controller
         ]);
         $mang = $this->createMang($request->game, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
-        app(ProfileController::class)->updateStreak(Auth::id(), $mang);
+        app(ProfileController::class)->updateStreak(Auth::id());
         return;
     }
 
@@ -151,10 +151,12 @@ class GameController extends Controller
         //Average time
         $avg_time = $count > 0 ? round($time_sum / $count) : 0;
 
-        $streak = User::select("streak")->where('id', $user_id == null ? Auth::id() : $user_id)->first()["streak"];
+        $streak = app(ProfileController::class)->viewStreak($user_id);
+
+        $streak_active = User::where("id", $user_id)->first()->streak_active;
 
         //Send all gathered information to frontend
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
 
     }
 

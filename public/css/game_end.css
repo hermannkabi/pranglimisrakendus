@@ -1,104 +1,14 @@
-@media only screen and (max-width: 1440px){
-    .btn-container{
-        margin-inline: 16px !important;
-    }
-}
-
-@media only screen and (max-width: 1220px){
-    .btn-container{
-        gap: 8px !important;
-        margin-inline: 8px !important;
-    }
-
-    .stat-container{
-        width: 100% !important;
-        margin: 0 !important;
-    }
-
-}
-
-@media only screen and (max-width: 1100px){
-    .container{
-        max-width: 420px;
-        margin: auto;
-    }
-
-    .container > section{
-        width: 100%;
-    }
-
-    .detailed-container{
-        grid-template-columns: repeat(1, 1fr) !important;
-    }
-}
-
-@media only screen and (max-width: 475px){
-    .stat-container{
-        width: 100% !important;
-        margin: 0 0 8px 0 !important;
-    }
-    .stat-row{
-        margin-inline: 16px !important;
-    }
-
-    .btn-container{
-        flex-direction: column-reverse !important;
-    }
-}
-
-
-
-.btn-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    gap: 32px;
-    margin-inline: 24px;
-    margin-block: 16px;
-}
-
-.stat-container{
-    margin: 16px;
-}
-
-.stat-row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-block: 32px;
-}
-
-section{
-    margin-block: 16px;
-}
-
-.grayed-bg{
-    width: 100vw;
-    z-index: 999;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.dialog{
-    z-index: 1000;
-    margin: auto;
-    border-radius: 16px;
-}
-
 .underline{
     text-decoration: underline;
     text-decoration-thickness: 4px;
 }
 
 .correct{
-    color: green;
+    color: #445F5E;
 }
 
 .incorrect{
-    color: red;
+    color: var(--red-color);
 }
 
 .incorrect:not( > math > mfrac){
@@ -110,23 +20,7 @@ section{
     text-decoration: none;
 }
 
-
-.detailed-container{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    overflow-x: scroll;
-}
-
-.detailed-container::-webkit-scrollbar{
-    display: none;
-}
-
-
 .strikethrough span{
     text-decoration: line-through;
     text-decoration-thickness: 4px;
-}
-
-.stat-row h3{
-    font-weight: normal;
 }

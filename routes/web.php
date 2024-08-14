@@ -1,18 +1,24 @@
 <?php
 
-use App\Mail\TestMail;
+use App\Models\Mang;
+use App\Models\User;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Artisan;
+use App\Mail\TestMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     if(Auth::check()){
         return redirect()->route("dashboard");
     }
-    return Inertia::render('Welcome/WelcomePage');
+
+    $totalUsers = User::count();
+    $totalGames = Mang::count();
+    $totalPoints = Mang::sum("score_sum");
+    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
 })->name("welcome");
 
 Route::get("/handleForm", function (){
@@ -39,7 +45,6 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
 //Login and registration
 Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
-    Route::get('/register/google', 'registerGoogle')->name('registerGoogle');
 
     Route::post('/store', 'store')->name('store');
     Route::post('/store/google', 'storeGoogle')->name('storeGoogle');
@@ -87,8 +92,10 @@ Route::get('/changelog', function () {
     return Inertia::render('UpdateHistory/UpdateHistoryPage');
 })->name("changelog");
 
-Route::get("/preview", function (){
-    return Inertia::render("GamePreview/GamePreviewPage");
+Route::get("/preview/{type}", function ($type){
+    $supportedTypes = ["liitmine", "lahutamine", "korrutamine", "jagamine", "liitlahutamine", "korrujagamine", "astendamine", "juurimine", "astejuurimine", "võrdlemine", "lünkamine", "murruTaandamine", "kujundid", "jaguvus"];
+    if(!in_array($type, $supportedTypes)) abort(404);
+    return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
 //Game part of PRANGLIMISRAKENDUS
@@ -134,6 +141,9 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
 
     Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
+
+    Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
+
 });
 
 Route::get('/dashboard/old', function (){

@@ -1,193 +1,49 @@
-/* As of the new dashboard, a lot in this file is unnecessary but is saved, just in case */
-
-@media only screen and (max-width: 1580px) {
-    .big-game-btns, .small-game-btns{
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .small-game-btns > button{
-        aspect-ratio: auto !important;
-    }
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    gap: 16px;
 }
 
-/* @media only screen and (max-width: 1200px) {
+.class-grid>.section{
+    margin: 0;
+}
+
+.class-grid>.section:nth-of-type(1) { grid-area: 1 / 1 / 5 / 5; }
+.class-grid>.section:nth-of-type(2) { grid-area: 3 / 5 / 5 / 7; }
+.class-grid>.section:nth-of-type(3){ grid-area: 3 / 7 / 5 / 9; }
+.class-grid>.section:nth-of-type(4) { grid-area: 1 / 5 / 3 / 9; } 
 
 
+.class-grid .class-stat h2{
+    font-size: 48px;
+}
 
-    .main-column, .layout, .sidebar{
-        display: block !important;
-        height: auto !important;
-        width: auto !important;
-        min-height: auto !important;
-        margin-right: 0 !important;
-    }
+.class-grid .class-stat .stat-desc .material-icons-outlined{
+    font-size: 32px;
+}
 
-    section{
-        margin-inline: 0 !important;
-        width: 100% !important;
-    }
 
-    .big-btn{
-        padding-inline: 16px !important;
-        margin-inline: 8px !important;
-    }
-
-    .big-btn-symbol{
-        font-size: 48px !important;
-    }
-
-    .big-btn-text{
-        font-size: 24px !important;
-    }
-
-    .small-btn{
-        font-size: 16px !important;
-        margin-inline: 8px !important;
-        padding-inline: 16px !important;
-    }
-
-    .stats-bottom-margin{
-        display: none;
-    }
-
-    .big-btns{
-        display: grid;
-        gap: 8px;
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .small-btns{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .small-btns div{
-        text-align: center !important;
-    }
-} */
-
-@media only screen and (max-width: 800px){
-    .stat-container{
-        display: grid !important;
-        grid-template-columns: repeat(1, 1fr) !important;
-    }
-
-    #horizontal-rule{
-        display: none !important;
-    }
-
-    .comps{
+@media only screen and (max-width: 1300px){
+    .class-grid .class-stat{
         display: block !important;
     }
     
-    .past-comps, .future-comps{
-        text-align: center !important;
-
+    .class-grid .class-stat h2{
+        font-size: 40px;
     }
 }
 
-@media only screen and (max-width: 600px) {
-    .big-btn{
-        margin: 4px !important;
-        padding-inline: 8px !important;
-    }
-    
-    .small-btn{
-        margin-inline: 4px !important;
-        padding-inline: 8px !important;
+@media only screen and (max-width: 1000px){
+    .class-grid{
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(8, 1fr); 
     }
 
-    .big-btns, .small-btns{
-        /* grid-template-columns: repeat(1, 1fr) !important; */
-        gap: 0 !important;
-    }
-
-    .small-btns div{
-        text-align: start !important;
-    }
-
-}
-
-@media only screen and (max-width: 320px){
-    .small-game-btns, .big-game-btns{
-        grid-template-columns: repeat(1,1fr) !important;
-    }
-}
-
-.layout{
-    display: flex;
-    justify-content: stretch;
-}
-
-.main-column{
-    flex: 5;
-    flex-direction: column;
-    min-height: calc(100vh - 60px - 8px - 8px - 8px);
-    display: flex;
-}
-
-
-
-#leaderboard-section, #competitions{
-    flex-grow: 1;
-}
-
-.sidebar{
-    width: 340px;
-    flex-direction: column;
-    display: flex;
-}
-
-.sidebar > section{
-    margin-right: 0;
-    width: 100%;
-}
-
-.header-container{
-    margin-bottom: 32px;
-}
-
-.stat-container{
-    display: flex;
-    justify-content: space-evenly;
-    gap: 8px;
-}
-
-.big-btns{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.small-game-btns{
-    text-align: start;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-}
-
-.small-game-btns > button{
-    flex: 1;
-    box-sizing: border-box;
-    aspect-ratio: 6;
-}
-
-.small-btn{
-    border-radius: 8px;
-    font-size: 24px;
-    margin-inline: 16px;
-}
-
-.comps{
-    display: flex;
-    margin-inline: 16px;
-}
-
-.past-comps{
-    text-align: start;
-    flex: 1;
-}
-
-.future-comps{
-    text-align: end;
-    flex: 1;
+    .class-grid>.section:nth-of-type(1) { grid-area: 1 / 1 / 5 / 5; }
+    .class-grid>.section:nth-of-type(2) { grid-area: 5 / 1 / 7 / 3; }
+    .class-grid>.section:nth-of-type(3) { grid-area: 5 / 3 / 7 / 5; }
+    .class-grid>.section:nth-of-type(4) { grid-area: 7 / 1 / 9 / 5; } 
 }

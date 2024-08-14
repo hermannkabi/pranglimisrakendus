@@ -3,10 +3,8 @@ import PasswordInput from "@/Components/PasswordInput";
 import { Head } from "@inertiajs/react";
 import "/public/css/register.css";
 import "/public/css/auth_layout.css";
-import LoadingSpinner from "@/Components/LoadingSpinner";
 import { useState } from "react";
 import InfoBanner from "@/Components/InfoBanner";
-import BigGameButton from "@/Components/BigGameButton";
 import HorizontalRule from "@/Components/HorizontalRule";
 
 export default function NewRegisterPage({message, errors}){

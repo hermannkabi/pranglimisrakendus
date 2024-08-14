@@ -1,13 +1,13 @@
-import Navbar from "@/Components/Navbar";
-import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import SizedBox from "@/Components/SizedBox";
 import OperationWidget from "@/Components/OperationWidget";
 import { useEffect, useState } from "react";
-import CheckboxTile from "@/Components/CheckboxTile";
-import HorizontalRule from "@/Components/HorizontalRule";
-import InfoBanner from "@/Components/InfoBanner";
 import LoadingSpinner from "@/Components/LoadingSpinner";
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
+import Chip from "@/Components/2024SummerRedesign/Chip";
+import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
+import InfoBanner from "@/Components/InfoBanner";
 
 
 export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
@@ -16,6 +16,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
     const [gameSaved, setGameSaved] = useState(auth.user.role == "guest" || total == 0 || false);
     const [showGameSavedDialog, setShowGameSavedDialog] = useState(false);
+    const [filter, setFilter] = useState([true, true]);
 
 
     const [title, setTitle] = useState(null);
@@ -72,31 +73,27 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         
     }, []);
 
-    // Style of the description of the statistic
-    const statNameStyle = {color:'gray', marginBlock: "0"};
+    function getTime(timeInSeconds){
+        var minutes = Math.floor(timeInSeconds / 60);
+        var seconds = timeInSeconds - 60*minutes;
 
-    // Returns a string of human readable time (e.g. 1 min 30 sec)
-    function getHumanReadableTime(){
-        if(time < 60){
-            return Math.round(time) + " s";
-        }else if(time%60 == 0){
-            return time/60 + " min";
-        }else{
+        minutes = minutes <= 9 ? "0"+minutes.toString() : minutes.toString();
+        seconds = seconds <= 9 ? "0"+seconds.toString() : seconds.toString();
 
-            return Math.floor(time/60) + " min " + (time%60) +" s";
-        }
+        return minutes + ":" + seconds;
     }
-
-
-    
 
     function dateToString(date){
         return (date.getDate() + 1 < 9 ? "0" : "") + date.getDate().toString() + "." + (date.getMonth() + 1 < 9 ? "0" : "") + (date.getMonth() + 1).toString() + "." + date.getFullYear();
     }
     
     function saveGame(){
-        // Only save such games that at least tried one operation
+        // Only save such games that at least tried one operation and are at least 30 sec long
         if(total <= 0) return;
+        if(time < 30){
+            setGameSaved(true);
+            return;
+        };
 
         window.localStorage.setItem("last-active", dateToString(new Date(Date.now())));
         window.localStorage.setItem("total-training-count", parseInt(window.localStorage.getItem("total-training-count") ?? 0)+1);
@@ -105,6 +102,14 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         // The average percentage works by saving a sum of all the percentages and dividing it by total-training-count
         window.localStorage.setItem("total-percentage", parseInt(window.localStorage.getItem("total-percentage") ?? 0)+accuracy);
 
+        // Save the game type as 'last used'
+        var lastUsed = JSON.parse(window.localStorage.getItem("last-used") == null || window.localStorage.getItem("last-used").length == 0 ? "[]" : window.localStorage.getItem("last-used"));
+        var gameType = decodeURIComponent(window.location.href.split("/")[5]);
+        if(!lastUsed.includes(gameType)){
+            if(lastUsed.length >= 3) lastUsed.pop();
+            lastUsed.unshift(gameType);
+        }
+        window.localStorage.setItem("last-used", JSON.stringify(lastUsed));
 
         // Real saving (non-guests only)
         if(auth.user.role != "guest"){
@@ -130,15 +135,15 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         
     }
 
-    function filterOperations(){
+    function filterOperations(newFilter){
         const animationTime = 150;
-        $(".ss .detailed-container").animate({
+        $(".detailed-container").animate({
             opacity: 0,
 
         }, animationTime, function (){
-            setCurrentlyShownLog(log.filter((op) => ($(".correct-choice").is(":checked") && op.isCorrect) || ($(".incorrect-choice").is(":checked") && !op.isCorrect)));
+            setCurrentlyShownLog(log.filter((op) => (newFilter[0] && op.isCorrect) || (newFilter[1] && !op.isCorrect)));
 
-            $(".ss .detailed-container").animate({
+            $(".detailed-container").animate({
                 opacity: 1,
             }, animationTime);
         });
@@ -152,85 +157,75 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         }
     }
 
-    function showDetailed(){
-        $("#show-detailed-arrow").css("transform", "rotate("+(!$(".ss").is(":hidden") ? "-180deg" : "0deg")+")");
-        $(".ss").slideToggle(200);
+    function updateChip(index){
+        var newValue = !filter[index];
+        var newFilter = [...filter];
+
+        var shouldNotChange = newFilter.includes(false) && newValue == false;
+        newFilter[index] = shouldNotChange ? !newValue : newValue;
+
+        setFilter(newFilter);
+        if(!shouldNotChange){
+            filterOperations(newFilter);
+        }
     }
 
-    return (
-        <>
-            <Head title="Lõpeta mäng" />
-            <Navbar title="Lõpeta mäng" user={auth.user} />
-            <SizedBox height={36} />
-
-            <div className="container">
-                {/* Greeting */}
-                <h2 style={{marginBottom: 0}}>{title}</h2>
-                {showGameSavedDialog && <section style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-                    {gameSaved ? <i className="material-icons">check</i> : <LoadingSpinner color={true} />}
-                    <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
-                </section>}
-                {/* Stats */}
-                <section>
-                    <div className="stat-container">
-                        <div className="stat-row">
-                            <p style={statNameStyle}>KULUNUD AEG</p>
-                            <h3 style={{marginBlock:0}}>{getHumanReadableTime()}</h3>
+    return <>
+        <Layout title={"Lõpeta mäng"} auth={auth}>
+            {time < 30 && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
+            {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
+                {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
+                <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
+            </div>}
+            <div className="four-stat-row">
+                <StatisticsTile stat={points} label={"Punkti"} icon={"exercise"} compactNumber={true} />
+                <StatisticsTile stat={getTime(time)} label={"Kulunud aeg"} icon={"hourglass_top"} />
+                <StatisticsTile stat={total} label={"Tehet"} oneLabel={"Tehe"} icon={"calculate"} />
+                <StatisticsTile stat={accuracy + "%"} label={"Täpsus"} icon={"target"}/>
+            </div>
+            <SizedBox height="16px" />
+            <div className="two-column-layout reverse">
+                <div>
+                    {accuracy != 0 && accuracy != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
+                        <div>
+                            <Chip onClick={()=>updateChip(0)} alt={log.filter((op)=>op.isCorrect).length} label={"Õiged vastused"} active={filter[0]} />
+                            <Chip onClick={()=>updateChip(1)} alt={log.filter((op)=>!op.isCorrect).length} label={"Valed vastused"} active={filter[1]} />
                         </div>
-                        <div className="stat-row">
-                            <p style={statNameStyle}>TEHETE ARV</p>
-                            <h3 style={{marginBlock:0}}>{total}</h3>
-                        </div>
-                        {lastLevel && <div className="stat-row">
-                            <p style={statNameStyle}>VIIMANE TASE</p>
-                            <h3 style={{marginBlock:0}}>{lastLevel.toString().replace("A", "★ 1").replace("B", "★ 2").replace("C", "★ 3") ?? "N/A"}</h3>
-                        </div>}
-                        <div className="stat-row">
-                            <p style={statNameStyle}>VASTAMISTÄPSUS</p>
-                            <h3 className={accuracy == 100 ? "fancy" : ""} style={{marginBlock:0}}>{accuracy.toString().replace(".", ",")}%</h3>
-                        </div>
-                        <div className="stat-row">
-                            <p style={statNameStyle}><b>PUNKTE</b></p>
-                            <h3 style={{marginBlock:0, fontWeight:"bold"}}>{points}</h3>
-                        </div>
+                    </>} />}
 
-                        {/* Detailed results toggle */}
-                        {total > 0 && <a alone="" onClick={showDetailed}>Täpne ülevaade <i id="show-detailed-arrow" className="material-icons no-anim">keyboard_arrow_down</i></a>}
+                    <div className="detailed-container" style={{display:"grid", gridTemplateColumns:"1fr"}}>
+                        {currentlyShownLog.map(function (op, i){
+                            return (
+                                <OperationWidget op={op} key={i} />
+                            );
+                        })}
+                        {currentlyShownLog.length <= 0 && <div className="section">
+                            <InfoBanner text="Sa ei esitanud vastust ühelegi tehtele" />
+                        </div> }
+                    </div>
+                </div>
 
-                        {/* Detailed resuls div */}
-                        {/* Updated looks from 14.01.2024 */}
-                        <div className="ss" style={{display:"none"}}>
-                            <SizedBox height={16} />
-                            {accuracy != 0 && accuracy != 100 && <div>
-                                <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
-                                <CheckboxTile forcedText={"Õiged vastused ("+log.filter((op)=>op.isCorrect).length+")"} onChange={filterOperations} inputClass="correct-choice" />
-                                <CheckboxTile forcedText={"Valed vastused ("+log.filter((op)=>!op.isCorrect).length+")"} onChange={filterOperations} inputClass="incorrect-choice" />
-                                <br />
-                                <HorizontalRule />
-                            </div>}
-
-                            <div className="detailed-container">
-                                {currentlyShownLog.map(function (op, i){
-                                    return (
-                                        <OperationWidget op={op} key={i} />
-                                    );
-                                })}
+                {/* Teine tulp */}
+                <div>
+                    <SizedBox height="8px" />
+                    <div className="two-column-layout">
+                        <div onClick={()=>navigateAway(()=>location.reload())} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
+                            <div>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">refresh</i>
+                                <p style={{marginTop:"8px", marginBottom:"0"}}>Mängi uuesti</p>
+                            </div>
+                        </div>
+                        <div onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", backgroundColor:"rgb(var(--primary-color))", color:"white", marginBlock:"0"}}>
+                            <div>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">{time < 30 ? "home" : "save"}</i>
+                                <p style={{marginTop:"8px", marginBottom:"0"}}>Edasi</p>
                             </div>
                         </div>
                     </div>
-
-                </section>
-                
-                {/* Buttons */}
-                <section>
-                    <div className="btn-container">
-                        <button onClick={()=>navigateAway(()=>location.reload())} style={{flex:'1'}} secondary="true">Proovi uuesti</button>
-                        <button onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} style={{flex:'1'}}>Edasi</button>
-                    </div>
-                </section>
+                </div>
             </div>
-        </>
-    );
+        </Layout>
+    </>;
 }
 
 

@@ -24,7 +24,6 @@ class PasswordResetLinkController extends Controller
      */
     public function create(Request $request, $token): Response
     {
-        Log::debug($token);
         return Inertia::render('ForgotPassword/ForgotPasswordPage', [
             "token"=>$token,
 

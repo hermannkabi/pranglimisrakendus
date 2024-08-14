@@ -1,18 +1,18 @@
-import Navbar from "@/Components/Navbar";
 import OperationWidget from "@/Components/OperationWidget";
 import SizedBox from "@/Components/SizedBox";
-import StatisticsWidget from "@/Components/StatisticsWidget";
-import { Head } from "@inertiajs/react";
 import "/public/css/game_end.css";
 import { useState } from "react";
-import CheckboxTile from "@/Components/CheckboxTile";
-import HorizontalRule from "@/Components/HorizontalRule";
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
+import Chip from "@/Components/2024SummerRedesign/Chip";
+import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 
 
 export default function GameDetailsPage({game, auth, playedBy}){
 
-    const [copyText, setCopyText] = useState("Jaga");
-
+    const [copyText, setCopyText] = useState("Jaga mängu");
+    // First is for correct, second incorrect answers;
+    const [filter, setFilter] = useState([true, true]);
     const [currentlyShownLog, setCurrentlyShownLog] = useState(JSON.parse(game.log));
 
     function averageTime(timeInSeconds){
@@ -32,6 +32,10 @@ export default function GameDetailsPage({game, auth, playedBy}){
         "integer":"Täisarvud",
         "fraction":"Kümnendmurrud",
         "roman":"Rooma numbrid",
+        "kujundid":"Tavaline",
+        "color":"Erinevad värvid",
+        "size":"Erinevad suurused",
+        "all":"Erinevad värvid ja suurused"    
     };
 
     const gameNames = {
@@ -49,17 +53,17 @@ export default function GameDetailsPage({game, auth, playedBy}){
         setCopyText("Link kopeeritud!");
 
         setTimeout(() => {
-            setCopyText("Jaga");
+            setCopyText("Jaga mängu");
         }, 2000);
     }
 
-    function filterOperations(){
+    function filterOperations(filter){
         const animationTime = 150;
         $(".detailed-container").animate({
             opacity: 0,
 
         }, animationTime, function (){
-            setCurrentlyShownLog(JSON.parse(game.log).filter((op) => ($(".correct-choice").is(":checked") && op.isCorrect) || ($(".incorrect-choice").is(":checked") && !op.isCorrect)));
+            setCurrentlyShownLog(JSON.parse(game.log).filter((op) => (filter[0] && op.isCorrect) || (filter[1] && !op.isCorrect)));
 
             $(".detailed-container").animate({
                 opacity: 1,
@@ -67,57 +71,68 @@ export default function GameDetailsPage({game, auth, playedBy}){
         });
     }
 
+    function updateChip(index){
+        var newValue = !filter[index];
+        var newFilter = [...filter];
+
+        var shouldNotChange = newFilter.includes(false) && newValue == false;
+
+        newFilter[index] = shouldNotChange ? !newValue : newValue;
+
+        setFilter(newFilter);
+        if(!shouldNotChange){
+            filterOperations(newFilter);
+        }
+    }
+
     return <>
-            <Head title={name == null ? "Mäng" : decodeURIComponent(name)} />
-            <Navbar title={name ?? "Mäng"} user={auth.user} />
-            <SizedBox height={36} />
-
-        <h2 style={{marginBottom:"8px"}}>{name == null ? "Detailne vaade" : decodeURIComponent(name)}</h2>
-
-        {playedBy != null && playedBy.id != auth.user.id &&<div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"24px"}}>
-            <img style={{height:"32px"}} className="profile-pic" src={playedBy.profile_pic} alt={userName} />
-            <p style={{display:"inline", marginBlock:"0", color:"grey", textTransform:"capitalize"}}>{userName}</p>
-        </div>}
-
-        <section>
-            <div className='header-container'>
-                <h3 className='section-header'>Andmed</h3>
+        <Layout title="Detailne vaade" auth={auth}>
+            <div className="four-stat-row">
+                <StatisticsTile stat={averageTime(game.time)} label={"Keskmine aeg"} icon={"hourglass_top"} />
+                <StatisticsTile stat={game.game_count ?? "0"} label={"Tehete arv"} icon={"calculate"} />
+                <StatisticsTile stat={game.score_sum ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"exercise"} compactNumber={true} />
+                <StatisticsTile stat={(game.accuracy_sum ?? "0") + "%"} label={"Vastamistäpsus"}icon={"target"} />
             </div>
-            <div className="stats-container">
-                <StatisticsWidget stat={game.game_count} desc="Tehet" oneDesc={"Tehe"} />
-                <StatisticsWidget stat={game.score_sum} desc="Punkti" oneDesc="Punkt" />
-                <StatisticsWidget stat={game.accuracy_sum + "%"} desc="Täpsus"  />
-                {/* <StatisticsWidget stat={(new Date(game.dt)).toLocaleDateString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"})} desc="Kuupäev" condensed={true} /> */}
-                <StatisticsWidget stat={averageTime(game.time)} desc="Kulunud aeg" />
-                {/* <StatisticsWidget stat={typeToReadable[game.game_type]} desc="Arvuhulk" condensed={true}  /> */}
+            <SizedBox height="16px" />
+            <div className="two-column-layout">
+                <div>
+                    {playedBy != null && playedBy.id != auth.user.id && <><SizedBox height="8px" /> <div className="clickable section" style={{position:"relative", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", gap:"0 8px", marginBlock:"0", marginBottom:"16px", paddingRight:"16px"}}>
+                        <VerticalStatTile marginBlock={0} capitalize={true} icon="person" text="Mängija" value={userName} />                    
+                        <img style={{height:"75px"}} className="profile-pic" src={playedBy.profile_pic} alt={userName} />
+
+                        <a href={"/profile/"+playedBy.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div></>}
+
+                    {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
+                        <div>
+                            <Chip onClick={()=>updateChip(0)} alt={JSON.parse(game.log).filter((op)=>op.isCorrect).length} label={"Õiged vastused"} active={filter[0]} />
+                            <Chip onClick={()=>updateChip(1)} alt={JSON.parse(game.log).filter((op)=>!op.isCorrect).length} label={"Valed vastused"} active={filter[1]} />
+                        </div>
+                    </>} />}
+
+                    <div className="detailed-container" style={{display:"grid", gridTemplateColumns:"1fr"}}>
+                        {currentlyShownLog.map(function (op, i){
+                            return (
+                                <OperationWidget op={op} key={i} />
+                            );
+                        })}
+                    </div>
+                </div>
+
+                <div>
+                    <SizedBox height={8} />
+                    <div className="two-column-layout"> 
+                        <VerticalStatTile marginBlock={0} icon="calculate" text="Mängutüüp" value={decodeURIComponent(name)} />
+                        <VerticalStatTile marginBlock={0} icon="pin" text="Arvuhulk" value={typeToReadable[game.game_type] ?? "N/A"} />
+                    </div>
+                    <SizedBox height={8} />
+                    <VerticalStatTile icon="calendar_month" text="Kuupäev" value={(new Date(game.dt.replace(/-/g, "/"))).toLocaleString("et-EE", {month:"long", day:"2-digit", year:"numeric"}).split(",")[0]} />
+
+                    <a alone="" style={{color:"var(--grey-color)"}} onClick={copyToClipboard}> <i translate="no" className="material-icons no-anim">share</i>&nbsp; {copyText}</a>
+                </div>
             </div>
+
             
-            {game.game_type != null && game.game_type in typeToReadable && <><SizedBox height="4px" /><StatisticsWidget stat={typeToReadable[game.game_type]} desc="Arvuhulk"  condensed={true} /></>}
-        </section>
-
-        <section>
-            <div className='header-container'>
-                <h3 className='section-header'>Täpne tulemus</h3>
-            </div>
-            {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <div>
-                <p style={{color:"grey", marginBottom:"4px"}}>Filtreeri</p>
-                <CheckboxTile forcedText={"Õiged vastused ("+JSON.parse(game.log).filter((op)=>op.isCorrect).length+")"} onChange={filterOperations} inputClass="correct-choice" />
-                <CheckboxTile forcedText={"Valed vastused ("+JSON.parse(game.log).filter((op)=>!op.isCorrect).length+")"} onChange={filterOperations} inputClass="incorrect-choice" />
-                <br />
-                <HorizontalRule />
-            </div>}
-
-            <div className="detailed-container">
-                {currentlyShownLog.map(function (op, i){
-                    return (
-                        <OperationWidget op={op} key={i} />
-                    );
-                })}
-            </div>
-        </section>
-        <SizedBox height={16} />
-        <a alone="" onClick={copyToClipboard} >{copyText}&nbsp;<span className="material-icons no-anim" translate="no">share</span></a>
-        <SizedBox height={16} />
-
+        </Layout>
     </>;
 }

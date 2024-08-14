@@ -12,7 +12,10 @@
         <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
 
         <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}">
+
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
@@ -22,7 +25,7 @@
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased" >
+    <body translate="no" class="font-sans antialiased" >
 
         <noscript>
             <div style="display: flex; justify-content: center; height: 100vh;">

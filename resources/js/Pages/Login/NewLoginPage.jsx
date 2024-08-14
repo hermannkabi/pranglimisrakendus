@@ -1,14 +1,11 @@
 import LoginHeader from "@/Components/LoginHeader";
 import { Head } from "@inertiajs/react";
-import "/public/css/login.css";
 import "/public/css/auth_layout.css";
-
 import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";
 import HorizontalRule from "@/Components/HorizontalRule";
 import { useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
-import CheckboxTile from "@/Components/CheckboxTile";
 import InfoBanner from "@/Components/InfoBanner";
 
 export default function NewLoginPage({message, errors}){
@@ -79,14 +76,14 @@ export default function NewLoginPage({message, errors}){
                     
                     <SizedBox height={8} />
                     
-                    <section style={{width: "100%"}}>
+                    <div className="section" style={{paddingInline:"16px"}}>
                         <p style={{fontWeight:"bold", fontSize: "18px", marginBottom:"8px"}}>Oled siin uus?</p>
-                        <a href={route("register")} alone="true" style={{fontSize:"18px"}}>Loo konto</a>
                         <SizedBox height={8} />
+                        <a href={route("register")} alone="true" style={{fontSize:"18px"}}>Loo konto</a>
+                        <SizedBox height={4} />
                         <a href={route("authenticateGuest")} alone="true" style={{fontSize:"18px"}}>Sisene külalisena</a>
                         <SizedBox height={8} />
-
-                    </section>
+                    </div>
 
                 </form>
 

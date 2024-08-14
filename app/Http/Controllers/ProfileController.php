@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+use DateTime;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
-use Inertia\Response;
-
-use App\Models\User;
-use App\Models\Klass;
+use Carbon\Carbon;
 use App\Models\Mang;
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Klass;
+use Inertia\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
 class ProfileController extends Controller
@@ -107,17 +110,73 @@ class ProfileController extends Controller
         }
     }
 
-    // This function is called after completing a game and is used to set a streak for the player
-    public function updateStreak($user_id, $mang){
+    public function viewStreak($user_id){
         $user = User::where("id", $user_id)->first();
 
         if($user){
-            $viimaseManguDt = $mang["dt"];
-            if($user->streak_active != 1){
-                $user->streak = $user->streak + 1;
+            $viimane = Mang::where("user_id", $user_id)->orderBy("dt", "DESC")->first();
+            if(!$viimane) return 0;
+            $viimaseDt = $viimane->dt;
+
+            // Streak on aktiive, kui viimane mäng on tehtud täna
+            $diff = abs(date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a"));
+
+            $streakActive = $diff == 0;
+            $user->streak_active = $streakActive;
+            $user->save();
+
+            if($streakActive){
+                return $user->streak;
+            }else{
+                // Kui viimane mäng ei ole tehtud täna, kontrolli, kas see on tehtud eile. Kui ei ole, siis on streak null
+                if($diff == 1){
+                    return $user->streak;
+                }
+                if($diff > 1){
+                    $user->streak = 0;
+                    $user->save();
+                    return 0;
+                }
+            }
+
+
+        }
+
+        return 0;
+    }
+
+    // This function is called after completing a game and is used to set a streak for the player
+    public function updateStreak($user_id){
+        $user = User::where("id", $user_id)->first();
+
+        if($user){
+            $andmed = Mang::where("user_id", $user_id)->orderBy("dt", "DESC")->take(2)->get();
+            $viimaseDt = count($andmed) > 0 ? $andmed[0]->dt : null;
+            $eelviimaseDt = count($andmed) > 1 ? $andmed[1]->dt : null;
+
+            // Viimase dt ei saa vist null olla, aga ikkagi
+            if($eelviimaseDt == null || $viimaseDt == null){
                 $user->streak_active = 1;
+                $user->streak = 1;
+                $user->save();
+                return;
+            }
+
+            $diff = abs(date_diff(new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $eelviimaseDt)->format("Y-m-d")), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $viimaseDt)->format("Y-m-d")))->format("%a"));
+
+            // Streak on mitteaktiivne, aga ka mitteaegunud, kui selle läbib (ehk saab suurendada)
+            if($diff == 1){
+                $user->streak_active = 1;
+                $user->streak += 1;
+                $user->save();
+            }else if($diff > 1){
+                $user->streak_active = 0;
+                // 1 is correct here because we just played a game so it cannot be 0
+                $user->streak = 1;
                 $user->save();
             }
+
+            return;
         }
     }
 
@@ -185,7 +244,7 @@ class ProfileController extends Controller
                     if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
                         abort(403);
                     }
-                }else if($user->role == "student"){
+                }else if($user->role != "guest"){
                     // A student can be seen by their teacher or their classmates
                     if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
                         abort(403);
@@ -205,6 +264,8 @@ class ProfileController extends Controller
             abort(404);
         }
 
+        $stats["streak"] = app(ProfileController::class)->viewStreak($id);
+        $user = User::where("id", $id)->first();
 
         return Inertia::render("Profile/PublicProfilePage", ["user"=>$user, "stats"=>$stats, "lastGames"=>$lastGames, "klass"=>$klass]);
     }

@@ -1,25 +1,22 @@
-import Navbar from "@/Components/Navbar";
-import { Head } from "@inertiajs/react";
-import "/public/css/profile.css";
 import "/public/css/game_end.css";
+import "/public/css/dashboard.css";
 import SizedBox from "@/Components/SizedBox";
-import RadioChoice from "@/Components/RadioChoice";
 import { useEffect, useState } from "react";
-import NumberChoice from "@/Components/NumberChoice";
 import ColorPicker from "@/Components/ColorPicker";
 import { pickFile } from 'js-pick-file';
-import ProfileAction from "@/Components/ProfileAction";
-import ProfileWidget from "@/Components/ProfileWidget";
-
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
+import InfoBanner from "@/Components/InfoBanner";
+import TimeSelector from "@/Components/2024SummerRedesign/TimeSelector";
 
 export default function ProfilePage({auth, className}){
 
     const [lightTheme, setLightTheme] = useState(window.localStorage.getItem("app-theme") != "dark");
     const [primaryColor, setPrimaryColor] = useState(window.localStorage.getItem("app-primary-color") == null || window.localStorage.getItem("app-primary-color").length <= 0 ? "default" : window.localStorage.getItem("app-primary-color"));
     const [timerVisible, setTimerVisible] = useState(window.localStorage.getItem("timer-visibility") != "hidden");
-    const [countGameMode, setCountGameMode] = useState(window.localStorage.getItem("game-mode") != "speed");
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
     const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
+    const [defaultTime, setDefaultTime] = useState(window.localStorage.getItem("default-time") ?? "0.5");
 
 
     const [imageUploadErrors, setImageUploadErrors] = useState(null);
@@ -28,17 +25,15 @@ export default function ProfilePage({auth, className}){
 
     useEffect(()=>{
         saveSettings();
-    }, [primaryColor, lightTheme, timerVisible, countGameMode, pointsAnimation, flipKeyboard]);
+    }, [primaryColor, lightTheme, timerVisible, pointsAnimation, flipKeyboard, defaultTime]);
 
     function saveSettings(){
         var isLightTheme = window.localStorage.getItem("app-theme") != "dark";
         var currentPrimaryColor = window.localStorage.getItem("app-primary-color") ?? "default";
         var isTimerVisible = window.localStorage.getItem("timer-visibility") != "hidden";
-        var isCountGameMode = window.localStorage.getItem("game-mode") != "speed";
         var isPointsAnimation = window.localStorage.getItem("points-animation") != "off";
         var isFlipKeyboard = window.localStorage.getItem("flip-keyboard") == "true";
 
-        var defaultTime = $("#default-time-val").val();
 
 
         // If any of the settings was changed
@@ -77,12 +72,6 @@ export default function ProfilePage({auth, className}){
             window.localStorage.setItem("points-animation", pointsAnimation ? "on" : "off");
         }
 
-        // Game mode
-        if(isCountGameMode != countGameMode){
-            changedSomething = true;
-            window.localStorage.setItem("game-mode", countGameMode ? "count" : "speed");
-        }
-
         // Flipped keyboard
         if(isFlipKeyboard != flipKeyboard){
             changedSomething = true;
@@ -93,10 +82,10 @@ export default function ProfilePage({auth, className}){
 
         // Default time
         if(defaultTime != null){
-            if(defaultTime != window.localStorage.getItem("default-time")){
+            if(defaultTime.toString() != window.localStorage.getItem("default-time")){
                 changedSomething = true;
             }
-            window.localStorage.setItem("default-time", defaultTime.length == 0 ? "0" : defaultTime);
+            window.localStorage.setItem("default-time", defaultTime.toString());
         }
 
         if(changedSomething){
@@ -111,11 +100,13 @@ export default function ProfilePage({auth, className}){
             //window.location.href = route("dashboard");
             $.post(route("settingsAdd"), {
                 "_token":window.csrfToken,
-                'settings':'{"color":"'+(primaryColor == "default" ? "default" : document.documentElement.style.getPropertyValue('--primary-color'))+'", "theme":"'+document.documentElement.getAttribute("data-theme")+'", "timer-visibility":"'+(timerVisible ? "visible" : "hidden")+'", "points-animation":"'+(pointsAnimation ? "on" : "off")+'", "default-time":"'+(defaultTime.length == 0 ? "0" : defaultTime)+'", "flip-keyboard":"'+(flipKeyboard ? "true" : "false")+'"}',
+                'settings':'{"color":"'+(primaryColor == "default" ? "default" : document.documentElement.style.getPropertyValue('--primary-color'))+'", "theme":"'+document.documentElement.getAttribute("data-theme")+'", "timer-visibility":"'+(timerVisible ? "visible" : "hidden")+'", "points-animation":"'+(pointsAnimation ? "on" : "off")+'", "default-time":"'+(defaultTime)+'", "flip-keyboard":"'+(flipKeyboard ? "true" : "false")+'"}',
             }).done(function (data){
                 console.log("Tehtud!");
             }).fail(function (data){
                 console.log(data);
+                setImageUploadErrors({"error":"Midagi on valesti. Sinu eelistusi ei pruugita praegu kontole salvestada. Selles seadmes töötavad siiski sinu valitud seaded!"})
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
     }
@@ -155,6 +146,7 @@ export default function ProfilePage({auth, className}){
         }).fail(function (data){
             console.log(data);
             setImageUploadErrors(data.responseJSON);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
     }
@@ -188,116 +180,123 @@ export default function ProfilePage({auth, className}){
         });
     }
 
-    return (
-        <>
-            <Head title="Minu konto" />
-            <Navbar title="Profiil & seaded"  user={auth.user} />
+    const roles = {
+        "teacher":"Õpetaja",
+        "guest":"Külaline",
+        "valimised-admin":"Rebased (admin)",
+        "valimised-vip":"Rebased (VIP) 🤫",
+    };
 
-            <SizedBox height={36} />
-            <h2>Minu konto</h2>
-            
-            {false && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span> Tagasiside küsitlus asub <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9gNf1wVw7GemStNCxaXL7jXjlghtnlti9u3aNjfqS6pnYog/viewform?vc=0&c=0&w=1&flr=0">siin</a></p>
-            </section>}
-
-            {imageUploadErrors != null && <section style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                <p style={{color:"rgb(var(--primary-color))"}}><span translate="no">ⓘ</span>{imageUploadErrors[Object.keys(imageUploadErrors)[0]]}</p>
-            </section>}
-            
-            <section>
-                <div className="" style={{display:'flex', flexWrap:"wrap", justifyContent:"center", alignItems:"center", gap:"16px"}}>
-                   {/* Selle osa saaks lihtsasti teha eraldi komponendiks (sisse annad kasutaja) */}
-                    <div style={{overflow:"hidden"}}>
-                        <ProfileWidget auth={auth} user={auth.user} onImgChange={uploadFile} />
-                    </div>
+    return <>
+        <Layout title="Profiil & seaded">
+            {imageUploadErrors != null && <div className="section" style={{marginBottom:"16px"}}>
+                <InfoBanner type={Object.keys(imageUploadErrors)[0]} text={imageUploadErrors[Object.keys(imageUploadErrors)[0]]} />
+            </div>}
+            <div className="class-grid">
+                <div className="section" style={{position:"relative"}}>
                     
-                    <div style={{overflow:"hidden", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", marginTop:"36px"}} className="actions-container">
-                        <ProfileAction icon="public" label="Avalik profiil" smallLabel="Vaata, kuidas teised sind näevad" link={"/profile/"+auth.user.id} />
-                        {auth.user.role == "teacher" && <ProfileAction icon="school" label="Loo uus klass" link={route("newClass")} disabled={!auth.user.email_verified_at} />}
-                        {auth.user.role != "teacher" &&<ProfileAction icon="school" label={auth.user.klass == null ? "Liitu klassiga" : className} smallLabel={auth.user.klass == null ? null : "Muuda"} link={route("classJoin")} disabled={auth.user.role == "guest"} />}
-                        {auth.user.email_verified_at &&<ProfileAction onClick={sendPwdResetLink} icon="lock" label="Muuda parooli" />}
-                        {!auth.user.email_verified_at && <ProfileAction onClick={verifyEmail} icon="verified" label="Kinnita e-post" />}
-
-                        <ProfileAction onClick={logout} icon="logout" label={auth.user.role == "guest" ? "Välju külalisvaatest" : "Logi välja"} red={true} />
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div className="header-container">
-                    <h3 className="section-header">Seaded</h3>
-                </div>
-                <div className="padding-container settings-padding" style={{display:'flex', flexWrap:"wrap"}}>
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Rakenduse teema</p>
-                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>                       
-                            <RadioChoice icon="light_mode" text="Hele teema" selected={lightTheme} onClick={()=>setLightTheme(true)} />
-                            <RadioChoice icon="dark_mode" text="Tume teema" selected={!lightTheme} onClick={()=>setLightTheme(false)} />
+                    <div style={{position:"absolute", right:"24px", top:"24px",}}>
+                        <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
+                            <img src={auth.user.profile_pic} style={{position:"relative", borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
+                            {auth.user.role != "guest" && <span translate="no" style={{cursor:"pointer", position:"absolute", bottom:"4px", left:"12px", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
                         </div>
                     </div>
+                    <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
+                    {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{roles[auth.user.role] ?? auth.user.role ?? "Tavakonto"}</span>}
+                    <SizedBox height="32px" />
+                    {auth.user.role != "teacher" && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
+                        {className != null && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
+                            <div>
+                                <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{className}</h2>
+                                <SizedBox height="8px" />
+                                <p style={{color:"var(--grey-color)", marginBlock:"0"}}>Muuda</p>
+                            </div>
+                            <i translate="no" style={{fontSize:"48px", color:"var(--lightgrey-color)"}} className="material-icons">arrow_forward_ios</i>
+                        </div>}
+                        {className == null && <TwoRowTextButton upperText="Liitu klassiga" lowerText="Vali klass" />}
+                    
+                        <a href={route("classJoin")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div>}
+                    {auth.user.role == "teacher" && <div className="section clickable" style={{display:"inline-flex", position:"relative"}}>
+                        <TwoRowTextButton upperText="Loo uus klass" lowerText="Uus klass" />
 
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Peamine värv</p>
-                        <div className="color-picker-container">
+                        <a href={route("newClass")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div> }
+
+                    <SizedBox height="16px" />
+                    <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:((window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : 'flex'), flexDirection:"row-reverse", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email_verified_at == null && auth.user.role != "guest" && <a style={{display:(window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} onClick={verifyEmail} alone="">(Kinnita)</a>} {auth.user.email}</p>
+                </div>
+                <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
+                    <div>
+                        <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">lock</i>
+                        <p style={{marginTop:"8px", marginBottom:"0"}}>Muuda parooli</p>
+                    </div>
+                </div>
+                <div onClick={logout} className="section clickable red" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
+                    <div style={{color:"var(--red-color)",}}>
+                        <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">logout</i>
+                        <p style={{marginTop:"8px", marginBottom:"0"}}>{auth.user.role == "guest" ? "Lahku külalisvaatest" : "Logi välja"}</p>
+                    </div>
+                </div>
+                <div className="section clickable" style={{padding:"16px", position:'relative'}}>
+                    <i translate="no" className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>language</i>
+                    <TwoRowTextButton upperText="Avalik profiil" lowerText="Vaata, kuidas teised sind näevad" showArrow={false} />
+
+                    <a href={"/profile/"+auth.user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                </div>
+            </div>
+            <SizedBox height="16px" />
+
+            <div className="two-column-layout">
+                <div onClick={()=>setLightTheme(lightTheme => !lightTheme)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Rakenduse teema" lowerText={lightTheme ? "Hele teema" : "Tume teema"} />
+
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{lightTheme ? "light_mode" : "brightness_2"}</i>
+                </div>
+                <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Peamine värv" lowerText="Muuda" />
+                    <div style={{display:"grid", gridTemplateColumns:"repeat(5, 1fr)", gap:"4px", marginRight:"8px"}}>
                             <ColorPicker color={"default"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"64, 103, 158"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"231, 136, 149"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"142, 122, 181"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"102, 127, 153"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"82, 34, 88"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"121, 160, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
-                            <ColorPicker color={"208, 72, 72"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"125, 10, 10"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"90, 92, 60"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"133, 199, 195"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"164, 190, 123"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-
-                        </div>
-
                     </div>
-
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Taimeri nähtavus</p>
-                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="timer" text="Näita" selected={timerVisible} onClick={()=>setTimerVisible(true)} />
-                            <RadioChoice icon="timer_off" text="Peida" selected={!timerVisible} onClick={()=>setTimerVisible(false)} />
-                        </div>
-                    </div>
-
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Punktianimatsioon</p>
-                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="visibility" text="Näita" selected={pointsAnimation} onClick={()=>setPointsAnimation(true)} />
-                            <RadioChoice icon="visibility_off" text="Peida" selected={!pointsAnimation} onClick={()=>setPointsAnimation(false)} />
-                        </div>
-                    </div>
-
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Klaviatuur</p>
-                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice smallLabel="Telefoni klaviatuur" icon="dialpad" text="Tavaline" selected={!flipKeyboard} onClick={()=>setFlipKeyboard(false)} />
-                            <RadioChoice smallLabel="Kalkulaatori klaviatuur" icon="dialpad" text="Ümberpööratud" selected={flipKeyboard} onClick={()=>setFlipKeyboard(true)} />
-                        </div>
-                    </div>
-
-                    {/* <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Vaikimisi mängurežiim</p>
-                        <div className="app-theme-group" style={{width:'100%', display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px", marginBlock:"8px"}}>
-                            <RadioChoice icon="tag" text="Tehete arvu põhine" selected={countGameMode} onClick={()=>setCountGameMode(true)} />
-                            <RadioChoice icon="speed" text="Kiiruspõhine" selected={!countGameMode} onClick={()=>setCountGameMode(false)} />
-                        </div>
-                    </div> */}
-
-                    <div style={{width:"100%"}}>
-                        <p style={{color:"grey"}}>Vaikimisi aeg</p>
-                        <NumberChoice onChange={saveSettings} id="default-time-val" defaultValue={window.localStorage.getItem("default-time") == null ? null : parseFloat(window.localStorage.getItem("default-time"))} />
-                    </div>
-                    
-                    {/* <button style={{flex:'1', marginInline:"4px", marginTop:"32px"}} onClick={saveSettings} id="save-btn"><span style={{display:"none"}} className="material-icons save-icon">done</span><span className="text">Salvesta seaded</span></button> */}
                 </div>
-            </section>
-            <SizedBox height={48} />
-            <a alone="" href={route("changelog")}><i className="material-icons no-anim">update</i>&nbsp; Uuenduste ajalugu</a>
-            <SizedBox height={32} />
 
-        </>
-    );
+                <div onClick={()=>setTimerVisible(timerVisible => !timerVisible)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Taimer" lowerText={timerVisible ? "Taimer nähtav" : "Taimer peidetud"} />
+
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{timerVisible ? "timer" : "timer_off"}</i>
+                </div>
+                <div onClick={()=>setPointsAnimation(pointsAnimation => !pointsAnimation)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Punktianimatsioon" lowerText={pointsAnimation ? "Näita" : "Peida"} />
+
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{pointsAnimation ? "visibility" : "visibility_off"}</i>
+                </div>
+
+                <div onClick={()=>setFlipKeyboard(flipKeyboard => !flipKeyboard)} className="section clickable" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Klaviatuur" lowerText={flipKeyboard ? "Ümberpööratud" : "Tavaline"} />
+
+                    <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons-outlined">{"dialpad"}</i>
+                </div>
+
+                <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
+                    <TwoRowTextButton showArrow={false} upperText="Vaikimisi aeg" lowerText="Muuda" />
+                    <TimeSelector time={defaultTime} onIncrease={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} onDecrease={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) < 0.5 ? 0 : parseFloat(defaultTime) - 0.5)} />
+                </div>
+            </div>
+            <SizedBox height="16px" />
+            <div style={{display:"flex", justifyContent:"space-between", alignContent:'end', color:"var(--grey-color)"}}>
+                <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)"}} href={route("changelog")}>Uuenduste ajalugu</a>
+                <span>© 2024</span>
+            </div>
+        </Layout>
+    </>;
 }

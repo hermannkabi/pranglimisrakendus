@@ -1,11 +1,11 @@
 export default function ApplicationLogo(props) {
     return (
-        <svg className="application-logo" version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="60px" height="60px" viewBox="0 0 509.000000 491.000000"
+        <svg onClick={props.onClick} style={{marginLeft:"-12px", ...props.style}} className="application-logo " version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width={props.size ?? "60px"} height={props.size ?? "60px"} viewBox="0 0 500 500"
  preserveAspectRatio="xMidYMid meet">
 
 <g transform="translate(0.000000, 491.000000) scale(0.100000,-0.100000)"
-fill="rgb(var(--primary-color))" stroke="none">
+fill="rgb(var(--text-color))" stroke="none">
 <path d="M2605 3844 c-55 -8 -262 -32 -460 -53 -348 -37 -363 -39 -448 -74
 -48 -19 -109 -52 -137 -72 -48 -35 -110 -104 -110 -121 0 -10 105 -81 158
 -108 32 -16 32 -16 42 8 11 30 60 68 122 95 57 24 61 20 72 -69 4 -30 14 -113

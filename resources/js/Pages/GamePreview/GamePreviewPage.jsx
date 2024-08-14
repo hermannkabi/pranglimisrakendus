@@ -1,341 +1,208 @@
-import Navbar from "@/Components/Navbar";
-import { Head } from "@inertiajs/react";
-import "/public/css/preview.css";
-import NumberInput from "@/Components/NumberInput";
-import SizedBox from "@/Components/SizedBox";
-import { useState, useEffect, useRef } from "react";
-import CheckboxTile from "@/Components/CheckboxTile";
-import LoadingSpinner from "@/Components/LoadingSpinner";
+import { useState, useEffect } from "react";
+import Layout from "@/Components/2024SummerRedesign/Layout";
+import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
+import InfoBanner from "@/Components/InfoBanner";
+import Chip from "@/Components/2024SummerRedesign/Chip";
+import BigButton from "@/Components/2024SummerRedesign/BigButton";
+import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
+import TimeSelector from "@/Components/2024SummerRedesign/TimeSelector";
 
-export default function GamePreviewPage({auth}){
+
+// Type in this context is the type of game (e.g. liitmine), not types as in natural, fraction etc
+export default function GamePreviewPage({auth, type}){
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
 
     const typeIndependents = ["lünkamine", "võrdlemine", "choose", "murruTaandamine"];
+    const guideAvailable = ["liitmine", "korrutamine", "jaguvus", "kujundid", "astendamine", "võrdlemine"];
+
+    const typeToName = {"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"};
+
+    const gameNames = {
+        "lihtsustamine":"Murru taandamine",
+        "murruTaandamine":"Murru taandamine",
+        "jaguvus":"Jaguvusseadused"
+    };
+    
+    function getGameName(type){
+        return type == null ? "Tundmatu" : type in gameNames ? gameNames[type] : type.substring(0, 1).toUpperCase() + type.substring(1);
+    }
+
+    const data = {
+        "liitmine":{
+            "lvls":5,
+            "extra":["A", "B", "C"],
+            "types":["natural", "integer", "fraction", "roman"],
+        },
+        // If the value is a string, go to said key
+        "lahutamine":"liitmine",
+        "liitlahutamine":"liitmine",
+
+        "korrutamine":{
+            "lvls":6,
+            "extra":["A", "B", "C"],
+            "types":["natural", "integer", "fraction", "roman"],
+
+        },
+        "jagamine":"korrutamine",
+        "korrujagamine":"korrutamine",
+
+        "lünkamine":{
+            "lvls":5,
+            "extra":["A", "B", "C"],
+            "types":["natural", "integer", "fraction"],
+        },
+
+        "võrdlemine":{
+            "lvls":3,
+            "extra":[],
+            "types":[],
+        },
+
+        "astendamine":{
+            "lvls":5,
+            "extra":["A", "B", "C"],
+            "types":[{value:"natural", label:"Naturaalarvud"}, {value:"fraction", label:"Harilikud murrud"}],
+        },
+        "juurimine":"astendamine",
+        "astejuurimine":"astendamine",
+        "jaguvus":{
+            "lvls":5,
+            "extra":["A", "B", "C"],
+            "types":["natural", "integer"],
+        },
+        "murruTaandamine":{
+            "lvls":6,
+            "extra":["A", "B", "C"],
+            "types":[],
+        },
+        "kujundid":{
+            "lvls":5,
+            "extra":[],
+            "types":[{value: "kujundid", label: "Tavaline"}, {value: "color", label: "Erinevad värvid"}, {value: "size", label: "Erinevad suurused"}, {value: "all", label: "Erinevad värvid ja suurused"}],
+        },
+    };
+
+    function getInitialGameMode(){
+        var fromURL = urlParams.get("type");
+        var types = (typeof data[type] == "string" ? data[data[type]] : data[type])["types"];
+
+        if(typeIndependents.includes(type)) return type;
+
+        if(typeof types[0] == "string"){
+            if(types.includes(fromURL)){
+                return fromURL;
+            }else{
+                return types[0];
+            }
+        }else{
+            if(types.map(e=>e["value"]).includes(fromURL)){
+                return fromURL;
+            }else{
+                return types[0]["value"];
+            }
+        }
+    }
+
+    function getAllGameModes(){
+        var types = (typeof data[type] == "string" ? data[data[type]] : data[type])["types"];
+
+        if(typeIndependents.includes(type)) return [type];
+
+        if(typeof types[0] == "string") return types;
+        return types.map(e=>e["value"]);
+    }
 
     const [message, setMessage] = useState();
-    const [levels, setLevels] = useState([]);
-    const [extra, setExtra] = useState([]);
-    const [types, setTypes] = useState([]);
+    const [levels, setLevels] = useState(Array.from(Array((typeof data[type] == "string" ? data[data[type]] : data[type])["lvls"])).map((x,i)=>i+1));
+    const [gameTime, setGameTime] = useState(Math.min((Math.max(0.5, urlParams.get("time") != null ? urlParams.get("time") : (window.localStorage.getItem("default-time") ?? "0.5"))), 10));
+    const [selectedGameMode, setSelectedGameMode] = useState(getInitialGameMode());
 
-    const [loading, setLoading] = useState(false);
-
-
-    window.addEventListener("beforeunload", function (e) {
-        setLoading(false);
-    });
-    
-
-
-    // This function is called once when the page is first loaded
-    useEffect(()=>{
-        // Whether or not the type select is shown
-        showNumberType(true);
-
-        showLevels(true);
-    }, []);
-
-
-    function getCheckedLevels(){
-        var levels = [];
-
-        $("input[type='checkbox']").each(function (){
-            if($(this).is(":checked")){
-                levels.push($(this).attr("level"));
-            }
-        });
-
-        return levels;
-    }
+    useEffect(function (){
+        window.history.replaceState(null, null, getParams());    
+    }, [selectedGameMode, gameTime, levels]);
 
     function navigateToGame(){
-        setMessage();
-        var type = $("#game-type").val();
-
-        // Natural, whole or fraction
-        var numberType = $("#number-type").val();
-
-        // These don't require a type, so set a random one
-        // It's the same as type purely for a visual reason
-        if(typeIndependents.includes(type)){
-            numberType = type;
-        }
-
-        var time = parseFloat($("#number").val().replace(",", "."));
-
-        var levels = getCheckedLevels();
-
-    
-        if(type == "choose"){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Palun vali harjutusala");
+        if(selectedGameMode == null || !getAllGameModes().includes(selectedGameMode)){
+            setMessage("Palun vali arvuhulk" + selectedGameMode);
             return;
         }
-
-        if(levels.length <= 0){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Palun vali vähemalt üks tase");
-            return;
-        }
-        
-        if(isNaN(time)){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Palun sisesta aeg, kui palju soovid harjutada");
-            return; 
-        }
-
-        if(time <= 0 || time > 10){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Aeg peab olema vahemikus 0-10 min");
-            return;
-        }
-
-        if(numberType == null){
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setMessage("Palun vali arvuhulk");
-            return;
-        }
-
-        if(type != "choose" && time != null && time > 0){
-            setLoading(true);
-            window.location.href = "/game/"+levels.join("")+"/"+type+"/"+time+"/"+numberType;
-        }
-
+        window.location.href = "/game/"+levels.join("")+"/"+type+"/"+gameTime+"/"+selectedGameMode;
     }
 
-
-    function getParams(timeVal){
-        return "?id="+$("#game-type").val() + "&time=" + (timeVal != null && Number.isInteger(timeVal) ? timeVal : $("#number").val()) + ("&type="+($("#number-type").val() ?? "choose")); 
+    function getParams(){
+        return "?time=" + (gameTime) + ("&type="+selectedGameMode); 
     }
 
-    function onTimeChange(val){
-        window.history.replaceState(null, null, getParams(val));    
-    }
+    return <>
+        <Layout title="Mängu eelvaade" auth={auth}>
+            <div className="two-column-layout">
+                <div>
+                    {message && <div className="section">
+                        <InfoBanner text={message} />
+                    </div>}
+                    <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center', marginTop:"0"}}>
+                        <TwoRowTextButton showArrow={false} upperText="Mänguaeg" lowerText="Kui pikalt mängid?" />
+                        <TimeSelector time={gameTime} onIncrease={()=>setGameTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} onDecrease={()=>setGameTime(defaultTime => parseFloat(defaultTime) <= 0.5 ? 0.5 : parseFloat(defaultTime) - 0.5)} />
+                    </div>
 
-    function showNumberType(instant){
-        // These types are not dependent on this
-        if(typeIndependents.includes($("#game-type").val())){
-            $("#number-type").slideUp(instant ? 0 :100);
-        }else{
-            $("#number-type").slideDown(instant ? 0 :100);
-        }
-    }
-
-    function showLevels(firstTime=false){
-
-        setLevels([]);
-        setExtra([]);
-
-
-        const data = {
-            "liitmine":{
-                "lvls":5,
-                "extra":["A", "B", "C"],
-                "types":["natural", "integer", "fraction", "roman"],
-            },
-            // If the value is a string, go to said key
-            "lahutamine":"liitmine",
-            "liitlahutamine":"liitmine",
-
-            "korrutamine":{
-                "lvls":6,
-                "extra":["A", "B", "C"],
-                "types":["natural", "integer", "fraction", "roman"],
-
-            },
-            "jagamine":"korrutamine",
-            "korrujagamine":"korrutamine",
-
-            "lünkamine":{
-                "lvls":5,
-                "extra":["A", "B", "C"],
-                "types":["natural", "integer", "fraction"],
-            },
-
-            "võrdlemine":{
-                "lvls":3,
-                "extra":[],
-                "types":[],
-            },
-
-            "astendamine":{
-                "lvls":5,
-                "extra":["A", "B", "C"],
-                "types":[{value:"natural", label:"Naturaalarvud"}, {value:"fraction", label:"Harilikud murrud"}],
-            },
-            "juurimine":"astendamine",
-            "astejuurimine":"astendamine",
-            "jaguvus":{
-                "lvls":5,
-                "extra":["A", "B", "C"],
-                "types":["natural", "integer"],
-            },
-            "murruTaandamine":{
-                "lvls":6,
-                "extra":["A", "B", "C"],
-                "types":[],
-            },
-            "kujundid":{
-                "lvls":5,
-                "extra":[],
-                "types":[{value: "kujundid", label: "Tavaline"}, {value: "color", label: "Erinevad värvid"}, {value: "size", label: "Erinevad suurused"}, {value: "all", label: "Erinevad värvid ja suurused"}],
-            },
-        };
-
-        var type = $("#game-type").val();
-
-        const guideAvailable = ["liitmine", "korrutamine", "jaguvus", "kujundid", "astendamine", "võrdlemine"];
-
-        if(guideAvailable.includes(type)){
-            $("#guide").attr("href", "/how-to-play#"+type).slideDown(firstTime ? 0 : 200);
-        }else{
-            $("#guide").slideUp(firstTime ? 0 : 200);
-        }
-
-        var typeData = data[type];
-
-        var lvls = [];
-        var extras = [];
-
-        if(typeData != null && typeData != undefined){
-            if(typeof typeData === "string"){
-                typeData = data[data[type]];
-            }
-    
-            for(var i = 0; i<typeData.lvls; i++){
-                lvls.push(<CheckboxTile level={i + 1} key={i} />);
-            }
-    
-            extras = typeData.extra.map((val, i) => <CheckboxTile level={"★" + (i + 1)} levelChar={val} key={i} />);
-    
-            setLevels(lvls);
-            setExtra(extras);
-            setTypes(typeData.types);
-
-            setTimeout(() => {
-                if(urlParams.get("type").length == 0){
-                    $("#number-type").val("choose").change();
-                    return;
-                }
-                
-                if(typeData.types.includes(urlParams.get("type"))){
-                    $("#number-type").val(urlParams.get("type")).change();
-                }
-
-                if(typeof typeData.types != "string"){
-                    for(var type of typeData.types){
-                        if(type.value == urlParams.get("type")){
-                            $("#number-type").val(urlParams.get("type")).change();
-                        }
-                    }
-                }
-
-                // If there is only 1 type, set the value to that
-                if(typeData.types.length == 1){
-                    $("#number-type").val(typeData.types[0]).change();
-                }
-
-            }, 10);
-        }
-    }
-
-    $("#game-type").change(function (){
-        window.history.replaceState(null, null, getParams());   
-        
-        showNumberType(false);
-        showLevels();
-    });
-
-    $("#number-type").change(function (){
-        window.history.replaceState(null, null, getParams());    
-    });
-
-    $("#number").change(onTimeChange);
-
-    function showMoreOptions(){
-        $("#more-options-arrow").css("transform", "rotate("+($(".more").is(":hidden") ? "-180deg" : "0deg")+")");
-        $(".more").slideToggle(200);
-    }
-
-
-    return (
-        <>
-            <Head title="Mängu eelistused" />
-            <Navbar title="Mängu eelistused" user={auth.user} />
-
-            <SizedBox height={36} />
-
-            <h2>Mängu eelvaade</h2>
-            <div className="container">
-                {message && <div style={{backgroundColor:"rgb(var(--section-color),  var(--section-transparency))", borderRadius:"var(--primary-btn-border-radius)", padding:"8px", marginBlock:"8px"}}>
-                    <p style={{color:"rgb(var(--primary-color))"}}>ⓘ {message}</p>
-                </div>}
-                <div className="preferences">
-                    <section>
-
-                        <select style={{marginBottom:"4px"}} defaultValue={id ?? "choose"} id="game-type">
-                            <option value="choose"> Vali harjutusala</option>
-
-                            <optgroup label="Liitmine/lahutamine">
-                                <option value="liitmine">Liitmine</option>
-                                <option value="lahutamine">Lahutamine</option>
-                                <option value="liitlahutamine">Liitlahutamine</option>
-                            </optgroup>
-
-                            <optgroup label="Korrutamine/jagamine">
-                                <option value="korrutamine">Korrutamine</option>
-                                <option value="jagamine">Jagamine</option>
-                                <option value="korrujagamine">Korrujagamine</option>
-                            </optgroup>
-
-                            <optgroup label="Astendamine/juurimine">
-                                <option value="astendamine">Astendamine</option>
-                                <option value="juurimine">Juurimine</option>
-                                <option value="astejuurimine">Astejuurimine</option>
-                            </optgroup>
-
-                            <option value="võrdlemine">Võrdlemine</option>
-                            <option value="lünkamine">Lünkamine</option>
-                            <option value="jaguvus">Jaguvusseadused</option>
-                            <option value="murruTaandamine">Murru taandamine</option>
-                            <option value="kujundid">Kujundid</option>
-                        </select>
-                        <a id="guide" style={{display:"none", fontSize:"16px", float: "right", marginBottom:"8px"}} alone="" href="/how-to-play">Kuidas mängida?</a>
-
-                        <select defaultValue="null" name="" id="" style={{display:"none"}}>
-                            <option value="null" disabled>Vali mängurežiim</option>
-                            <option value="normal">Tavamäng</option>
-                            <option value="sprint">Sprint</option>
-                        </select>
-                        <select defaultValue={urlParams.get("type") ?? "choose"} name="" id="number-type">
-                            <option disabled value="choose">Vali arvuhulk</option>
-                            {types.map((e)=>typeof e == "string" ? <option value={e} key={e}>{{"natural":"Naturaalarvud", "integer":"Täisarvud", "fraction":"Kümnendmurrud", "roman":"Rooma numbrid"}[e]}</option> : <option key={e.value} value={e.value}>{e.label}</option>)}                            
-                        </select>
-
-                        <NumberInput placeholder="Aeg (min)" id="number" onChange={onTimeChange} default={urlParams.get("time") ?? (Number.isInteger(parseInt(window.localStorage.getItem("default-time"))) ? (window.localStorage.getItem("default-time") == "0" ? "" : window.localStorage.getItem("default-time")) : "")}/>
-
-                        {levels.length > 0 && <SizedBox height={16} />}
-                        <a style={{visibility: levels.length > 0 ? "visible" : "hidden"}} alone="true" onClick={showMoreOptions}>Täpsemad valikud <i id="more-options-arrow" className="material-icons no-anim">keyboard_arrow_down</i> </a>
-                        {levels.length > 0 && <SizedBox height={16} />}
-                        <div className="more" hidden>
-                            <div style={{textAlign:"start"}} className="lvls">
-                                {levels}
-
-                                {extra.length > 0 && <><br /><br /></>}
-                                {extra}
+                    {!(typeIndependents.includes(type)) && <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+                        <VerticalStatTile padding="8px 0" icon="pin" text="Arvuhulk" customValue={true} value={<>
+                            <div>
+                                {(typeof data[type] == "string" ? data[data[type]]["types"] : data[type]["types"]).map((e)=> <Chip key={e} onClick={()=>setSelectedGameMode(typeof e == "string" ? e : e["value"])} label={typeof e == "string" ? typeToName[e] : e["label"]} active={typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]} /> )}
                             </div>
-                        </div>
-                    </section>
-                </div>
-                <SizedBox height="16px" />
-                <div className="start-btn">
-                    <section>
-                        <button onClick={navigateToGame}>{loading && <LoadingSpinner />} Alusta mängu</button>
-                        {/* <a alone="" href={route("guide")} style={{display:"block", textAlign:"end", fontSize:"14px"}}>Kuidas mängida?</a> */}
+                        </>} />
+                    </div>}
+                    {typeIndependents.includes(type) && <div className="section"><InfoBanner text={"Sellel mängutüübil ei ole võimalik arvuhulka muuta"} /></div> }
 
-                    </section>
+                    <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+                        <VerticalStatTile padding="8px 0" icon="exercise" text="Tasemed" customValue={true} value={
+                            <div>
+                                {Array.from(Array((typeof data[type] == "string" ? data[data[type]] : data[type])["lvls"])).map((x, e)=><Chip key={e} onClick={()=>{
+
+                                    var newLevels = [...levels];
+
+                                    if(newLevels.includes(e+1)){
+                                        if(newLevels.length <= 1) return;
+                                        newLevels = newLevels.filter(item => item != e+1);
+                                    }else{
+                                        newLevels.push(e+1);
+                                    }
+
+                                    newLevels.sort();
+
+                                    return setLevels(newLevels);
+                                }} label={(e+1)+". tase"} active={levels.includes(e+1)} /> )}
+                                <br /><br/>
+
+                                {(typeof data[type] != "string" ? data[type]["extra"] : data[data[type]]["extra"]).map((e, ind)=> <Chip key={ind} icon={"star"} label={(ind + 1) +". tase"} active={levels.includes(e)} onClick={()=>{
+                                    var newLevels = [...levels];
+
+                                    if(newLevels.includes(e)){
+                                        if(newLevels.length <= 1) return;
+                                        newLevels = newLevels.filter(item => item != e);
+                                    }else{
+                                        newLevels.push(e);
+                                    }
+
+                                    newLevels.sort();
+                                    
+                                    return setLevels(newLevels);
+                                }} />)}
+                            </div>} />                        
+                    </div>
+                </div>
+
+                {/* Teine tulp */}
+                <div>
+                    <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+                        <VerticalStatTile padding="8px 0" icon="calculate" text="Mängutüüp" value={getGameName(type)} />
+                        {guideAvailable.includes(type) && <a style={{all:"unset"}} href={route("guide") + "#"+type}><i translate="no" style={{fontSize:"40px"}} className="material-icons-outlined clickable">info</i></a> }
+                    </div>
+
+                    <BigButton onClick={navigateToGame} title={"Alusta"} subtitle={"Head mängu!"} />
                 </div>
             </div>
-        </>
-    );
+        </Layout>
+    </>;
+
 }

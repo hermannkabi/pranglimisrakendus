@@ -120,15 +120,26 @@ class ClassController extends Controller
 
         if($klass == null) abort(404);
 
-        // A student should only be able to view their own class
-        if($request->user()->role == "student" && $request->user()->klass != $klass->klass_id) abort(403);
+        // A student (someone who is not a teacher) should only be able to view their own class
+        if($request->user()->role != "teacher" && $request->user()->klass != $klass->klass_id) abort(403);
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
-        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "student")->get());
+        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi","asc")->get());
         $teacher = User::where('id', $klass->teacher_id)->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
         $isTeacher = $teacher == null ? false : $request->user()->id == $teacher->id;
         return Inertia::render("Classroom/ClassroomPage", ['uuid'=>$uuid, 'isTeacher'=>$isTeacher, 'leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
+    }
+
+    public function showAll(Request $request){
+        $classes = Klass::where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
+
+        foreach($classes as $class){
+            $studentsCount = User::where("klass", $class->klass_id)->where("role", "!=", "teacher")->count();
+            $class->studentsCount = $studentsCount;
+        }
+
+        return Inertia::render("AllClasses/AllClassesPage", ["classes"=>$classes]);
     }
 
 
@@ -188,7 +199,7 @@ class ClassController extends Controller
             return;
         }
 
-        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "student")->get();
+        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi", "asc")->get();
         
         return Inertia::render("Classroom/ClassroomEdit", ["klass"=>$class, "students"=>$students]);
 
@@ -205,12 +216,16 @@ class ClassController extends Controller
     public function overallClassStats($klass_id, $aeg=null /* Time filter for statistics */){
         // Total no games
         $total_game_count = 0;
+
+        // Games played today
+        $today_game_count = 0;
+
         // Total no points
         $total_points_count = 0;
         // Points by timestamp
         $points_by_timestamp = [];
 
-        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "student")->get();
+        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "!=", "teacher")->get();
 
         // Students count
         $students_count = count($studentsInClass);
@@ -237,10 +252,13 @@ class ClassController extends Controller
             foreach($gamesByUser as $game){
                 $total_points_count += $game->experience;
                 $total_game_count ++;
+                if(date_diff(new DateTime("today"), new DateTime(DateTime::createFromFormat("Y-m-d H:i:s", $game->dt)->format("Y-m-d")))->format("%a") == 0){
+                    $today_game_count ++;
+                }
             }
         }
 
-        return ["students"=>$studentsInClass, "studentsCount"=>$students_count, "totalGameCount"=>$total_game_count, "totalPointsCount"=>$total_points_count];
+        return ["students"=>$studentsInClass, "studentsCount"=>$students_count, "totalGameCount"=>$total_game_count, "totalPointsCount"=>$total_points_count, "gamesToday"=>$today_game_count];
     }
 
     /**
@@ -289,7 +307,7 @@ class ClassController extends Controller
                 $user = Auth::user();
 
                 if($user->role == "guest"){
-                    return redirect()->back()->withErrors(["Külaliskontoga ei saa klassiga ühineda"]);
+                    return "Külaliskontoga ei saa klassiga ühineda";
                 }
 
                 $user->klass = $request->klass_id;
@@ -297,14 +315,14 @@ class ClassController extends Controller
                  /** @var \App\Models\User $user **/
                 $user->save();
     
-                return redirect()->route("dashboard");
+                return 0;
     
             }else{
-                return redirect()->back()->withErrors(["Parool ei ole õige"]);
+                return "Parool ei ole õige";
             }
 
         }else{
-            return redirect()->back()->withErrors(["Sellist klassi ei leitud!"]);
+            return "Sellist klassi ei leitud!";
         }
 
     }
@@ -318,6 +336,12 @@ class ClassController extends Controller
         }
 
         $classes = Klass::all();
+
+        for($i = 0; $i < count($classes); $i++){
+            $teacher_name = User::where("id", $classes[$i]->teacher_id)->first();
+            $classes[$i]->teacher_name = ucwords($teacher_name->eesnimi . " " . $teacher_name->perenimi);
+            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->where("role", "!=", "teacher")->count();
+        }
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
     }

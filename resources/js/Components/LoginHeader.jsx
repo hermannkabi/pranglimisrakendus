@@ -13,7 +13,7 @@ export default function LoginHeader({pageName, description="REAALER", topMargin=
     return (
         <div className="auth-header" style={forceCenter ? {textAlign:"center"} : {}}>
             <SizedBox height="8px" />
-            {!googleLogo && <ApplicationLogo onClick={()=>window.location.href = route("welcome")} height="75px" style={{marginBottom:"16px"}} />}
+            {!googleLogo && <a style={{all:"unset"}} href={route("welcome")}> <ApplicationLogo height="75px" style={{marginBottom:"16px"}} /> </a>}
             {googleLogo && <img src={google} height={size} width={size} style={{userSelect:"none"}} />}
             <h1 style={{marginBlock: "0"}}>{pageName}</h1>
             <p style={{marginTop: "0", fontSize:"16px"}}>{description}</p>

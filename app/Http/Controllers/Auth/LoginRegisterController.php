@@ -34,9 +34,6 @@ class LoginRegisterController extends Controller
     {
         return Inertia::render('Register/NewRegisterPage');
     }
-    public function registerGoogle(){
-        return Inertia::render("Register/RegisterGooglePage");
-    }
 
     public function forgotPassword(){
         return Inertia::render("Login/ResetPasswordPage");
@@ -188,12 +185,12 @@ class LoginRegisterController extends Controller
         {        
             $stats = app(GameController::class)->getOverallStats(Auth::id());
             $klass = Auth::user()->klass != null;
-            $classData = false;
+            $classData = null;
             $teacherData = null;
-            if($klass && Auth::user()->role == "student"){
+            if($klass && Auth::user()->role != "teacher"){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
-                $teacher = User::select(["eesnimi", "perenimi", "id"])->where("id", $class->teacher_id)->get();
-                $students = User::where("role", "student")->where("klass", Auth::user()->klass)->get();
+                $teacher = User::select(["eesnimi", "perenimi", "profile_pic", "id"])->where("id", $class->teacher_id)->get();
+                $students = User::where("role", "!=", "teacher")->where("klass", Auth::user()->klass)->get();
 
                 $total_count = 0;
 
@@ -201,23 +198,24 @@ class LoginRegisterController extends Controller
 
                 $filtered = (array_filter($leaderboardData, function ($row){return $row["user"]->id == Auth::id();}));
                 
-                Log::debug($filtered);
                 $place = $filtered[array_keys($filtered)[0]]["place"];
                 foreach($leaderboardData as $dataRow){
                     $total_count += $dataRow["xp"];
                 }
 
-                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid];
+                $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid, "threeBest"=>array_slice($leaderboardData, 0, 3)];
             }
 
             if(Auth::user()->role == "teacher"){
                 $teacherData = [];
-                $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->get();
+                $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
                 foreach($classes as $class){
                     array_push($teacherData, $class);
                 }
             }
 
+            $streak = app("App\Http\Controllers\ProfileController")->viewStreak(Auth::id());
+            
             return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
         }
         

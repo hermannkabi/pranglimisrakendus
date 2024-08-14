@@ -1,7 +1,0 @@
-.number-button{
-    transition: opacity 0.3s;
-}
-
-.number-button:hover{
-    opacity: 0.85;
-}
