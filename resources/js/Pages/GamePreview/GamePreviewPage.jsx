@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
+import TimeSelector from "@/Components/2024SummerRedesign/TimeSelector";
 
 
 // Type in this context is the type of game (e.g. liitmine), not types as in natural, fraction etc
@@ -141,15 +142,7 @@ export default function GamePreviewPage({auth, type}){
                     </div>}
                     <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center', marginTop:"0"}}>
                         <TwoRowTextButton showArrow={false} upperText="Mänguaeg" lowerText="Kui pikalt mängid?" />
-
-                        <div style={{display:"inline-flex", flexDirection:"row", alignItems:'center', gap:"8px", marginRight:"8px"}}>
-                            <i translate="no" onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: gameTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
-                            <div style={{width:"75px", textAlign:"center", marginBlock:"8px", }}>
-                                <h2 style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontSize:"40px"}}>{gameTime == "0" ? "-" : gameTime.toString().replaceAll(".", ",")}</h2>
-                                <p style={{color:"var(--grey-color)", marginBlock:"0"}}>min</p>
-                            </div>
-                            <i translate="no" onClick={()=>setGameTime(defaultTime => parseFloat(defaultTime) <= 0.5 ? 0.5 : parseFloat(defaultTime) - 0.5)} style={{color: gameTime <= 0.5 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
-                        </div>
+                        <TimeSelector time={gameTime} onIncrease={()=>setGameTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} onDecrease={()=>setGameTime(defaultTime => parseFloat(defaultTime) <= 0.5 ? 0.5 : parseFloat(defaultTime) - 0.5)} />
                     </div>
 
                     {!(typeIndependents.includes(type)) && <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>

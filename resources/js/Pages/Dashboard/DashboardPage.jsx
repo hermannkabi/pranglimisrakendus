@@ -8,6 +8,7 @@ import DashboardLeaderboardWidget from "@/Components/2024SummerRedesign/Dashboar
 import DashboardClassStatTile from "@/Components/2024SummerRedesign/DashboardClassStatTile";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import ClassWidget from "@/Components/2024SummerRedesign/ClassWidget";
+import StreakWidget from "@/Components/2024SummerRedesign/StreakWidget";
 
 export default function Dashboard({auth, stats, classData, teacherData}) {
 
@@ -36,7 +37,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     </InfoBanner>
                 </div>
                 {auth.user.role != "guest" && <div className="four-stat-row">
-                    <StatisticsTile iconColor="#F3AF71" disabled={stats.streak_active == 0} stat={stats.streak} label={"Järjestikust päeva"} oneLabel={"Järjestikune päev"} icon={"local_fire_department"} />
+                    <StreakWidget streak={stats.streak} active={stats.streak_active} />
                     <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                     <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
                     <StatisticsTile stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />

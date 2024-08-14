@@ -7,6 +7,7 @@ import { pickFile } from 'js-pick-file';
 import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
+import TimeSelector from "@/Components/2024SummerRedesign/TimeSelector";
 
 export default function ProfilePage({auth, className}){
 
@@ -288,19 +289,14 @@ export default function ProfilePage({auth, className}){
 
                 <div className="section" style={{display:"flex", justifyContent:"space-between", alignItems:'center'}}>
                     <TwoRowTextButton showArrow={false} upperText="Vaikimisi aeg" lowerText="Muuda" />
-
-                    <div style={{display:"inline-flex", flexDirection:"row", alignItems:'center', gap:"8px", marginRight:"8px"}}>
-                        <i translate="no" onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} style={{color: defaultTime >= 10 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">add</i>
-                        <div style={{width:"75px", textAlign:"center", marginBlock:"8px", }}>
-                            <h2 style={{marginBlock:"0", color:"rgb(var(--primary-color))", fontSize:"40px"}}>{defaultTime == "0" ? "-" : defaultTime.toString().replaceAll(".", ",")}</h2>
-                            <p style={{color:"var(--grey-color)", marginBlock:"0"}}>min</p>
-                        </div>
-                        <i translate="no" onClick={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) < 0.5 ? 0 : parseFloat(defaultTime) - 0.5)} style={{color: defaultTime <= 0 ? "var(--grey-color)" : "rgb(var(--primary-color))", fontSize:"32px"}} className="material-icons">remove</i>
-                    </div>
+                    <TimeSelector time={defaultTime} onIncrease={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) >= 9.5 ? 10 : parseFloat(defaultTime) + 0.5)} onDecrease={()=>setDefaultTime(defaultTime => parseFloat(defaultTime) < 0.5 ? 0 : parseFloat(defaultTime) - 0.5)} />
                 </div>
             </div>
-            <SizedBox height="8px" />
-            <p style={{color:"var(--lightgrey-color)", display:"flex", alignItems:'center'}}> <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)", flex:"1"}} href={route("changelog")}>Uuenduste ajalugu</a> &nbsp;&nbsp; <span>© 2024</span></p>
+            <SizedBox height="16px" />
+            <div style={{display:"flex", justifyContent:"space-between", alignContent:'end', color:"var(--grey-color)"}}>
+                <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)"}} href={route("changelog")}>Uuenduste ajalugu</a>
+                <span>© 2024</span>
+            </div>
         </Layout>
     </>;
 }
