@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         'notguest' => \App\Http\Middleware\EnsureUserIsNotGuest::class,
+        "valimised-time" => \App\Http\Middleware\ValimisedTime::class,
     ];
 }

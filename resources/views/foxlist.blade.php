@@ -14,7 +14,7 @@
                 <p>{{$item["fox_name"]}}</p>
 
                 <div>
-                    <p title="{{ $item["chosen_by_email"] }}" style="color:{{$item["chosen_by_name"] == null ? 'grey' : 'initial'}}">{{$item["chosen_by_name"] ?? "Pole veel valitud"}}</p>
+                    <p title="{{ $item["chosen_by_email"] }}" style="color:grey">{{$item["chosen_by_name"] ?? "Pole veel valitud"}}</p>
                 </div>
     
             </div>

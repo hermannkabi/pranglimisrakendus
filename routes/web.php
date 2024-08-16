@@ -178,14 +178,14 @@ Route::get("/up", function (){
 
 function opensAt(){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
-    return in_array(Auth::user()->role, ["valimised-vip", "valimised-admin"]) ? $opens_at - 5 : $opens_at;
+    return in_array(Auth::user()->role, ["valimised-vip", "valimised-admin", "valimised-vipvip"]) ? $opens_at - 5 : $opens_at;
 }
 
 function closesAt(){
     return intval(DB::table('properties')->where("property", "closes_at")->first()->value);
 }
 
-Route::prefix("valimised")->name("valimised.")->group(function (){
+Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->group(function (){
 
     Route::get("/notverified", function (){if(Auth::user()->email_verified_at != null){return redirect()->route("valimised.dashboard");} return view("notverified");})->middleware(["auth"])->name("notverified");
 
@@ -201,14 +201,27 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
             return redirect()->route("valimised.dashboard");
         })->name("logout");       
     
+        Route::get("/logi", function (){
+            $path = storage_path('logs/valimised.log');
+
+            if (!File::exists($path)) {
+                abort(404);
+            }
     
-        Route::get('/valimine', function () {
+            $file = File::get($path);
+            $response = Response::make($file, 200);
+            $response->header('Content-Type', 'text/plain');
+    
+            return $response;    
+        })->name("log");
+
+        Route::get('/valimine', function (Request $request) {
 
             $OPENS_AT = opensAt();
             $CLOSES_AT = closesAt();
         
 
-            if(($OPENS_AT != null && time() < $OPENS_AT)){
+            if(($OPENS_AT != null && time() < $OPENS_AT) && $request->user()->role != "valimised-vipvip"){
                 return view("notyetopen", ["opens_at"=>$OPENS_AT]);
             }
     
@@ -227,6 +240,9 @@ Route::prefix("valimised")->name("valimised.")->group(function (){
             $CLOSES_AT = closesAt();
 
             if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
+                if($request->user()->role == "valimised-vipvip"){
+                    return redirect()->back()->with("error", "Valimised ei ole avatud!");   
+                }
                 return view("notopen");
             }
     
