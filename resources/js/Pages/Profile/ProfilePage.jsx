@@ -184,7 +184,7 @@ export default function ProfilePage({auth, className}){
         "teacher":"Õpetaja",
         "guest":"Külaline",
         "valimised-admin":"Rebased (admin)",
-        "valimised-vip":"Rebased (VIP) 🤫",
+        "valimised-vip":"Rebased (VIP)",
     };
 
     return <>
