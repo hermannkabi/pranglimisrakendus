@@ -33,8 +33,6 @@
         setInterval(() => {
             manageServerClock();
         }, 1000);
-
-        
     </script>
     <p style="color: grey">Serveri kell: <span id="clock"></span> </p>
     <a style="all:unset; cursor: pointer; display: flex; text-transform: capitalize; justify-content: end; align-items: center"  href="{{route('valimised.profile')}}">{{Auth::user()->eesnimi}} {{Auth::user()->perenimi}} &nbsp; @if(Auth::user()->profile_pic != "/assets/logo.png") <img src="{{Auth::user()->profile_pic}}" style="height: 30px; border-radius: 50%; aspect-ratio: 1; object-fit: cover" alt=""> @else <i class="material-icons">person</i> @endif</a>
