@@ -176,13 +176,32 @@ Route::get("/up", function (){
 
 //VALIMISED
 
-function opensAt(){
+function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
-    return in_array(Auth::user()->role, ["valimised-vip", "valimised-admin", "valimised-vipvip"]) ? $opens_at - 5 : $opens_at;
+    $vipAdvantage = 86400;
+    $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin", "valimised-vipvip"]);
+    $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
+    return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
 }
 
 function closesAt(){
     return intval(DB::table('properties')->where("property", "closes_at")->first()->value);
+}
+
+function canChooseSecond($request){
+    $twoFoxUsers = explode(";", DB::table('properties')->where("property", "second_fox_allowed")->first()->value);
+
+    if(!in_array($request->user()->email, $twoFoxUsers)){
+        return ["result"=>false];
+    }else{
+        // Second fox can be chosen only when it is the general election time (not during vip time)
+        $vipTime = opensAt(true)["advantage_used"];
+        if($vipTime){
+            return ["result"=>false, "message"=>"(teine rebane peab olema valitud tavavalimiste ajal, mitte eelisajal)"];
+        }else{
+            return ["result"=>true];
+        }
+    }
 }
 
 Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->group(function (){
@@ -268,15 +287,22 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 
                 return redirect()->back()->with("error", "See rebane on paraku juba valitud!");
             }
-    
-            Fox::where("chosen_by", $userId)->update(["chosen_by"=>null]);
+            
+            $secondAllowed = canChooseSecond($request);
+            if($secondAllowed["result"]){
+                $firstFox = Fox::where("chosen_by", $userId)->orderBy("updated_at", "DESC")->first();
+                Fox::where("chosen_by", $userId)->update(["chosen_by"=>null]);
+                if($firstFox) Fox::where("id", $firstFox->id)->update(["chosen_by"=>$userId]);
+            }else{
+                Fox::where("chosen_by", $userId)->update(["chosen_by"=>null]);
+            }
     
             $fox->chosen_by = $userId;
             $fox->save();
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Uus rebane on ". $fox->name . "(" . $fox->id .")");
 
     
-            return redirect()->back()->withSuccess($fox->name . " on edukalt valitud!");
+            return redirect()->back()->withSuccess($fox->name . " on edukalt valitud! \n". ($secondAllowed["message"] ?? ""));
         })->name("chooseFox");
 
         Route::post("fox/random", function (Request $request){
@@ -286,6 +312,9 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             $CLOSES_AT = closesAt();
 
             if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
+                if($request->user()->role == "valimised-vipvip"){
+                    return redirect()->back()->with("error", "Valimised ei ole avatud!");   
+                }
                 return view("notopen");
             }
 
@@ -297,11 +326,13 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Juhuslik rebane valitud! Valitud rebane on ". $randomFox->name . "(" . $randomFox->id .")");
 
-            $currentFox = Fox::where("chosen_by", Auth::id())->first();
-
-            if($currentFox != null){
-                $currentFox->chosen_by = null;
-                $currentFox->save();
+            $secondAllowed = canChooseSecond($request);
+            if($secondAllowed["result"]){
+                $firstFox = Fox::where("chosen_by", Auth::id())->orderBy("updated_at", "DESC")->first();
+                Fox::where("chosen_by", Auth::id())->update(["chosen_by"=>null]);
+                if($firstFox) Fox::where("id", $firstFox->id)->update(["chosen_by"=>Auth::id()]);
+            }else{
+                Fox::where("chosen_by", Auth::id())->update(["chosen_by"=>null]);
             }
 
             $randomFox->chosen_by = Auth::id();
@@ -309,11 +340,20 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Uus rebane on ". $randomFox->name . "(" . $randomFox->id .")");
 
-            return redirect()->back()->withSuccess($randomFox->name . " on edukalt valitud!");
+            return redirect()->back()->withSuccess($randomFox->name . " on edukalt valitud! " . ($secondAllowed->message ?? ""));
         })->name("foxRandom");
+
+        Route::post("/fox/clear/self", function (Request $request){
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase eemaldamiseks enda kontolt!");
+    
+            Fox::where("chosen_by", $request->user()->id)->update(["chosen_by"=>null]);
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Rebane enda kontolt eemaldatud");
+    
+            return redirect()->back()->withSuccess("Rebane kontolt eemaldatud!");
+        })->name("foxClearSelf");
     
         Route::get("/profile", function (){
-            return view("profile", ["name"=>ucwords(Auth::user()->eesnimi . " " . Auth::user()->perenimi), "fox"=>Fox::where("chosen_by", Auth::id())->first()]);
+            return view("profile", ["name"=>ucwords(Auth::user()->eesnimi . " " . Auth::user()->perenimi), "fox"=>Fox::where("chosen_by", Auth::id())->get()]);
         })->name("profile");
     });
 

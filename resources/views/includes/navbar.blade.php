@@ -1,4 +1,4 @@
-<div class="appbar" style="display: flex; justify-content: space-between; align-items: center; margin: 8px;">
+<div class="appbar" style="display: flex; justify-content: space-between; align-items: center; margin: 8px var(--margin-inline);">
     <script>
         function logout(){
             window.location.href = "{{route('valimised.profile')}}";
@@ -35,7 +35,7 @@
         }, 1000);
     </script>
     <p style="color: grey">Serveri kell: <span id="clock"></span> </p>
-    <a style="all:unset; cursor: pointer; display: flex; text-transform: capitalize; justify-content: end; align-items: center"  href="{{route('valimised.profile')}}">{{Auth::user()->eesnimi}} {{Auth::user()->perenimi}} &nbsp; @if(Auth::user()->profile_pic != "/assets/logo.png") <img src="{{Auth::user()->profile_pic}}" style="height: 30px; border-radius: 50%; aspect-ratio: 1; object-fit: cover" alt=""> @else <i class="material-icons">person</i> @endif</a>
+    <a style="all:unset; cursor: pointer; display: flex; text-transform: capitalize; justify-content: end; align-items: center; text-align: end; gap: 8px;"  href="{{route('valimised.profile')}}">{{Auth::user()->eesnimi}} {{Auth::user()->perenimi}} @if(Auth::user()->profile_pic != "/assets/logo.png") <img src="{{Auth::user()->profile_pic}}" style="height: 30px; border-radius: 50%; aspect-ratio: 1; object-fit: cover" alt=""> @else <i class="material-icons">person</i> @endif</a>
 
     <script>document.querySelector("#clock").innerText = timeStampToTime(time);</script>
 

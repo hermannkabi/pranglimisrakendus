@@ -9,19 +9,22 @@
     @include('includes.title', ["subtitle"=>"Valimised pole alanud!"])
 
     @if (Auth::user()->role == "valimised-admin")
-        <div style="margin-inline: 10%; color: grey;">
+        <div style="margin-inline: var(--margin-inline); color: grey;">
             Lisa rebaseid <a href="{{route("valimised.addFox")}}">siit</a> <br> ja vaata nimekirja <a href="{{route('valimised.foxList')}}">siit</a>
         </div>
     @endif
     
-    <div style="margin-inline: 10%">
+    <div style="margin-inline: var(--margin-inline)">
         <p>Valimiste alguseni on <span id="time-left"></span></p>
     </div>
 
     <script>
-        function setTime(){
-            var currentTs = Math.floor(Date.now() / 1000);
-            var secondsLeft = Math.max(opensAt - currentTs, 0);
+        function setTime(secondsLeft){
+            if(secondsLeft <= 0){
+                clearInterval(interval);
+                location.reload();
+            }
+
             var timeLeft = secondsLeft + (" sekund" + (secondsLeft == 1 ? "" : "it"));
 
             if(secondsLeft >= 60){
@@ -43,19 +46,17 @@
             }
 
             document.querySelector("#time-left").innerHTML = timeLeft;
-
-            if(secondsLeft === 0){
-                clearInterval(interval);
-                location.reload();
-            }
         }
 
-        var opensAt = {{$opens_at}};
+        const opensAt = {{$opens_at}};
+        const serverTime = {{$server_time}};
+        const timeAtLoad = Math.floor(Date.now() / 1000);
 
-        setTime();
+        setTime(opensAt - serverTime - (Math.floor(Date.now() / 1000) -  timeAtLoad));
 
         var interval = setInterval(() => {
-            setTime();
+            var newTime = opensAt - serverTime - (Math.floor(Date.now() / 1000) -  timeAtLoad);
+            setTime(newTime);
         }, 1000);
     </script>
 </body>

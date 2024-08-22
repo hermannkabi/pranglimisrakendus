@@ -9,37 +9,49 @@
     @include("includes.title", ["subtitle"=>"Rebaste valimine"])
 
     @if (Session::has('success'))
-        <div style="margin-inline: 10%; color: grey;">
+        <div style="margin-inline: var(--margin-inline); color: grey;">
             {{ Session::get('success') }}
         </div>
     @endif
     @if (Session::has('error'))
-        <div style="margin-inline: 10%; color: red;">
+        <div style="margin-inline: var(--margin-inline); color: red;">
             {{ Session::get('error') }}
         </div>
     @endif
 
     @if (Auth::user()->role == "valimised-admin")
-        <div style="margin-inline: 10%; color: grey;">
+        <div style="margin-inline: var(--margin-inline); color: grey;">
             Lisa rebaseid <a href="{{route("valimised.addFox")}}">siit</a> <br> ja vaata nimekirja <a href="{{route('valimised.foxList')}}">siit</a>
         </div>
     @endif
 
-    <input id="search" type="text" placeholder="Otsi rebast..." style="margin-inline: 10%; width: min(80%, 360px); box-sizing: border-box">
+    <div style="margin-inline: var(--margin-inline); position: relative; width: min(360px, calc(100% - 16px));">
+        <input id="search" type="text" placeholder="Otsi rebast..." style="width: 100%; box-sizing: border-box; padding-left: 32px">
+        <i style="position: absolute; top:50%; left: 4px; transform: translate(0, -50%); font-size: 28px; color: grey" class="material-icons">search</i>
+    </div>
 
     <form action="{{route('valimised.foxRandom')}}" method="post">
         @csrf
-        <button style="margin-inline: 10%; width: min(80%, 360px); display: inline-flex; justify-content: center; gap: 8px"> <i class="material-icons">casino</i> Vali juhuslik rebane</button>
+        <button style="margin-inline: var(--margin-inline); width: min(360px, calc(100% - 16px)); display: inline-flex; justify-content: center; gap: 8px; align-items: center; text-align: start"> <i class="material-icons">casino</i> Vali juhuslik rebane</button>
     </form>
+
+    @if ($foxes->filter(function ($fox){return $fox->chosen_by == Auth::id();})->count() >= 1)
+        <form action="{{route('valimised.foxClearSelf')}}" method="post">
+            @csrf
+            <button class="outlined" style="margin-inline: var(--margin-inline); width: min(360px, calc(100% - 16px)); display: inline-flex; justify-content: center; gap: 8px; align-items: center; text-align: start; margin-top: 8px"> <i class="material-icons">close</i> Tühjenda valik</button>
+        </form>
+    @endif
     <div class="container">
 
         <p id="no-results" style="color: grey; text-align:center; font-size: 24px; margin-top: 64px" hidden>Tingimustele vastavaid rebaseid ei leitud!</p>            
 
         @foreach ($foxes as $fox)
-            @include("includes.namerow", ["id"=>$fox->id, "name"=>$fox->name, "instagram"=>$fox->instagram, "facebook"=>$fox->facebook, "chosen_id"=>$fox->chosen_by])
+            @if ($fox->chosen_by == null || $fox->chosen_by == Auth::id())
+                @include("includes.namerow", ["id"=>$fox->id, "name"=>$fox->name, "instagram"=>$fox->instagram, "facebook"=>$fox->facebook, "chosen_id"=>$fox->chosen_by])
+            @endif
         @endforeach
 
-        <p style="text-align: center; color: grey; margin-top: 50px">Kokku on {{ count($foxes) }} rebast</p>
+        <p style="text-align: center; color: grey; margin-top: 50px">Kokku on {{ count($foxes) }} reba{{ count($foxes) == 1 ? "ne" : "st" }}, valitud on {{ $foxes->filter(function($fox) {return $fox->chosen_by !== null;})->count(); }}</p>
     </div>
 
 

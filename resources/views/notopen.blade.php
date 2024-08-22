@@ -8,7 +8,7 @@
 
     @include('includes.title', ["subtitle"=>"Valimised on lõppenud!"])
 
-    <div style="margin-inline: 10%">
+    <div style="margin-inline: var(--margin-inline)">
         <p>Kui sa juba hääletasid, jäi lugema sinu viimasena antud hääl, mis on antud enne valimiste lõppu. Kui sa valima ei jõudnud, pole see kahjuks enam võimalik. Oma valiku leiad <a href="{{route('valimised.profile')}}">siit</a>.</p>
     </div>
 </body>

@@ -12,7 +12,7 @@
     </script>
     @include("includes.title", ["subtitle"=>"Logi sisse"])
     @if (Session::has('error'))
-        <div style="margin-inline: 10%; color: red;">
+        <div style="margin-inline: var(--margin-inline); color: red;">
             {{ Session::get('error') }}
         </div>
     @endif

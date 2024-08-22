@@ -8,7 +8,7 @@
 
     @include('includes.title', ["subtitle"=>"Kasutaja pole kinnitatud"])
 
-    <div style="margin-inline: 10%">
+    <div style="margin-inline: var(--margin-inline)">
         <p>Valimistel osalemiseks peab sinu konto olema kinnitatud. Mine <a href="{{route("profilePage")}}">profiilile</a>, et e-posti aadress kinnitada.</p>
     </div>
 </body>
