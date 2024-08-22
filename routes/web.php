@@ -178,7 +178,7 @@ Route::get("/up", function (){
 
 function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
-    $vipAdvantage = 86400;
+    $vipAdvantage = intval(DB::table('properties')->where("property", "vip_advantage")->first()->value);
     $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin", "valimised-vipvip"]);
     $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
     return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
