@@ -263,7 +263,7 @@ export default function ProfilePage({auth, className}){
                             <ColorPicker color={"121, 160, 208"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
 
                             <ColorPicker color={"125, 10, 10"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
-                            <ColorPicker color={"186, 186, 106"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
+                            <ColorPicker color={"234,161,27"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"90, 92, 60"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"133, 199, 195"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />
                             <ColorPicker color={"164, 190, 123"} currentColor={primaryColor} onChange={(color)=>changePrimaryColor(color)} />

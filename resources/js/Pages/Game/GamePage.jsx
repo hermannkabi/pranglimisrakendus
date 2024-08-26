@@ -959,7 +959,7 @@ export default function GamePage({data, time, auth}){
 
                     <NumberButton backgroundColor="var(--red-color)" textColor="white" lineHeight="1.7" fontSize="20px" content="backspace" icon={true} onClick={handleRemoveClick} />
                     <NumberButton content="0" onClick={()=>handleNumberClick(0)} />
-                    <NumberButton backgroundColor="rgb(var(--primary-color))" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="check" icon={true} onClick={checkAnswer} />
+                    <NumberButton backgroundColor="rgb(var(--primary-color))" textColor="white" style={{gridColumn:"span 2", width:"auto"}} content="arrow_forward" icon={true} onClick={checkAnswer} />
                 </div>}
 
                {/* Compare type on screen keyboard */}
