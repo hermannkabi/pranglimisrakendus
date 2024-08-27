@@ -185,6 +185,7 @@ export default function ProfilePage({auth, className}){
         "guest":"Külaline",
         "valimised-admin":"Rebased (admin)",
         "valimised-vip":"Rebased (VIP)",
+        "valimised-vipvip":"Rebased (täiesti tavaline 😉)"
     };
 
     return <>

@@ -14,7 +14,8 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
         "teacher":"Õpetaja",
         "guest":"Külaline",
         "valimised-admin":"Rebased (admin)",
-        "valimised-vip":"Rebased (VIP) 🤫",
+        "valimised-vip":"Rebased (VIP)",
+        "valimised-vipvip":"Õpilane",
     };
 
     return <>
