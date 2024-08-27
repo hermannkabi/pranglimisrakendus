@@ -43,7 +43,7 @@
     @endif
     <div class="container">
 
-        <p id="no-results" style="color: grey; text-align:center; font-size: 24px; margin-top: 64px" hidden>Tingimustele vastavaid rebaseid ei leitud!</p>            
+        <p id="no-results" style="color: grey; text-align:center; font-size: 24px; margin-top: 64px" hidden>Otsingule vastavat rebast ei leitud või on ta juba valitud!</p>            
 
         @foreach ($foxes as $fox)
             @if ($fox->chosen_by == null || $fox->chosen_by == Auth::id())

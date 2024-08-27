@@ -179,8 +179,8 @@ Route::get("/up", function (){
 function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
     $vipAdvantage = intval(DB::table('properties')->where("property", "vip_advantage")->first()->value);
-    $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin", "valimised-vipvip"]);
-    $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
+    $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin"]);
+    $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : (Auth::user()->role == "valimised-vipvip" ? $opens_at - 30 : $opens_at);
     return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
 }
 
@@ -240,7 +240,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             $CLOSES_AT = closesAt();
         
 
-            if(($OPENS_AT != null && time() < $OPENS_AT) && $request->user()->role != "valimised-vipvip"){
+            if(($OPENS_AT != null && time() < $OPENS_AT)){
                 return view("notyetopen", ["opens_at"=>$OPENS_AT]);
             }
     
@@ -259,9 +259,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             $CLOSES_AT = closesAt();
 
             if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
-                if($request->user()->role == "valimised-vipvip"){
-                    return redirect()->back()->with("error", "Valimised ei ole avatud!");   
-                }
                 return view("notopen");
             }
     
