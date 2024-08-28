@@ -9,8 +9,12 @@
     @include("includes.title", ["subtitle"=>"Rebaste nimekiri"])
 
     <div>
+        <button onclick="toggleChosen()" style="margin-inline: var(--margin-inline)">Vaata valituid</button>
+        <br>
+        <button class="outlined" onclick="toggleNotchosen()" style="margin-inline: var(--margin-inline); margin-top: 8px">Vaata valimata</button>
+
         @foreach ($data as $item)
-            <div class="name-row">
+            <div class="name-row" status={{$item["chosen_by_email"] == null ? "notchosen" : "chosen"}}>
                 <p>{{$item["fox_name"]}}</p>
 
                 <div>
@@ -18,9 +22,19 @@
                 </div>
     
             </div>
-
         @endforeach
     </div>
+
+    <script src="/js/jquery.js"></script>
+    <script>
+        function toggleChosen(){
+            $(".name-row[status='notchosen']").toggle();
+        }
+        
+        function toggleNotchosen(){
+            $(".name-row[status='chosen']").toggle();
+        }
+    </script>
 
 </body>
 </html>
