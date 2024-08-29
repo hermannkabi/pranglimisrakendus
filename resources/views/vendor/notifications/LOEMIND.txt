@@ -1,0 +1,2 @@
+E-kirjade tekstid on saadaval:
+/vendor/laravel/framework/src/Illuminate/Auth/Notifications

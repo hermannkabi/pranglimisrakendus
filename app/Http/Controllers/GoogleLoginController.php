@@ -43,6 +43,7 @@ class GoogleLoginController extends Controller
 
         if($user->google_id != $googleUser->id){
             $user->google_id = $googleUser->id;
+            $user->markEmailAsVerified();
             $user->save();    
         }
 

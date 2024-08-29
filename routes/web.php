@@ -14,7 +14,6 @@ Route::get('/', function () {
     if(Auth::check()){
         return redirect()->route("dashboard");
     }
-
     $totalUsers = User::count();
     $totalGames = Mang::count();
     $totalPoints = Mang::sum("score_sum");
@@ -72,12 +71,6 @@ Route::controller(App\Http\Controllers\AuthVerificationController::class)->middl
     Route::post('/email/resend', 'resend')->name('verification.resend');
 });
 
-// //Password reset form
-// Route::controller(App\Http\Controllers\Auth\PasswordResetLinkController::class)->middleware(['guest'])->group(function() {
-//     Route::get('/reset/password/{token}', 'create')->name('passwordReset');
-//     Route::post("/password/reset", 'store')->name("passwordReset");
-// });
-
 //User information
 Route::controller(App\Http\Controllers\ProfileController::class)->middleware('auth')->group(function() {
     Route::post('/user/settings', 'settings')->name('user-settings');
@@ -98,7 +91,7 @@ Route::get("/preview/{type}", function ($type){
     return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
-//Game part of PRANGLIMISRAKENDUS
+//Game part of Reaaler
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);

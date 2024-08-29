@@ -18,17 +18,6 @@ class AuthVerificationController extends Controller
     }
 
     /**
-     * Display an email verification notice.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function notice(Request $request)
-    {
-        return $request->user()->hasVerifiedEmail() 
-            ? redirect()->route('dashboard') : Inertia::render('EmailVerify/EmailVerifyPage');
-    }
-
-    /**
      * User's email verificaiton.
      *
      * @param  \Illuminate\Http\EmailVerificationRequest $request

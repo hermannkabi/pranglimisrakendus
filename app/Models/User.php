@@ -4,11 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -16,6 +17,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function classes(){
         return $this->belongsToMany(Klass::class);
+    }
+
+    protected $appends = ['hasPassword'];
+
+    public function getHasPasswordAttribute()
+    {
+        return !is_null($this->password);
     }
 
     /**
@@ -38,33 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'settings',
         'profile_pic',
         'streak',
-
-        //Class information
-        //'invited_to_klass',
-
-        // //User settings
-        // 'dark_backround',
-        // 'visible_timer',
-        // 'score_animations',
-        // 'default_time',
-        // 'color',
-
-        // //Game information
-        // 'score_sum',
-        // 'experience',
-        // 'accuracy_sum',
-        // 'game_count',
-        // 'last_level',
-        // 'last_equation',
-        // 'time',
-        // 'dt',
-        // 'mistakes_tendency',
-        // 'mistakes_sum',
-
-        // //Quests
-        // 'quests',
-        // 'quest_type',
-        // 'completed_quests_sum',
     ];
 
     /**

@@ -76,8 +76,11 @@ export default function WelcomePage({users, games, points}){
                 </div>
             </div>
             <SizedBox height={36} />
-            <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
+            {/* <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
                 <i translate="no" className="material-icons-outlined">info</i> <span>Nagu ilmselt isegi näed, läbis Reaaleri välimus uuenduskuuri. Sellest tulenevalt anna meile palun <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">tagasisidet</a></span>
+            </div> */}
+            <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
+                <i translate="no" className="material-icons-outlined">info</i> <span>Reaaler korraldab 2024. aasta rebaste valimist. Rakendus asub <a alone="" href="/valimised">siin</a></span>
             </div>
             <div className="main-content" style={{textAlign:'center'}}>
                 <ApplicationLogo size={150} />

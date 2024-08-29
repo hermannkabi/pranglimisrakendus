@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
-use Inertia\Inertia;
 
+use Inertia\Inertia;
 use App\Models\Klass;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -58,8 +59,9 @@ class LoginRegisterController extends Controller
         'margit.luts@real.edu.ee',
         'reet.libe@real.edu.ee',
         'triinuliis.vahter@real.edu.ee');
-        
-        return User::create([
+
+
+        $user = User::create([
             'role' => !in_array($email, $teachers) ? 'student' : 'teacher',
             'email' => $email,
             'eesnimi' => $eesnimi,    
@@ -72,6 +74,12 @@ class LoginRegisterController extends Controller
             'profile_pic' =>  "/assets/logo.png",
             'streak' => 0,
         ]);
+
+        if($googleId != null){
+            $user->markEmailAsVerified();
+        }
+        
+        return $user;
     }
 
     

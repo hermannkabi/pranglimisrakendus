@@ -19,9 +19,7 @@ export default function ProfilePage({auth, className}){
     const [defaultTime, setDefaultTime] = useState(window.localStorage.getItem("default-time") ?? "0.5");
 
 
-    const [imageUploadErrors, setImageUploadErrors] = useState(null);
-
-    
+    const [imageUploadErrors, setImageUploadErrors] = useState(null);    
 
     useEffect(()=>{
         saveSettings();
@@ -157,7 +155,7 @@ export default function ProfilePage({auth, className}){
             "email":auth.user.email,
         }).done(function (data){
             console.log("Tehtud!");
-            setImageUploadErrors({"success":"Sinu e-posti aadressile on saadetud kiri parooli muutmiseks"});
+            setImageUploadErrors({"success": auth.user.hasPassword ? "Sinu e-posti aadressile on saadetud kiri parooli muutmiseks" : "Sinu e-posti aadressile on saadetud kiri parooli lisamiseks."});
         }).fail(function (data){
             console.log(data);
             if(data.responseJSON.message == "Please wait before retrying."){
@@ -230,7 +228,7 @@ export default function ProfilePage({auth, className}){
                 <div disabled={!auth.user.email_verified_at} onClick={sendPwdResetLink} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
                     <div>
                         <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">lock</i>
-                        <p style={{marginTop:"8px", marginBottom:"0"}}>Muuda parooli</p>
+                        <p style={{marginTop:"8px", marginBottom:"0"}}>{auth.user.hasPassword ? "Muuda parooli" : "Loo uus parool"}</p>
                     </div>
                 </div>
                 <div onClick={logout} className="section clickable red" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center"}}>
