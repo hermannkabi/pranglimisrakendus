@@ -6,7 +6,7 @@ import "/public/css/404.css";
 import { useEffect, useState } from "react";
 
 
-export default function WelcomePage({users, games, points}){
+export default function WelcomePage({auth, users, games, points}){
 
     const [clickEaster2, setClickEaster2] = useState(0);
     const [isDarkTheme, setIsDarkTheme] = useState(localStorage.getItem("app-theme") == "dark");
@@ -70,9 +70,9 @@ export default function WelcomePage({users, games, points}){
                 </div>
 
                 <div style={{display:"flex", alignItems:'center', gap:"24px"}}>
-                    <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons">{isDarkTheme ? "light_mode" : "brightness_2"}</i>
+                    {auth.user == null && <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons">{isDarkTheme ? "light_mode" : "brightness_2"}</i>}
                     
-                    <a href={route("login")}>Logi sisse</a>
+                    <a style={{display:"flex"}} href={route("login")}>{auth.user != null ? <img style={{height:"40px"}} src={auth.user.profile_pic} alt="" className="profile-pic" /> : "Logi sisse"}</a>
                 </div>
             </div>
             <SizedBox height={36} />
@@ -280,10 +280,13 @@ export default function WelcomePage({users, games, points}){
                 <h2>Hakkame pihta?</h2>
                 <p className="onboarding-text">Hetkel on Reaaler mõeldud vaid Tallinna Reaalkooli õpilastele ja õpetajatele. Aga ka teised ei pea veel pead norgu laskma - põhiline arvutamise funktsionaalsus on läbi külaliskonto saadaval kõigile.</p>
                 <br />
-                <div>
+                {auth.user == null && <div>
                     <button onClick={()=>window.location.href = route("register")}>Loo konto</button>
                     <button onClick={()=>window.location.href = route("authenticateGuest")} secondary="true">Sisene külalisena</button>
-                </div>
+                </div>}
+                {auth.user != null && <div>
+                    <button onClick={()=>window.location.href = route("dashboard")}>Sisene Reaalerisse</button>
+                </div>}
                 <br /><br />
             </div>
 
