@@ -29,9 +29,8 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                 <StatisticsTile stat={stats.totalPointsCount} label={"XP kokku"} oneLabel={"1 XP klassi peale??"} icon={"trophy"} compactNumber={true} />
                 <StatisticsTile stat={stats.studentsCount} label={"Õpilast"} oneLabel={"Õpilane"} icon={"groups"} />
             </div>
-            <SizedBox height="16px" />
+            <SizedBox height="8px" />
             <div className="two-column-layout">
-
                 <div>
                     <div className="section">
                         <TwoRowTextButton upperText="Edetabel" lowerText={className} showArrow={false} />

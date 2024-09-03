@@ -32,11 +32,8 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
                 </div>}
                 <div className="section" style={{marginBottom:"16px"}}>
-                    {/* <InfoBanner>
-                        <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
-                    </InfoBanner> */}
                     <InfoBanner>
-                        <p><b>140. lennule</b>: {auth.user.email_verified_at == null ? ( <span>Sinu e-posti aadress ei ole kinnitatud. Palun tee seda <a alone="" href="/profile">kontovaates</a>. Kinnitamata e-posti aadressiga valida ei saa!</span> ) : "Oled e-posti aadressi kinnitanud ja saad valmistel osaleda!"} <b>Rebaste valimise lehekülg on leitav <a alone="" href="/valimised">siit</a></b> </p>
+                        <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
                     </InfoBanner>
                 </div>
                 {auth.user.role != "guest" && <div className="four-stat-row">
