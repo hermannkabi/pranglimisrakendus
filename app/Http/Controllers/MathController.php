@@ -1783,14 +1783,27 @@ class MathController extends Controller
         return $array;
     }
 
+    public function võistlus($type, $klass) { 
+        $AEG = 40; //sek
+        
+        
+    }
+
+
+
+
+
+
+
     //["liitmine"=>["level"=>2, "tüüp"=>naturaalarvud], "lahutamine"=>5]
-    public function random($tehted, $aeg){
-        $count=0;
-        do{
-            $suvaline = array_rand($tehted);
-            $ans = $this->wrapper($tehted[$suvaline], $tehted[$suvaline]['level'], $tehted[$suvaline]['tüüp'], $aeg);
-            $count++;
-        }while($count < MathController::OPERATION_COUNT + ($aeg*14));
+    public function random($tehted, $aeg, $level, $tüüp){
+        //$count=0;
+        //do{
+        $suvaline = array_rand($tehted);
+        $ans = $this->wrapper($tehted[$suvaline], $tehted[$suvaline][$level], $tehted[$suvaline][$tüüp], $aeg);
+        //$count++;
+        //}while($count < MathController::OPERATION_COUNT + ($aeg*14));
+        return $ans;
         
     }
 
@@ -1815,6 +1828,11 @@ class MathController extends Controller
 
         return $returnData["array"];
     }
+
+
+
+
+
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false){
         $loend = [];
