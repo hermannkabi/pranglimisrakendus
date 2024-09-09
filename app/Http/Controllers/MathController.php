@@ -1783,8 +1783,17 @@ class MathController extends Controller
         return $array;
     }
 
+
+    // type = klassidevaheline/kõik kõikide vastu, klass = raskusaste vastavalt vanusegrupile
     public function võistlus($type, $klass) { 
-        $AEG = 40; //sek
+        $count = 0;
+        do{
+
+            $tase = 1;  
+            $AEG = 40; //sek
+            $count++;
+        }while($count < 3);
+       
         
         
     }

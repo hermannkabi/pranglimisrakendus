@@ -98,11 +98,13 @@ Route::get("/preview/{type}", function ($type){
     return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
+
 //Game part of Reaaler
 Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew")->middleware(['auth']);
+
 
 //Game data
 Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth"])->group(function() {
