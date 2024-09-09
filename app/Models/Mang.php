@@ -16,6 +16,7 @@ class Mang extends Model
         'user_id',
         'score_sum',
         'experience',
+        "competition_id", //võistlused
         // Ainult selle mängu täpsus
         'accuracy_sum',
         'game_count',
