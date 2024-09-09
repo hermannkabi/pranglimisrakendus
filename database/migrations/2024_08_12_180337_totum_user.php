@@ -14,20 +14,20 @@ return new class extends Migration
        
         Schema::create('users', function (Blueprint $table){ 
             $table->bigIncrements('id', 20);
-            $table->index('email');
+            $table->string('email');
             $table->string('google_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->int('klass', 255)->nullable();
+            $table->integer('klass')->length(255)->nullable();
+            $table->string('role')->default("student");
             $table->string('eesnimi');
             $table->string('perenimi');
-            $table->string('role')->default("student");
             $table->text('settings')->nullable();
-            $table->int('streak', 11)->nullable();
-            $table->text('profile_pic')->default("'/assets/logo.png'"); 
-            $table->tinyInteger('streak_active', 1)->default('0'); 
+            $table->integer('streak')->length(6)->nullable();
+            $table->text('profile_pic')->default("/assets/logo.png"); 
+            $table->tinyInteger('streak_active')->default(1); 
         
         });
     }

@@ -19,5 +19,10 @@ class Competition extends Model
         "game_data",
         "participants", //many-to-many releation
     ];
+    
+    public function competitions()
+    {
+        return $this->belongsTOMany(Mang::class);
+    }
 
 }
