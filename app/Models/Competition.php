@@ -22,7 +22,7 @@ class Competition extends Model
     
     public function competitions()
     {
-        return $this->belongsTOMany(Mang::class);
+        return $this->belongsToMany(User::class);
     }
 
 }

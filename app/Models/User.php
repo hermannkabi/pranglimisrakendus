@@ -47,6 +47,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'streak',
     ];
 
+    public function users(){
+        return $this->belongsToMany(Competition::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
