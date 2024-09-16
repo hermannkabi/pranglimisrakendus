@@ -385,7 +385,7 @@ class ClassController extends Controller
         abort(404);
     }
 
-    // Removes the currently authenticated user from their clas
+    // Removes the currently authenticated user from their class
     public function classRemove($id=null){
         $user = $id == null ? Auth::user() : User::where("id", $id)->first();
 
