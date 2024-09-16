@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('mang', function (Blueprint $table) {
             $table->string('game_id');
             $table->string('user_id');
+            $table->string('comp_id')->nullable();
             $table->string('score_sum');
             $table->string('experience');
             $table->string('accuracy_sum');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('last_level');
             $table->string('time');
             $table->string('dt');
+            
         });
     }
 
