@@ -1798,7 +1798,11 @@ class MathController extends Controller
         
     }
 
+    public function teisendamine($level, $mis, $tüüp, $aeg) {
 
+
+
+    }
 
 
 
