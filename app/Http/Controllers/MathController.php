@@ -16,8 +16,10 @@ class MathController extends Controller
     const BOTH = "mõlemad";
     const LIITMINE = "liitmine";
     const LAHUTAMINE = "lahutamine";
+    const LIITLAHUTAMINE = "liitlahutamine";
     const KORRUTAMINE = "korrutamine";
     const JAGAMINE = "jagamine";
+    const KORRUJAGAMINE = "korrujagamine";
     const ASTENDAMINE = "astendamine";
     const JUURIMINE = "juurimine";
     const ASTEJUURIMINE = "astejuurimine";
@@ -1058,7 +1060,7 @@ class MathController extends Controller
         $yvalues = [
             
             "1"=>[
-                "natural"=>function () use ($mis){return ($mis == MathController::JUURIMINE || $mis === "mõlemad")  ? 2 : random_int(0, 2);},
+                "natural"=>function () use ($mis){return ($mis == MathController::JUURIMINE || $mis === MathController::BOTH)  ? 2 : random_int(0, 2);},
                 "fraction"=>function ($uusmis=null) use ($mis, $x1){
                     $randints = [random_int(-2, 2)];
 
@@ -1798,8 +1800,81 @@ class MathController extends Controller
         
     }
 
-    public function teisendamine($level, $mis, $tüüp, $aeg) {
-
+    public function teisendamine($level, $tüüp, $aeg) {
+        $teisendatavad = [
+            "1"=>random_int(1, 5),
+            "2"=>random_int(6, 9) + 0.5,
+            "3"=>random_int(10, 50),
+            "4"=>random_int(51, 99) + random_int(1, 9)/10,
+            "5"=>random_int(101, 500) + random_int(1, 9)/10,
+            "A"=>random_int(501, 1000) + random_int(11, 99)/100,
+            "B"=>[
+                "natural"=>function (){return random_int(1000, 10000);},
+                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 99)/100;},
+                "integer"=>function (){ 
+                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            "C"=>[
+                "natural"=>function (){return random_int(10000, 100000);},
+                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 999)/1000;},
+                "integer"=>function (){
+                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
+                    return $randints[array_rand($randints)];},
+            ],
+            
+        ]; 
+        $ühikud = [
+            "1"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "2"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "3"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "4"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "5"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "A"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "B"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            "C"=>[
+                "pikkus"=>['cm'=>100],
+                "temp"=>['K'=>273],
+                "kaal"=>['kg'=>1000],
+                "aeg"=>['min'=>60],
+            ],
+            
+        ];
 
 
     }
@@ -1850,42 +1925,42 @@ class MathController extends Controller
     public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "murruTaandamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
+        $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLRMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
         if ($koik && !in_array($tehe, $types_without_all)){
 
             // Funktsionaalseks (DRY)
             // See on copy paste ju
-            if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == "liitlahutamine"){
+            if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == MathController::LIITLAHUTAMINE){
 
-                if($tehe == "liitlahutamine"){
-                    $tehe = "mõlemad";
+                if($tehe == MathController::LIITLAHUTAMINE){
+                    $tehe = MathController::BOTH;
                 }
 
 
                 $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg);
             }
 
-            if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == "korrujagamine"){
+            if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == MathController::KORRUJAGAMINE){
 
-                if($tehe == "korrujagamine"){
-                    $tehe = "mõlemad";
+                if($tehe == MathController::KORRUJAGAMINE){
+                    $tehe = MathController::BOTH;
                 }
 
                 $loend[0] = $this->korjag("all", $tehe, $tüüp, $aeg);
             }
 
-            if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE|| $tehe == "astejuurimine"){
-                $loend[0] = $this->astendamine("all", $tehe == 'astejuurimine' ? "mõlemad" : $tehe, $tüüp, $aeg);
+            if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE|| $tehe == MathController::ASTEJUURIMINE){
+                $loend[0] = $this->astendamine("all", $tehe == MathController::ASTEJUURIMINE ? MathController::BOTH : $tehe, $tüüp, $aeg);
             }
 
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
-                if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
+                if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == MathController::LIITLAHUTAMINE){   
+                    $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == MathController::LIITLAHUTAMINE ? MathController::BOTH : $tehe, $tüüp, $aeg, $competitions);
                 }
     
-                if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
+                if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == MathController::KORRUJAGAMINE){    
+                    $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == MathController::KORRUJAGAMINE ? MathController::BOTH : $tehe, $tüüp, $aeg, $competitions);
                 }
     
                 if($tehe == MathController::LÜNKAMINE){
@@ -1897,7 +1972,7 @@ class MathController extends Controller
                 }
 
                 if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE || $tehe == MathController::ASTEJUURIMINE){    
-                    $loend[$tasemed[$lugeja]] = $this->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
+                    $loend[$tasemed[$lugeja]] = $this->astendamine($tasemed[$lugeja], $tehe == MathController::ASTEJUURIMINE ? MathController::BOTH : $tehe, $tüüp, $aeg, $competitions);
                 }
 
                 if($tehe == MathController::JAGUVUS){
