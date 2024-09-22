@@ -138,27 +138,47 @@ class GameController extends Controller
         $points_sum = 0;
         //Game time
         $time_sum = 0;
+        //Game proficiency
+        $proficiency = array(
+            "liitmine" => 0,
+            "lahutamine" => 0,
+            "korrutamine" => 0,
+            "jagamine" => 0,
+            "astendamine" => 0,
+            "juurimine" => 0,
+            "astejuurimine" => 0,
+            "jaguvus" => 0,
+            "murruTaandamine" => 0,
+            "v%C3%B5rdlemine" => 0,
+            "lünkamine" => 0,
+            "kujundid"  => 0,
+        );
 
         $count = sizeof($mangud);
 
         foreach($mangud as $mang){
             $accuracy_sum += $mang->accuracy_sum;
             $points_sum += $mang->score_sum;
-
+            if(array_key_exists($mang->game, $proficiency)){
+                $proficiency[$mang->game] += $mang->experience;
+            };
             $time_sum += $mang->time;
         }
+
+        $proficiency_sorted = asort($proficiency);
 
         //Average accuracy
         $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
         //Average time
         $avg_time = $count > 0 ? round($time_sum / $count) : 0;
 
+        //Streak
         $streak = app(ProfileController::class)->viewStreak($user_id);
 
         $streak_active = User::where("id", $user_id)->first()->streak_active;
 
         //Send all gathered information to frontend
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'proficiency'=>$proficiency_sorted, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
 
     }
 

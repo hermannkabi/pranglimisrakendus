@@ -1798,7 +1798,11 @@ class MathController extends Controller
         
     }
 
+    public function teisendamine($level, $mis, $tüüp, $aeg) {
 
+
+
+    }
 
 
 
@@ -1843,7 +1847,7 @@ class MathController extends Controller
 
 
 
-    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false){
+    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
         $types_without_all = ["lünkamine", "võrdlemine", "jaguvus", "murruTaandamine", "kujundid", "juurimine", "astejuurimine", "astendamine"];
@@ -1877,23 +1881,23 @@ class MathController extends Controller
         }else{
             for ($lugeja = 0; $lugeja < count($tasemed); $lugeja ++){
                 if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == "liitlahutamine"){   
-                    $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->liitlah($tasemed[$lugeja], $tehe == "liitlahutamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
                 }
     
                 if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == "korrujagamine"){    
-                    $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->korjag($tasemed[$lugeja], $tehe == "korrujagamine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
                 }
     
                 if($tehe == MathController::LÜNKAMINE){
-                    $loend[$tasemed[$lugeja]] = $this->lünkamine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->lünkamine($tasemed[$lugeja], $aeg, $competitions);
                 }
 
                 if($tehe == MathController::VÕRDLEMINE){
-                    $loend[$tasemed[$lugeja]] = $this->võrdlemine($tasemed[$lugeja], $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->võrdlemine($tasemed[$lugeja], $aeg, $competitions);
                 }
 
                 if($tehe == MathController::ASTENDAMINE || $tehe == MathController::JUURIMINE || $tehe == MathController::ASTEJUURIMINE){    
-                    $loend[$tasemed[$lugeja]] = $this->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg);
+                    $loend[$tasemed[$lugeja]] = $this->astendamine($tasemed[$lugeja], $tehe == "astejuurimine" ? "mõlemad" : $tehe, $tüüp, $aeg, $competitions);
                 }
 
                 if($tehe == MathController::JAGUVUS){
