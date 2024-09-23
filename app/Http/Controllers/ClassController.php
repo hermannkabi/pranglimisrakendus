@@ -10,7 +10,6 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use DateTime,DateInterval,DatePeriod;
 
 use App\Http\Controllers\GameController;
@@ -49,7 +48,7 @@ class ClassController extends Controller
 
     }
 
-    public function remove(Request $request, $user) {
+    public function remove($user, Request $request) {
         if(!$user){
             $user = User::where('id',$request->input('Student', 'id'));
             $user -> klass = null;

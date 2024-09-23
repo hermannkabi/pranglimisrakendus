@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competitions', function (Blueprint $table){ 
-            $table->bigIncrements('id', 20);
+            $table->bigIncrements('id');
             $table->tinyText('comp_name');
             $table->tinyText('comp_description')->nullable();
             $table->timestamp('dt_start')->nullable();

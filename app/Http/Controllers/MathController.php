@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
 class MathController extends Controller
 {
 
@@ -1922,10 +1918,10 @@ class MathController extends Controller
 
 
 
-    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions){
+    public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions=false){
         $loend = [];
         $koik = $tasemed == [1, 2, 3, 4, 5];
-        $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLRMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
+        $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLEMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
         if ($koik && !in_array($tehe, $types_without_all)){
 
             // Funktsionaalseks (DRY)

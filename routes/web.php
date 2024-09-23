@@ -3,10 +3,7 @@
 use App\Models\Mang;
 use App\Models\User;
 use Inertia\Inertia;
-use App\Mail\TestMail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 

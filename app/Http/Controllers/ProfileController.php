@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use DateTime;
 
-use Carbon\Carbon;
+use Illuminate\Http\Request; 
 use App\Models\Mang;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Klass;
 use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\File;
@@ -192,7 +189,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-        app(ClassController::class)->remove(Auth::id(), true);
+        app(ClassController::class)->remove(Auth::id(), $user->id);
         app(GameController::class)->destroy(Auth::id());
         $user->delete();
         

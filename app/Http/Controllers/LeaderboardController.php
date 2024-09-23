@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use App\Models\Mang;
-use App\Models\User;
-use App\Models\Klass;
-use Illuminate\Http\Request;
 
 /**
  * Get and send data for displaying on the leaderboard

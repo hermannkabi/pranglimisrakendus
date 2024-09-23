@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class AuthVerificationController extends Controller
