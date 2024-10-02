@@ -15,7 +15,7 @@ class GoogleLoginController extends Controller
 {
     public function redirectToGoogle(){
         return Socialite::driver('google')
-            ->stateless() //oli soovitatud, võib olla hilisema probleemi põhjustaja
+            ->stateless()
             ->redirect();
     }
     
