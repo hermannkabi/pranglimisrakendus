@@ -76,9 +76,9 @@ export default function WelcomePage({auth, users, games, points}){
                 </div>
             </div>
             <SizedBox height={36} />
-            <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
+            {/* <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
                 <i translate="no" className="material-icons-outlined">info</i> <span>Ilusat alanud kooliaastat! Reaaleri tiim soovib sulle lõbusat õppimist ja kiiret peastarvutamist!</span>
-            </div>
+            </div> */}
             <div className="main-content" style={{textAlign:'center'}}>
                 <ApplicationLogo size={150} />
                 <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
