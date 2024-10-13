@@ -126,7 +126,19 @@ export default function GamePreviewPage({auth, type}){
             setMessage("Palun vali arvuhulk" + selectedGameMode);
             return;
         }
-        window.location.href = "/game/"+levels.join("")+"/"+type+"/"+gameTime+"/"+selectedGameMode;
+
+        $.post(route("previewPost"), {
+            "_token":window.csrfToken,
+            "level":levels.join(""),
+            "mis": type,
+            "aeg": gameTime,
+            "tyyp": selectedGameMode,
+        }).done(function (data){
+            window.location.href = "/game";
+        }).fail(function (data){
+            console.log("Viga");
+            console.log(data);
+        });
     }
 
     function getParams(){

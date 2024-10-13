@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
 import InfoBanner from "@/Components/InfoBanner";
 
-export default function GamePage({data, time, auth}){
+export default function GamePage({mis, tyyp, raw_level, data, time, auth}){
 
     // CONSTANTS
 
@@ -56,7 +56,7 @@ export default function GamePage({data, time, auth}){
     const [level, setLevel] = useState(1);
 
     // Whether the game page is visible, or the results page
-    const [showResults, setShowResults] = useState(false);
+    const showResults = useRef(false);
 
     // Some operations become pointless with fractions enabled (such as division)
     const [fractionAllowed, setFractionAllowed] = useState(true);
@@ -135,7 +135,7 @@ export default function GamePage({data, time, auth}){
     // If the operation is the last one in the last level, ends the round
     function getNewOperation(forcedIndex){
         // Ensure game page is visible
-        setShowResults(false);
+        showResults.current = false;
 
         // If the current level is the last one, do everything from there
         var isLastLevel = levels[levels.length - 1] == currentLevel.current;
@@ -373,7 +373,8 @@ export default function GamePage({data, time, auth}){
 
     // This function is called once when the page is first loaded
     useEffect(()=>{
-        setShowResults(false);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        showResults.current = false;
         getNewOperation(0);
     }, []);
 
@@ -704,7 +705,7 @@ export default function GamePage({data, time, auth}){
 
         }else{
             // If timer is over, show detailed resutls
-            setShowResults(true);
+            showResults.current = true;
         }
     }
 
@@ -779,7 +780,7 @@ export default function GamePage({data, time, auth}){
     // 1. When the timer ends
     // 2. When the operations run out (then with endedBefore = true)
     function onTimerFinished(message, dontSave=false){
-
+        window.removeEventListener('beforeunload', handleBeforeUnload);
 
         if(dontSave){
             window.location.href = route('dashboard');
@@ -793,7 +794,7 @@ export default function GamePage({data, time, auth}){
 
         // Wait for a moment before rendering the results page
         setTimeout(() => {    
-            setShowResults(true);
+            showResults.current = true;
         }, 750);
     }
 
@@ -880,8 +881,21 @@ export default function GamePage({data, time, auth}){
         var newNumber = flippedKeyboard ? (number > 3 ? number - 6 : number + 6) : number;
         return <NumberButton content={newNumber.toString()} onClick={()=>handleNumberClick(newNumber)} />
     }
+
+
+    function handleBeforeUnload(e) {
+        if(!showResults.current){
+            // Cancel the event
+            e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+            // Chrome requires returnValue to be set
+            e.returnValue = '';
+        }
+    }
+
+
+      
     
-    return !showResults ? (
+    return !timeOver ? (
         <div>
 
             <Head title="Mäng" />
@@ -979,5 +993,5 @@ export default function GamePage({data, time, auth}){
             
 
         </div>
-    ) : <GameEndPage correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} auth={auth} />;
+    ) : <GameEndPage mis={mis} tyyp={tyyp} raw_level={raw_level} correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} auth={auth} />;
 }

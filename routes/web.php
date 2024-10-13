@@ -3,6 +3,7 @@
 use App\Models\Mang;
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -95,11 +96,35 @@ Route::get("/preview/{type}", function ($type){
     return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
+Route::post("/preview", function (Request $request){
+    $request->validate([
+        'mis' => 'required',
+        'level' => 'required',
+        'tyyp' => 'required',
+        'aeg' => 'required',
+    ]);
+
+    session(['mis' => $request->mis,
+    'level' => $request->level,
+    'tyyp' => $request->tyyp,
+    'aeg' => $request->aeg]);
+})->name("previewPost")->middleware('auth');
+
 
 //Game part of Reaaler
-Route::get("/game/{level}/{mis}/{aeg}/{tüüp}", function ($level, $mis, $aeg, $tüüp){
+Route::get("/game", function (){
+
+    $mis = session()->get("mis");
+    $level = session()->get("level");
+    $tyyp = session()->get("tyyp");
+    $aeg = session()->get("aeg");
+
+    if(!($mis && $level && $tyyp && $aeg)){
+        return redirect()->route("dashboard");
+    }
+
     $aeg = min(10, $aeg);
-    return Inertia::render("Game/GamePage", ["data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tüüp, $aeg), "time"=>60*$aeg]);
+    return Inertia::render("Game/GamePage", ["mis"=>$mis, "tyyp"=>$tyyp, "raw_level"=>$level, "data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tyyp, $aeg), "time"=>60*$aeg]);
 })->name("gameNew")->middleware(['auth']);
 
 
@@ -180,8 +205,4 @@ Route::get("/up", function (){
     return "Rakendus on taas avalikult nähtav.";
 });
 
-
-
 require __DIR__.'/auth.php';
-
-

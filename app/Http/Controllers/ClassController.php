@@ -297,6 +297,10 @@ class ClassController extends Controller
         $request->validate([
             'klass_id' => 'required|string|max:256',
             'klass_password' => 'required|string|min:4',
+        ], [
+            "klass_name.required"=>"Klassi nimi on kohustuslik",
+            "klass_password.required"=>"Klassi parool on kohustuslik",
+            "klass_password.min"=>"Parool peab olema vähemalt 4 tähemärki",
         ]);
 
         $class = Klass::where("klass_id", $request->klass_id)->first();
