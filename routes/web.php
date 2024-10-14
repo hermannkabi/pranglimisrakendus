@@ -104,7 +104,7 @@ Route::post("/preview", function (Request $request){
         'aeg' => 'required',
     ]);
 
-    session(['gameData' => ["mis"=>$request->mis, "level"=>$request->level, "tyyp"=>$request->tyyp, "aeg"=>$request->tyyp]]);
+    session(['gameData' => ["mis"=>$request->mis, "level"=>$request->level, "tyyp"=>$request->tyyp, "aeg"=>$request->aeg]]);
 })->name("previewPost")->middleware('auth');
 
 
