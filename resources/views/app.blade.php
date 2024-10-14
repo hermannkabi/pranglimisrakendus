@@ -13,8 +13,7 @@
         <meta property="og:type" content="website">
         
         <title inertia>{{ config('app.name', 'Reaaler') }}</title>
-        <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
-
+        <link rel="icon" href="{{ URL::asset('favicon.ico') }}">
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">

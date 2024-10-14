@@ -76,11 +76,7 @@ class GameController extends Controller
         app(ProfileController::class)->updateStreak(Auth::id());
 
         // Forget the session data
-        session()->forget('mis');
-        session()->forget('level');
-        session()->forget('tyyp');
-        session()->forget('aeg');
-    
+        session()->forget('gameData');    
         return;
     }
 

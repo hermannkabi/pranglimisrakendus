@@ -104,24 +104,21 @@ Route::post("/preview", function (Request $request){
         'aeg' => 'required',
     ]);
 
-    session(['mis' => $request->mis,
-    'level' => $request->level,
-    'tyyp' => $request->tyyp,
-    'aeg' => $request->aeg]);
+    session(['gameData' => ["mis"=>$request->mis, "level"=>$request->level, "tyyp"=>$request->tyyp, "aeg"=>$request->tyyp]]);
 })->name("previewPost")->middleware('auth');
 
 
 //Game part of Reaaler
 Route::get("/game", function (){
 
-    $mis = session()->get("mis");
-    $level = session()->get("level");
-    $tyyp = session()->get("tyyp");
-    $aeg = session()->get("aeg");
-
-    if(!($mis && $level && $tyyp && $aeg)){
+    $data = session()->get("gameData");
+    if(!$data){
         return redirect()->route("dashboard");
     }
+    $mis = $data["mis"];
+    $level = $data["level"];
+    $tyyp = $data["tyyp"];
+    $aeg = $data["aeg"];
 
     $aeg = min(10, $aeg);
     return Inertia::render("Game/GamePage", ["mis"=>$mis, "tyyp"=>$tyyp, "raw_level"=>$level, "data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tyyp, $aeg), "time"=>60*$aeg]);
