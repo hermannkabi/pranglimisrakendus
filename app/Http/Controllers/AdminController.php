@@ -12,10 +12,10 @@ class AdminController extends Controller
     {
         $data = array();
 
-        foreach(Klass::all() as $klass){
-            array_push($data, ["name"=>$klass->klass_name, "teacher"=>User::where("id", $klass->teacher_id)->first(), "students"=>User::where("klass", $klass->id)->where("role", "like", "%student%")->get()]);
+        foreach(Klass::orderBy("klass_name")->get() as $klass){
+            array_push($data, ["name"=>$klass->klass_name, "klass"=>$klass, "teacher"=>User::where("id", $klass->teacher_id)->first(), "students"=>User::where("klass", $klass->klass_id)->where("role", "like", "%student%")->orderBy("perenimi", "asc")->get()]);
         }
         
-        return Inertia::render("Welcome/WelcomePage");
+        return Inertia::render("Admin/AdminPage", ['data'=>$data]);
     }
 }
