@@ -31,8 +31,8 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
                     <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
                 </div>}
-                <div className="section">
-                    <div style={{marginBottom:"16px", display:"flex", justifyContent:"space-between"}}>
+                <div className="section" style={{marginBottom:"16px",}}>
+                    <div style={{display:"flex", justifyContent:"space-between"}}>
 
                         <InfoBanner>
                             <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
