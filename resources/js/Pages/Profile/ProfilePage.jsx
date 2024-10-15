@@ -181,9 +181,8 @@ export default function ProfilePage({auth, className}){
     const roles = {
         "teacher":"Õpetaja",
         "guest":"Külaline",
-        "valimised-admin":"Rebased (admin)",
-        "valimised-vip":"Rebased (VIP)",
-        "valimised-vipvip":"Rebased (täiesti tavaline 😉)"
+        "admin":"Admin",
+        "student":"Õpilane",
     };
 
     return <>
@@ -201,9 +200,9 @@ export default function ProfilePage({auth, className}){
                         </div>
                     </div>
                     <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
-                    {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{roles[auth.user.role] ?? auth.user.role ?? "Tavakonto"}</span>}
+                    {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{auth.user.role.split(",").map((e,i)=>i == 0 ? (roles[e] ?? e) : (roles[e] ?? e).toLowerCase()).join(", ")}</span>}
                     <SizedBox height="32px" />
-                    {auth.user.role != "teacher" && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
+                    {auth.user.role.includes("student") && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
                         {className != null && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
                             <div>
                                 <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{className}</h2>
@@ -216,11 +215,11 @@ export default function ProfilePage({auth, className}){
                     
                         <a href={route("classJoin")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>}
-                    {auth.user.role == "teacher" && <div className="section clickable" style={{display:"inline-flex", position:"relative"}}>
+                    {auth.user.role.includes("teacher") && <div className="section clickable" style={{display:"inline-flex", position:"relative"}}>
                         <TwoRowTextButton upperText="Loo uus klass" lowerText="Uus klass" />
 
                         <a href={route("newClass")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
-                    </div> }
+                    </div>}
 
                     <SizedBox height="16px" />
                     <p style={{position:"absolute", bottom:"16px", right:"16px", textAlign:"end", display:((window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : 'flex'), flexDirection:"row-reverse", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>{auth.user.email_verified_at == null && auth.user.role != "guest" && <a style={{display:(window.innerWidth > 1000 && window.innerWidth < 1300) || window.innerWidth < 600 ? "block" : "inherit"}} onClick={verifyEmail} alone="">(Kinnita)</a>} {auth.user.email}</p>

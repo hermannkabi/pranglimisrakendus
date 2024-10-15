@@ -151,8 +151,8 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLinkPost')->middleware(['role:student']);
 
 
-    Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher']);
-    Route::post('/classroom/{id}/edit', 'edit')->name('classEditPost')->middleware(['role:teacher']);
+    Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher;admin']);
+    Route::post('/classroom/{id}/edit', 'edit')->name('classEditPost')->middleware(['role:teacher;admin']);
 
 
     Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
@@ -174,6 +174,10 @@ Route::get('/dashboard/old', function (){
 Route::get('/how-to-play', function (){
     return Inertia::render("Guide/GuidePage");
 })->name("guide");
+
+Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
+    Route::get("/admin", "adminShow")->name("admin");
+});
 
 Route::get("/down", function (){
     

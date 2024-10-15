@@ -44,9 +44,9 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 </div>}
 
                 {/* Teacher things start here */}
-                {auth.user.role == "teacher" && !auth.user.email_verified_at && <div className="section" style={{marginBlock:"16px"}}><InfoBanner type="error" text="Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress" /></div> }
+                {auth.user.role.includes("teacher") && !auth.user.email_verified_at && <div className="section" style={{marginBlock:"16px"}}><InfoBanner type="error" text="Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress" /></div> }
 
-                {auth.user.role == "teacher" && auth.user.email_verified_at && teacherData.length > 0 && <div className="two-column-layout" style={{marginTop:"16px"}}>
+                {auth.user.role.includes("teacher") && auth.user.email_verified_at && teacherData.length > 0 && <div className="two-column-layout" style={{marginTop:"16px"}}>
                     <div>
                         <div className="section clickable" style={{marginBlock:"0", position:"relative"}}>
                             <TwoRowTextButton upperText="Minu klassid" lowerText="Uus klass" showArrow={window.innerWidth > 600} />
@@ -70,7 +70,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                     </div>
                 </div>}
 
-                {auth.user.role == "teacher" && auth.user.email_verified_at && teacherData.length <= 0 && <a style={{all:"unset"}} href={route("newClass")}><div className="section clickable" style={{marginBlock:"0", marginTop:"16px"}}>
+                {auth.user.role.includes("teacher") && auth.user.email_verified_at && teacherData.length <= 0 && <a style={{all:"unset"}} href={route("newClass")}><div className="section clickable" style={{marginBlock:"0", marginTop:"16px"}}>
                     <TwoRowTextButton upperText="Klasse pole veel" lowerText="Uus klass" />
                     <p style={{marginInline:"8px", color:"var(--grey-color)", maxWidth:"max(50%, 300px)"}}>Sul ei ole Reaaleris veel ühtegi klassi. Selleks, et oma õpilaste tegemistel Reaaleris silma peal hoida, loo neile klass.</p>
                 </div> </a>}

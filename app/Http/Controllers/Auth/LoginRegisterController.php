@@ -191,10 +191,10 @@ class LoginRegisterController extends Controller
             $klass = Auth::user()->klass != null;
             $classData = null;
             $teacherData = null;
-            if($klass && Auth::user()->role != "teacher"){
+            if($klass && str_contains(Auth::user()->role, "student")){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
                 $teacher = User::select(["eesnimi", "perenimi", "profile_pic", "id"])->where("id", $class->teacher_id)->get();
-                $students = User::where("role", "!=", "teacher")->where("klass", Auth::user()->klass)->get();
+                $students = User::where("role", "not like", "%teacher%")->where("klass", Auth::user()->klass)->get();
 
                 $total_count = 0;
 
@@ -210,7 +210,7 @@ class LoginRegisterController extends Controller
                 $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid, "threeBest"=>array_slice($leaderboardData, 0, 3)];
             }
 
-            if(Auth::user()->role == "teacher"){
+            if(str_contains(Auth::user(), "teacher")){
                 $teacherData = [];
                 $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
                 foreach($classes as $class){

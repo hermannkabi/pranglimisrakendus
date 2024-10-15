@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use DateTime,DateInterval,DatePeriod;
-
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\LeaderboardController;
 
@@ -27,25 +27,6 @@ class ClassController extends Controller
         $tabel =  DB::table('klass')->orderBy($search==null ? 'klass_name' : $search)->take(25);
         
         return $tabel;
-    }
-
-    /**
-     * Join function for connecting with a classroom.
-     */
-    public function add(){
-        $teacher = User::wehre('teacher',Auth::user()->role);
-        if($teacher){
-            $student = User::where('klass', Auth::user()->klass);
-        }
-        
-        
-        foreach($teacher as $õp){
-            $student->joined_klass = Auth::user()->klass;
-            $student->teacher = $õp;
-            $student->save();
-        }
-        return;
-
     }
 
     public function remove($user, Request $request) {
@@ -120,13 +101,13 @@ class ClassController extends Controller
         if($klass == null) abort(404);
 
         // A student (someone who is not a teacher) should only be able to view their own class
-        if($request->user()->role != "teacher" && $request->user()->klass != $klass->klass_id) abort(403);
+        if(!str_contains($request->user()->role, "teacher") && !str_contains($request->user()->role, "admin") && $request->user()->klass != $klass->klass_id) abort(403);
 
         // $users = User::where('klass', $klass->klass_id)->where('role', 'student')->get();    
-        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi","asc")->get());
+        $leaderboard = app(LeaderboardController::class)->getLeaderboardData(User::where("klass", $klass->klass_id)->where("role", "like", "%student%")->orderBy("perenimi","asc")->get());
         $teacher = User::where('id', $klass->teacher_id)->first(); 
         $stats = $this->overallClassStats($klass->klass_id);  
-        $isTeacher = $teacher == null ? false : $request->user()->id == $teacher->id;
+        $isTeacher = str_contains($request->user()->role, "admin") || ($teacher == null ? false : $request->user()->id == $teacher->id);
         return Inertia::render("Classroom/ClassroomPage", ['uuid'=>$uuid, 'isTeacher'=>$isTeacher, 'leaderboard'=>$leaderboard, 'teacher'=>$teacher, "className"=>$klass->klass_name, "stats"=>$stats]);
     }
 
@@ -134,7 +115,7 @@ class ClassController extends Controller
         $classes = Klass::where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
 
         foreach($classes as $class){
-            $studentsCount = User::where("klass", $class->klass_id)->where("role", "!=", "teacher")->count();
+            $studentsCount = User::where("klass", $class->klass_id)->where("role", "like", "%student%")->count();
             $class->studentsCount = $studentsCount;
         }
 
@@ -150,7 +131,7 @@ class ClassController extends Controller
             return;
         }
 
-        if($class->teacher_id != $request->user()->id){
+        if(!($class->teacher_id == $request->user()->id || str_contains($request->user()->role, "admin"))){
             abort(404);
             return;
         }
@@ -192,13 +173,12 @@ class ClassController extends Controller
             return;
         }
 
-
-        if($class->teacher_id != $request->user()->id){
+        if(!($class->teacher_id == $request->user()->id || str_contains($request->user()->role, "admin"))){
             abort(404);
             return;
         }
 
-        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "!=", "teacher")->orderBy("perenimi", "asc")->get();
+        $students = User::select(["eesnimi", "perenimi", "id"])->where("klass", $class->klass_id)->where("role", "like", "%student%")->orderBy("perenimi", "asc")->get();
         
         return Inertia::render("Classroom/ClassroomEdit", ["klass"=>$class, "students"=>$students]);
 
@@ -224,7 +204,7 @@ class ClassController extends Controller
         // Points by timestamp
         $points_by_timestamp = [];
 
-        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "!=", "teacher")->get();
+        $studentsInClass = User::select("id")->where("klass", $klass_id)->where("role", "like", "%student%")->get();
 
         // Students count
         $students_count = count($studentsInClass);
@@ -343,7 +323,7 @@ class ClassController extends Controller
         for($i = 0; $i < count($classes); $i++){
             $teacher_name = User::where("id", $classes[$i]->teacher_id)->first();
             $classes[$i]->teacher_name = ucwords($teacher_name->eesnimi . " " . $teacher_name->perenimi);
-            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->where("role", "!=", "teacher")->count();
+            $classes[$i]->student_count = User::where("klass", $classes[$i]->klass_id)->where("role", "like", "%student%")->count();
         }
 
         return Inertia::render("JoinClass/JoinClassPage", ["classData"=>$klass, "allClasses"=>$classes]);
@@ -413,18 +393,13 @@ class ClassController extends Controller
         //Delete one class
         $klass = Klass::where('uuid', $id)->first();
 
-        if($klass->teacher_id == $request->user()->id){
+        if($klass->teacher_id == $request->user()->id || str_contains($request->user()->role, "admin")){
             User::where("klass", $klass->klass_id)->update(["klass"=>null]);
             $klass->delete();
         }else{
-            abort(404);
+            abort(403);
         }
 
         return;
-
-        // //Delete all classes with that teacher
-        // if($all==notNullValue()){
-        //     DB::table('klass')->where('teacher', $teacher)->get()->delete();
-        // }
     }
 }
