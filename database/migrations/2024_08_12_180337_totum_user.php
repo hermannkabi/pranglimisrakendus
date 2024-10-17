@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('settings')->nullable();
             $table->integer('streak')->length(6)->nullable();
             $table->text('profile_pic')->default("/assets/logo.png"); 
-            $table->tinyInteger('streak_active')->default(1); 
+            $table->tinyInteger('streak_active')->default(0); 
         
         });
     }
@@ -37,6 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('users');
+
     }
 };

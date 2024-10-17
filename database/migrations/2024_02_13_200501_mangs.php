@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mang', function (Blueprint $table) {
+        Schema::create('mangs', function (Blueprint $table) {
+            $table->id('pk');
             $table->string('game_id');
             $table->string('user_id');
             $table->string('comp_id')->nullable();
@@ -21,7 +22,12 @@ return new class extends Migration
             $table->string('game_count');
             $table->string('last_level');
             $table->string('time');
-            $table->string('dt');
+            $table->timestamps();
+            $table->text('log');  
+            $table->string('last_equation');
+            $table->text('game')->nullable()->default(NULL);
+            $table->text('game_type')->nullable()->default(NULL);  
+            $table->bigInteger("competition_id")->nullable();
             
         });
     }

@@ -15,6 +15,10 @@ return new class extends Migration
             $table->string('klass_id')->primary();
             $table->string('klass_name');
             $table->string('klass_password');
+            $table->integer('teacher_id')->length(11);
+            $table->timestamps();
+            $table->string('uuid');
+
         });
     }
 

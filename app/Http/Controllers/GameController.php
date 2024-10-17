@@ -50,8 +50,14 @@ class GameController extends Controller
         ]);
     }
 
-    function calculateExperience($time, $accuracy, $score_sum, $game_count){
+    function calculateExperience($time, $accuracy, $score_sum, $game_count, $game){
         // (accuracy * (game count + score_sum))/time (min) - Formula for counting exp
+       
+       /** 
+        *if($game == 'jaguvus'){
+        *    $accuracy = round(($accuracy/100) ** 4, 2);
+        *}
+        */
         return $time == 0 || $accuracy == 0 ? 0 : round(($accuracy*($score_sum + $game_count))/(100*$time/60));
     }
 
@@ -71,7 +77,7 @@ class GameController extends Controller
             'time' => 'required',
             'log' => 'required|string',
         ]);
-        $mang = $this->createMang($request->game, $request->competition_id, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
+        $mang = $this->createMang($request->game, $request->competition_id, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count, $request->game), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
         app(ProfileController::class)->updateStreak(Auth::id());
 

@@ -750,10 +750,12 @@ export default function GamePage({mis, tyyp, raw_level, data, time, auth}){
             setPoints(points => points + basePoints);
 
         }else{
+            var pointsLostForType = mis == "jaguvus" ? ({1:1,2:2,3:3,4:4,5:5, "A":10, "B":15, "C":20}[level]*100 - 50)  : 100;
+
             // Decreasing points animation
             // If points is zero, don't show anything
             if(showAnimation){
-                $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : "100"))).fadeIn(100);
+                $(".point-span").addClass("red").text(points == 0 ? "" : ("-"+(points <= 100 ? points : pointsLostForType.toString()))).fadeIn(100);
                 $(".point-span").css("transform", "translateY(0)");
                 setTimeout(() => {
                     $(".point-span").fadeOut(100);
@@ -761,7 +763,7 @@ export default function GamePage({mis, tyyp, raw_level, data, time, auth}){
                 }, 400);
             }
 
-            setPoints(Math.max(0, points - 100));
+            setPoints(Math.max(0, points - pointsLostForType));
         }
 
 
