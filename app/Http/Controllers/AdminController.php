@@ -18,4 +18,9 @@ class AdminController extends Controller
         
         return Inertia::render("Admin/AdminPage", ['data'=>$data]);
     }
+
+    public function competitionNew()
+    {        
+        return Inertia::render("Admin/NewCompetitionPage");
+    }
 }

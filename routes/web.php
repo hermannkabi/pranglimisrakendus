@@ -177,6 +177,7 @@ Route::get('/how-to-play', function (){
 
 Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
     Route::get("/admin", "adminShow")->name("admin");
+    Route::get("/competition/new", "competitionNew")->name("competitionNew");
 });
 
 Route::get("/down", function (){
