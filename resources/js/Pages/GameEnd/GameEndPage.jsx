@@ -10,7 +10,7 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import InfoBanner from "@/Components/InfoBanner";
 
 
-export default function GameEndPage({correct, total, points, time, lastLevel, log, auth}){
+export default function GameEndPage({correct, total, points, time, lastLevel, log, auth, mis, tyyp, raw_level}){
 
 
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
@@ -104,7 +104,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
         // Save the game type as 'last used'
         var lastUsed = JSON.parse(window.localStorage.getItem("last-used") == null || window.localStorage.getItem("last-used").length == 0 ? "[]" : window.localStorage.getItem("last-used"));
-        var gameType = decodeURIComponent(window.location.href.split("/")[5]);
+        var gameType = decodeURIComponent(mis);
         if(!lastUsed.includes(gameType)){
             if(lastUsed.length >= 3) lastUsed.pop();
             lastUsed.unshift(gameType);
@@ -123,9 +123,8 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 'last_equation':"0",
                 'time':time,
                 'log':JSON.stringify(log),
-                // Siia oleks tulevikus vaja paremat lahendust
-                'game':window.location.href.split("/")[5],
-                'game_type': window.location.href.split("/")[7],
+                'game':mis,
+                'game_type': tyyp,
             }).done(function (data){
                 setGameSaved(true);
             }).fail(function (data){
@@ -170,6 +169,21 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         }
     }
 
+    function playAgain(){
+        $.post(route("previewPost"), {
+            "_token":window.csrfToken,
+            "level":raw_level,
+            "mis": mis,
+            "aeg": time/60,
+            "tyyp": tyyp,
+        }).done(function (data){
+            window.location.href = "/game";
+        }).fail(function (data){
+            console.log("Viga");
+            console.log(data);
+        });
+    }
+
     return <>
         <Layout title={"Lõpeta mäng"} auth={auth}>
             {time < 30 && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
@@ -209,7 +223,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 <div>
                     <SizedBox height="8px" />
                     <div className="two-column-layout">
-                        <div onClick={()=>navigateAway(()=>location.reload())} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
+                        <div onClick={()=>navigateAway(playAgain)} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
                             <div>
                                 <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">refresh</i>
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Mängi uuesti</p>

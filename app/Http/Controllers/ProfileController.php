@@ -235,13 +235,13 @@ class ProfileController extends Controller
             $klass = Klass::where("klass_id", $user->klass)->first();
 
             // You can see your own public profile, no matter what
-            if($user->id != $logged_in_user->id){
-                if($user->role == "teacher"){
+            if($user->id != $logged_in_user->id && !str_contains($logged_in_user, "admin")){
+                if(str_contains($user->role, "teacher")){
                     // A teacher can be seen only by their students
                     if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
                         abort(403);
                     }
-                }else if($user->role != "guest"){
+                }else if(str_contains($user->role, "student")){
                     // A student can be seen by their teacher or their classmates
                     if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
                         abort(403);

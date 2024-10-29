@@ -24,8 +24,9 @@ Vaja läheb järgmisi tehnoloogiaid:
 4. cp .env.example .env
 5. php artisan key:generate
 6. composer require laravel/socialite
-7. npm install js-pick-file
-8. php artisan storage:link
+7. composer require laravel/pulse
+8. npm install js-pick-file
+9. php artisan storage:link
 
 **Kasutamine:**
 

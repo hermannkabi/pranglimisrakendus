@@ -1,5 +1,6 @@
 <?php
-
+// See fail ajab kooli serveri täiesti pöördesse
+// Kui Pulse on oluline meile, siis tuleks üle vaadata
 use Laravel\Pulse\Http\Middleware\Authorize;
 use Laravel\Pulse\Pulse;
 use Laravel\Pulse\Recorders;

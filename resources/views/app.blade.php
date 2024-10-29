@@ -13,35 +13,21 @@
         <meta property="og:type" content="website">
         
         <title inertia>{{ config('app.name', 'Reaaler') }}</title>
-        <link rel="shortcut icon" href="{{ URL::asset('favicon.png') }}" type="image/x-icon">
-
+        <link rel="icon" href="{{ URL::asset('favicon.ico') }}">
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}">
 
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
         <!-- Scripts -->
         @routes
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
-    <body translate="no" class="font-sans antialiased" >
-
-        <noscript>
-            <div style="display: flex; justify-content: center; height: 100vh;">
-               <div>
-                    <h1>JavaScript on keelatud</h1>
-                    <p>Selle lehe jaoks on vaja lubada brauseris JavaScript</p>
-                    <p>Kui sa seda ei oska, vaata <a href="https://enable-javascript.com">sellele lingile</a></p>
-                </div> 
-            </div>
-            
-        </noscript>
-        
+    <body translate="no" class="font-sans antialiased" >        
         @inertia
         <script>window.csrfToken = "{{ csrf_token() }}";</script>
         <script src="{{ URL::asset('js/mousetrap.js') }}"></script> 

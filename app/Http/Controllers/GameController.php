@@ -28,13 +28,13 @@ class GameController extends Controller
     /**
      * Creating a game from given data.
      */
-    public function createMang($game, $competition, $game_type, $score_sum, $experience,$accuracy_sum, 
+    public function createMang($game, $competition_id, $game_type, $score_sum, $experience,$accuracy_sum, 
     $game_count, $equation_count,$last_level,$last_equation,$time, $log)
     { 
         return Mang::create([
             'user_id' => Auth::id(),
             'game' => $game,
-            'competition' => $competition, 
+            'competition_id' => $competition_id, 
             'game_type' => $game_type,
             'game_id' => (string)Str::uuid(),
             'score_sum' => $score_sum,
@@ -50,8 +50,14 @@ class GameController extends Controller
         ]);
     }
 
-    function calculateExperience($time, $accuracy, $score_sum, $game_count){
+    function calculateExperience($time, $accuracy, $score_sum, $game_count, $game){
         // (accuracy * (game count + score_sum))/time (min) - Formula for counting exp
+       
+       /** 
+        *if($game == 'jaguvus'){
+        *    $accuracy = round(($accuracy/100) ** 4, 2);
+        *}
+        */
         return $time == 0 || $accuracy == 0 ? 0 : round(($accuracy*($score_sum + $game_count))/(100*$time/60));
     }
 
@@ -62,7 +68,6 @@ class GameController extends Controller
     {
         $request->validate([
             'game' =>'required|string|max:37',
-            'competition' => 'required',
             'game_type' => 'required|string|max:37',
             'score_sum' => 'required|string|max:37',
             'accuracy_sum' => 'required|string|max:37',
@@ -72,9 +77,12 @@ class GameController extends Controller
             'time' => 'required',
             'log' => 'required|string',
         ]);
-        $mang = $this->createMang($request->game, $request->competition, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
+        $mang = $this->createMang($request->game, $request->competition_id, $request->game_type, $request->score_sum, $this->calculateExperience($request->time, $request->accuracy_sum, $request->score_sum, $request->game_count, $request->game), $request->accuracy_sum, $request->game_count, $request->equation_count, $request->last_level, $request->last_equation, $request->time, 
         $request->log);
         app(ProfileController::class)->updateStreak(Auth::id());
+
+        // Forget the session data
+        session()->forget('gameData');    
         return;
     }
 
@@ -91,13 +99,14 @@ class GameController extends Controller
 
 
          // You can see your own public profile, no matter what
-         if($user->id != $logged_in_user->id){
-            if($user->role == "teacher"){
+         // admin too
+         if($user->id != $logged_in_user->id && !str_contains($logged_in_user, "admin")){
+            if(str_contains($user->role, "teacher")){
                 // A teacher can be seen only by their students
                 if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
                     abort(403);
                 }
-            }else if($user->role == "student"){
+            }else if(str_contains($user->role, "student")){
                 // A student can be seen by their teacher or their classmates
                 if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
                     abort(403);

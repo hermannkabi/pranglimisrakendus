@@ -12,17 +12,15 @@ return new class extends Migration
     public function up(): void
     {  
         Schema::create('competition_user', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('comp_id')->nullable();
-
         });
 
         Schema::table('competition_user', function (Blueprint $table) {
-            //TODO: kas tasub kustutada, kui kasutaja kustub / kui mang kustub?
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
-            $table->foreign('competitions')->references('comp_id')->on('competitions')->onDelete('cascade');
+            $table->foreign('comp_id')->references('id')->on('competitions')->onDelete('cascade');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+        //
     }
 };

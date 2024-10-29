@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class EnsureUserHasRole
 {
@@ -16,8 +17,8 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if ($request->user()->role != ($role)){
-            abort(404);
+        if(count(array_intersect(explode(";", $role), explode(",", $request->user()->role))) <= 0){
+            abort(403);
         }
 
         if($role == "teacher" && !$request->user()->email_verified_at){
