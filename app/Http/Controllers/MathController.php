@@ -364,17 +364,20 @@ class MathController extends Controller
         if ($level === 'all' && $tüüp === 'integer'){
             do {
                 again3:
-                $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add -1 ,$add + 1)];
                 $x = $jarl[array_rand($jarl)];
                 $y = $jarl[array_rand($jarl)];
                 $tase = 1;
                 if ($count > 5){
+                    $jarl = [random_int($add2 - 7, $add2 + 7), random_int($add -1 ,$add + 1)];
+                    $x = $jarl[array_rand($jarl)];
+                    $y = $jarl[array_rand($jarl)];
                     $tase = 2;
                 }
                 if ($count > 10){ 
                     $tase = 3;
                     $max = 30;
-                    $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
+                    $jarl = [random_int($add2 - 11, $add2 + 11), random_int($add - 4, $add + 4)];
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                 }
@@ -392,13 +395,6 @@ class MathController extends Controller
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                 }
-                if ($x == $y){
-                    $kontroll ++;
-                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                        goto again3;
-                    }
-                }
-
 
                 if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
                     goto again3;
