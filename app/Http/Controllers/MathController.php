@@ -168,12 +168,12 @@ class MathController extends Controller
     // Üritame kirjutada võimalikult DRY koodi
 
     //Addition and Substraction
-    public function liitlah($level, $mis, $tüüp, $aeg, $random=false){
+    public function liitlah($level, $mis, $tüüp, $aeg, $tase, $random=false){
         $array = [];
         $x = 0;
         $y = 0;
-        $tase = 1;
-        $count = 0;
+        //$tase = 1;
+        //$count = 0;
         $max = 10;
         $add = 0;
         $add2 = 0;
@@ -301,63 +301,55 @@ class MathController extends Controller
     
         //Ascending levels -- Fraction
         if ($level === 'all' && $tüüp == "fraction"){
-            do {
-                again2:
+            
+            again2:
+            $x = random_int($add, 1 + $add) + 0.5;
+            $y = random_int($add, 1 + $add);
+            if ($tase == 2){
                 $x = random_int($add, 1 + $add) + 0.5;
-                $y = random_int($add, 1 + $add);
-                if ($count > 5){
-                    $x = random_int($add, 1 + $add) + 0.5;
-                    $y = random_int($add, 1 + $add) + random_int(1, 9)/10;
-                    $tase = 2;
-                }
-                if ($count > 10){
-                    $tase = 3;
-                    $max = 30;
-                    $x = random_int($add, 4 + $add) + random_int(1, 9)/10;
-                    $y = random_int($add, 4 + $add) + random_int(1, 9)/10;
-                }
-                if ($count > 15){
-                    $tase = 4;
-                    $max = 100;
-                    $x = random_int($add, 14 + $add) + random_int(1, 99)/100;
-                    $y = random_int($add, 14 + $add) + random_int(1, 99)/100;
-                }
-                if ($count > 20){
-                    $tase = 5;
-                    $max = 500;
-                    $x = random_int($add, 80 + $add) + random_int(1, 99)/100;
-                    $y = random_int($add, 80 + $add) + random_int(1, 99)/100;
-                }
-                if ($x == $y){
-                    $kontroll ++;
-                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                        goto again2;
-                    }
-                }
-                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
-                    // Kas see töötab?
+                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;            }
+            if ($tase == 3){
+                $max = 30;
+                $x = random_int($add, 4 + $add) + random_int(1, 9)/10;
+                $y = random_int($add, 4 + $add) + random_int(1, 9)/10;
+            }
+            if ($tase == 4){
+                $max = 100;
+                $x = random_int($add, 14 + $add) + random_int(1, 99)/100;
+                $y = random_int($add, 14 + $add) + random_int(1, 99)/100;
+            }
+            if ($tase == 5){
+                $max = 500;
+                $x = random_int($add, 80 + $add) + random_int(1, 99)/100;
+                $y = random_int($add, 80 + $add) + random_int(1, 99)/100;
+            }
+            if ($x == $y){
+                $kontroll ++;
+                if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
                     goto again2;
                 }
-                $xold = $x;
-                $yold = $y;
+            }
+            if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                // Kas see töötab?
+                goto again2;
+            }
+            $xold = $x;
+            $yold = $y;
 
-                $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
+            $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
 
-                if ($uusmis === MathController::LIITMINE){
-                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
-                }
+            if ($uusmis === MathController::LIITMINE){
+                array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
+            }
 
-                if ($uusmis === MathController::LAHUTAMINE){
-                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
-                }
+            if ($uusmis === MathController::LAHUTAMINE){
+                array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+            }
 
-                $add += $max/5;
-                $count ++;
-            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
+            $add += $max/5;
 
             return $array;
         }
-
 
 
         //Ascending levels -- Integer
@@ -1925,8 +1917,12 @@ class MathController extends Controller
                     $tehe = MathController::BOTH;
                 }
 
-
-                $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg, $tase);
+                if ($count > 0 && $loend[$count] == $loend[$count-1]){
+                    do{
+                        $loend[$count] = $this->liitlah('all', $tehe, $tüüp, $aeg, $tase);
+                    }while($loend[$count] == $loend[$count-1]);
+                }
+                
             }
 
             if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == MathController::KORRUJAGAMINE){
@@ -1983,6 +1979,7 @@ class MathController extends Controller
             for ($lugeja = 0; $lugeja < count($tehe['level']); $lugeja ++){
             $loend[$tasemed[$lugeja]] = $this->random($tasemed, $aeg);
             }
+
 
             $count ++;
         }}while($count < MathController::OPERATION_COUNT + $aeg*14);
