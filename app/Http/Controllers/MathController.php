@@ -1910,13 +1910,15 @@ class MathController extends Controller
 
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions=false){
-        $loend = [];
-        $koik = $tasemed == [1, 2, 3, 4, 5];
-        $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLEMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
+       $count = 0;$loend = [];$koik = $tasemed == [1, 2, 3, 4, 5];
+       $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLEMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
+       do{ 
+
+        $tase = $count < 5 ? 1 : ($count < 10 ? 2 : ($count < 15 ? 3 : ($count < 20 ? 4 : ($count < 25 ? 5 : ($count < 30 ? 'A' : ($count < 35 ? 'B' : 'C'))))));
+
+
         if ($koik && !in_array($tehe, $types_without_all)){
 
-            // Funktsionaalseks (DRY)
-            // See on copy paste ju
             if($tehe == MathController::LIITMINE || $tehe == MathController::LAHUTAMINE || $tehe == MathController::LIITLAHUTAMINE){
 
                 if($tehe == MathController::LIITLAHUTAMINE){
@@ -1924,7 +1926,7 @@ class MathController extends Controller
                 }
 
 
-                $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg);
+                $loend[0] = $this->liitlah('all', $tehe, $tüüp, $aeg, $tase);
             }
 
             if($tehe == MathController::KORRUTAMINE || $tehe == MathController::JAGAMINE || $tehe == MathController::KORRUJAGAMINE){
@@ -1981,7 +1983,9 @@ class MathController extends Controller
             for ($lugeja = 0; $lugeja < count($tehe['level']); $lugeja ++){
             $loend[$tasemed[$lugeja]] = $this->random($tasemed, $aeg);
             }
-        }
+
+            $count ++;
+        }}while($count < MathController::OPERATION_COUNT + $aeg*14);
         return $loend;
     }
 }
