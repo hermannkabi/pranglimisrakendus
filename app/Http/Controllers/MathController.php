@@ -364,12 +364,12 @@ class MathController extends Controller
         if ($level === 'all' && $tüüp === 'integer'){
             do {
                 again3:
-                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add -1 ,$add + 1)];
+                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4 ,$add + 4)];
                 $x = $jarl[array_rand($jarl)];
                 $y = $jarl[array_rand($jarl)];
                 $tase = 1;
                 if ($count > 5){
-                    $jarl = [random_int($add2 - 7, $add2 + 7), random_int($add -1 ,$add + 1)];
+                    $jarl = [random_int($add2 - 7, $add2 + 7), random_int($add -7 ,$add + 7)];
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                     $tase = 2;
@@ -377,7 +377,7 @@ class MathController extends Controller
                 if ($count > 10){ 
                     $tase = 3;
                     $max = 30;
-                    $jarl = [random_int($add2 - 11, $add2 + 11), random_int($add - 4, $add + 4)];
+                    $jarl = [random_int($add2 - 11, $add2 + 11), random_int($add - 11, $add + 11)];
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                 }
