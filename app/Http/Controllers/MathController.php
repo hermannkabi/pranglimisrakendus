@@ -30,6 +30,7 @@ class MathController extends Controller
     const SUVALISUS = "suvalisus";
     //....
 
+    
     function gcd ($a, $b) {
         return $b ? MathController::gcd($b, $a % $b) : $a;
     }
@@ -52,112 +53,111 @@ class MathController extends Controller
     }
     //Op1 = liitmine, korrutamine
     //Op2 = lahutamine, jagamine
-    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $aeg=1, $roman){
+    function generateOp($xf, $yf, $mis, $ans, $opnames, $opsymbs, $level, $roman, $olds){
 
         $array = [];
         $check = 0;
-
-        $xold = 0;
-        $yold = 0;
-
-        $count = 0;
         
-        do{
-            $uusmis = $mis;
+        $uusmis = $mis;
 
-            if ($uusmis === MathController::BOTH){
-                $uusmis = $opnames[array_rand($opnames)];
-            }
+        if ($uusmis === MathController::BOTH){
+            $uusmis = $opnames[array_rand($opnames)];
+        }
 
-            $x = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $xf($uusmis) : $xf();
-            $y = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $yf($uusmis) : $yf();            ;    
-            
+        $x = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $xf($uusmis) : $xf();
+        $y = $uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE ?  $yf($uusmis) : $yf();            ;    
+        
 
-            if ($x == $y && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
-                $check ++;
+        if ($x == $y && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
+            $check ++;
 
-                if ($check > MathController::SAME_NUMBER_REPEAT_COUNT){
-                    do{
-                        $x = $xf($uusmis);
-                        $y = $yf($uusmis);
-                    } while ($x == $y);
-                }
-            }
-
-            if (($x == $xold || $y == $yold) && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
+            if ($check > MathController::SAME_NUMBER_REPEAT_COUNT){
                 do{
                     $x = $xf($uusmis);
                     $y = $yf($uusmis);
-                } while(($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold));
+                } while ($x == $y);
             }
+        }
 
-            $xold = $x;
-            $yold = $y;
+        $xold = $GLOBALS["OLD"] != null ? $GLOBALS["OLD"][0] : 0;
+        $yold = $GLOBALS["OLD"] != null ? $GLOBALS["OLD"][1] : 0;
 
-            $xans = $x;
-            $yans = $y;
+        if (($x == $xold || $y == $yold) && !($uusmis == MathController::ASTENDAMINE || $uusmis == MathController::JUURIMINE)){
+            do{
+                $x = $xf($uusmis);
+                $y = $yf($uusmis);
+            } while(($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold));
+        }
 
-            $sum = $x + $y;
-            $prod = $x * $y;
+        $xold = $x;
+        $yold = $y;
+        $GLOBALS["OLD"] = array();
+        array_push($GLOBALS["OLD"], $xold, $yold);
 
-            if($roman){
-                $x = $this -> numberToRoman($x);
-                $y = $this -> numberToRoman($y);
-                $sum = $this -> numberToRoman($xans + $yans);
-                $prod = $this -> numberToRoman($xans * $yans);
 
+        $xans = $x;
+        $yans = $y;
+        
+       
+
+        $sum = $x + $y;
+        $prod = $x * $y;
+
+        if($roman){
+            $x = $this -> numberToRoman($x);
+            $y = $this -> numberToRoman($y);
+            $sum = $this -> numberToRoman($xans + $yans);
+            $prod = $this -> numberToRoman($xans * $yans);
+
+        }
+
+
+        // Liitmine v korrutamine
+        if (in_array($uusmis, [MathController::LIITMINE, MathController::KORRUTAMINE])){
+            array_push($array, ["operation"=>$x . $opsymbs[0] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+        }
+
+        // Lahutamine v jagamine
+        if (in_array($uusmis, [MathController::LAHUTAMINE, MathController::JAGAMINE])){
+            array_push($array, ["operation"=> ($uusmis == MathController::LAHUTAMINE ? ($sum) : ($prod)) . $opsymbs[1] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
+        }
+
+        //Astendamine v juurimine
+        if (in_array($uusmis, [MathController::ASTENDAMINE, MathController::JUURIMINE])){
+
+            // See tähendab, et on murdudega juurimine/astendamine
+            if($opsymbs){
+                $x3 = $xf($uusmis);
+                array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ("(".$x."/".$x3.")" . "EXP" . $y) : ("(".$x3**$y."/".$x**$y.")" . "RAD" . $y)), "answer"=>$ans($xans, $yans, $x3, $uusmis), "level"=>$level]);
+            }else{
+                array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ($x . "EXP" . $y) : ($y > 0 ? ($x**$y . "RAD" . $y) : ('1'. '/' . $x**abs($y). "RAD" . $y)) ), "answer"=>$ans($xans, $yans, null, $uusmis), "level"=>$level]);
             }
+        }
 
+        //Jaguvus
+        if ($uusmis === MathController::JAGUVUS){
+            $jagub = $ans($x, $y, $uusmis);
+            array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + ($y - random_int(1, $y - 1)))." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
+        }
 
-            // Liitmine v korrutamine
-            if (in_array($uusmis, [MathController::LIITMINE, MathController::KORRUTAMINE])){
-                array_push($array, ["operation"=>$x . $opsymbs[0] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
-            }
-
-            // Lahutamine v jagamine
-            if (in_array($uusmis, [MathController::LAHUTAMINE, MathController::JAGAMINE])){
-                array_push($array, ["operation"=> ($uusmis == MathController::LAHUTAMINE ? ($sum) : ($prod)) . $opsymbs[1] . ($yans < 0 ? "(" . $y . ")" : $y), "answer"=>$ans($xans, $yans, $uusmis), "level"=>$level]);
-            }
-
-            //Astendamine v juurimine
-            if (in_array($uusmis, [MathController::ASTENDAMINE, MathController::JUURIMINE])){
-
-                // See tähendab, et on murdudega juurimine/astendamine
-                if($opsymbs){
-                    $x3 = $xf($uusmis);
-                    array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ("(".$x."/".$x3.")" . "EXP" . $y) : ("(".$x3**$y."/".$x**$y.")" . "RAD" . $y)), "answer"=>$ans($xans, $yans, $x3, $uusmis), "level"=>$level]);
-                }else{
-                    array_push($array, ["operation"=> ($uusmis == MathController::ASTENDAMINE ? ($x . "EXP" . $y) : ($y > 0 ? ($x**$y . "RAD" . $y) : ('1'. '/' . $x**abs($y). "RAD" . $y)) ), "answer"=>$ans($xans, $yans, null, $uusmis), "level"=>$level]);
-                }
-            }
-
-            //Jaguvus
-            if ($uusmis === MathController::JAGUVUS){
-                $jagub = $ans($x, $y, $uusmis);
-                array_push($array, ["operation"=> ($jagub ? (($x * $y) . " ⋮ " . $y) : (($x*$y + ($y - random_int(1, $y - 1)))." ⋮ ".$y)), "answer"=>$jagub, "level"=>$level]);
-            }
-
-            //Lihtustamine
-            if ($uusmis == MathController::MURRUTAANDAMINE){
+        //Lihtustamine
+        if ($uusmis == MathController::MURRUTAANDAMINE){
+            $z = $opnames();
+            while ($z * $y == 1 || $x * $z == 1){
                 $z = $opnames();
-                while ($z * $y == 1 || $x * $z == 1){
-                    $z = $opnames();
-                }
-                array_push($array, ["operation"=> "LIHT(" . ($x * $z) . "/" .($y * $z) . ")" , "answer"=>$ans($x * $z, $y * $z), "level"=>$level]);
             }
+            array_push($array, ["operation"=> "LIHT(" . ($x * $z) . "/" .($y * $z) . ")" , "answer"=>$ans($x * $z, $y * $z), "level"=>$level]);
+        }
 
-            //Multioperand
-            if ($uusmis == MathController::MULTIOPERAND){
-                array_push($array, ["operation"=> $x , "answer"=>$ans($x, $y), "level"=>$level]);
-            }
+        //Multioperand
+        if ($uusmis == MathController::MULTIOPERAND){
+            array_push($array, ["operation"=> $x , "answer"=>$ans($x, $y), "level"=>$level]);
+        }
 
-            //Bots
-            if ($uusmis == MathController::BOTS){
-                array_push($array, ["operation"=> $x[-1],"answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
-            }
-
-            $count ++;
-        } while ($count < (MathController::OPERATION_COUNT + (14 * $aeg)));
+        //Bots
+        if ($uusmis == MathController::BOTS){
+            array_push($array, ["operation"=> $x[-1],"answer"=>$ans($x[1],$x[0], 1), "level"=>$level]);
+        }
 
         return ["array"=>$array];
     }
@@ -172,13 +172,11 @@ class MathController extends Controller
         $array = [];
         $x = 0;
         $y = 0;
-        //$tase = 1;
-        //$count = 0;
         $max = 10;
         $add = 0;
         $add2 = 0;
-        $xold = 0;
-        $yold = 0;
+        $xold = $GLOBALS["OLD"][0];
+        $yold = $GLOBALS["OLD"][1];
         $kontroll = 0;
 
 
@@ -292,7 +290,7 @@ class MathController extends Controller
         if($level != "all"){
             $returnData = MathController::generateOp($xvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $yvalues[$level][$tüüp == "roman" ? "natural" : $tüüp], $mis, function ($num1, $num2, $mis){
                 return $mis == MathController::LIITMINE ? $num1 + $num2 : $num1;
-             }, $opnames, $opsymbs, $level, $aeg, $tüüp == "roman");
+             }, $opnames, $opsymbs, $level, $tüüp == "roman", $GLOBALS["OLD"] = null);
 
              return $returnData["array"];
         }
@@ -307,7 +305,8 @@ class MathController extends Controller
             $y = random_int($add, 1 + $add);
             if ($tase == 2){
                 $x = random_int($add, 1 + $add) + 0.5;
-                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;            }
+                $y = random_int($add, 1 + $add) + random_int(1, 9)/10;            
+            }
             if ($tase == 3){
                 $max = 30;
                 $x = random_int($add, 4 + $add) + random_int(1, 9)/10;
@@ -323,18 +322,15 @@ class MathController extends Controller
                 $x = random_int($add, 80 + $add) + random_int(1, 99)/100;
                 $y = random_int($add, 80 + $add) + random_int(1, 99)/100;
             }
-            if ($x == $y){
-                $kontroll ++;
-                if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                    goto again2;
-                }
-            }
+            
             if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
                 // Kas see töötab?
                 goto again2;
             }
             $xold = $x;
             $yold = $y;
+            $GLOBALS["OLD"][0] = $xold;
+            $GLOBALS["OLD"][1] = $yold;
 
             $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
 
@@ -354,80 +350,68 @@ class MathController extends Controller
 
         //Ascending levels -- Integer
         if ($level === 'all' && $tüüp === 'integer'){
-            do {
-                again3:
-                $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+            again3:
+            $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+            $x = $jarl[array_rand($jarl)];
+            $y = $jarl[array_rand($jarl)];
+            $tase = 1;
+            }
+            if ($tase = 3){ 
+                $tase = 3;
+                $max = 30;
+                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
                 $x = $jarl[array_rand($jarl)];
                 $y = $jarl[array_rand($jarl)];
-                $tase = 1;
-                if ($count > 5){
-                    $tase = 2;
-                }
-                if ($count > 10){ 
-                    $tase = 3;
-                    $max = 30;
-                    $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-                if ($count > 15){ 
-                    $tase = 4;
-                    $max = 100;
-                    $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-                if ($count > 20){ 
-                    $tase = 5;
-                    $max = 500;
-                    $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-                if ($x == $y){
-                    $kontroll ++;
-                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                        goto again3;
-                    }
-                }
+            }
+            if ($tase = 4){ 
+                $tase = 4;
+                $max = 100;
+                $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
+                $x = $jarl[array_rand($jarl)];
+                $y = $jarl[array_rand($jarl)];
+            }
+            if ($tase = 5){ 
+                $tase = 5;
+                $max = 500;
+                $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
+                $x = $jarl[array_rand($jarl)];
+                $y = $jarl[array_rand($jarl)];
+            }
+            if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                goto again3;
+            }
 
 
-                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
-                    goto again3;
-                }
+            $xold = $x;
+            $yold = $y;
+            $xold = $GLOBALS["OLD"][0];
+            $yold = $GLOBALS["OLD"][1];
+            $uusmis = $mis;
 
-
-                $xold = $x;
-                $yold = $y;
-
-                $uusmis = $mis;
-
-                if($mis == MathController::BOTH){
-                    $uusmis = $opnames[array_rand($opnames)];
-                }
-                
-                if ($uusmis === MathController::LIITMINE){
-                    if ($y < 0){
-                        $y = -$y;
-                        array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
-                    } else {
-                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
-                    }
-                }
-                if ($uusmis === MathController::LAHUTAMINE){
-                    if ($y < 0){
-                        $y = -$y;
-                        array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
-                    } else{
-                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
-                    }
-                }
-
-                $add += $max / 5;
-                $add2 -= $max / 5;
-                $count ++;
+            if($mis == MathController::BOTH){
+                $uusmis = $opnames[array_rand($opnames)];
+            }
             
-            } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
+            if ($uusmis === MathController::LIITMINE){
+                if ($y < 0){
+                    $y = -$y;
+                    array_push($array, ["operation"=>$x. '-' . $y, "answer"=>$x - $y, "level"=>$tase]);
+                } else {
+                array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$x + $y, "level"=>$tase]);
+                }
+            }
+            if ($uusmis === MathController::LAHUTAMINE){
+                if ($y < 0){
+                    $y = -$y;
+                    array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                } else{
+                array_push($array, ["operation"=>$x + $y. '-' . $y, "answer"=>$x, "level"=>$tase]);
+                }
+            }
+
+            $add += $max / 5;
+            $add2 -= $max / 5;
+        
 
             return $array;
         }
@@ -436,71 +420,64 @@ class MathController extends Controller
         // Ascending levels -- Natural
         
         if ($level === "all" && ($tüüp ==='natural' || $tüüp == "roman")){
-            do{
-                again4:
-                $x = random_int($add, 3 + $add);
-                $y = random_int($add, 3 + $add);
+            
+            again4:
+            $x = random_int($add, 3 + $add);
+            $y = random_int($add, 3 + $add);
 
-                $tase = 1;
-                if ($count > 5){
-                    $tase = 2;
-                }
-                if ($count > 10){
-                    $tase = 3;
-                    $max = 30;
-                    $x = random_int($add, 4 + $add);
-                    $y = random_int($add, 4 + $add);
-                }
-                if ($count > 15){
-                    $tase = 4;
-                    $max = 100;
-                    $x = random_int($add, 14 + $add);
-                    $y = random_int($add, 14 + $add);
-                }
-                if ($count > 20){
-                    $tase = 5;
-                    $max = 500;
-                    $x = random_int($add, 80 + $add);
-                    $y = random_int($add, 80 + $add);
-                }
-                if ($x == $y){
-                    $kontroll ++;
-                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                        goto again4;
-                    }
-                }
+            $tase = 1;
+            if ($count > 5){
+                $tase = 2;
+            }
+            if ($count > 10){
+                $tase = 3;
+                $max = 30;
+                $x = random_int($add, 4 + $add);
+                $y = random_int($add, 4 + $add);
+            }
+            if ($count > 15){
+                $tase = 4;
+                $max = 100;
+                $x = random_int($add, 14 + $add);
+                $y = random_int($add, 14 + $add);
+            }
+            if ($count > 20){
+                $tase = 5;
+                $max = 500;
+                $x = random_int($add, 80 + $add);
+                $y = random_int($add, 80 + $add);
+            }
 
+            if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                goto again4;
+            }
 
-                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
-                    goto again4;
-                }
+            $xold = $x;
+            $yold = $y;
+            $xold = $GLOBALS["OLD"][0];
+            $yold = $GLOBALS["OLD"][1];
 
-                $xold = $x;
-                $yold = $y;
+            $xans = $x;
+            $yans = $y;
 
-                $xans = $x;
-                $yans = $y;
+            $sum = $x + $y;
 
-                $sum = $x + $y;
+            if($tüüp == "roman"){
+                $x = $this -> numberToRoman($x);
+                $y = $this -> numberToRoman($y);
+                $sum = $this -> numberToRoman($xans + $yans);
+            }
 
-                if($tüüp == "roman"){
-                    $x = $this -> numberToRoman($x);
-                    $y = $this -> numberToRoman($y);
-                    $sum = $this -> numberToRoman($xans + $yans);
-                }
+            $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
 
-                $uusmis = $mis == MathController::BOTH ? (random_int(1, 2) == 1 ?  MathController::LIITMINE : MathController::LAHUTAMINE) : $mis;
+            if ($uusmis === MathController::LIITMINE){
+                array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$xans + $yans, "level"=>$tase]);
+            }
+            if ($uusmis === MathController::LAHUTAMINE){
+                array_push($array, ["operation"=>$sum. '-' . $y, "answer"=>$xans, "level"=>$tase]);
+            }
 
-                if ($uusmis === MathController::LIITMINE){
-                    array_push($array, ["operation"=>$x. '+' . $y, "answer"=>$xans + $yans, "level"=>$tase]);
-                }
-                if ($uusmis === MathController::LAHUTAMINE){
-                    array_push($array, ["operation"=>$sum. '-' . $y, "answer"=>$xans, "level"=>$tase]);
-                }
-
-                $add += $max/5;
-                $count ++;
-            }while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + ($aeg*14));
+            $add += $max/5;
 
             return $array;
         }            
@@ -1902,7 +1879,7 @@ class MathController extends Controller
 
 
     public function wrapper($tehe, $tasemed, $tüüp, $aeg, $suvalisus=false, $competitions=false){
-       $count = 0;$loend = [];$koik = $tasemed == [1, 2, 3, 4, 5];
+       $count = 0;$loend = [];$koik = $tasemed == [1, 2, 3, 4, 5];$GLOBALS["OLD"] = array(); //TODO: Kas $GLOBAL muutujat on ka siia vaja?
        $types_without_all = [MathController::LÜNKAMINE, MathController::VÕRDLEMINE, MathController::JAGUVUS, MathController::MURRUTAANDAMINE, MathController::KUJUNDID, MathController::JUURIMINE, MathController::ASTEJUURIMINE, MathController::ASTENDAMINE];
        do{ 
 
