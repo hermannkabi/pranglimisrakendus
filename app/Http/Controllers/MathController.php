@@ -175,9 +175,8 @@ class MathController extends Controller
         $max = 10;
         $add = 0;
         $add2 = 0;
-        $xold = $GLOBALS["OLD"][0];
-        $yold = $GLOBALS["OLD"][1];
-        $kontroll = 0;
+        $xold = count($GLOBALS["OLD"]) < 2 ? 0 : $GLOBALS["OLD"][0];
+        $yold = count($GLOBALS["OLD"]) < 2 ? 0 : $GLOBALS["OLD"][1];
 
 
         $opnames = [MathController::LIITMINE, MathController::LAHUTAMINE];
@@ -355,7 +354,7 @@ class MathController extends Controller
             $x = $jarl[array_rand($jarl)];
             $y = $jarl[array_rand($jarl)];
             $tase = 1;
-            }
+            
             if ($tase = 3){ 
                 $tase = 3;
                 $max = 30;
@@ -425,24 +424,17 @@ class MathController extends Controller
             $x = random_int($add, 3 + $add);
             $y = random_int($add, 3 + $add);
 
-            $tase = 1;
-            if ($count > 5){
-                $tase = 2;
-            }
-            if ($count > 10){
-                $tase = 3;
+            if ($tase = 3){
                 $max = 30;
                 $x = random_int($add, 4 + $add);
                 $y = random_int($add, 4 + $add);
             }
-            if ($count > 15){
-                $tase = 4;
+            if ($tase = 4){
                 $max = 100;
                 $x = random_int($add, 14 + $add);
                 $y = random_int($add, 14 + $add);
             }
-            if ($count > 20){
-                $tase = 5;
+            if ($tase = 5){
                 $max = 500;
                 $x = random_int($add, 80 + $add);
                 $y = random_int($add, 80 + $add);
