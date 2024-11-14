@@ -210,7 +210,7 @@ class LoginRegisterController extends Controller
                 $classData = ["name"=>$class->klass_name, "teacher"=>$teacher, "studentsCount"=>count($students), "pointsCount"=> $total_count, "myPlace"=>$place, "uuid"=>$class->uuid, "threeBest"=>array_slice($leaderboardData, 0, 3)];
             }
 
-            if(str_contains(Auth::user(), "teacher")){
+            if(str_contains(Auth::user()->role, "teacher")){
                 $teacherData = [];
                 $classes = Klass::select(["klass_name", "uuid"])->where("teacher_id", Auth::id())->orderBy("klass_name", "asc")->get();
                 foreach($classes as $class){
