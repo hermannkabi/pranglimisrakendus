@@ -19,7 +19,6 @@ return new class extends Migration
         });
 
         Schema::table('competition_user', function (Blueprint $table) {
-            //TODO: kas tasub kustutada, kui kasutaja kustub / kui mang kustub? (Kindlasti tasub, muidu tekivad vead edetabelis jne pärast)
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
             $table->foreign('comp_id')->references('id')->on('competitions')->onDelete('cascade');
         });

@@ -364,17 +364,20 @@ class MathController extends Controller
         if ($level === 'all' && $tüüp === 'integer'){
             do {
                 again3:
-                $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4 ,$add + 4)];
                 $x = $jarl[array_rand($jarl)];
                 $y = $jarl[array_rand($jarl)];
                 $tase = 1;
                 if ($count > 5){
+                    $jarl = [random_int($add2 - 7, $add2 + 7), random_int($add -7 ,$add + 7)];
+                    $x = $jarl[array_rand($jarl)];
+                    $y = $jarl[array_rand($jarl)];
                     $tase = 2;
                 }
                 if ($count > 10){ 
                     $tase = 3;
                     $max = 30;
-                    $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
+                    $jarl = [random_int($add2 - 11, $add2 + 11), random_int($add - 11, $add + 11)];
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                 }
@@ -392,13 +395,6 @@ class MathController extends Controller
                     $x = $jarl[array_rand($jarl)];
                     $y = $jarl[array_rand($jarl)];
                 }
-                if ($x == $y){
-                    $kontroll ++;
-                    if ($kontroll > MathController::SAME_NUMBER_REPEAT_COUNT){
-                        goto again3;
-                    }
-                }
-
 
                 if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
                     goto again3;
@@ -1621,9 +1617,7 @@ class MathController extends Controller
                 $mark = random_int(1, 2) == 1 ? "+" : "-";
                 $mark2 = random_int(1, 2) == 1 ? "·" : ":";
                 $suva = [
-                1=>function($x, $y, $z, $m){
-
-                    return ["op"=> $x . "·" . $y . $m . $z, "ans"=>$x*$y+($m == "-" ? -$z : $z)];},
+                1=>function($x, $y, $z, $m){return ["op"=> $x . "·" . $y . $m . $z, "ans"=>$x*$y+($m == "-" ? -$z : $z)];},
                 2=>function($x, $y, $z, $m){return ["op"=> $x * $y . ":" . $y. $m. $z, "ans"=>$x+($m == "-" ? -$z : $z)];},
                 3=>function($x, $y, $z, $m){return ["op"=> $x . "+" . $y . $m . $z, "ans"=>$x+$y*($m == ":" ? round(1/$z, 2) : $z)];},
                 4=>function($x, $y, $z, $m){return ["op"=> $x + $y * ($m == ":" ? round(1/$z,2) : $z) . "-" . $y . $m . $z, "ans"=>$x];}
@@ -1796,7 +1790,8 @@ class MathController extends Controller
         
     }
 
-    public function teisendamine($level, $tüüp, $aeg) {
+    public function teisendamine($level, $tüüp, $aeg, $random=false) {
+        $count = 0;
         $teisendatavad = [
             "1"=>random_int(1, 5),
             "2"=>random_int(6, 9) + 0.5,
@@ -1804,73 +1799,65 @@ class MathController extends Controller
             "4"=>random_int(51, 99) + random_int(1, 9)/10,
             "5"=>random_int(101, 500) + random_int(1, 9)/10,
             "A"=>random_int(501, 1000) + random_int(11, 99)/100,
-            "B"=>[
-                "natural"=>function (){return random_int(1000, 10000);},
-                "fraction"=>function (){return random_int(1000, 10000) + random_int(1, 99)/100;},
-                "integer"=>function (){ 
-                    $randints = [random_int(-10000, -1001), random_int(1001, 10000)];
-                    return $randints[array_rand($randints)];},
-            ],
-            "C"=>[
-                "natural"=>function (){return random_int(10000, 100000);},
-                "fraction"=>function (){return random_int(10000, 100000) + random_int(1, 999)/1000;},
-                "integer"=>function (){
-                    $randints = [random_int(-100000, -10001), random_int(10001, 100000)];
-                    return $randints[array_rand($randints)];},
-            ],
+            "B"=>random_int(1001, 10000) + random_int(11, 99)/100,
+            "C"=>random_int(10001, 100000) + random_int(11, 99)/100,
             
         ]; 
         $ühikud = [
             "1"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['min', 'h'],
             ],
             "2"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['min', 'h'],
             ],
             "3"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['min', 'h', 'sek'],
             ],
             "4"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['min', 'h', 'sek'],
             ],
             "5"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['day', 'h', 'min'],
             ],
             "A"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['day', 'h', 'sek'],
             ],
             "B"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['h', 'sek'],
             ],
             "C"=>[
-                "pikkus"=>['cm'=>100],
-                "temp"=>['K'=>273],
-                "kaal"=>['kg'=>1000],
-                "aeg"=>['min'=>60],
+                "pikkus"=>['cm', 'm'],
+                "temp"=>['K', 'C'],
+                "kaal"=>['kg', 'g'],
+                "aeg"=>['h', 'sek'],
             ],
             
         ];
+
+        do {
+            
+        } while ($random ? $count < 1 : $count < MathController::OPERATION_COUNT + $aeg*14);
 
 
     }
