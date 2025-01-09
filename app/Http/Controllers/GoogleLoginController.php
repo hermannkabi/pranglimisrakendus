@@ -15,7 +15,7 @@ class GoogleLoginController extends Controller
 {
     public function redirectToGoogle(){
         return Socialite::driver('google')
-            ->stateless()
+            ->with(["prompt" => "select_account"])
             ->redirect();
     }
     
