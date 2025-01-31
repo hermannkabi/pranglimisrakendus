@@ -180,6 +180,16 @@ Route::controller(App\Http\Controllers\AdminController::class)->middleware(["aut
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
 });
 
+
+Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class)->middleware(["auth"])->group(function (){
+    Route::get("/", "get")->name("music");
+
+    Route::get("/{link_id}", "showPlaylist")->name("playlist");
+
+    Route::get("/kuulamiskava/uus", "get")->name("musicNew");
+});
+
+
 Route::get("/down", function (){
     
     $id = Auth::id();

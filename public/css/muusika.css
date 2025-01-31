@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sedan+SC&display=swap');
+
+.btn-group{
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+    gap: 16px;
+}
+
+.course-widget{
+    background-color: grey;
+    padding: 16px 8px;
+    transition: background-color 200ms;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 150px;
+    border-radius: 8px;
+}
+
+.course-widget > img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter:contrast(60%);
+    transition: filter 200ms;
+    border-radius: 8px;
+}
+
+.course-widget > .content{
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 1;
+    color: white;
+    text-align: start;
+}
+
+.course-widget > .content > p{
+    margin-block: 0;
+}
+
+.course-widget:hover > img{
+    filter: contrast(45%);
+}
+
+
+.new-playlist{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 16px 8px;
+    transition: background-color 200ms;
+    cursor: pointer;
+}
+
+.new-playlist > p{
+    margin: 0;
+    margin-top: 16px;
+}
+
+.new-playlist:hover{
+    background-color: #00000010;
+}
+
+
+:root{
+    --background-color: white; 
+    --text-color: black; 
+    --button-color: #0077C0;
+    --button-text-color: white;
+    --primary-font: "Sora";
+    --secondary-font: "Lexend";
+}
+
+body, html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    text-align: center;
+    font-family: var(--primary-font);
+}
+
+.material-icons{
+    user-select: none;
+}
+
+.title{
+    display: inline;
+}
+
+.type{
+    font-family: var(--secondary-font);
+}
+
+button{
+    outline: none;
+    border: none;
+    background-color: var(--button-color);
+    padding: 6px 20px;
+    color: var(--button-text-color);
+    font-family: var(--secondary-font);
+    cursor: pointer;
+    transition: background-color 200ms;
+    border-radius: 4px;
+}
+
+button:hover{
+    filter: brightness(90%);
+}
+
+.title-container > .title{
+    margin-bottom: 0;
+}
+.title-container > .type{
+    margin-top: 8px;
+}
+
+.title-container{
+    margin-top: 24px;
+    margin-bottom: 64px;
+}
+
+.mode-choice{
+    display: inline;
+    margin-inline: 8px;
+    cursor: pointer;
+    padding: 4px 12px;
+    border-radius: 2px;
+    user-select: none;
+    font-family: var(--secondary-font);
+}
+
+.mode-choice:hover{
+    filter: brightness(90%);
+}
+
+.chosen{
+    font-weight: bold;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+}
+
+
+.music-tiles{
+    width: 60%;
+    margin: auto;
+}
+
+.music-tile{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 24px;
+    font-size: 20px;
+}
+
+.music-tile > .info{
+    text-align: start;
+    display: inline;
+    user-select: none;
+}
+
+/* Loo nimi */
+.music-tile > .info > p:nth-child(1){
+    margin-block: 0;
+}
+
+/* Autori nimi */
+.music-tile > .info > p:nth-child(2){
+    font-family: var(--secondary-font);
+    margin-block: 0;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.music-tile > .play-btn{
+    display: inline;
+    margin-left: 64px;
+}
+
+.music-tile:not(.pause) > .info > p:nth-child(1){
+    color: var(--button-color);
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .music-tiles{
+        width: calc(100%  - 32px) !important;
+    }
+
+    .btn-group{
+        width: 90%;
+        grid-template-columns: 1fr;
+    }
+}
