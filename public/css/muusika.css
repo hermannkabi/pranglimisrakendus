@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sedan+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sedan+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Space+Mono:wght@400;700&family=Inter:wght@100..900&display=swap');
+
 
 .btn-group{
     width: 50%;
@@ -70,7 +76,7 @@
 :root{
     --background-color: white; 
     --text-color: black; 
-    --button-color: #0077C0;
+    --button-color: #0077c0;
     --button-text-color: white;
     --primary-font: "Sora";
     --secondary-font: "Lexend";
@@ -89,6 +95,8 @@ body, html{
 
 .title{
     display: inline;
+    color: var(--text-color);
+    font-family: var(--primary-font);
 }
 
 .type{
@@ -144,7 +152,7 @@ button:hover{
 }
 
 
-.music-tiles{
+.music-tiles, .active-control{
     width: 60%;
     margin: auto;
 }
@@ -157,19 +165,19 @@ button:hover{
     font-size: 20px;
 }
 
-.music-tile > .info{
+.music-tile .info{
     text-align: start;
     display: inline;
     user-select: none;
 }
 
 /* Loo nimi */
-.music-tile > .info > p:nth-child(1){
+.music-tile .info > p:nth-child(1){
     margin-block: 0;
 }
 
 /* Autori nimi */
-.music-tile > .info > p:nth-child(2){
+.music-tile .info > p:nth-child(2){
     font-family: var(--secondary-font);
     margin-block: 0;
     margin-top: 6px;
@@ -181,8 +189,24 @@ button:hover{
     margin-left: 64px;
 }
 
-.music-tile:not(.pause) > .info > p:nth-child(1){
-    color: var(--button-color);
+.active-control{
+    background: var(--button-color);
+    border-radius: 16px;
+    color: var(--button-text-color);
+    border-radius: 16px;
+    padding: 8px 16px;
+    position:fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.active-control > .music-tile{
+    margin: 0;
+}
+
+input[type="range"]{
+    outline: none;
 }
 
 
@@ -191,8 +215,18 @@ button:hover{
         width: calc(100%  - 32px) !important;
     }
 
+    .active-control{
+        width: calc(100% - 64px);
+        left: 0;
+        transform: none;
+    }
+
     .btn-group{
         width: 90%;
         grid-template-columns: 1fr;
+    }
+
+    .active-control{
+        margin-inline: 16px;
     }
 }
