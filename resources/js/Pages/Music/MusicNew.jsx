@@ -152,15 +152,15 @@ export default function MusicNew({auth, songs}){
         <Title title="Uus kuulamiskava"/>
 
         <div className="music-tiles">
-            {songs.map(e => <MusicTile admin={true} select={true} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
-            <a href={route("musicNewSong")} style={{all:"unset", cursor:"pointer"}}>
+            {songs.map(e => <MusicTile admin={auth.user.role.includes("music-admin")} select={true} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
+            {auth.user.role.includes("music-admin") && <a href={route("musicNewSong")} style={{all:"unset", cursor:"pointer"}}>
                 <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"16px"}}>
                     <span style={{fontSize:"48px"}}>+</span>
                     <div style={{fontWeight:"bold"}}>
                         Lisa uus teos
                     </div>
                 </div>
-            </a>
+            </a>}
         </div>
 
         <SizedBox height={50} />

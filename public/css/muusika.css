@@ -93,7 +93,7 @@ body, html{
     user-select: none;
 }
 
-.title{
+h1{
     display: inline;
     color: var(--text-color);
     font-family: var(--primary-font);

@@ -172,6 +172,7 @@ export default function MusicNew({auth, playlist, songs}){
             <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teosed</button>
             <SizedBox height={16} />
             <a onClick={deletePlaylist} alone="" style={{color:"red"}}> <i className="material-icons no-anim">delete</i> Kustuta kuulamiskava </a>
+            <SizedBox height={16} />
         </div>
 
 

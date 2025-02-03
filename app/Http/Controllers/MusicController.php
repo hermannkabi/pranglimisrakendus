@@ -33,8 +33,14 @@ class MusicController extends Controller
         return Inertia::render("Music/MusicPlaylistPage", ["playlist"=>$playlist, "songs"=>$playlist->songs]);
     }
 
-    public function playlistAddSongs($id, $link_id){
+    public function playlistAddSongs(Request $request, $id, $link_id){
+
+        
         $playlist = Playlist::where("id", $id)->first();
+
+        if($playlist->owner != $request->user()->id && !str_contains($request->user()->role, "music-admin")){
+            abort(403);
+        }
 
         $songs = Song::whereDoesntHave('playlists', function ($query) use ($playlist) {
             $query->where('playlist_id', $playlist->id);
@@ -98,10 +104,9 @@ class MusicController extends Controller
         ]);
 
         $playlist = Playlist::where("id", $request->playlist)->first();
-        if($playlist){
+        if($playlist && (($playlist->owner == null && str_contains($request->user()->role, "music-admin")) || $playlist->owner == $request->user()->id)){
             $playlist->songs()->detach($request->id);
         }
-
 
         return $playlist->name;
     }
@@ -111,6 +116,9 @@ class MusicController extends Controller
     }
 
     public function newSongPost(Request $request){
+        if(!str_contains($request->user()->role, "music-admin")){
+            return abort(403);
+        }
         $request->validate([
             'file' => 'required|file|mimes:mp3',
             'title' => 'required',
@@ -174,22 +182,25 @@ class MusicController extends Controller
 
     public function newPlaylistPost(Request $request){
         $request->validate([
-            'image' => 'required|image',
             'name' => 'required',
             'songs' => 'required',
         ]);
 
-        $file = $request->file('image');
+        $path = '';
 
-        // Generate a unique custom name (e.g., song-123456.mp3)
-        $customName = 'playlistcover-' . Str::random(10);
+        if($request->hasFile("image")){
+            $file = $request->file('image');
 
-        // Store in 'storage/app/public/music/'
-        $path = $file->storeAs('music/playlists', $customName . '.' . $file->getClientOriginalExtension(), 'public');
+            // Generate a unique custom name (e.g., song-123456.mp3)
+            $customName = 'playlistcover-' . Str::random(10);
+    
+            // Store in 'storage/app/public/music/'
+            $path = $file->storeAs('music/playlists', $customName . '.' . $file->getClientOriginalExtension(), 'public');    
+        }
 
         $playlist = Playlist::create([
             'name'=>$request->name,
-            'thumbnail'=>asset("storage/". $path),
+            'thumbnail'=>$request->hasFile("image") ? asset("storage/". $path) : null,
             'owner'=>Auth::id(),
             'link_id'=>$this->makeUrlSafe($request->name),
         ]);
