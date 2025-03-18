@@ -121,13 +121,13 @@ export default function MusicNew({auth, playlist, songs}){
 
         
         $.ajax({
-          url: "/muusika/"+playlist.link_id+"/lisa",
+          url: "/muusika/"+playlist.id + "/" + playlist.link_id+"/lisa",
           type: "POST",
           data: formData,
           contentType: false,
           processData: false,
           success: function (response) {
-            window.location.href = "/muusika/"+playlist.link_id;
+            window.location.href = "/muusika/"+playlist.id + "/" + playlist.link_id;
           },
           error: function (xhr) {
             alert("Upload failed: " + xhr.responseText);
@@ -174,17 +174,5 @@ export default function MusicNew({auth, playlist, songs}){
             <a onClick={deletePlaylist} alone="" style={{color:"red"}}> <i className="material-icons no-anim">delete</i> Kustuta kuulamiskava </a>
             <SizedBox height={16} />
         </div>
-
-
-        {activeSong != null && <SizedBox height="200px"/>}
-
-        {activeSong != null && <div className="active-control">
-            <MusicTile onClick={()=>setIsPlaying(i=>!i)} isActive={false} isPlaying={isPlaying} song={activeSong} />
-            <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
-                <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(currentTime)}</p>
-                <input type="range" onChange={handleSeek} value={duration == 0 ? 0 : Math.round(100*currentTime/duration)} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-text-color)"}} />
-                <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(duration)}</p>
-            </div>
-        </div>}
     </>;
 }

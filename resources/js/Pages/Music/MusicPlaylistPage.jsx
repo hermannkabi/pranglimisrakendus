@@ -19,7 +19,7 @@ export default function MusicNew({auth, playlist, songs}){
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [showPraciceScreen, setShowPracticeScreen] = useState(true);
+    const [showPracticeScreen, setShowPracticeScreen] = useState(true);
 
 
     const [testPlaying, setTestPlaying] = useState(true);
@@ -33,72 +33,72 @@ export default function MusicNew({auth, playlist, songs}){
    
 
 
-    const appearance = {
-        "barokk":{
-            "--background-color": "#4B000F",
-            "--text-color": "white",
-            "--button-color": "#D4AF37",
-            "--button-text-color": "#4B000F",
-            "--primary-font": "Cormorant Garamond",
-            "--secondary-font": "Merriweather",
-        },
-        "klassitsism":{
-            "--background-color": "#F2E6D8",
-            "--text-color": "#2E2E2E",
-            "--button-color": "#2E2E2E",
-            "--button-text-color": "white",
-            "--primary-font": "Cardo",
-            "--secondary-font": "Work Sans",
-        },
-        "eesti":{
-            "--background-color": "#C7EEFF",
-            "--text-color": "black",
-            "--button-color": "#0077C0",
-            "--button-text-color": "white",
-            "--primary-font": "Sedan SC",
-            "--secondary-font": "Lexend",
-        },
-        "xx-sajand":{
-            "--background-color": "#C7EEFF",
-            "--text-color": "black",
-            "--button-color": "#0077C0",
-            "--button-text-color": "white",
-            "--primary-font": "Sedan SC",
-            "--secondary-font": "Lexend",
-        },
-        "ii-kursuse-klaveriteosed":{
-            "--background-color": "white",
-            "--text-color": "black",
-            "--button-color": "black",
-            "--button-text-color": "white",
-            "--primary-font": "Sora",
-            "--secondary-font": "Sora",
-        },
-        "ii-kursuse-sumfooniateosed":{
-            "--background-color": "white",
-            "--text-color": "black",
-            "--button-color": "black",
-            "--button-text-color": "white",
-            "--primary-font": "Sora",
-            "--secondary-font": "Sora",
-        },
-        "ii-kursuse-vokaalteosed":{
-            "--background-color": "white",
-            "--text-color": "black",
-            "--button-color": "black",
-            "--button-text-color": "white",
-            "--primary-font": "Sora",
-            "--secondary-font": "Sora",
-        },
-        "jazz":{
-            "--background-color": "#0B0A25",
-            "--text-color": "white",
-            "--button-color": "#181844",
-            "--button-text-color": "white",
-            "--primary-font": "Bitter",
-            "--secondary-font": "Bitter",
-        },
-    }
+    // const appearance = {
+    //     "barokk":{
+    //         "--background-color": "#4B000F",
+    //         "--text-color": "white",
+    //         "--button-color": "#D4AF37",
+    //         "--button-text-color": "#4B000F",
+    //         "--primary-font": "Cormorant Garamond",
+    //         "--secondary-font": "Merriweather",
+    //     },
+    //     "klassitsism":{
+    //         "--background-color": "#F2E6D8",
+    //         "--text-color": "#2E2E2E",
+    //         "--button-color": "#2E2E2E",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Cardo",
+    //         "--secondary-font": "Work Sans",
+    //     },
+    //     "eesti":{
+    //         "--background-color": "#C7EEFF",
+    //         "--text-color": "black",
+    //         "--button-color": "#0077C0",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Sedan SC",
+    //         "--secondary-font": "Lexend",
+    //     },
+    //     "xx-sajand":{
+    //         "--background-color": "#C7EEFF",
+    //         "--text-color": "black",
+    //         "--button-color": "#0077C0",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Sedan SC",
+    //         "--secondary-font": "Lexend",
+    //     },
+    //     "ii-kursuse-klaveriteosed":{
+    //         "--background-color": "white",
+    //         "--text-color": "black",
+    //         "--button-color": "black",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Sora",
+    //         "--secondary-font": "Sora",
+    //     },
+    //     "ii-kursuse-sumfooniateosed":{
+    //         "--background-color": "white",
+    //         "--text-color": "black",
+    //         "--button-color": "black",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Sora",
+    //         "--secondary-font": "Sora",
+    //     },
+    //     "ii-kursuse-vokaalteosed":{
+    //         "--background-color": "white",
+    //         "--text-color": "black",
+    //         "--button-color": "black",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Sora",
+    //         "--secondary-font": "Sora",
+    //     },
+    //     "jazz":{
+    //         "--background-color": "#0B0A25",
+    //         "--text-color": "white",
+    //         "--button-color": "#181844",
+    //         "--button-text-color": "white",
+    //         "--primary-font": "Bitter",
+    //         "--secondary-font": "Bitter",
+    //     },
+    // }
 
 
     function songClick(e){
@@ -185,11 +185,11 @@ export default function MusicNew({auth, playlist, songs}){
         setCurrentTime(newTime);
     };
 
-    if(playlist.link_id in appearance){
-        for(var key of Object.keys(appearance[playlist.link_id])){            
-            document.documentElement.style.setProperty(key, appearance[playlist.link_id][key]);
-        }
-    }
+    // if(playlist.link_id in appearance){
+    //     for(var key of Object.keys(appearance[playlist.link_id])){            
+    //         document.documentElement.style.setProperty(key, appearance[playlist.link_id][key]);
+    //     }
+    // }
 
 
     function shuffleArray(array) {
@@ -260,7 +260,7 @@ export default function MusicNew({auth, playlist, songs}){
     }
 
     function nextSong(){
-        $(".correct-answer").text("Õige vastus oli ");
+        $(".correct-answer").text("Eelmine vastus oli");
                 
         $("#correct-was-name").text(testCurrentSong.current.title);
         $("#correct-was-artist").text(testCurrentSong.current.artist);
@@ -285,12 +285,13 @@ export default function MusicNew({auth, playlist, songs}){
         <Title title={playlist.name}/>
 
         <div>
-            <p onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPraciceScreen ? " chosen" : "")}>Harjuta</p>
-            <p onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPraciceScreen ? " chosen" : "")}>Testi end</p>
+            <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
+            <div onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPracticeScreen ? " chosen" : "")}><img src="/assets/music-icons/dumbbell.png" alt="" /> Harjuta</div>
         </div>
 
+        <SizedBox height={32} />
 
-        <div className="practice-screen" hidden={!showPraciceScreen}>
+        <div className="practice-screen" hidden={!showPracticeScreen}>
             <div className="music-tiles">
                 {songs.length <= 0 && <p>Siin ei ole veel teoseid...</p> }
                 {songs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
@@ -305,25 +306,30 @@ export default function MusicNew({auth, playlist, songs}){
             </div>
             
 
-            {activeSong != null && <SizedBox height="200px"/>}
+            {activeSong != null && <SizedBox height="150px"/>}
 
-            {activeSong != null && <div className="active-control">
-                <MusicTile onClick={()=>setIsPlaying(i=>!i)} isActive={false} isPlaying={isPlaying} song={activeSong} />
-                <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
-                    <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(currentTime)}</p>
-                    <input type="range" onChange={handleSeek} value={duration == 0 ? 0 : Math.round(timeUpdatePrecision*currentTime/duration)} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-text-color)"}} />
-                    <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(duration)}</p>
+            {activeSong != null && <div className="active-control" >
+                <div className="main">
+                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:"24px", margin:"8px 0 0 0"}}>{activeSong.title}</p>
+                    <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
+                        <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(currentTime)}</p>
+                        <input type="range" onChange={handleSeek} value={duration ? Math.round(timeUpdatePrecision*currentTime/duration) : 0} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-border)"}} />
+                        <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(duration)}</p>
+                    </div>
                 </div>
-            </div>}
+
+                <img onClick={()=>setIsPlaying(i=>!i)} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img>            </div>}
         </div>
 
-        <div className="test-screen" hidden={showPraciceScreen}>
+        <div className="test-screen" hidden={showPracticeScreen}>
             <br /><br /><br />
-            <h1>Arva teos ära!</h1><br />
-            <button style={{display: testShowGame ? "none" : ""}} onClick={()=>{changeSong(); setTestShowGame(true);}} className="start-test">Alusta</button>
+            <h2 style={{color:"black"}}>Testi enda teadmisi!</h2>
+            <p style={{maxWidth:"min(50%, 400px)", margin:"auto", display: testShowGame ? "none" : ""}}>Kuula teoseid juhuslikus järjekorras ja katsu arvata, millega on tegu!</p>
+            <br />
+            <button style={{display: testShowGame ? "none" : ""}} onClick={()=>{changeSong(); setTestShowGame(true);}} className="start-test nice-btn">Alusta</button>
             <div className="game-screen" hidden={!testShowGame}>
-                <button className="test-toggle-song" onClick={toggleTestAudio}><i className="material-icons" style={{marginRight:"0"}}>{testPlaying ? "pause" : "play_arrow"}</i></button><br /><br />
-                <button className="next-song" onClick={nextSong}>Edasi</button>
+                <img className="test-toggle-song" onClick={toggleTestAudio} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(testPlaying ? "pause.png" : "play.png")}></img> 
+                <br /><br /><button className="nice-btn next-song" onClick={nextSong}>Edasi</button>
                 <br /><br />
                 <p className="correct-answer" style={{color: "grey"}}></p>
                 <div className="music-tile" style={{display: "block", pointerEvents: "none"}}>

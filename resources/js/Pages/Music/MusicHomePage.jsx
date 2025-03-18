@@ -6,16 +6,17 @@ import SizedBox from "@/Components/SizedBox";
 export default function MusicHomePage({auth, playlists}){
     
     return <div>
-        <Head title="Vali kuulamiskava | Muusika kuulamine" />
+        <Head title="Muusika kuulamiskavad | Muusika kuulamine" />
 
-        <Title title="Vali kuulamiskava" />
+        <Title title="Muusika kuulamiskavad" showBack={false} />
+
 
         <div className="btn-group">
             {playlists.map(e=> <a key={e.id} style={{all:"unset", cursor:"pointer"}} href={"/muusika/" + e.id + "/" + e.link_id}><div className="course-widget">
                 <img src={e.thumbnail} alt="" />
                 <div className="content">
                     <p style={{fontWeight:"bold"}}>{e.name}</p>
-                    <p style={{color:"#F0F0F0"}}>{e.songs_count} teos{e.songs_count == 1 ? "" : "t"}</p>
+                    <p style={{color:"gray"}}>{e.songs_count} teos{e.songs_count == 1 ? "" : "t"}</p>
                 </div>
             </div></a>)}
             {<div className="new-playlist" style={{position:"relative"}}>

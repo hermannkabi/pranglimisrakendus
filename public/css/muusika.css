@@ -6,6 +6,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Space+Mono:wght@400;700&family=Inter:wght@100..900&display=swap');
 
 
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+.big-title{
+    font-size: 56px;
+}
+
 .btn-group{
     width: 50%;
     display: grid;
@@ -15,49 +22,41 @@
 }
 
 .course-widget{
-    background-color: grey;
+    background-color: var(--button-fill);
     padding: 16px 8px;
     transition: background-color 200ms;
     cursor: pointer;
     display: flex;
+    flex-direction: column;
+    gap: 16px;
     align-items: center;
     justify-content: center;
     position: relative;
     min-height: 150px;
-    border-radius: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--button-border);
 }
 
 .course-widget > img{
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    height: 60px;
+    width: 60px;
     object-fit: cover;
-    filter:contrast(60%);
-    transition: filter 200ms;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 .course-widget > .content{
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    z-index: 1;
-    color: white;
-    text-align: start;
+    color: black;
+    text-align: center;
 }
 
 .course-widget > .content > p{
     margin-block: 0;
 }
 
-.course-widget:hover > img{
-    filter: contrast(45%);
-}
-
 
 .new-playlist{
-    border: 1px solid black;
-    border-radius: 8px;
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
     padding: 16px 8px;
     transition: background-color 200ms;
     cursor: pointer;
@@ -78,8 +77,10 @@
     --text-color: black; 
     --button-color: #0077c0;
     --button-text-color: white;
-    --primary-font: "Sora";
-    --secondary-font: "Lexend";
+    --primary-font: "Bricolage Grotesque";
+    --secondary-font: "Inter";
+    --button-fill: #D9D9D9;
+    --button-border: #949494;
 }
 
 body, html{
@@ -87,6 +88,21 @@ body, html{
     color: var(--text-color);
     text-align: center;
     font-family: var(--primary-font);
+    font-size: 20px;
+    overflow-x: hidden;
+}
+
+/* Necessary for pattern image to work correctly on mobile */
+body{
+    position: relative;
+    overflow-x: hidden;
+}
+
+.pattern{
+    position: absolute;
+    top: 0;
+    right: -120px;
+    z-index: 0;
 }
 
 .material-icons{
@@ -132,12 +148,12 @@ button:hover{
 }
 
 .mode-choice{
-    display: inline;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     margin-inline: 8px;
     cursor: pointer;
-    padding: 4px 12px;
-    border-radius: 2px;
-    user-select: none;
+    padding: 4px 24px;
     font-family: var(--secondary-font);
 }
 
@@ -147,13 +163,12 @@ button:hover{
 
 .chosen{
     font-weight: bold;
-    background-color: var(--button-color);
-    color: var(--button-text-color);
+    text-decoration: underline;
 }
 
 
 .music-tiles, .active-control{
-    width: 60%;
+    width: 50%;
     margin: auto;
 }
 
@@ -161,7 +176,7 @@ button:hover{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-block: 24px;
+    margin-block: 32px;
     font-size: 20px;
 }
 
@@ -174,6 +189,7 @@ button:hover{
 /* Loo nimi */
 .music-tile .info > p:nth-child(1){
     margin-block: 0;
+    font-size: 24px;
 }
 
 /* Autori nimi */
@@ -181,7 +197,8 @@ button:hover{
     font-family: var(--secondary-font);
     margin-block: 0;
     margin-top: 6px;
-    font-size: 14px;
+    font-size: 20px;
+    color: var(--button-border);
 }
 
 .music-tile > .play-btn{
@@ -190,25 +207,39 @@ button:hover{
 }
 
 .active-control{
-    background: var(--button-color);
-    border-radius: 16px;
-    color: var(--button-text-color);
-    border-radius: 16px;
+    background-color: var(--button-fill);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
     padding: 8px 16px;
     position:fixed;
     bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
 }
 
-.active-control > .music-tile{
+.active-control > .main{
     margin: 0;
+    flex: 1;
 }
 
 input[type="range"]{
     outline: none;
 }
 
+.nice-btn{
+    width: min(50%, 400px);
+    background-color: var(--button-fill);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    color: black;
+    font-size: 20px;
+    padding: 16px;
+}
 
 @media only screen and (max-width: 1000px) {
     .music-tiles{
@@ -228,5 +259,14 @@ input[type="range"]{
 
     .active-control{
         margin-inline: 16px;
+    }
+
+    .pattern{
+        top: 0px;
+        right: -275px;
+    }
+
+    .big-title{
+        font-size: 40px;
     }
 }

@@ -193,8 +193,8 @@ Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class
     Route::post("/uus-kava", "newPlaylistPost")->name("musicNewPlaylistPost");
     Route::post("/kuulamiskava/kustuta", "playlistDelete")->name("deletePlaylist");
 
-    Route::get("/teos/uus", "newSong")->middleware("role:music-admin")->name("musicNewSong");
-    Route::post("/teos/uus", "newSongPost")->middleware("role:music-admin")->name("musicNewSongPost");
+    Route::get("/teos-uus", "newSong")->middleware("role:music-admin")->name("musicNewSong");
+    Route::post("/teos-uus", "newSongPost")->middleware("role:music-admin")->name("musicNewSongPost");
 
     Route::post("/teos/kustuta", "removeSong")->middleware("role:music-admin")->name("musicRemoveSong");
     Route::post("/teos/eemalda", "removeSongFrom")->name("musicRemoveSongFrom");

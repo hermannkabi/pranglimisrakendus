@@ -171,17 +171,5 @@ export default function MusicNew({auth, songs}){
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
             <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Loo kuulamiskava</button>
         </div>
-
-
-        {activeSong != null && <SizedBox height="200px"/>}
-
-        {activeSong != null && <div className="active-control">
-            <MusicTile onClick={()=>setIsPlaying(i=>!i)} isActive={false} isPlaying={isPlaying} song={activeSong} />
-            <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
-                <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(currentTime)}</p>
-                <input type="range" onChange={handleSeek} value={duration == 0 ? 0 : Math.round(100*currentTime/duration)} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-text-color)"}} />
-                <p style={{fontVariantNumeric:"tabular-nums"}}>{humanReadableTime(duration)}</p>
-            </div>
-        </div>}
     </>;
 }
