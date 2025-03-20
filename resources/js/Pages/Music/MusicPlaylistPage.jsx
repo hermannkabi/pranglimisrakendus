@@ -285,8 +285,8 @@ export default function MusicNew({auth, playlist, songs}){
         <Title title={playlist.name}/>
 
         <div>
-            <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
-            <div onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPracticeScreen ? " chosen" : "")}><img src="/assets/music-icons/dumbbell.png" alt="" /> Harjuta</div>
+            <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
+            <div onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/dumbbell.png" alt="" /> Harjuta</div>
         </div>
 
         <SizedBox height={32} />
@@ -318,18 +318,18 @@ export default function MusicNew({auth, playlist, songs}){
                     </div>
                 </div>
 
-                <img onClick={()=>setIsPlaying(i=>!i)} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img>            </div>}
+                <img className="music-icon" onClick={()=>setIsPlaying(i=>!i)} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img>            </div>}
         </div>
 
         <div className="test-screen" hidden={showPracticeScreen}>
             <br /><br /><br />
-            <h2 style={{color:"black"}}>Testi enda teadmisi!</h2>
+            <h2 style={{color:"var(--text-color)"}}>Testi enda teadmisi!</h2>
             <p style={{maxWidth:"min(50%, 400px)", margin:"auto", display: testShowGame ? "none" : ""}}>Kuula teoseid juhuslikus järjekorras ja katsu arvata, millega on tegu!</p>
             <br />
-            <button style={{display: testShowGame ? "none" : ""}} onClick={()=>{changeSong(); setTestShowGame(true);}} className="start-test nice-btn">Alusta</button>
+            <button style={{display: testShowGame ? "none" : "", color:"var(--text-color)"}} onClick={()=>{changeSong(); setTestShowGame(true);}} className="start-test nice-btn">Alusta</button>
             <div className="game-screen" hidden={!testShowGame}>
-                <img className="test-toggle-song" onClick={toggleTestAudio} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(testPlaying ? "pause.png" : "play.png")}></img> 
-                <br /><br /><button className="nice-btn next-song" onClick={nextSong}>Edasi</button>
+                <img className="music-icon test-toggle-song" onClick={toggleTestAudio} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(testPlaying ? "pause.png" : "play.png")}></img> 
+                <br /><br /><button style={{color:"var(--text-color)"}} className="nice-btn next-song" onClick={nextSong}>Edasi</button>
                 <br /><br />
                 <p className="correct-answer" style={{color: "grey"}}></p>
                 <div className="music-tile" style={{display: "block", pointerEvents: "none"}}>

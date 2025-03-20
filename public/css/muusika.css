@@ -81,6 +81,17 @@
     --secondary-font: "Inter";
     --button-fill: #D9D9D9;
     --button-border: #949494;
+    --music-icon: invert(0);
+}
+
+[data-theme="dark"] {
+    --background-color: rgb(22, 22, 22); 
+    --text-color: #dfdfdf; 
+    --button-color: #0077c0;
+    --button-text-color: white;
+    --button-fill: #252525;
+    --button-border: #999999;
+    --music-icon: invert(1);
 }
 
 body, html{
@@ -90,6 +101,10 @@ body, html{
     font-family: var(--primary-font);
     font-size: 20px;
     overflow-x: hidden;
+}
+
+.music-icon{
+    filter: var(--music-icon);
 }
 
 /* Necessary for pattern image to work correctly on mobile */
@@ -230,6 +245,19 @@ button:hover{
 input[type="range"]{
     outline: none;
 }
+
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    top: 8px; /* Adjust this value as needed */
+  }
 
 .nice-btn{
     width: min(50%, 400px);

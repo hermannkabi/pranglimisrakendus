@@ -42,7 +42,7 @@ export default function MusicTile({song, isPlaying=false, isActive=false, onClic
                 </div>
             </div>
             <div style={{display:"flex", flexDirection:"row", gap:"8px"}}>
-                <p className="play-btn"><img style={{height:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img></p>
+                <p className="play-btn"><img className="music-icon" style={{height:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img></p>
                 {playlist != null && auth != null && (playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && <p onClick={(e)=>onRemove(e)}><i className="material-icons">close</i></p>}
                 {admin && <p onClick={(e)=>onDelete(e)}><i className="material-icons" style={{color:"red"}}>delete</i></p>}
             </div>
