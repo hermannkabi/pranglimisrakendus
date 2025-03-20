@@ -282,7 +282,7 @@ export default function MusicNew({auth, playlist, songs}){
     return <div>
         <Head title={playlist.name + " | Muusika kuulamiskava"} />
 
-        <Title title={playlist.name}/>
+        <Title title={playlist.name} thumbnail={playlist.thumbnail} />
 
         <div>
             <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
@@ -295,7 +295,7 @@ export default function MusicNew({auth, playlist, songs}){
             <div className="music-tiles">
                 {songs.length <= 0 && <p>Siin ei ole veel teoseid...</p> }
                 {songs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
-                {(playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && <a href={"/muusika/"+playlist.id+"/"+playlist.link_id+"/lisa"} style={{all:"unset", cursor:"pointer"}}>
+                {(playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && playlist.id != null && <a href={"/muusika/"+playlist.id+"/"+playlist.link_id+"/lisa"} style={{all:"unset", cursor:"pointer"}}>
                     <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"16px"}}>
                         <span style={{fontSize:"48px"}}>+</span>
                         <div style={{fontWeight:"bold"}}>

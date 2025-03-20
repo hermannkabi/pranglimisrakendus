@@ -183,6 +183,7 @@ export default function ProfilePage({auth, className}){
         "guest":"Külaline",
         "admin":"Admin",
         "student":"Õpilane",
+        "music-admin":"Admin (muusika)",
     };
 
     return <>

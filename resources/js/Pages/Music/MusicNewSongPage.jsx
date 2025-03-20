@@ -56,11 +56,11 @@ export default function MusicNewSongPage({auth, playlists}){
         <Title title="Lisa uus teos" />
 
         <div className="container" style={{width:"min(400px, 90%)", margin:"auto"}}>
-            <input className="file-select" style={{width:"calc(100% - 12px)", backgroundColor:"lightgray"}} type="file" placeholder="Laadi muusikafail üles" accept=".mp3" /><br />
+            <input className="file-select" style={{width:"calc(100% - 12px)"}} type="file" placeholder="Laadi muusikafail üles" accept=".mp3" /><br />
 
-            <input className="song-title" style={{width:"calc(100% - 12px)", backgroundColor:"lightgray"}} type="text" placeholder="Teose pealkiri" /><br />
-            <input className="song-author" style={{width:"calc(100% - 12px)", backgroundColor:"lightgray"}} type="text" placeholder="Teose autor" />
-            <div className="section" style={{backgroundColor:"lightgrey"}}>
+            <input className="song-title" style={{width:"calc(100% - 12px)"}} type="text" placeholder="Teose pealkiri" /><br />
+            <input className="song-author" style={{width:"calc(100% - 12px)"}} type="text" placeholder="Teose autor" />
+            <div className="section" style={{backgroundColor:"var(--button-fill)"}}>
                 <p>Vali kuulamiskavad, kuhu soovid teose lisada</p>
                 {playlists.map(e=> <Chip key={e.id} active={chosenLists.includes(e)} onClick={()=>setChosenLists(chosenLists.includes(e) ? chosenLists.filter(i=>i!=e) : [...chosenLists, e])} icon={chosenLists.includes(e) ? "check" : null} label={e.name} colors={{active:"var(--button-color)", background:"rgb(174, 174, 174)"}}/>)}
             </div>

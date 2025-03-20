@@ -213,4 +213,17 @@ class MusicController extends Controller
 
         return asset('storage/' . $path);
     }
+
+
+    public function artistSongs(Request $request){
+        $artist = $request->query("nimi");
+
+        Log::debug($artist);
+
+        $songs = Song::where("artist", $artist)->get();
+
+        $playlist = ["name"=>$artist, "thumbnail"=>null];
+
+        return Inertia::render("Music/MusicPlaylistPage", ["playlist"=>$playlist, "songs"=>$songs]);
+    }
 }

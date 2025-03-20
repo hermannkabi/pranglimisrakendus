@@ -15,6 +15,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
         "guest":"Külaline",
         "student":"Õpilane",
         "admin":"Admin",
+        "music-admin":"Admin (muusika)"
     };
 
     return <>

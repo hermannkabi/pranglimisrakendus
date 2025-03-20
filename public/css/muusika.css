@@ -82,6 +82,8 @@
     --button-fill: #D9D9D9;
     --button-border: #949494;
     --music-icon: invert(0);
+    --button-fill-blur: #D9D9D930;
+
 }
 
 [data-theme="dark"] {
@@ -92,6 +94,8 @@
     --button-fill: #252525;
     --button-border: #999999;
     --music-icon: invert(1);
+    --button-fill-blur: #25252530;
+
 }
 
 body, html{
@@ -205,15 +209,21 @@ button:hover{
 .music-tile .info > p:nth-child(1){
     margin-block: 0;
     font-size: 24px;
+    margin-bottom: 4px;
 }
 
 /* Autori nimi */
-.music-tile .info > p:nth-child(2){
+.music-tile .info > a{
+    all: unset;
+    cursor: pointer;
     font-family: var(--secondary-font);
     margin-block: 0;
-    margin-top: 6px;
     font-size: 20px;
     color: var(--button-border);
+}
+
+.music-tile .info > a:hover{
+    text-decoration: underline;
 }
 
 .music-tile > .play-btn{
@@ -222,9 +232,12 @@ button:hover{
 }
 
 .active-control{
-    background-color: var(--button-fill);
+    background-color: var(--button-fill-blur);
     border: 1px solid var(--button-border);
     border-radius: 4px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     padding: 8px 16px;
     position:fixed;
     bottom: 16px;
@@ -267,6 +280,22 @@ input[type="range"]::-webkit-slider-thumb {
     color: black;
     font-size: 20px;
     padding: 16px;
+}
+
+input[type="text"], input[type="file"] {
+	background-color: var(--button-fill);
+	height: 24px;
+	color: var(--text-color);
+	font-family: var(--main-font);
+	border: none;
+	border-radius: 8px;
+	padding-block: 16px;
+	padding-left: 8px;
+	font-size: var(--font-size);
+	margin-inline: 4px;
+	vertical-align: middle;
+	margin-block: 8px;
+	min-width: 50px;
 }
 
 @media only screen and (max-width: 1000px) {

@@ -165,8 +165,8 @@ export default function MusicNew({auth, songs}){
 
         <SizedBox height={50} />
         <div style={{width:"min(400px, 90%)", margin:"auto"}}>
-            <input className="playlist-title" style={{width:"calc(100% - 12px)", backgroundColor:"lightgray"}} type="text" placeholder="Kuulamiskava nimi" /><br />
-            <input className="file-select" style={{width:"calc(100% - 12px)", backgroundColor:"lightgray"}} type="file" placeholder="Kuulamiskava pilt" accept="image/*" /><br />
+            <input className="playlist-title" style={{width:"calc(100% - 12px)"}} type="text" placeholder="Kuulamiskava nimi" /><br />
+            <input className="file-select" style={{width:"calc(100% - 12px)"}} type="file" placeholder="Kuulamiskava pilt" accept="image/*" /><br />
 
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
             <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Loo kuulamiskava</button>

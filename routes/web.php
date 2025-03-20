@@ -198,6 +198,8 @@ Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class
 
     Route::post("/teos/kustuta", "removeSong")->middleware("role:music-admin")->name("musicRemoveSong");
     Route::post("/teos/eemalda", "removeSongFrom")->name("musicRemoveSongFrom");
+
+    Route::get("/autor", "artistSongs")->name("artistSongs");
 });
 
 

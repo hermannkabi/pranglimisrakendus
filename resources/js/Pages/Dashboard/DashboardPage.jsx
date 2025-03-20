@@ -31,12 +31,12 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
                     <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
                 </div>}
-                <div className="section" style={{marginBottom:"16px",}}>
+                {auth.user.role.includes("admin") && <div className="section" style={{marginBottom:"16px",}}>
                     <div style={{display:"flex", justifyContent:"space-between"}}>
 
-                        <InfoBanner>
+                        {/* <InfoBanner>
                             <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
-                        </InfoBanner>
+                        </InfoBanner> */}
 
                         {auth.user.role.includes("admin") && <a href={route("admin")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
                             <div className="section clickable">
@@ -44,7 +44,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                             </div>
                         </a>}
                     </div>
-                </div>
+                </div>}
                 {auth.user.role != "guest" && <div className="four-stat-row">
                     <StreakWidget streak={stats.streak} active={stats.streak_active} />
                     <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
