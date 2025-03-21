@@ -26,79 +26,36 @@ export default function MusicNew({auth, playlist, songs}){
     const [testShowGame, setTestShowGame] = useState(false);
 
 
+    // Used for getting the state value in an event listener
+    const activeSongRef = useRef(activeSong);
 
     useEffect(()=>{
         testOrderRef.current = shuffleArray(songs);
     }, []);
    
 
+    useEffect(()=>{
+        activeSongRef.current = activeSong;
+    }, [activeSong]);
 
-    // const appearance = {
-    //     "barokk":{
-    //         "--background-color": "#4B000F",
-    //         "--text-color": "white",
-    //         "--button-color": "#D4AF37",
-    //         "--button-text-color": "#4B000F",
-    //         "--primary-font": "Cormorant Garamond",
-    //         "--secondary-font": "Merriweather",
-    //     },
-    //     "klassitsism":{
-    //         "--background-color": "#F2E6D8",
-    //         "--text-color": "#2E2E2E",
-    //         "--button-color": "#2E2E2E",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Cardo",
-    //         "--secondary-font": "Work Sans",
-    //     },
-    //     "eesti":{
-    //         "--background-color": "#C7EEFF",
-    //         "--text-color": "black",
-    //         "--button-color": "#0077C0",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Sedan SC",
-    //         "--secondary-font": "Lexend",
-    //     },
-    //     "xx-sajand":{
-    //         "--background-color": "#C7EEFF",
-    //         "--text-color": "black",
-    //         "--button-color": "#0077C0",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Sedan SC",
-    //         "--secondary-font": "Lexend",
-    //     },
-    //     "ii-kursuse-klaveriteosed":{
-    //         "--background-color": "white",
-    //         "--text-color": "black",
-    //         "--button-color": "black",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Sora",
-    //         "--secondary-font": "Sora",
-    //     },
-    //     "ii-kursuse-sumfooniateosed":{
-    //         "--background-color": "white",
-    //         "--text-color": "black",
-    //         "--button-color": "black",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Sora",
-    //         "--secondary-font": "Sora",
-    //     },
-    //     "ii-kursuse-vokaalteosed":{
-    //         "--background-color": "white",
-    //         "--text-color": "black",
-    //         "--button-color": "black",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Sora",
-    //         "--secondary-font": "Sora",
-    //     },
-    //     "jazz":{
-    //         "--background-color": "#0B0A25",
-    //         "--text-color": "white",
-    //         "--button-color": "#181844",
-    //         "--button-text-color": "white",
-    //         "--primary-font": "Bitter",
-    //         "--secondary-font": "Bitter",
-    //     },
-    // }
+
+    function playNextTrack(type){
+        var currentSongIndex = songs.indexOf(activeSongRef.current);        
+
+        var nextSongIndex = type == "next" ? 0 : (songs.length - 1);
+
+        if(type == "next" && songs.length > (currentSongIndex + 1)){
+            nextSongIndex = currentSongIndex + 1;
+        }
+
+        if(type == "previous" && currentSongIndex > 0){
+            nextSongIndex = currentSongIndex - 1;
+        }
+
+        var nextSong = songs[nextSongIndex];
+
+        songClick(nextSong);
+    }
 
 
     function songClick(e){
@@ -153,6 +110,39 @@ export default function MusicNew({auth, playlist, songs}){
 
         audioRef.current.addEventListener("timeupdate", () => {            
             setCurrentTime(audioRef.current.currentTime);
+
+            if(audioRef.current.currentTime / audioRef.current.duration == 1){
+                setTimeout(() => {
+                    //Check again, if the time has been changed, dont go to next track
+
+                    if(audioRef.current.currentTime / audioRef.current.duration == 1){
+                        playNextTrack("next");
+                    }
+                }, 2500);
+            }
+        });
+
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
+            playNextTrack("next");
+        });
+
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
+            playNextTrack("previous");
+        });
+
+        navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+            var newTime = Math.max(0, audioRef.current.currentTime - (details.seekOffset || 10));
+            audioRef.current.currentTime = newTime;
+
+            setCurrentTime(newTime);
+        });
+
+        
+        navigator.mediaSession.setActionHandler("seekforward", (details) => {
+            var newTime = Math.min(audioRef.current.duration, audioRef.current.currentTime + (details.seekOffset || 10));
+            audioRef.current.currentTime = newTime;
+
+            setCurrentTime(newTime);
         });
 
         setIsPlaying(i=>!i);
