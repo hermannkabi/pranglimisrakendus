@@ -163,13 +163,13 @@ export default function MusicNew({auth, playlist, songs}){
         <Title title="Lisa teoseid"/>
 
         <div className="music-tiles">
-            {songs.map(e => <MusicTile admin={true} select={true} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
+            {songs.map(e => <MusicTile admin={auth.user.role.includes("music-admin")} select={true} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
         </div>
 
         <SizedBox height={50} />
         <div style={{width:"min(400px, 90%)", margin:"auto"}}>
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
-            <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teosed</button>
+            <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teosed</button>
             <SizedBox height={16} />
             <a onClick={deletePlaylist} alone="" style={{color:"red"}}> <i className="material-icons no-anim">delete</i> Kustuta kuulamiskava </a>
             <SizedBox height={16} />

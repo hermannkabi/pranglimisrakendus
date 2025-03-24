@@ -1,13 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sedan+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sedan+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Space+Mono:wght@400;700&family=Inter:wght@100..900&display=swap');
-
-
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+
+:root{
+    --background-color: white; 
+    --text-color: black; 
+    --button-color: #0077c0;
+    --button-text-color: white;
+    --primary-font: "Bricolage Grotesque";
+    --secondary-font: "Inter";
+    --button-fill: #D9D9D9;
+    --button-border: #949494;
+    --music-icon: invert(0);
+    --button-fill-blur: #D9D9D930;
+
+}
+
+[data-theme="dark"] {
+    --background-color: rgb(22, 22, 22); 
+    --text-color: #dfdfdf; 
+    --button-color: #0077c0;
+    --button-text-color: white;
+    --button-fill: #252525;
+    --button-border: #999999;
+    --music-icon: invert(1);
+    --button-fill-blur: #25252530;
+
+}
+
+body, html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    text-align: center;
+    font-family: var(--primary-font);
+    font-size: 20px;
+    overflow-x: hidden;
+}
+
+
+/* Necessary for pattern image to work correctly on mobile */
+body{
+    position: relative;
+    overflow-x: hidden;
+}
 
 .big-title{
     font-size: 56px;
@@ -71,50 +105,10 @@
     background-color: #00000010;
 }
 
-
-:root{
-    --background-color: white; 
-    --text-color: black; 
-    --button-color: #0077c0;
-    --button-text-color: white;
-    --primary-font: "Bricolage Grotesque";
-    --secondary-font: "Inter";
-    --button-fill: #D9D9D9;
-    --button-border: #949494;
-    --music-icon: invert(0);
-    --button-fill-blur: #D9D9D930;
-
-}
-
-[data-theme="dark"] {
-    --background-color: rgb(22, 22, 22); 
-    --text-color: #dfdfdf; 
-    --button-color: #0077c0;
-    --button-text-color: white;
-    --button-fill: #252525;
-    --button-border: #999999;
-    --music-icon: invert(1);
-    --button-fill-blur: #25252530;
-
-}
-
-body, html{
-    background-color: var(--background-color);
-    color: var(--text-color);
-    text-align: center;
-    font-family: var(--primary-font);
-    font-size: 20px;
-    overflow-x: hidden;
-}
-
 .music-icon{
     filter: var(--music-icon);
-}
-
-/* Necessary for pattern image to work correctly on mobile */
-body{
-    position: relative;
-    overflow-x: hidden;
+    height: 32px;
+    width: 32px;
 }
 
 .pattern{
@@ -122,10 +116,6 @@ body{
     top: 0;
     right: -120px;
     z-index: 0;
-}
-
-.material-icons{
-    user-select: none;
 }
 
 h1{
@@ -141,29 +131,21 @@ h1{
 button{
     outline: none;
     border: none;
-    background-color: var(--button-color);
-    padding: 6px 20px;
-    color: var(--button-text-color);
     font-family: var(--secondary-font);
     cursor: pointer;
     transition: background-color 200ms;
     border-radius: 4px;
+    width: min(50%, 400px);
+    background-color: var(--button-fill);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-size: 20px;
+    padding: 16px;
 }
 
 button:hover{
     filter: brightness(90%);
-}
-
-.title-container > .title{
-    margin-bottom: 0;
-}
-.title-container > .type{
-    margin-top: 8px;
-}
-
-.title-container{
-    margin-top: 24px;
-    margin-bottom: 64px;
 }
 
 .mode-choice{
@@ -173,18 +155,12 @@ button:hover{
     margin-inline: 8px;
     cursor: pointer;
     padding: 4px 24px;
-    font-family: var(--secondary-font);
-}
-
-.mode-choice:hover{
-    filter: brightness(90%);
 }
 
 .chosen{
     font-weight: bold;
     text-decoration: underline;
 }
-
 
 .music-tiles, .active-control{
     width: 50%;
@@ -205,25 +181,19 @@ button:hover{
     user-select: none;
 }
 
-/* Loo nimi */
-.music-tile .info > p:nth-child(1){
+.music-tile .song-title{
     margin-block: 0;
     font-size: 24px;
     margin-bottom: 4px;
 }
 
-/* Autori nimi */
-.music-tile .info > a{
+.music-tile .song-artist{
     all: unset;
     cursor: pointer;
     font-family: var(--secondary-font);
     margin-block: 0;
     font-size: 20px;
     color: var(--button-border);
-}
-
-.music-tile .info > a:hover{
-    text-decoration: underline;
 }
 
 .music-tile > .play-btn{
@@ -259,7 +229,6 @@ input[type="range"]{
     outline: none;
 }
 
-
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -269,17 +238,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     cursor: pointer;
     position: relative;
-    top: 8px; /* Adjust this value as needed */
-  }
-
-.nice-btn{
-    width: min(50%, 400px);
-    background-color: var(--button-fill);
-    border: 1px solid var(--button-border);
-    border-radius: 4px;
-    color: black;
-    font-size: 20px;
-    padding: 16px;
+    top: 8px;
 }
 
 input[type="text"], input[type="file"] {
@@ -296,6 +255,13 @@ input[type="text"], input[type="file"] {
 	vertical-align: middle;
 	margin-block: 8px;
 	min-width: 50px;
+}
+
+.profile-pic{
+    user-select: none;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -325,5 +291,6 @@ input[type="text"], input[type="file"] {
 
     .big-title{
         font-size: 40px;
+        text-align: start;
     }
 }

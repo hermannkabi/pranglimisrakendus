@@ -39,14 +39,14 @@ export default function MusicTile({song, isPlaying=false, isActive=false, onClic
                 <div style={{display:"flex"}}>
                     {select && <input value={song.id} onClick={(e)=>e.stopPropagation()} style={{outline:"none"}} type="checkbox" />}
                     <div className="info">
-                        <p style={{transition:"color 100ms", fontWeight: isActive ? "bold" : "normal"}}>{song.title}</p>
-                        <a href={route("artistSongs")+"?nimi="+encodeURI(song.artist)} className="artist-link">{song.artist}</a>
+                        <p className="song-title" style={{transition:"color 100ms", fontWeight: isActive ? "bold" : "normal"}}>{song.title}</p>
+                        <p className="song-artist">{song.artist}</p>
                     </div>
                 </div>
-                <div style={{display:"flex", flexDirection:"row", gap:"8px"}}>
-                    <p className="play-btn"><img className="music-icon" style={{height:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img></p>
-                    {playlist != null && auth != null && (playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && <p onClick={(e)=>onRemove(e)}><i className="material-icons">close</i></p>}
-                    {admin && <p onClick={(e)=>onDelete(e)}><i className="material-icons" style={{color:"red"}}>delete</i></p>}
+                <div style={{display:"flex", flexDirection:"row", gap:"8px", alignItems:"center"}}>
+                    <p className="play-btn"><img className="music-icon" src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img></p>
+                    {playlist != null && auth != null && (playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && <p onClick={(e)=>onRemove(e)}><img className="music-icon" style={{height: "24px", width:"24px"}} src={"/assets/music-icons/close.png"}></img></p>}
+                    {admin && <p onClick={(e)=>onDelete(e)}><img className="music-icon" style={{height: "24px", width:"24px"}} src={"/assets/music-icons/delete.png"}></img></p>}
                 </div>
             </div>            
     </div>;

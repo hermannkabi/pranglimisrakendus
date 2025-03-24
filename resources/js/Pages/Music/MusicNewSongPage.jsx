@@ -65,7 +65,7 @@ export default function MusicNewSongPage({auth, playlists}){
                 {playlists.map(e=> <Chip key={e.id} active={chosenLists.includes(e)} onClick={()=>setChosenLists(chosenLists.includes(e) ? chosenLists.filter(i=>i!=e) : [...chosenLists, e])} icon={chosenLists.includes(e) ? "check" : null} label={e.name} colors={{active:"var(--button-color)", background:"rgb(174, 174, 174)"}}/>)}
             </div>
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
-            <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teos</button>
+            <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teos</button>
         </div>
     </>;
 }

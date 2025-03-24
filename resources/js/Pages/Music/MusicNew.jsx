@@ -11,15 +11,10 @@ export default function MusicNew({auth, songs}){
     const audioRef = useRef();
     const [activeSong, setActiveSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
-
     const [error, setError] = useState(null);
 
 
-
     function songClick(e){
-
         if(activeSong == e){
             setIsPlaying(i=>!i);
             return;
@@ -27,22 +22,10 @@ export default function MusicNew({auth, songs}){
 
         if(activeSong != e){
             setIsPlaying(false);
-            setCurrentTime(0);
-            setDuration(0);
             if(audioRef.current){
                 audioRef.current.pause();
             }    
             audioRef.current = null;
-
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: e.title,
-                artist: e.artist,
-                album: "Muusika kuulamine",
-                artwork:[
-                    {"src":"http://127.0.0.1:8000/music-logo.png"}
-                ]
-            });
-
 
             navigator.mediaSession.setActionHandler("play", () => {
                 setIsPlaying(true);
@@ -54,23 +37,12 @@ export default function MusicNew({auth, songs}){
 
             navigator.mediaSession.setActionHandler("seekto", (details) => {
                 audioRef.current.currentTime = details.seekTime;
-
-                setCurrentTime(details.seekTime);
             });
-        
         }
 
 
         setActiveSong(e);
         audioRef.current = new Audio("/storage/music/"+e.path+".mp3");
-
-        audioRef.current.addEventListener("loadedmetadata", () => {
-            setDuration(audioRef.current.duration);
-        });
-
-        audioRef.current.addEventListener("timeupdate", () => {
-            setCurrentTime(audioRef.current.currentTime);
-        });
 
         setIsPlaying(i=>!i);
         audioRef.current.play();
@@ -78,7 +50,6 @@ export default function MusicNew({auth, songs}){
 
     useEffect(()=>{
         if(activeSong){
-            
             if(isPlaying){
                 audioRef.current.play();
             }else{
@@ -86,22 +57,7 @@ export default function MusicNew({auth, songs}){
             }
         }
     }, [isPlaying]);
-
-
-    function humanReadableTime(time){
-        var minutes = Math.floor(time/60);
-        var seconds = Math.round(time - 60*minutes);
-
-        return (minutes <= 9 ? "0"+minutes : minutes) + ":" + (seconds <= 9 ? "0"+seconds : seconds);
-    }
-
-    const handleSeek = (e) => {
-        const newTime = e.target.value / 100 * duration;
-        audioRef.current.currentTime = newTime;
-        setCurrentTime(newTime);
-    };
-
-    
+   
     function submitForm(){
         var title = $(".playlist-title").val();
 
@@ -129,7 +85,6 @@ export default function MusicNew({auth, songs}){
         formData.append("songs", songs.join(";"));
         formData.append("_token", window.csrfToken); // CSRF protection
 
-        
         $.ajax({
           url: route("musicNewPlaylistPost"),
           type: "POST",
@@ -169,7 +124,7 @@ export default function MusicNew({auth, songs}){
             <input className="file-select" style={{width:"calc(100% - 12px)"}} type="file" placeholder="Kuulamiskava pilt" accept="image/*" /><br />
 
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
-            <button onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Loo kuulamiskava</button>
+            <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Loo kuulamiskava</button>
         </div>
     </>;
 }

@@ -22,7 +22,7 @@ class MusicController extends Controller
         return Inertia::render("Music/MusicHomePage", ["playlists"=>$playlists]);
     }
 
-    public function showPlaylist($id, $link_id){
+    public function showPlaylist(Request $request, $id, $link_id){
 
         $playlist = Playlist::where("id", $id)->first();
 
@@ -30,7 +30,13 @@ class MusicController extends Controller
             return abort(404);
         }
 
-        return Inertia::render("Music/MusicPlaylistPage", ["playlist"=>$playlist, "songs"=>$playlist->songs]);
+        $providedBy = null;
+
+        if($playlist->owner != null && $playlist->owner != $request->user()->id){
+            $providedBy = User::where("id", $playlist->owner)->first();
+        }
+
+        return Inertia::render("Music/MusicPlaylistPage", ["playlist"=>$playlist, "songs"=>$playlist->songs, "providedBy"=>$providedBy]);
     }
 
     public function playlistAddSongs(Request $request, $id, $link_id){

@@ -5,8 +5,7 @@ import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
 
-
-export default function MusicNew({auth, playlist, songs}){
+export default function MusicNew({auth, playlist, songs, providedBy=null}){
 
     const timeUpdatePrecision = 100000;
 
@@ -21,30 +20,29 @@ export default function MusicNew({auth, playlist, songs}){
     const [duration, setDuration] = useState(0);
     const [showPracticeScreen, setShowPracticeScreen] = useState(true);
 
-
     const [testPlaying, setTestPlaying] = useState(true);
     const [testShowGame, setTestShowGame] = useState(false);
 
 
     // Used for getting the state value in an event listener
     const activeSongRef = useRef(activeSong);
-
-    useEffect(()=>{
-        testOrderRef.current = shuffleArray(songs);
-    }, []);
-   
-
     useEffect(()=>{
         activeSongRef.current = activeSong;
     }, [activeSong]);
 
+    useEffect(()=>{
+        testOrderRef.current = shuffleArray(songs);
+    }, []);
+
 
     function playNextTrack(type){
-        var currentSongIndex = songs.indexOf(activeSongRef.current);        
+        const songsList = Array.from(groupByArtist(songs).values()).flat();
 
-        var nextSongIndex = type == "next" ? 0 : (songs.length - 1);
 
-        if(type == "next" && songs.length > (currentSongIndex + 1)){
+        var currentSongIndex = songsList.indexOf(activeSongRef.current);        
+        var nextSongIndex = type == "next" ? 0 : (songsList.length - 1);
+
+        if(type == "next" && songsList.length > (currentSongIndex + 1)){
             nextSongIndex = currentSongIndex + 1;
         }
 
@@ -52,7 +50,7 @@ export default function MusicNew({auth, playlist, songs}){
             nextSongIndex = currentSongIndex - 1;
         }
 
-        var nextSong = songs[nextSongIndex];
+        var nextSong = songsList[nextSongIndex];
 
         songClick(nextSong);
     }
@@ -108,9 +106,9 @@ export default function MusicNew({auth, playlist, songs}){
             setDuration(audioRef.current.duration);
         });
 
-        audioRef.current.addEventListener("timeupdate", () => {            
+        audioRef.current.addEventListener("timeupdate", () => {                        
             setCurrentTime(audioRef.current.currentTime);
-
+            
             if(audioRef.current.currentTime / audioRef.current.duration == 1){
                 setTimeout(() => {
                     //Check again, if the time has been changed, dont go to next track
@@ -137,7 +135,6 @@ export default function MusicNew({auth, playlist, songs}){
             setCurrentTime(newTime);
         });
 
-        
         navigator.mediaSession.setActionHandler("seekforward", (details) => {
             var newTime = Math.min(audioRef.current.duration, audioRef.current.currentTime + (details.seekOffset || 10));
             audioRef.current.currentTime = newTime;
@@ -160,7 +157,6 @@ export default function MusicNew({auth, playlist, songs}){
         }
     }, [isPlaying]);
 
-
     function humanReadableTime(time){
         var time = Math.round(time);
         var minutes = Math.floor(time/60);
@@ -170,17 +166,10 @@ export default function MusicNew({auth, playlist, songs}){
     }
 
     const handleSeek = (e) => {
-        const newTime = e.target.value / timeUpdatePrecision * duration;
+        const newTime = e.target.value / timeUpdatePrecision * duration;  
+        setCurrentTime(newTime);            
         audioRef.current.currentTime = newTime;
-        setCurrentTime(newTime);
     };
-
-    // if(playlist.link_id in appearance){
-    //     for(var key of Object.keys(appearance[playlist.link_id])){            
-    //         document.documentElement.style.setProperty(key, appearance[playlist.link_id][key]);
-    //     }
-    // }
-
 
     function shuffleArray(array) {
         const shuffled = [...array];
@@ -267,12 +256,25 @@ export default function MusicNew({auth, playlist, songs}){
         setTestPlaying(!testPlaying);
         testPlaying ? audio.pause() : audio.play();
     }
-    
-    
+
+    function groupByArtist(list) {
+        return list.reduce((map, obj) => {
+            if (!map.has(obj.artist)) {
+                map.set(obj.artist, []);
+            }
+            map.get(obj.artist).push(obj);
+            return map;
+        }, new Map());
+    }
+
+    function getSongsInOrder(artistMap) {
+        return Array.from(artistMap.values()).flat();
+    }
+
     return <div>
         <Head title={playlist.name + " | Muusika kuulamiskava"} />
 
-        <Title title={playlist.name} thumbnail={playlist.thumbnail} />
+        <Title title={playlist.name} thumbnail={playlist.thumbnail} subtitleUser={providedBy} />
 
         <div>
             <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
@@ -284,7 +286,14 @@ export default function MusicNew({auth, playlist, songs}){
         <div className="practice-screen" hidden={!showPracticeScreen}>
             <div className="music-tiles">
                 {songs.length <= 0 && <p>Siin ei ole veel teoseid...</p> }
-                {songs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
+                {songs.length > 0 && Array.from(groupByArtist(songs).keys()).length > 1 && Array.from(groupByArtist(songs).entries()).map(([artist, artistSongs]) => {
+                    return  <div key={artist}>
+                                <SizedBox height="50px" />
+                                <h2 style={{textAlign:"start"}}>{artist}</h2>
+                                {artistSongs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
+                            </div>
+                })}
+                {songs.length > 0 && Array.from(groupByArtist(songs).keys()).length <= 1 && songs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
                 {(playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && playlist.id != null && <a href={"/muusika/"+playlist.id+"/"+playlist.link_id+"/lisa"} style={{all:"unset", cursor:"pointer"}}>
                     <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"16px"}}>
                         <span style={{fontSize:"48px"}}>+</span>
@@ -300,7 +309,7 @@ export default function MusicNew({auth, playlist, songs}){
 
             {activeSong != null && <div className="active-control" >
                 <div className="main">
-                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:"24px", margin:"8px 0 0 0"}}>{activeSong.title}</p>
+                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:"24px", margin:"8px 0 0 0"}}>{activeSong.title} <span style={{color:"gray"}}>| {activeSong.artist}</span> </p>
                     <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
                         <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(currentTime)}</p>
                         <input type="range" onChange={handleSeek} value={duration ? Math.round(timeUpdatePrecision*currentTime/duration) : 0} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-border)"}} />
@@ -324,7 +333,7 @@ export default function MusicNew({auth, playlist, songs}){
                 <p className="correct-answer" style={{color: "grey"}}></p>
                 <div className="music-tile" style={{display: "block", pointerEvents: "none"}}>
                     <div className="info" style={{textAlign:"center"}}>
-                        <p id="correct-was-name"></p>
+                        <p id="correct-was-name" style={{fontWeight:"bold"}}></p>
                         <p id="correct-was-artist"></p>
                     </div>
                 </div>
@@ -335,7 +344,7 @@ export default function MusicNew({auth, playlist, songs}){
                     <p onClick={()=>$("#correct-hint").fadeToggle(200)} id="view-correct" style={{color:"grey", cursor:"pointer"}}>Vaata õiget vastust</p>
                     <div hidden className="music-tile" style={{display: "block", pointerEvents: "none"}}>
                         <div className="info" style={{textAlign:"center", display:"none"}} id="correct-hint" hidden>
-                            <p id="correct-name">Loo nimi</p>
+                            <p id="correct-name" style={{fontWeight:"bold"}}>Loo nimi</p>
                             <p id="correct-artist">Autori nimi</p>
                         </div>
                     </div>
