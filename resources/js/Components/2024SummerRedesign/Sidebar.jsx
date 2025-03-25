@@ -36,6 +36,7 @@ export default function Sidebar({title, auth}){
                 <GameSectionDropdown title={"Keerulisemad tehted"} gameTypes={["astendamine", "juurimine"]}/>
                 <GameSectionDropdown title={"Mitmekülgsed mängud"} gameTypes={["võrdlemine", "lünkamine", "liitlahutamine", "korrujagamine", "astejuurimine"]}/>
                 <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
+                {/* <a style={{all:"unset", cursor:"pointer"}} href="muusika"><b>UUS!</b> Muusika kuulamiskavad</a> */}
             </div>
             {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"8px"}}>
                 <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
@@ -70,6 +71,7 @@ export default function Sidebar({title, auth}){
             <GameSectionDropdown title={"Keerulisemad tehted"} gameTypes={["astendamine", "juurimine"]}/>
             <GameSectionDropdown title={"Mitmekülgsed mängud"} gameTypes={["võrdlemine", "lünkamine", "liitlahutamine", "korrujagamine", "astejuurimine"]}/>
             <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
+            {/* <a style={{all:"unset", cursor:"pointer"}} href="muusika"><b>UUS!</b> Muusika kuulamiskavad</a> */}
         </div>
         {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable account-tile" style={{backgroundColor:"rgb(var(--background-color))", display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", left:"8px", marginInline:"8px", position:"fixed", bottom:"0", left:"0"}}>
             <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
