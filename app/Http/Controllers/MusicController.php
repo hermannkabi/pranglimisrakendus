@@ -17,7 +17,7 @@ class MusicController extends Controller
 {
     public function get(){
 
-        $playlists = Playlist::where("owner", null)->orWhere("owner", Auth::id())->withCount("songs")->get();
+        $playlists = Playlist::where("owner", null)->orWhere("owner", Auth::id())->withCount("songs")->orderBy("name", "asc")->get();
 
         return Inertia::render("Music/MusicHomePage", ["playlists"=>$playlists]);
     }

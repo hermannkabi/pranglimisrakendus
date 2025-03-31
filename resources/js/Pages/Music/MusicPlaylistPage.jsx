@@ -309,7 +309,7 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
 
             {activeSong != null && <div className="active-control" >
                 <div className="main">
-                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:"24px", margin:"8px 0 0 0"}}>{activeSong.title} <span style={{color:"gray"}}>| {activeSong.artist}</span> </p>
+                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:(window.innerWidth <= 800 ? "18px" : "24px"), margin:(window.innerWidth <= 800 ? "0" : "8px 0 0 0")}}>{activeSong.title} <span style={{color:"gray"}}>| {activeSong.artist}</span> </p>
                     <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
                         <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(currentTime)}</p>
                         <input type="range" onChange={handleSeek} value={duration ? Math.round(timeUpdatePrecision*currentTime/duration) : 0} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-border)"}} />

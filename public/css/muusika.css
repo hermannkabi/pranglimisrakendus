@@ -152,7 +152,7 @@ button:hover{
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-inline: 8px;
+    margin-inline: 0;
     cursor: pointer;
     padding: 4px 24px;
 }
@@ -173,6 +173,7 @@ button:hover{
     justify-content: space-between;
     margin-block: 32px;
     font-size: 20px;
+    gap: 8px;
 }
 
 .music-tile .info{
@@ -265,6 +266,28 @@ input[type="text"], input[type="file"] {
 }
 
 @media only screen and (max-width: 1000px) {
+
+    body{
+        font-size: 20px;
+    }
+
+    .music-tile .song-title{
+        font-size: 20px;
+    }
+
+    .music-tile .song-artist{
+        font-size: 16px;
+    }
+
+    h2{
+        font-size: 24px;
+    }
+
+    .music-icon{
+        height: 24px;
+        width: 24px;
+    }
+
     .music-tiles{
         width: calc(100%  - 32px) !important;
     }
@@ -290,7 +313,7 @@ input[type="text"], input[type="file"] {
     }
 
     .big-title{
-        font-size: 40px;
+        font-size: 34px;
         text-align: start;
     }
 }
