@@ -290,7 +290,7 @@ export default function WelcomePage({auth, users, games, points}){
             <SizedBox height="100px" />
 
             <div style={{color:"var(--grey-color)"}}>
-                <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024</p>
+                <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024-2025</p>
                 <p style={{marginTop:"0"}}>Reaaleri arendajad on Hermann Käbi ja Jarl Justus Hellat</p>
             </div>
             <div id="easteregg"></div>

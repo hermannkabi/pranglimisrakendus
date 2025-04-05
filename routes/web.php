@@ -25,6 +25,13 @@ Route::get('/welcome', function () {
     return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
 })->middleware('auth');
 
+Route::get('/teaduskonkurss', function () {
+    $totalUsers = User::count();
+    $totalGames = Mang::count();
+    $totalPoints = Mang::sum("score_sum");
+    return Inertia::render('Welcome/TeaduskonkurssPage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
+})->middleware('auth');
+
 Route::get("/handleForm", function (){
     return redirect()->route("welcome");
 });

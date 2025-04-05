@@ -539,3 +539,21 @@ sdjkhskdsdsde::after{
 .fancy3-div{
     background: linear-gradient(207deg, rgba(254,194,132, 0.1) 0%, rgba(147,75,26,0.1) 100%);
 }
+
+
+
+/* Teadustööde konkursi lehe CSS */
+
+.teadus-quote{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    z-index: -1000;
+    text-align: start;
+    max-width: 300px;
+}
+
+.teadus-quote .author{
+    color: grey;
+}
