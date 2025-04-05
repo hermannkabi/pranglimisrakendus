@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+:root{
+    --background-color: white; 
+    --text-color: black; 
+    --button-color: #0077c0;
+    --button-text-color: white;
+    --primary-font: "Bricolage Grotesque";
+    --secondary-font: "Inter";
+    --button-fill: #D9D9D9;
+    --button-border: #949494;
+    --music-icon: invert(0);
+    --button-fill-blur: #D9D9D930;
+
+}
+
+[data-theme="dark"] {
+    --background-color: rgb(22, 22, 22); 
+    --text-color: #dfdfdf; 
+    --button-color: #0077c0;
+    --button-text-color: white;
+    --button-fill: #252525;
+    --button-border: #999999;
+    --music-icon: invert(1);
+    --button-fill-blur: #25252530;
+
+}
+
+body, html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    text-align: center;
+    font-family: var(--primary-font);
+    font-size: 20px;
+    overflow-x: hidden;
+}
+
+
+/* Necessary for pattern image to work correctly on mobile */
+body{
+    position: relative;
+    overflow-x: hidden;
+}
+
+.big-title{
+    font-size: 56px;
+}
+
+.btn-group{
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+    gap: 16px;
+}
+
+.course-widget{
+    background-color: var(--button-fill);
+    padding: 16px 8px;
+    transition: background-color 200ms;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 150px;
+    border-radius: 4px;
+    border: 1px solid var(--button-border);
+}
+
+.course-widget > img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.course-widget > .content{
+    color: black;
+    text-align: center;
+}
+
+.course-widget > .content > p{
+    margin-block: 0;
+}
+
+
+.new-playlist{
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    padding: 16px 8px;
+    transition: background-color 200ms;
+    cursor: pointer;
+}
+
+.new-playlist > p{
+    margin: 0;
+    margin-top: 16px;
+}
+
+.new-playlist:hover{
+    background-color: #00000010;
+}
+
+.music-icon{
+    filter: var(--music-icon);
+    height: 32px;
+    width: 32px;
+}
+
+.pattern{
+    position: absolute;
+    top: 0;
+    right: -120px;
+    z-index: 0;
+}
+
+h1{
+    display: inline;
+    color: var(--text-color);
+    font-family: var(--primary-font);
+}
+
+.type{
+    font-family: var(--secondary-font);
+}
+
+button{
+    outline: none;
+    border: none;
+    font-family: var(--secondary-font);
+    cursor: pointer;
+    transition: background-color 200ms;
+    border-radius: 4px;
+    width: min(50%, 400px);
+    background-color: var(--button-fill);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-size: 20px;
+    padding: 16px;
+}
+
+button:hover{
+    filter: brightness(90%);
+}
+
+.mode-choice{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-inline: 0;
+    cursor: pointer;
+    padding: 4px 24px;
+}
+
+.chosen{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.music-tiles, .active-control{
+    width: 50%;
+    margin: auto;
+}
+
+.music-tile{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 32px;
+    font-size: 20px;
+    gap: 8px;
+}
+
+.music-tile .info{
+    text-align: start;
+    display: inline;
+    user-select: none;
+}
+
+.music-tile .song-title{
+    margin-block: 0;
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.music-tile .song-artist{
+    all: unset;
+    cursor: pointer;
+    font-family: var(--secondary-font);
+    margin-block: 0;
+    font-size: 20px;
+    color: var(--button-border);
+}
+
+.music-tile > .play-btn{
+    display: inline;
+    margin-left: 64px;
+}
+
+.active-control{
+    background-color: var(--button-fill-blur);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    position:fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.active-control > .main{
+    margin: 0;
+    flex: 1;
+}
+
+input[type="range"]{
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    top: 8px;
+}
+
+input[type="text"], input[type="file"] {
+	background-color: var(--button-fill);
+	height: 24px;
+	color: var(--text-color);
+	font-family: var(--main-font);
+	border: none;
+	border-radius: 8px;
+	padding-block: 16px;
+	padding-left: 8px;
+	font-size: var(--font-size);
+	margin-inline: 4px;
+	vertical-align: middle;
+	margin-block: 8px;
+	min-width: 50px;
+}
+
+.profile-pic{
+    user-select: none;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 1000px) {
+
+    body{
+        font-size: 20px;
+    }
+
+    .music-tile .song-title{
+        font-size: 20px;
+    }
+
+    .music-tile .song-artist{
+        font-size: 16px;
+    }
+
+    h2{
+        font-size: 24px;
+    }
+
+    .music-icon{
+        height: 24px;
+        width: 24px;
+    }
+
+    .music-tiles{
+        width: calc(100%  - 32px) !important;
+    }
+
+    .active-control{
+        width: calc(100% - 64px);
+        left: 0;
+        transform: none;
+    }
+
+    .btn-group{
+        width: 90%;
+        grid-template-columns: 1fr;
+    }
+
+    .active-control{
+        margin-inline: 16px;
+    }
+
+    .pattern{
+        top: 0px;
+        right: -275px;
+    }
+
+    .big-title{
+        font-size: 34px;
+        text-align: start;
+    }
+}
