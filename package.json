@@ -20,6 +20,7 @@
         "vite": ">=4.5.5"
     },
     "dependencies": {
-        "js-pick-file": "^1.0.13"
+        "js-pick-file": "^1.0.13",
+        "marquee": "^0.2.1"
     }
 }

@@ -183,6 +183,7 @@ export default function ProfilePage({auth, className}){
         "guest":"Külaline",
         "admin":"Admin",
         "student":"Õpilane",
+        "music-admin":"Admin (muusika)",
     };
 
     return <>
@@ -293,7 +294,7 @@ export default function ProfilePage({auth, className}){
             <SizedBox height="16px" />
             <div style={{display:"flex", justifyContent:"space-between", alignContent:'end', color:"var(--grey-color)"}}>
                 <a alone="" style={{fontWeight:"bold", color:"var(--grey-color)"}} href={route("changelog")}>Uuenduste ajalugu</a>
-                <span>© 2024</span>
+                <span>© 2024-2025</span>
             </div>
         </Layout>
     </>;

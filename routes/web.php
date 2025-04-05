@@ -180,6 +180,29 @@ Route::controller(App\Http\Controllers\AdminController::class)->middleware(["aut
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
 });
 
+
+Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class)->middleware(["auth"])->group(function (){
+    Route::get("/", "get")->name("music");
+
+    Route::get("/{id}/{link_id}", "showPlaylist")->name("playlist");
+
+    Route::get("/{id}/{link_id}/lisa", "playlistAddSongs")->name("playlistAddSongs");
+    Route::post("/{id}/{link_id}/lisa", "playlistAddSongsPost")->name("playlistAddSongs");
+
+    Route::get("/uus-kava", "create")->name("musicNew");
+    Route::post("/uus-kava", "newPlaylistPost")->name("musicNewPlaylistPost");
+    Route::post("/kuulamiskava/kustuta", "playlistDelete")->name("deletePlaylist");
+
+    Route::get("/teos-uus", "newSong")->middleware("role:music-admin")->name("musicNewSong");
+    Route::post("/teos-uus", "newSongPost")->middleware("role:music-admin")->name("musicNewSongPost");
+
+    Route::post("/teos/kustuta", "removeSong")->middleware("role:music-admin")->name("musicRemoveSong");
+    Route::post("/teos/eemalda", "removeSongFrom")->name("musicRemoveSongFrom");
+
+    Route::get("/autor", "artistSongs")->name("artistSongs");
+});
+
+
 Route::get("/down", function (){
     
     $id = Auth::id();
