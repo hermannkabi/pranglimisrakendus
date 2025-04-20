@@ -82,6 +82,8 @@ export default function TeaduskonkurssPage({auth, users, games, points}){
         <div style={{textAlign:"center"}}>
             <Head title="Tere tulemast!" />
 
+            <img style={{filter: (document.documentElement.getAttribute('data-theme') == "dark" ? "none" : "invert(1)"), height:"100px", width:"100px", position:"absolute", top:"24px", right:"56px", transform:"rotate(20deg)"}} src="/qr-reaaler.png" alt="" />
+
             <div className="main-content" style={{textAlign:'center'}}>
                 <ApplicationLogo size={150} />
                 <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min-content", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>

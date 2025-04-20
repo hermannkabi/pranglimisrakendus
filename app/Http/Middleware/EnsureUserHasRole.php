@@ -17,6 +17,7 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
+
         if(count(array_intersect(explode(";", $role), explode(",", $request->user()->role))) <= 0){
             abort(403);
         }

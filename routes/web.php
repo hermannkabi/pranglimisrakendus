@@ -188,7 +188,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->middleware(["aut
 });
 
 
-Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class)->middleware(["auth"])->group(function (){
+Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class)->middleware(["auth", "music-auth"])->group(function (){
     Route::get("/", "get")->name("music");
 
     Route::get("/{id}/{link_id}", "showPlaylist")->name("playlist");
@@ -208,6 +208,14 @@ Route::prefix("muusika")->controller(App\Http\Controllers\MusicController::class
 
     Route::get("/autor", "artistSongs")->name("artistSongs");
 });
+
+Route::get("/muusika/keelatud", function (Request $request){
+    if(!($request->user()->role == "guest" || ($request->user()->email_verified_at == null && $request->user()->google_id == null))){
+        return redirect("/muusika");
+    }
+     return Inertia::render("Music/MusicNotAllowedPage");
+})->name("muusikaKeelatud");
+
 
 
 Route::get("/down", function (){
