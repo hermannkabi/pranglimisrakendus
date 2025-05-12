@@ -349,43 +349,36 @@ class MathController extends Controller
 
         //Ascending levels -- Integer
         if ($level === 'all' && $tüüp === 'integer'){
-            do {
-                again3:
-                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4 ,$add + 4)];
+            again3:
+            $jarl = [random_int($add2 - 1, $add2 + 1), random_int($add -1 ,$add + 1)];
+            $x = $jarl[array_rand($jarl)];
+            $y = $jarl[array_rand($jarl)];
+            $tase = 1;
+            
+            if ($tase = 3){ 
+                $tase = 3;
+                $max = 30;
+                $jarl = [random_int($add2 - 4, $add2 + 4), random_int($add - 4, $add + 4)];
                 $x = $jarl[array_rand($jarl)];
                 $y = $jarl[array_rand($jarl)];
-                $tase = 1;
-                if ($count > 5){
-                    $jarl = [random_int($add2 - 7, $add2 + 7), random_int($add -7 ,$add + 7)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                    $tase = 2;
-                }
-                if ($count > 10){ 
-                    $tase = 3;
-                    $max = 30;
-                    $jarl = [random_int($add2 - 11, $add2 + 11), random_int($add - 11, $add + 11)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-                if ($count > 15){ 
-                    $tase = 4;
-                    $max = 100;
-                    $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-                if ($count > 20){ 
-                    $tase = 5;
-                    $max = 500;
-                    $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
-                    $x = $jarl[array_rand($jarl)];
-                    $y = $jarl[array_rand($jarl)];
-                }
-
-                if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
-                    goto again3;
-                }
+            }
+            if ($tase = 4){ 
+                $tase = 4;
+                $max = 100;
+                $jarl = [random_int($add2 - 14, $add2 + 14), random_int($add - 14,$add + 14)];
+                $x = $jarl[array_rand($jarl)];
+                $y = $jarl[array_rand($jarl)];
+            }
+            if ($tase = 5){ 
+                $tase = 5;
+                $max = 500;
+                $jarl = [random_int($add2 - 80, $add2 + 30), random_int($add - 30,$add + 80)];
+                $x = $jarl[array_rand($jarl)];
+                $y = $jarl[array_rand($jarl)];
+            }
+            if (($x == $xold && $y == $yold) || $x == $y || ($x == $yold && $y == $xold)){
+                goto again3;
+            }
 
 
             $xold = $x;
