@@ -54,13 +54,13 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
     Route::post('/store/google', 'storeGoogle')->name('storeGoogle');
 
     Route::get('/login', 'login')->name('login');
-    Route::post('/authenticate', 'authenticate')->name('authenticate');
+    
     Route::get('/authenticate/guest', 'authenticateGuest')->name('authenticateGuest');
 
     Route::get('/login/forgot-password', 'forgotPassword')->name('forgotPassword');
     
 
-    Route::get('/dashboard', 'dashboard')->name('dashboard');
+    
     Route::get('/logout', 'logout')->name('logout');
 });
 
@@ -68,6 +68,15 @@ Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->gro
 Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(function() {
     Route::get('/google/redirect', 'redirectToGoogle')->name('google.redirect');
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
+});
+
+//IP block
+Route::middleware(['allowIP'])->group(function () {
+    Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function () {
+        Route::post('/authenticate', 'authenticate')->name('authenticate');
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+    });
+
 });
 
 //Email verification
@@ -175,7 +184,7 @@ Route::get('/how-to-play', function (){
     return Inertia::render("Guide/GuidePage");
 })->name("guide");
 
-Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
+Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->middleware(['allowIP'])->group(function (){
     Route::get("/admin", "adminShow")->name("admin");
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
 });
