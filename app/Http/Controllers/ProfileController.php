@@ -200,7 +200,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display users qurrent class 
+     * Display users current class 
      */
     public function show(){
 
