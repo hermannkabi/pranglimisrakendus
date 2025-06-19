@@ -46,11 +46,7 @@
         <p id="no-results" style="color: grey; text-align:center; font-size: 24px; margin-top: 64px" hidden>Otsingule vastavat rebast ei leitud või on ta juba valitud!</p>            
 
         @foreach ($foxes as $fox)
-<<<<<<< Updated upstream
-            @if ($fox->chosen_by == null || $fox->chosen_by == Auth::id())
-=======
             @if ($fox->chosen_by == null || $fox->chosen_by == Auth::id() || str_contains(Auth::user()->role, "valimised-admin"))
->>>>>>> Stashed changes
                 @include("includes.namerow", ["id"=>$fox->id, "name"=>$fox->name, "instagram"=>$fox->instagram, "facebook"=>$fox->facebook, "chosen_id"=>$fox->chosen_by])
             @endif
         @endforeach

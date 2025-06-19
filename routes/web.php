@@ -6,16 +6,11 @@ use Inertia\Inertia;
 use App\Mail\TestMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< Updated upstream
 use Illuminate\Support\Facades\Mail;
-=======
 use Illuminate\Support\Facades\DB;
->>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Carbon\Carbon;
-
-use App\Models\Fox;
 
 Route::get('/', function () {
     if(Auth::check()){
@@ -181,22 +176,13 @@ Route::get("/up", function (){
 });
 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 //VALIMISED
 
 function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
     $vipAdvantage = intval(DB::table('properties')->where("property", "vip_advantage")->first()->value);
-<<<<<<< Updated upstream
-    $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin"]);
-    $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : (Auth::user()->role == "valimised-vipvip" ? $opens_at - 30 : $opens_at);
-=======
     $vipAdvantageUsed = str_contains(Auth::user()->role, "valimised-vip") || str_contains(Auth::user()->role, "valimised-admin");
     $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
->>>>>>> Stashed changes
     return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
 }
 
@@ -264,11 +250,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
                 return view("notopen");
             }
     
-<<<<<<< Updated upstream
-            return view('dashboard', ["foxes"=>Fox::orderBy('name')->get()]);
-=======
             return view('dashboard', ["foxes"=>Fox::orderBy('last_name')->get()]);
->>>>>>> Stashed changes
         })->name("dashboard");
     
         Route::post("/rebane/vali", function (Request $request){
@@ -383,15 +365,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase lisamiseks!");
     
             $request->validate([
-<<<<<<< Updated upstream
-                "name"=>"required|min:4|string",
-            ], [
-                "name.required"=>"Nimi on kohustuslik väli",
-                "name.min"=>"Nimi peab olema vähemalt 4 tähemärki",
-            ]);
-    
-            $fox = Fox::create(["name"=>$request->name, "instagram"=>$request->instagram, "facebook"=>$request->facebook, "chosen_by"=>null]);
-=======
                 "first_name"=>"required|min:2|string",
                 "last_name"=>"required|min:2|string",
             ], [
@@ -403,7 +376,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             ]);
     
             $fox = Fox::create(["first_name"=>$request->first_name, "last_name"=>$request->last_name, "chosen_by"=>null]);
->>>>>>> Stashed changes
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Loodud rebane ". $fox->name . "(" . $fox->id .")");
     
             return redirect()->route("valimised.addFox")->withSuccess("Rebane on lisatud!");
@@ -444,11 +416,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
     
         Route::get("/nimekiri", function (){
     
-<<<<<<< Updated upstream
-            $foxes = Fox::orderBy('name')->get();
-=======
             $foxes = Fox::orderBy('last_name')->get();
->>>>>>> Stashed changes
             $data = [];
     
             foreach($foxes as $fox){
@@ -467,16 +435,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
     
             return view("foxlist", ["data"=>$data]);
         })->name("foxList");
-<<<<<<< Updated upstream
-    });
-    
-});
-
-
-require __DIR__.'/auth.php';
-
-
-=======
 
         Route::get("/halda", function (){
 
@@ -541,4 +499,3 @@ require __DIR__.'/auth.php';
 });
 
 require __DIR__.'/auth.php';
->>>>>>> Stashed changes

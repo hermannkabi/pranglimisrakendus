@@ -126,11 +126,7 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
-<<<<<<< Updated upstream
-
-=======
         
->>>>>>> Stashed changes
         'valimised' => [
             'driver' => 'single',
             'path' => storage_path('logs/valimised.log'),

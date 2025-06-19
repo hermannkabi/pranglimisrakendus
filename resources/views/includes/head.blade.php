@@ -8,8 +8,4 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <link rel="shortcut icon" href="/favicon.png" type="image/png">
 
-<<<<<<< Updated upstream
-<title>{{ $title }} | Rebaste nädal 2024</title>
-=======
 <title>{{ $title }} | Rebaste nädal 2025</title>
->>>>>>> Stashed changes

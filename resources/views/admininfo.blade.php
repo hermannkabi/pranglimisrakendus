@@ -18,6 +18,7 @@
         <li>Valimiste algus- ja lõpuaega saab lisada ja muuta halduse lehel. Lisaks saab seal muuta ka valimisrežiimi: testversiooni puhul saab tulemused ühe nupuga lähtestada ja kasutajatele kuvatakse info, et tegemist on testiga. Tavarežiimis neid ei ole</li>
         <li>Samal lehel saab lisada ka need inimesed, kes saavad valida kaks rebast, kui peaks vaja minema (meil oli jumalaid vähem). </li>
         <li>Meil oli nii, et tublimad kooli panustajad said natuke varem rebase valida. Kui tahate ka seda, siis kirjuta, kes need peaksid olema ja lisan neile vastavad õigused.</li>
+        <li>NB! Et kõik oleks võimalikult usaldusväärne, on rakendusel ka <a href="{{route("valimised.log")}}">logi</a>, kust saab kasutajate toiminguid vaadata (nt kui tekib vaidlus, kumb valis rebase esimesena vms)</li>
     </ol>
 
     <p>Kirjuta, kui midagi jääb segaseks!</p>
