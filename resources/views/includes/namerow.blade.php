@@ -2,6 +2,7 @@
     <div style="display: flex; gap: 16px; align-items: center">
         <div>
             <p style="margin-bottom: 0" class="name">{{ $name }}</p>  
+<<<<<<< Updated upstream
             @if ( $instagram || $facebook )
                 <div style="margin-top: 8px; display: {{ $instagram || $facebook ? "block" : "none" }}">
                     @if ( $instagram )
@@ -12,6 +13,8 @@
                     @endif
                 </div>
             @endif
+=======
+>>>>>>> Stashed changes
         </div>
     </div>
 
@@ -26,6 +29,7 @@
             </form>
         @endif
 
+<<<<<<< Updated upstream
         @if (Auth::user()->role == "valimised-admin")
             @if ($chosen_id)
                 <form action="{{ route("valimised.foxClear") }}" method="post">
@@ -34,6 +38,16 @@
                     <button style="padding-inline: 16px" type="submit"><i style="font-size: 16px; " class="material-icons">close</i></button>
                 </form>
             @endif
+=======
+        @if (str_contains(Auth::user()->role, "valimised-admin"))
+                {{-- @if ($chosen_id)
+                    <form action="{{ route("valimised.foxClear") }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $id }}">
+                        <button style="padding-inline: 16px" type="submit"><i style="font-size: 16px; " class="material-icons">close</i></button>
+                    </form>
+                @endif --}}
+>>>>>>> Stashed changes
             <form action="{{ route("valimised.foxDelete") }}" method="post">
                 @csrf
                 <input type="hidden" name="id" value="{{ $id }}">

@@ -6,9 +6,16 @@ use Inertia\Inertia;
 use App\Mail\TestMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+<<<<<<< Updated upstream
 use Illuminate\Support\Facades\Mail;
+=======
+use Illuminate\Support\Facades\DB;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Carbon\Carbon;
+
+use App\Models\Fox;
 
 Route::get('/', function () {
     if(Auth::check()){
@@ -174,13 +181,22 @@ Route::get("/up", function (){
 });
 
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 //VALIMISED
 
 function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
     $vipAdvantage = intval(DB::table('properties')->where("property", "vip_advantage")->first()->value);
+<<<<<<< Updated upstream
     $vipAdvantageUsed = in_array(Auth::user()->role, ["valimised-vip", "valimised-admin"]);
     $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : (Auth::user()->role == "valimised-vipvip" ? $opens_at - 30 : $opens_at);
+=======
+    $vipAdvantageUsed = str_contains(Auth::user()->role, "valimised-vip") || str_contains(Auth::user()->role, "valimised-admin");
+    $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
+>>>>>>> Stashed changes
     return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
 }
 
@@ -248,7 +264,11 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
                 return view("notopen");
             }
     
+<<<<<<< Updated upstream
             return view('dashboard', ["foxes"=>Fox::orderBy('name')->get()]);
+=======
+            return view('dashboard', ["foxes"=>Fox::orderBy('last_name')->get()]);
+>>>>>>> Stashed changes
         })->name("dashboard");
     
         Route::post("/rebane/vali", function (Request $request){
@@ -363,6 +383,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase lisamiseks!");
     
             $request->validate([
+<<<<<<< Updated upstream
                 "name"=>"required|min:4|string",
             ], [
                 "name.required"=>"Nimi on kohustuslik väli",
@@ -370,6 +391,19 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             ]);
     
             $fox = Fox::create(["name"=>$request->name, "instagram"=>$request->instagram, "facebook"=>$request->facebook, "chosen_by"=>null]);
+=======
+                "first_name"=>"required|min:2|string",
+                "last_name"=>"required|min:2|string",
+            ], [
+                "first_name.required"=>"Eesnimi on kohustuslik väli",
+                "first_name.min"=>"Eesnimi peab olema vähemalt 2 tähemärki",
+                "last_name.required"=>"Perenimi on kohustuslik väli",
+                "last_name.min"=>"Perenimi peab olema vähemalt 2 tähemärki",
+
+            ]);
+    
+            $fox = Fox::create(["first_name"=>$request->first_name, "last_name"=>$request->last_name, "chosen_by"=>null]);
+>>>>>>> Stashed changes
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Loodud rebane ". $fox->name . "(" . $fox->id .")");
     
             return redirect()->route("valimised.addFox")->withSuccess("Rebane on lisatud!");
@@ -410,7 +444,11 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
     
         Route::get("/nimekiri", function (){
     
+<<<<<<< Updated upstream
             $foxes = Fox::orderBy('name')->get();
+=======
+            $foxes = Fox::orderBy('last_name')->get();
+>>>>>>> Stashed changes
             $data = [];
     
             foreach($foxes as $fox){
@@ -429,6 +467,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
     
             return view("foxlist", ["data"=>$data]);
         })->name("foxList");
+<<<<<<< Updated upstream
     });
     
 });
@@ -437,3 +476,69 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 require __DIR__.'/auth.php';
 
 
+=======
+
+        Route::get("/halda", function (){
+
+            $data = DB::table('properties')
+                ->whereIn('property', ['opens_at', 'closes_at', 'second_fox_allowed', "test"])
+                ->get();
+
+            $opensAt = $data->firstWhere('property', 'opens_at')->value;
+            $closesAt = $data->firstWhere('property', 'closes_at')->value;
+
+            $opensAtForInput = $opensAt == null ? "" : Carbon::createFromTimestamp($opensAt)->format('Y-m-d\TH:i');
+            $closesAtForInput = $closesAt == null ? "" : Carbon::createFromTimestamp($closesAt)->format('Y-m-d\TH:i');
+        
+            $secondFoxAllowed = $data->firstWhere('property', 'second_fox_allowed')->value;
+            
+            $test = $data->firstWhere('property', 'test')->value == 1;
+
+
+            return view("properties", ["opens_at"=>$opensAtForInput, "closes_at"=>$closesAtForInput, "second_fox_allowed"=>$secondFoxAllowed, "test"=>$test]);
+        })->name("properties");
+
+        Route::post("/halda", function (Request $request){
+            $opensAt = $request->opens_at;
+            $closesAt = $request->closes_at;
+            $secondFoxAllowed = $request->second_fox_allowed;
+
+            $opensAtTimestamp = $opensAt == null ? null : Carbon::parse($opensAt)->timestamp;
+            $closesAtTimestamp = $closesAt == null ? null : Carbon::parse($closesAt)->timestamp;
+
+            DB::table('properties')
+            ->where('property', 'opens_at')
+            ->update(['value' => $opensAtTimestamp]);
+
+            DB::table('properties')
+            ->where('property', 'closes_at')
+            ->update(['value' => $closesAtTimestamp]);
+
+            DB::table('properties')
+            ->where('property', 'second_fox_allowed')
+            ->update(['value' => $secondFoxAllowed]);
+
+            DB::table('properties')
+            ->where('property', 'test')
+            ->update(['value' => $request->test == 1]);
+
+            return redirect()->back();
+
+        })->name("propertiesPost");
+
+        Route::post("/results/clear", function (Request $request){
+            Fox::query()->update(['chosen_by' => null]);
+            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Lähtestas valimistulemused!");
+
+            return redirect()->back();
+        })->name("clearResults");
+
+        Route::get("/info", function(){return view("admininfo");})->name("admininfo");
+    });
+
+
+    
+});
+
+require __DIR__.'/auth.php';
+>>>>>>> Stashed changes
