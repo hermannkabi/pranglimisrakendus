@@ -356,6 +356,8 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
         })->name("profile");
     });
 
+
+    
     Route::middleware(['auth', 'role:valimised-admin'])->group(function () {
         Route::get("/rebane/lisa", function (){
             return view("addfox");
