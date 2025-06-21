@@ -61,7 +61,7 @@ button:hover{
     background-color: #CECECE50;
 }
 
-input{
+input, textarea{
     display: block;
     font-size: 24px;
     font-family: "Inter";

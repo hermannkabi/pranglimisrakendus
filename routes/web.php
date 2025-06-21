@@ -367,20 +367,24 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring rebase lisamiseks!");
     
             $request->validate([
-                "first_name"=>"required|min:2|string",
-                "last_name"=>"required|min:2|string",
+                "foxnames"=>"required|min:2|string",
             ], [
-                "first_name.required"=>"Eesnimi on kohustuslik väli",
-                "first_name.min"=>"Eesnimi peab olema vähemalt 2 tähemärki",
-                "last_name.required"=>"Perenimi on kohustuslik väli",
-                "last_name.min"=>"Perenimi peab olema vähemalt 2 tähemärki",
-
+                "foxnames.required"=>"Rebaste nimed on kohustuslik väli",
+                "foxnames.min"=>"Nimi peab olema vähemalt 2 tähemärki",
             ]);
+
+            foreach(explode("\r\n", trim($request->foxnames)) as $foxname){
+                $foxname = preg_replace('/\s+/', ' ', $foxname);
+                $lastSpacePos = strrpos($foxname, ' ');
+                $firstName = substr($foxname, 0, $lastSpacePos);
+                $lastName = substr($foxname, $lastSpacePos + 1);
+
+                $fox = Fox::create(["first_name"=>$firstName, "last_name"=>$lastName, "chosen_by"=>null]);
+                Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Loodud rebane ". $fox->name . "(" . $fox->id .")");    
+            }
     
-            $fox = Fox::create(["first_name"=>$request->first_name, "last_name"=>$request->last_name, "chosen_by"=>null]);
-            Log::channel("valimised")->info("[". $request->user()->eesnimi . " " . $request->user()->perenimi. "(" . $request->user()->id .")]: Päring õnnestub! Loodud rebane ". $fox->name . "(" . $fox->id .")");
     
-            return redirect()->route("valimised.addFox")->withSuccess("Rebane on lisatud!");
+            return redirect()->route("valimised.addFox")->withSuccess("Rebased on lisatud!");
         })->name("addFoxPost");
     
         Route::post("/fox/delete", function (Request $request){
