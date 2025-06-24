@@ -33,39 +33,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'klass',
         'google_id',
-
-        //Secondary information
         'settings',
         'profile_pic',
         'streak',
-
-        //Class information
-        //'invited_to_klass',
-
-        // //User settings
-        // 'dark_backround',
-        // 'visible_timer',
-        // 'score_animations',
-        // 'default_time',
-        // 'color',
-
-        // //Game information
-        // 'score_sum',
-        // 'experience',
-        // 'accuracy_sum',
-        // 'game_count',
-        // 'last_level',
-        // 'last_equation',
-        // 'time',
-        // 'dt',
-        // 'mistakes_tendency',
-        // 'mistakes_sum',
-
-        // //Quests
-        // 'quests',
-        // 'quest_type',
-        // 'completed_quests_sum',
     ];
+
+    public function getNimiAttribute()
+    {
+        return ucwords($this->eesnimi . " " . $this->perenimi);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

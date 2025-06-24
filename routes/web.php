@@ -1,16 +1,17 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Fox;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Mail\TestMail;
+use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use Carbon\Carbon;
 
 Route::get('/', function () {
     if(Auth::check()){
@@ -181,7 +182,7 @@ Route::get("/up", function (){
 function opensAt($detailed=false){
     $opens_at = intval(DB::table('properties')->where("property", "opens_at")->first()->value);
     $vipAdvantage = intval(DB::table('properties')->where("property", "vip_advantage")->first()->value);
-    $vipAdvantageUsed = str_contains(Auth::user()->role, "valimised-vip") || str_contains(Auth::user()->role, "valimised-admin");
+    $vipAdvantageUsed = Application::where("applicant", Auth::id())->where("application_type", "valimised-vip")->where("status", "granted")->exists() || str_contains(Auth::user()->role, "valimised-admin");
     $returnValue = $vipAdvantageUsed ? $opens_at - $vipAdvantage : $opens_at;
     return $detailed ? ["advantage_used"=>time() < $opens_at && time() >= ($opens_at - $vipAdvantage), "opens_at"=>$returnValue] : $returnValue;
 }
@@ -191,9 +192,7 @@ function closesAt(){
 }
 
 function canChooseSecond($request){
-    $twoFoxUsers = explode(";", DB::table('properties')->where("property", "second_fox_allowed")->first()->value);
-
-    if(!in_array($request->user()->email, $twoFoxUsers)){
+    if(!Application::where("applicant", Auth::id())->where("application_type", "valimised-twofox")->where("status", "granted")->exists()){
         return ["result"=>false];
     }else{
         // Second fox can be chosen only when it is the general election time (not during vip time)
@@ -209,6 +208,21 @@ function canChooseSecond($request){
 Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->group(function (){
 
     Route::get("/notverified", function (){if(Auth::user()->email_verified_at != null){return redirect()->route("valimised.dashboard");} return view("notverified");})->middleware(["auth"])->name("notverified");
+
+    Route::get("/apply", function (){
+        $applications = Application::where('applicant', Auth::id())
+        ->whereIn('application_type', ['valimised-basic', 'valimised-vip', 'valimised-twofox'])->latest()->get();
+        return view("apply", ["applications"=>$applications]);
+    })->name("apply")->middleware("auth");
+
+    Route::post("/apply", function (Request $request){
+        Application::create([
+            "applicant"=>Auth::id(),
+            "application_type"=>$request->type,
+        ]);
+
+        return redirect()->back();
+    });
 
     Route::middleware(['auth', 'notguest'])->group(function () {
 
@@ -311,9 +325,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             $CLOSES_AT = closesAt();
 
             if(($OPENS_AT != null && time() < $OPENS_AT) || ($CLOSES_AT != null && time() > $CLOSES_AT)){
-                if($request->user()->role == "valimised-vipvip"){
-                    return redirect()->back()->with("error", "Valimised ei ole avatud!");   
-                }
                 return view("notopen");
             }
 
@@ -355,8 +366,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             return view("profile", ["name"=>ucwords(Auth::user()->eesnimi . " " . Auth::user()->perenimi), "fox"=>Fox::where("chosen_by", Auth::id())->get()]);
         })->name("profile");
     });
-
-
     
     Route::middleware(['auth', 'role:valimised-admin'])->group(function () {
         Route::get("/rebane/lisa", function (){
@@ -445,7 +454,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
         Route::get("/halda", function (){
 
             $data = DB::table('properties')
-                ->whereIn('property', ['opens_at', 'closes_at', 'second_fox_allowed', "test"])
+                ->whereIn('property', ['opens_at', 'closes_at', "test"])
                 ->get();
 
             $opensAt = $data->firstWhere('property', 'opens_at')->value;
@@ -453,19 +462,19 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 
             $opensAtForInput = $opensAt == null ? "" : Carbon::createFromTimestamp($opensAt)->format('Y-m-d\TH:i');
             $closesAtForInput = $closesAt == null ? "" : Carbon::createFromTimestamp($closesAt)->format('Y-m-d\TH:i');
-        
-            $secondFoxAllowed = $data->firstWhere('property', 'second_fox_allowed')->value;
-            
+                    
             $test = $data->firstWhere('property', 'test')->value == 1;
 
 
-            return view("properties", ["opens_at"=>$opensAtForInput, "closes_at"=>$closesAtForInput, "second_fox_allowed"=>$secondFoxAllowed, "test"=>$test]);
+            $applications = Application::with("applicantUser")->whereIn('application_type', ['valimised-basic', 'valimised-vip', 'valimised-twofox'])->whereNotIn('status', ['granted', 'denied'])->get();
+
+
+            return view("properties", ["opens_at"=>$opensAtForInput, "closes_at"=>$closesAtForInput, "test"=>$test, "applications"=>$applications]);
         })->name("properties");
 
         Route::post("/halda", function (Request $request){
             $opensAt = $request->opens_at;
             $closesAt = $request->closes_at;
-            $secondFoxAllowed = $request->second_fox_allowed;
 
             $opensAtTimestamp = $opensAt == null ? null : Carbon::parse($opensAt)->timestamp;
             $closesAtTimestamp = $closesAt == null ? null : Carbon::parse($closesAt)->timestamp;
@@ -477,10 +486,6 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
             DB::table('properties')
             ->where('property', 'closes_at')
             ->update(['value' => $closesAtTimestamp]);
-
-            DB::table('properties')
-            ->where('property', 'second_fox_allowed')
-            ->update(['value' => $secondFoxAllowed]);
 
             DB::table('properties')
             ->where('property', 'test')
@@ -496,6 +501,19 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
 
             return redirect()->back();
         })->name("clearResults");
+
+
+        Route::post("/application/{application_id}/decide", function (Request $request, $application_id){
+            $decision = $request->decision;
+
+            $application = Application::findOrFail($application_id);
+            $application->status = $decision ?? "error";
+            $application->message = $request->message;
+
+            $application->save();
+
+            return redirect()->back();
+        });
 
         Route::get("/info", function(){return view("admininfo");})->name("admininfo");
     });

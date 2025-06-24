@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,13 @@ class EnsureUserIsNotGuest
             return redirect()->route("valimised.notverified");
         }
 
-        return $next($request);
+        //Todo: application for voting rights was denied
+
+        if(Application::where('applicant', $request->user()->id)->whereIn('application_type', ['valimised-basic', 'valimised-vip', 'valimised-twofox'])->where('status', 'granted')->exists() || str_contains($request->user()->role, "valimised-admin")){
+            return $next($request);
+        }else{
+            return redirect()->route("valimised.apply");
+        }
+
     }
 }
