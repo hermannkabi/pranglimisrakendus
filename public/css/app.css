@@ -90,6 +90,10 @@ input, textarea{
     margin-block: 0;
 }
 
+a:visited{
+    color: inherit;
+}
+
 @media only screen and (max-width: 600px) {
 
     .name-row{
