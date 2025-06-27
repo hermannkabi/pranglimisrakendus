@@ -6,9 +6,10 @@ import Layout from "@/Components/2024SummerRedesign/Layout";
 import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
+import InfoBanner from "@/Components/InfoBanner";
 
 
-export default function GameDetailsPage({game, auth, playedBy}){
+export default function GameDetailsPage({game, auth, playedBy, competition}){
 
     const [copyText, setCopyText] = useState("Jaga mängu");
     // First is for correct, second incorrect answers;
@@ -87,6 +88,7 @@ export default function GameDetailsPage({game, auth, playedBy}){
 
     return <>
         <Layout title="Detailne vaade" auth={auth}>
+            {competition != null && <InfoBanner><p>See mäng on mängitud võistluse <a style={{all:"unset", textDecoration:"underline", cursor:"pointer"}} href={"/competition/"+competition.competition_id+"/view"}>{competition.name}</a> raames.</p></InfoBanner>}
             <div className="four-stat-row">
                 <StatisticsTile stat={averageTime(game.time)} label={"Aeg"} icon={"hourglass_top"} />
                 <StatisticsTile stat={game.game_count ?? "0"} label={"Tehete arv"} icon={"calculate"} />

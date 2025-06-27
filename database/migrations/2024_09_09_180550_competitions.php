@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('competitions', function (Blueprint $table){ 
-            $table->id();
-            $table->tinyText('comp_name');
-            $table->tinyText('comp_description')->nullable();
-            $table->timestamp('dt_start')->nullable();
-            $table->timestamp('dt_end')->nullable();
-            $table->tinyInteger('attempt_count')->nullable();
-            $table->text('game_data');
-            $table->text('participants');
+         Schema::table('competitions', function (Blueprint $table) {
+            // Drop old 'id' column if exists
+            if (Schema::hasColumn('competitions', 'id')) {
+                $table->dropColumn('id');
+            }
+
+            // Add new competition_id as primary key (big unsigned integer, adjust if you want string)
+            $table->unsignedBigInteger('competition_id')->primary()->first();
+
+            // Note: 'first()' attempts to place column at start, adjust if needed
         });
     }
 

@@ -26,7 +26,9 @@ export default function Sidebar({title, auth}){
                 </div>
             </a>
 
-            <i onClick={toggleMobileMenu} id="mobile-hamburger-menu" style={{fontSize:'32px'}} className="material-icons">menu</i>
+            <div>
+                <i onClick={toggleMobileMenu} id="mobile-hamburger-menu" style={{fontSize:'32px', marginLeft: "8px"}} className="material-icons">menu</i>
+            </div>
         </div>
         <SizedBox height="8px" />
         <div className="mobile-navigation-content">

@@ -9,20 +9,40 @@ class Competition extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'comp_id'; // UUID
+    protected $primaryKey = 'competition_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+
     protected $fillable = [
-        'comp_name', 
-        'comp_description', //optional
+        'competition_id',
+        'name', 
+        'description',
         "dt_start",
         "dt_end", 
         "attempt_count",
         "game_data",
-        "participants", //many-to-many releation
     ];
     
-    public function competitions()
+    public function participants()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(
+            User::class,
+            'competition_user',   // Pivot table name
+            'competition_id',     // Foreign key on pivot for this model
+            'user_id'             // Foreign key on pivot for related model
+        );
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($competition) {
+            if (empty($competition->competition_id)) {
+                $competition->competition_id = (string) mt_rand(100000000000000000, 999999999999999999);
+            }
+        });
     }
 
 }

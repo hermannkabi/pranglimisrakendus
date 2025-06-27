@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import GameEndPage from "../GameEnd/GameEndPage";
 import InfoBanner from "@/Components/InfoBanner";
 
-export default function GamePage({mis, tyyp, raw_level, data, time, auth}){
+export default function GamePage({mis, tyyp, raw_level, data, time, competition, auth}){
 
     // CONSTANTS
 
@@ -995,5 +995,5 @@ export default function GamePage({mis, tyyp, raw_level, data, time, auth}){
             
 
         </div>
-    ) : <GameEndPage mis={mis} tyyp={tyyp} raw_level={raw_level} correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} auth={auth} />;
+    ) : <GameEndPage competition={competition} mis={mis} tyyp={tyyp} raw_level={raw_level} correct={correctCount} total={totalAnsCount} points={points} time={timeElapsed} lastLevel={lastLevel} log={operationLog.current} auth={auth} />;
 }

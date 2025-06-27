@@ -2,29 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Mang;
-use App\Models\Klass;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Klass;
+use App\Models\Competition;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
-    /**
-     * Display scoreboard data
-     */
-    public function index($search)
-    {
-        $koik = DB::table('users')->select('id')->orderBy($search == null ? 'experience' : $search, 'desc')
-        ->simplePaginate(5);
-        $user = Auth::user()->eesnimi;
-        return Inertia::render('scoreboard',['table'=>$koik, 'user'=>$user]);
-    }
-
     /**
      * Creating a game from given data.
      */
@@ -51,13 +41,6 @@ class GameController extends Controller
     }
 
     function calculateExperience($time, $accuracy, $score_sum, $game_count, $game){
-        // (accuracy * (game count + score_sum))/time (min) - Formula for counting exp
-       
-       /** 
-        *if($game == 'jaguvus'){
-        *    $accuracy = round(($accuracy/100) ** 4, 2);
-        *}
-        */
         return $time == 0 || $accuracy == 0 ? 0 : round(($accuracy*($score_sum + $game_count))/(100*$time/60));
     }
 
@@ -196,7 +179,8 @@ class GameController extends Controller
 
         if($mang){
             $manguAutor = User::where("id", $mang->user_id)->first();
-            return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang, "playedBy"=>$manguAutor]);
+            $competition = $mang->competition_id == null ? null : Competition::find($mang->competition_id);
+            return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang, "playedBy"=>$manguAutor, "competition"=>$competition]);
         }
 
         abort(404);

@@ -47,8 +47,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'streak',
     ];
 
-    public function users(){
-        return $this->belongsToMany(Competition::class);
+    public function competitions(){
+        return $this->belongsToMany(Competition::class, 'competition_user', 'user_id', 'competition_id');
     }
 
     /**

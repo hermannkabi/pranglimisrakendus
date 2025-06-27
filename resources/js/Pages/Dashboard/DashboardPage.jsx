@@ -10,7 +10,7 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import ClassWidget from "@/Components/2024SummerRedesign/ClassWidget";
 import StreakWidget from "@/Components/2024SummerRedesign/StreakWidget";
 
-export default function Dashboard({auth, stats, classData, teacherData}) {
+export default function Dashboard({auth, stats, classData, competitionData, teacherData}) {
 
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
@@ -22,6 +22,50 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
             }, 500);
         });
     });
+    
+
+    function formatDateTime(datetimeStr) {
+        const date = new Date(datetimeStr.replace(/-/g, "/"));
+        const [datePart, timePart] = date.toLocaleString("et-EE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        }).split(", ");
+        
+        return `${datePart} kell ${timePart.replace(":", ".")}`;
+    }
+
+    function truncateChars(text, charLimit = 200) {
+        if (text.length <= charLimit) return text;
+        return text.slice(0, charLimit).trimEnd() + '...';
+    }
+
+    function getRelativeTime(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((new Date(date.replace(/-/g, "/")) - now) / 1000);
+
+        const rtf = new Intl.RelativeTimeFormat('et', { numeric: 'auto' });
+
+        const divisions = [
+            { amount: 60, unit: 'second' },
+            { amount: 60, unit: 'minute' },
+            { amount: 24, unit: 'hour' },
+            { amount: 7, unit: 'day' },
+            { amount: 4.34524, unit: 'week' },
+            { amount: 12, unit: 'month' },
+            { amount: Number.POSITIVE_INFINITY, unit: 'year' }
+        ];
+
+        let duration = diffInSeconds;
+        for (const { amount, unit } of divisions) {
+            if (Math.abs(duration) < amount) {
+            return rtf.format(Math.round(duration), unit);
+            }
+            duration /= amount;
+        }
+    }
 
 
     return (
@@ -31,16 +75,21 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
                     <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
                 </div>}
-                {auth.user.role.includes("admin") && <div className="section" style={{marginBottom:"16px",}}>
+                {auth.user.role.split(",").includes("admin") && <div className="section" style={{marginBottom:"16px",}}>
                     <div style={{display:"flex", justifyContent:"space-between"}}>
 
                         {/* <InfoBanner>
                             <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
                         </InfoBanner> */}
 
-                        {auth.user.role.includes("admin") && <a href={route("admin")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
+                        {auth.user.role.split(",").includes("admin") && <a href={route("admin")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
                             <div className="section clickable">
-                                <TwoRowTextButton upperText={"Admin"} lowerText={"Vaata edasi"} />
+                                <TwoRowTextButton upperText={"Klasside haldamine"} lowerText={"Vaata edasi"} />
+                            </div>
+                        </a>}
+                        {auth.user.role.split(",").includes("admin") && <a href={route("admin")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
+                            <div className="section clickable">
+                                <TwoRowTextButton upperText={"Võistluste haldamine"} lowerText={"Vaata edasi"} />
                             </div>
                         </a>}
                     </div>
@@ -113,7 +162,7 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                         <a href={"/classroom/"+classData.uuid+"/view"} style={{all:"unset", position:"absolute", height:"100%", width:"100%", top:'0', left:"0"}}></a>
                     </div>
                     <DashboardClassStatTile icon="person" text="Õpilasi kokku" value={classData.studentsCount} />
-                    <DashboardClassStatTile icon="monitoring" text="XP kokku" value={Intl.NumberFormat('en', { notation: 'compact' }).format(classData.pointsCount)} />
+                    <DashboardClassStatTile icon="monitoring" text="XP kokku" value={Intl.NumberFormat('en', { notation: 'compact' }).format(classData.pointsCount).replace(".", ",")} />
                     <div onClick={()=>window.location.href = "/profile/"+classData.teacher[0].id} className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
                         <VerticalStatTile padding="8px 0" marginBlock={0} capitalize={true} icon="school" text="Õpetaja" value={classData.teacher[0].eesnimi + " " + classData.teacher[0].perenimi} />
 
@@ -122,18 +171,75 @@ export default function Dashboard({auth, stats, classData, teacherData}) {
                         <a href={"/profile/"+classData.teacher[0].id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
                 </div><SizedBox height="16px" /></>}
+
+                {competitionData && <><div className="class-grid competition-grid" style={{}}>
+                    {/* Competition overview */}
+                    <div style={{position:"relative"}} className="section clickable">
+                        <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
+                            <div>
+                                <TwoRowTextButton isActive={competitionData.active} upperText={competitionData.active ? "Käimasolev võistlus" : "Eelmine võistlus"} lowerText={competitionData.competition.name} showArrow={window.innerWidth > 600 && !(window.innerWidth > 1000 && window.innerWidth < 1300)} />
+                                <SizedBox height="32px" />
+                                <div style={{margin:"8px"}}>
+                                    {!competitionData.active && <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{competitionData.myPlace + "."} <span style={{color:"var(--grey-color)", marginBlock:"0", fontSize:"24px", fontWeight:"normal"}}>koht</span></h2>}
+                                    {competitionData.active && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
+                                        <div>
+                                            <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{competitionData.attemptsLeft == 0 ? "Vaata" : "Võistle"}</h2>
+                                            <SizedBox height="8px" />
+                                            <p style={{color:"var(--grey-color)", marginBlock:"0"}}>Võistluse lehele</p>
+                                        </div>
+                                        <i translate="no" style={{fontSize:"48px", color:"var(--lightgrey-color)"}} className="material-icons">arrow_forward_ios</i>
+                                    </div>}
+                                </div>
+                            </div>
+                            {!competitionData.active && <div>
+                                {[0, 1, 2].map(e=>competitionData.threeBest[e] != null && <DashboardLeaderboardWidget key={e} auth={auth} user={competitionData.threeBest[e].user} place={competitionData.threeBest[e].rank_label} />)}
+                                {!["T1", "1", "T2", "2", "T3", "3", "T4", "4"].includes(competitionData.myPlace) && <i translate="no" style={{color:"var(--grey-color)", fontSize:"28px", marginTop:"8px", marginBottom:"0"}} className="material-icons">unfold_more</i>}
+                                {!["T1", "1", "T2", "2", "T3", "3"].includes(competitionData.myPlace) && <DashboardLeaderboardWidget auth={auth} user={auth.user} place={competitionData.myPlace} />}
+
+                                <p style={{color:"var(--grey-color)"}}>Kokku {competitionData.totalParticipants} võistleja{competitionData.totalParticipants == 1 ? "" : "t"}</p>
+                            </div>}
+
+                            {competitionData.active && <div>
+                                <p>{truncateChars(competitionData.competition.description ?? "Kirjeldust pole lisatud")}</p>
+                                <p><b>Võistlus lõppeb:</b> {getRelativeTime(competitionData.competition.dt_end)} ({formatDateTime(competitionData.competition.dt_end)})</p>
+                                {competitionData.attemptsLeft != -1 && competitionData.attemptsLeft != 0 && <p>Sul on jäänud veel <b>{competitionData.attemptsLeft}</b> mängukord{competitionData.attemptsLeft == 1 ? "" : "a"}</p>}
+                                { competitionData.attemptsLeft == 0 && <p>Oled kõik mängukorrad ära kasutanud</p>}
+                                
+                                {competitionData.attemptsLeft == -1 && <p>Sellel võistlusel on <b>piiramatu</b> arv mängukordi</p>}
+
+                            </div>}
+                        </div>
+                        <a href={"/competition/"+competitionData.competition.competition_id+"/view"} style={{all:"unset", position:"absolute", height:"100%", width:"100%", top:'0', left:"0"}}></a>
+                    </div>
+                    <DashboardClassStatTile icon="social_leaderboard" text="Osalemisi kokku" value={competitionData.totalCompetitions} />
+                    <div className={"section class-stat " + (competitionData.bestRank == null ? "" : "clickable")} style={{position:"relative"}}>
+                        <DashboardClassStatTile icon="trophy" text="Parim tulemus" value={competitionData.bestRank == null ? "-" : competitionData.bestRank.rank + "."} />
+                        <a style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}} disabled={competitionData.bestRank == null} href={competitionData.bestRank == null ? null : "/competition/"+competitionData.bestRank.competition_id+"/view"}></a>
+                    </div>
+                    <div onClick={()=>window.location.href = "/profile/"+classData.teacher[0].id} className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="calendar_month" text="Võistle veel" value={competitionData.nextCompetition ? "Järgmine võistlus algab " + formatDateTime(competitionData.nextCompetition.dt_start) : "Otsi endale veel võistlusi"} />
+                    
+                        <a href={route("competitionsView")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div>
+                </div><SizedBox height="16px" /></>}
+
+                {competitionData == null && <a style={{all:"unset"}} href={route("competitionsView")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px"}}>
+                    <TwoRowTextButton upperText="Hakka võistlema" lowerText="Otsi võistluseid" />
+                    <p style={{marginInline:"8px", color:"var(--grey-color)", maxWidth:"max(50%, 300px)"}}>Efektiivsemaks ja lõbusamaks arenemiseks proovi kindlasti Reaaleri võistluseid, kus saad teistega sõbralikult mõõtu võtta.</p>
+                </div> </a>}
                 
                 <div className="two-column-layout">
                     <a style={{all:"unset"}} href={route('gameHistory')}>
-                        <div className="section clickable" style={{marginBlock:"0"}}>
+                        <div className="section clickable" style={{marginBlock:"0", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingRight:"24px"}}>
                             <TwoRowTextButton upperText="Varasemad mängud" lowerText="Vaata kõiki" />
+                            <i style={{fontSize:"48px"}} className="material-icons-outlined">stadia_controller</i>
                         </div>
                     </a>
 
-                    <a style={{all:"unset"}} href={route('profilePage')}>
-                        <div className="section clickable" style={{display:"flex", flexDirection:'row', justifyContent:"space-between", alignItems:'center', marginBlock:"0"}}>
-                            <TwoRowTextButton capitalizeLower={true} upperText="Minu konto" lowerText={auth.user.eesnimi + " " + auth.user.perenimi} />
-                            <img src={auth.user.profile_pic} style={{height:"50px", aspectRatio:"1", borderRadius:"50%", objectFit:"cover"}} />
+                    <a style={{all:"unset"}} href={route('competitionHistory')}>
+                        <div className="section clickable" style={{marginBlock:"0", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", paddingRight:"24px"}}>
+                            <TwoRowTextButton upperText="Varasemad võistlused" lowerText="Vaata kõiki" />
+                            <i style={{fontSize:"48px"}} className="material-icons-outlined">leaderboard</i>
                         </div>
                     </a>
                     

@@ -15,7 +15,8 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
         "guest":"Külaline",
         "student":"Õpilane",
         "admin":"Admin",
-        "music-admin":"Admin (muusika)"
+        "music-admin":"Admin (muusika)",
+        "valimised-admin":"Admin (valimised)",
     };
 
     return <>
@@ -59,6 +60,10 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                         <TwoRowTextButton upperText="Mängude ajalugu" lowerText="Vaata kõiki" />
                         <a href={"/game/history/"+user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>}
+                    <div onClick={()=>window.location.href = "/competition/history/"+user.id} className="section clickable" style={{position:"relative"}}>
+                        <TwoRowTextButton upperText="Võistluste ajalugu" lowerText="Vaata tulemusi" />
+                        <a href={"/competition/history/"+user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div>
                 </div>
             </div>
         </Layout>

@@ -13,9 +13,14 @@
 
 .class-grid>.section:nth-of-type(1) { grid-area: 1 / 1 / 5 / 5; }
 .class-grid>.section:nth-of-type(2) { grid-area: 3 / 5 / 5 / 7; }
-.class-grid>.section:nth-of-type(3){ grid-area: 3 / 7 / 5 / 9; }
+.class-grid>.section:nth-of-type(3) { grid-area: 3 / 7 / 5 / 9; }
 .class-grid>.section:nth-of-type(4) { grid-area: 1 / 5 / 3 / 9; } 
 
+
+.competition-grid>.section:nth-last-of-type(4) { grid-area: 1 / 5 / 5 / 9; }
+.competition-grid>.section:nth-last-of-type(1) { grid-area: 3 / 1 / 5 / 5; }
+.competition-grid>.section:nth-last-of-type(2) { grid-area: 1 / 3 / 3 / 5; }
+.competition-grid>.section:nth-last-of-type(3) { grid-area: 1 / 1 / 3 / 3; } 
 
 .class-grid .class-stat h2{
     font-size: 48px;

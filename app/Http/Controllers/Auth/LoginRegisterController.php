@@ -219,8 +219,10 @@ class LoginRegisterController extends Controller
             }
 
             $streak = app("App\Http\Controllers\ProfileController")->viewStreak(Auth::id());
+
+            $competitionData = app("App\Http\Controllers\CompetitionController")->getDashboardCompetition();
             
-            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData])->with(['theme' => 'something']);
+            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData, 'competitionData'=>$competitionData])->with(['theme' => 'something']);
         }
         
         return redirect()->route('login')

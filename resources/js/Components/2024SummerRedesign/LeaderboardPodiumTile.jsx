@@ -2,6 +2,8 @@ import SizedBox from "../SizedBox";
 import StreakActiveWidget from "./StreakActiveWidget";
 
 export default function LeaderboardPodiumTile({auth, e, firstPlace=false}){
+    console.log(e);
+    
     return  <div style={{flex:"1", textAlign:"center"}}>
                 <span style={{fontSize: firstPlace ? "28px" : "24px", fontWeight:firstPlace ? "bold" : null}}>{e.place}</span>
                 <br />

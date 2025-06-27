@@ -19,9 +19,9 @@ export default function leaderboardRow({place, points, index, player, user, play
                     {playedToday && <StreakActiveWidget />}
                 </div>
 
-                <div style={{position:"absolute", bottom:"8px", right:"8px", color:"var(--grey-color)"}}>
+                {points != null && <div style={{position:"absolute", bottom:"8px", right:"8px", color:"var(--grey-color)"}}>
                     <span >{points} XP</span>
-                </div>
+                </div>}
             </div>
         </a>
     );

@@ -56,6 +56,7 @@ export default function JoinClassPage({auth, classData, allClasses}){
 
                 {/* Class list */}
                 <div>
+                    
                 {classData != null && <div onClick={onClassRemove} style={{marginTop:"0", paddingBlock:"32px", marginBottom:"32px", display:"flex", justifyContent:"space-between", alignItems:"center"}} className="section clickable">
                     <TwoRowTextButton upperText="Lahku klassist" lowerText={classData.klass_name} showArrow={false} />
                     <i translate="no" style={{fontSize:"50px", marginRight:"16px"}} className="material-icons">logout</i>

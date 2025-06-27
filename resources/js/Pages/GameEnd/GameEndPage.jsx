@@ -10,7 +10,7 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import InfoBanner from "@/Components/InfoBanner";
 
 
-export default function GameEndPage({correct, total, points, time, lastLevel, log, auth, mis, tyyp, raw_level}){
+export default function GameEndPage({correct, total, points, time, lastLevel, log, auth, mis, tyyp, raw_level, competition}){
 
 
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
@@ -125,6 +125,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 'log':JSON.stringify(log),
                 'game':mis,
                 'game_type': tyyp,
+                "competition_id": competition != null ? competition.competition_id : null, 
             }).done(function (data){
                 setGameSaved(true);
             }).fail(function (data){
@@ -184,12 +185,21 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         });
     }
 
+    function competitionPage(){
+        window.location.href = "/competition/"+competition.competition_id+"/view";
+    }
+
     return <>
         <Layout title={"Lõpeta mäng"} auth={auth}>
             {time < 30 && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
             {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
                 {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
                 <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>
+            </div>}
+
+            {competition != null && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
+                {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
+                <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng on salvestatud võistluse "+competition.name+" raames!" : "Salvestan mängu..."}</p>
             </div>}
             <div className="four-stat-row">
                 <StatisticsTile stat={points} label={"Punkti"} icon={"exercise"} compactNumber={true} />
@@ -223,16 +233,16 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 <div>
                     <SizedBox height="8px" />
                     <div className="two-column-layout">
-                        <div onClick={()=>navigateAway(playAgain)} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
+                        <div onClick={()=>navigateAway(competition != null ? ()=>window.location.href = route("dashboard") : playAgain)} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
                             <div>
-                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">refresh</i>
-                                <p style={{marginTop:"8px", marginBottom:"0"}}>Mängi uuesti</p>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">{competition != null ? "arrow_forward" :"refresh"}</i>
+                                <p style={{marginTop:"8px", marginBottom:"0"}}>{competition != null ? "Avalehele" : "Mängi uuesti"}</p>
                             </div>
                         </div>
-                        <div onClick={()=>navigateAway(()=>window.location.href = route("dashboard"))} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", backgroundColor:"rgb(var(--primary-color))", color:"white", marginBlock:"0"}}>
+                        <div onClick={()=>navigateAway(competition != null ? competitionPage : ()=>window.location.href = route("dashboard"))} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", backgroundColor:"rgb(var(--primary-color))", color:"white", marginBlock:"0"}}>
                             <div>
-                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">{time < 30 ? "home" : "save"}</i>
-                                <p style={{marginTop:"8px", marginBottom:"0"}}>Edasi</p>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">{time < 30 ? "home" : (competition != null ? "trophy" : "save")}</i>
+                                <p style={{marginTop:"8px", marginBottom:"0"}}>{competition != null ? "Võistluse lehele" : "Edasi"}</p>
                             </div>
                         </div>
                     </div>

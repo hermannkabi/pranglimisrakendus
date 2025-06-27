@@ -18,16 +18,6 @@ use App\Http\Controllers\LeaderboardController;
 
 class ClassController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(string $search)
-    {
-      
-        $tabel =  DB::table('klass')->orderBy($search==null ? 'klass_name' : $search)->take(25);
-        
-        return $tabel;
-    }
 
     public function remove($user, Request $request) {
         if(!$user){

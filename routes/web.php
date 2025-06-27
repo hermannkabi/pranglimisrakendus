@@ -1,8 +1,10 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Mang;
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -77,14 +79,11 @@ Route::controller(App\Http\Controllers\GoogleLoginController::class)->group(func
     Route::get('/google/callback', 'handleGoogleCallback')->name('google.callback');
 });
 
-//IP block
-Route::middleware(['allowIP'])->group(function () {
-    Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function () {
-        Route::post('/authenticate', 'authenticate')->name('authenticate');
-        Route::get('/dashboard', 'dashboard')->name('dashboard');
-    });
-
+Route::controller(App\Http\Controllers\Auth\LoginRegisterController::class)->group(function () {
+    Route::post('/authenticate', 'authenticate')->name('authenticate');
+    Route::get('/dashboard', 'dashboard')->name('dashboard');
 });
+
 
 //Email verification
 Route::controller(App\Http\Controllers\AuthVerificationController::class)->middleware(['auth'])->group(function() {
@@ -112,6 +111,25 @@ Route::get("/preview/{type}", function ($type){
     return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
 })->name("preview")->middleware('auth');
 
+Route::get("/preview/competition/{id}", function ($id){
+    $competition = Competition::findOrFail($id);
+
+    if(!$competition->participants()->where('user_id', Auth::id())->exists()){
+        return abort(404);
+    }
+
+    $now = Carbon::now();
+
+    if ($now->between($competition->dt_start, $competition->dt_end)) {
+        $attemptsLeft = $competition->attempt_count == 0 ? -1 : $competition->attempt_count - Mang::where("user_id", Auth::id())->where("competition_id", $id)->count();
+        if($attemptsLeft == 0) return redirect("/competition/".$id."/view");
+        return Inertia::render("GamePreview/GamePreviewPage", ["type"=>explode(",", json_decode($competition->game_data, true)["mis"])[0], "competition"=>$competition, "attemptsLeft"=>$attemptsLeft]);    
+    }
+
+    return abort(404);
+})->name("preview")->middleware('auth');
+
+
 Route::post("/preview", function (Request $request){
     $request->validate([
         'mis' => 'required',
@@ -120,7 +138,7 @@ Route::post("/preview", function (Request $request){
         'aeg' => 'required',
     ]);
 
-    session(['gameData' => ["mis"=>$request->mis, "level"=>$request->level, "tyyp"=>$request->tyyp, "aeg"=>$request->aeg]]);
+    session(['gameData' => ["mis"=>$request->mis, "level"=>$request->level, "tyyp"=>$request->tyyp, "aeg"=>$request->aeg, "competition_id"=>$request->competition_id]]);
 })->name("previewPost")->middleware('auth');
 
 
@@ -137,7 +155,12 @@ Route::get("/game", function (){
     $aeg = $data["aeg"];
 
     $aeg = min(10, $aeg);
-    return Inertia::render("Game/GamePage", ["mis"=>$mis, "tyyp"=>$tyyp, "raw_level"=>$level, "data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tyyp, $aeg), "time"=>60*$aeg]);
+
+    $competition = null;
+    if($data["competition_id"] != null){
+        $competition = Competition::findOrFail($data["competition_id"]);
+    }
+    return Inertia::render("Game/GamePage", ["mis"=>$mis, "tyyp"=>$tyyp, "raw_level"=>$level, "data" => app("App\Http\Controllers\MathController")->wrapper($mis, str_split($level), $tyyp, $aeg), "time"=>60*$aeg, "competition"=>$competition]);
 })->name("gameNew")->middleware(['auth']);
 
 
@@ -156,8 +179,6 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
 
 //Classroom data
 Route::controller(App\Http\Controllers\ClassController::class)->middleware(["auth"])->group(function (){
-    Route::post('/classroom/search', 'index')->name('classSearch');
-
     Route::get('/classroom/{id}/view/', 'show')->name('classShow');
 
     Route::get('/classroom/join', 'showJoin')->name('classJoin');
@@ -175,13 +196,23 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
 
 
     Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
-    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']); // See ei tootanud mul??
+    Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']);
 
     Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
 
     Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
 
 });
+
+//Competition routes
+Route::controller(App\Http\Controllers\CompetitionController::class)->middleware(["auth"])->group(function (){
+    Route::get('/competition/{id}/view', 'view');
+    Route::get('/competitions/view', 'competitionsView')->name("competitionsView");
+    Route::post('/competition/{id}/remove/self', 'competitionRemoveSelf')->name("competitionRemoveSelf");
+    Route::post('/competition/{id}/join', 'competitionJoin')->name("competitionJoin");
+    Route::get('/competition/history/{id?}', 'competitionHistory')->name("competitionHistory");
+});
+
 
 Route::get('/dashboard/old', function (){
     return Inertia::render("Dashboard/OldDashboardPage");
@@ -191,7 +222,7 @@ Route::get('/how-to-play', function (){
     return Inertia::render("Guide/GuidePage");
 })->name("guide");
 
-Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->middleware(['allowIP'])->group(function (){
+Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
     Route::get("/admin", "adminShow")->name("admin");
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
 });

@@ -184,10 +184,11 @@ export default function ProfilePage({auth, className}){
         "admin":"Admin",
         "student":"Õpilane",
         "music-admin":"Admin (muusika)",
+        "valimised-admin":"Admin (valimised)",
     };
 
     return <>
-        <Layout title="Profiil & seaded">
+        <Layout title="Profiil & seaded" auth={auth}>
             {imageUploadErrors != null && <div className="section" style={{marginBottom:"16px"}}>
                 <InfoBanner type={Object.keys(imageUploadErrors)[0]} text={imageUploadErrors[Object.keys(imageUploadErrors)[0]]} />
             </div>}
