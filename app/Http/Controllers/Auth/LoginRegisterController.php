@@ -7,6 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Klass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -222,7 +223,7 @@ class LoginRegisterController extends Controller
 
             $competitionData = app("App\Http\Controllers\CompetitionController")->getDashboardCompetition();
             
-            return Inertia::render("Dashboard/DashboardPage", ["stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData, 'competitionData'=>$competitionData])->with(['theme' => 'something']);
+            return Inertia::render("Dashboard/DashboardPage", ["psa"=>optional(DB::table('properties')->where("property", "reaaler_message")->first())->value, "stats"=>$stats, "teacherData"=>$teacherData, 'classData'=>$classData, 'competitionData'=>$competitionData])->with(['theme' => 'something']);
         }
         
         return redirect()->route('login')

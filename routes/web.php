@@ -122,7 +122,7 @@ Route::get("/preview/competition/{id}", function ($id){
 
     if ($now->between($competition->dt_start, $competition->dt_end)) {
         $attemptsLeft = $competition->attempt_count == 0 ? -1 : $competition->attempt_count - Mang::where("user_id", Auth::id())->where("competition_id", $id)->count();
-        if($attemptsLeft == 0) return redirect("/competition/".$id."/view");
+        if($attemptsLeft == 0 || ($attemptsLeft == -1 && $competition->attempt_count != 0)) return redirect("/competition/".$id."/view");
         return Inertia::render("GamePreview/GamePreviewPage", ["type"=>explode(",", json_decode($competition->game_data, true)["mis"])[0], "competition"=>$competition, "attemptsLeft"=>$attemptsLeft]);    
     }
 
@@ -223,8 +223,16 @@ Route::get('/how-to-play', function (){
 })->name("guide");
 
 Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
-    Route::get("/admin", "adminShow")->name("admin");
+    Route::get("/classes/manage", "adminShow")->name("admin");
+    Route::get("/competitions/manage", "manageCompetitions")->name("manageCompetitions");
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
+    Route::post("/competition/new", "competitionAdd")->name("competitionNewPost");
+    Route::post("/competition/delete", "competitionDelete")->name("competitionDelete");
+    Route::get("/competition/{competition_id}/edit", "competitionNew")->name("competitionEdit");
+    Route::get("/competition/{competition_id}/participants/add", "addParticipants")->name("addParticipants");
+    Route::post("/competition/{competition_id}/participants/add", "addParticipantsPost")->name("addParticipantsPost");
+    Route::post("/competition/{competition_id}/participants/remove", "removeParticipantsPost")->name("removeParticipantsPost");
+
 });
 
 

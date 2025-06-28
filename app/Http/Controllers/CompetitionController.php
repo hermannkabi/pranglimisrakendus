@@ -179,7 +179,7 @@ class CompetitionController extends Controller
         $attemptsLeft = $competitionToShow == null ? null : ($competitionToShow->attempt_count == 0 ? -1 : $competitionToShow->attempt_count - Mang::where("user_id", $user->id)->where("competition_id", $competitionToShow->competition_id)->count());
 
 
-        return $competitionToShow == null ? null : ["competition"=>$competitionToShow, "attemptsLeft"=>$attemptsLeft, "bestRank"=>$bestRank, "nextCompetition"=>$user->competitions()->where("dt_start", ">", $now)->orderByRaw('ABS(TIMESTAMPDIFF(SECOND, dt_start, ?)) ASC', [$now])->first(), "totalCompetitions"=>$user->competitions->where('dt_end', '<', $now)->count(), "totalParticipants"=>$competitionToShow->participants->count(), "myPlace"=>$userRank, "active"=>$activeCompetition != null, "threeBest"=>$topThree];
+        return $competitionToShow == null ? null : ["competition"=>$competitionToShow, "attemptsLeft"=>$attemptsLeft, "bestRank"=>$bestRank, "nextCompetition"=>$user->competitions()->where("dt_start", ">", $now)->orderByRaw('ABS(TIMESTAMPDIFF(SECOND, dt_start, ?)) ASC', [$now])->first(), "totalCompetitions"=>$user->competitions->where('dt_end', '<', $now)->count(), "totalParticipants"=>$competitionToShow->participants->count(), "myPlace"=>$userRank, "threeBest"=>$topThree];
     }
 
 

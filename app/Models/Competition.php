@@ -23,6 +23,9 @@ class Competition extends Model
         "attempt_count",
         "game_data",
     ];
+
+    protected $appends = ['active'];
+    
     
     public function participants()
     {
@@ -32,6 +35,12 @@ class Competition extends Model
             'competition_id',     // Foreign key on pivot for this model
             'user_id'             // Foreign key on pivot for related model
         );
+    }
+
+    public function getActiveAttribute()
+    {
+        $now = now();
+        return $this->dt_start < $now && $now < $this->dt_end;
     }
 
     protected static function boot()

@@ -1,13 +1,7 @@
-import InfoBanner from "@/Components/InfoBanner";
 import Layout from "@/Components/2024SummerRedesign/Layout";
-import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
-import BigButton from "@/Components/2024SummerRedesign/BigButton";
-import { useState } from "react";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 
 export default function NewClassroomPage({auth, myCompetitions, publicCompetitions}){
-
-    const [klassName, setKlassName] = useState(null);
 
     function formatDateTime(datetimeStr) {
         const date = new Date(datetimeStr.replace(/-/g, "/"));

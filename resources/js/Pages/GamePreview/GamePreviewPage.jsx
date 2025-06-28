@@ -169,10 +169,11 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
                         <InfoBanner text="Külaliskontoga on mänguaeg piiratud 30 sekundile" />
                     </div>}
                     {competition != null && <InfoBanner text={"Oled alustamas mängu võistlusel "+competition.name+(attemptsLeft == -1 ? ". Sellel võistlusel on võimalik mängida piiramatu arv kordi." : ". Sellel võistlusel on sul jäänud veel "+attemptsLeft+" mängukorda.")} />}
-                    {competition != null && competitionAllowedTypes.length > 1 && <div className="section">
-                        <VerticalStatTile padding="8px 0" icon="joystick" text="Vali mängutüüp" customValue={true} value={
+                    {competition != null && <div className="section">
+                        <VerticalStatTile padding="8px 0" icon="joystick" text={competitionAllowedTypes.length <= 1 ? "Mängutüüp" : "Vali mängutüüp"} customValue={true} value={
                             <div>
-                                {competitionAllowedTypes.map((e)=><Chip key={e} label={getGameName(e)} active={typeState==e} onClick={()=>setTypeState(e)} />)}
+                                {competitionAllowedTypes.length <= 1 &&  <p style={{color:"var(--grey-color)", marginBottom:"0", fontWeight:"bold", fontSize:"20px"}}>{getGameName(competitionAllowedTypes[0])}</p> }
+                                {competitionAllowedTypes.length > 1 && competitionAllowedTypes.map((e)=><Chip key={e} label={getGameName(e)} active={typeState==e} onClick={()=>setTypeState(e)} />)}
                             </div>} />  
                     </div>}
 

@@ -32,7 +32,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
     };
 
     var formattedName = (gameName) => gameName == null ? "Tundmatu" : gameName in gameNames ? gameNames[gameName] : gameName.substring(0, 1).toUpperCase() + gameName.substring(1);
-
+    
     
     function leaveCompetition(){
         if(confirm("Kas oled kindel, et soovid end võistluselt eemaldada? Kui tegu ei ole avaliku võistlusega, pead uuesti liitumiseks võtma ühendust administraatoriga")){
@@ -56,6 +56,19 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
         });
     } 
 
+    function removeParticipant(id){
+        if(confirm("Kas oled kindel, et tahad selle osaleja võistluselt eemaldada?")){
+            $.post("/competition/"+competition.competition_id+"/participants/remove", {
+                "_token":window.csrfToken,
+                "participant":id,
+            }).done(function (data){
+                window.location.reload();
+            }).fail(function (data){
+                console.log(data);
+            });
+        }
+    }
+
     return <Layout title={competition.name} auth={auth}>
                 <div className="four-stat-row">
                     <StatisticsTile stat={gamesToday} label={"Mängu täna"} oneLabel={"Mäng täna"} icon={"nest_clock_farsight_analog"} />
@@ -68,7 +81,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                     <div>
                         {Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <div className="section">
                             <TwoRowTextButton showArrow={false} upperText={"Võistlejad"} lowerText={competition.name} />
-                            {participants.map((e, index)=> <LeaderboardRow points={e.id==auth.user.id ? leaderboard.filter((i)=>i.user.id==auth.user.id)[0].total_score : null} place={index + 1} key={e.id} index={index} player={auth.user.id == e.id} user={e} /> )}
+                            {participants.map((e, index)=> <LeaderboardRow onRemove={auth.user.role.split(",").includes("admin") ? ()=>removeParticipant(e.id) : null} points={e.id==auth.user.id ? leaderboard.filter((i)=>i.user.id==auth.user.id)[0].total_score : null} place={index + 1} key={e.id} index={index} player={auth.user.id == e.id} user={e} /> )}
                             {participants.length == 0 && <InfoBanner text="Siin ei ole hetkel kedagi..." /> }
                         </div>}
                         {Date.now() >= (new Date(competition.dt_end.replace(/-/g, "/"))) && <><div className="section">
@@ -97,7 +110,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
 
                                     <p><b>Algusaeg:</b> {formatDateTime(competition.dt_start)}</p>
                                     <p><b>Lõpuaeg:</b> {formatDateTime(competition.dt_end)}</p>
-                                    <p><b>Lubatud mängukordi:</b> {competition.attempt_count == 0 ? "Piiramatu" : competition.attempt_count} {Date.now() > (new Date(competition.dt_end.replace(/-/g, "/"))) || competition.attempt_count == 0 ? "" : "(" + attemptsLeft + " mängukord"+(attemptsLeft == 1 ? "" : "a")+" jäänud)"}</p>
+                                    <p><b>Lubatud mängukordi:</b> {competition.attempt_count == 0 ? "Piiramatu" : competition.attempt_count} {!competition.active || competition.attempt_count == 0 ? "" : "(" + Math.max(0, attemptsLeft) + " mängukord"+(attemptsLeft == 1 ? "" : "a")+" jäänud)"}</p>
                                     <span><b>Mängutüübid: </b></span> {JSON.parse(competition.game_data)["mis"].split(",").map(e=><Chip key={e} label={formattedName(e)} />)}
 
                                 </div>
@@ -105,17 +118,34 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                         </div> 
                         {Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && attemptsLeft == 0 && <InfoBanner text={"Oled kõik lubatud mängukorrad sel võistlusel ära kasutanud. Nüüd jääb vaid üle tulemusi oodata!"} />}
                         {Date.now() < (new Date(competition.dt_start.replace(/-/g, "/"))) && <InfoBanner text={"See võistlus pole veel alanud. Tule siia tagasi " + formatDateTime(competition.dt_start)} />}
-                        {participants.filter((e)=>e.id==auth.user.id).length > 0 && Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <div className="two-button-layout">
+                        {competition.active && participants.filter((e)=>e.id==auth.user.id).length > 0 && <div className="two-button-layout">
                             <div onClick={leaveCompetition} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"8px"}}>
                                 <div>
                                     <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">door_open</i>
                                     <p style={{marginTop:"8px", marginBottom:"0"}}>Lahku võistluselt</p>
                                 </div>
                             </div>
-                            <BigButton disabled={!(participants.filter((e)=>e.id==auth.user.id).length > 0 && attemptsLeft != 0 && Date.now() >= (new Date(competition.dt_start.replace(/-/g, "/"))) && Date.now() <= (new Date(competition.dt_end.replace(/-/g, "/"))))} onClick={()=>window.location.href = "/preview/competition/"+competition.competition_id} title={"Alusta võistlemist!"} subtitle={"Liigu eelvaatesse"}/>
+                            <BigButton disabled={!(participants.filter((e)=>e.id==auth.user.id).length > 0 && attemptsLeft != 0 && competition.active)} onClick={()=>window.location.href = "/preview/competition/"+competition.competition_id} title={"Alusta võistlemist!"} subtitle={"Liigu eelvaatesse"}/>
                         </div>}
 
-                        {participants.filter((e)=>e.id==auth.user.id).length == 0 && <BigButton onClick={joinCompetition} title="Liitu võistlusega" subtitle={competition.name} />}
+                        {participants.filter((e)=>e.id==auth.user.id).length == 0 && Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <BigButton onClick={joinCompetition} title="Liitu võistlusega" subtitle={competition.name} />}
+
+                        {auth.user.role.split(",").includes("admin") && <div className="two-button-layout">
+                            <div onClick={()=>window.location.href = "/competition/"+competition.competition_id+"/participants/add"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"8px"}}>
+                                <div>
+                                    <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">person</i>
+                                    <p style={{marginTop:"8px", marginBottom:"0"}}>Lisa võistlejaid</p>
+                                </div>
+                            </div>
+
+                            <div onClick={()=>window.location.href = "/competition/"+competition.competition_id+"/edit"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"8px"}}>
+                                <div>
+                                    <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">edit</i>
+                                    <p style={{marginTop:"8px", marginBottom:"0"}}>Muuda võistlust</p>
+                                </div>
+                            </div>
+
+                        </div>}
                     </div>
                 </div>
             </Layout>

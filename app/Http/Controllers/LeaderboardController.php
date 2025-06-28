@@ -3,57 +3,62 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use Carbon\Carbon;
 use App\Models\Mang;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Get and send data for displaying on the leaderboard
 */
 class LeaderboardController extends Controller
 {
-    public function getLeaderboardData($users){
+    public function getLeaderboardData($users)
+    {
+        $userIds = $users->pluck('id');
 
-        $data = [];
+// SQL: get XP, rank (descending), and last played date
+$leaderboardRaw = DB::table('users')
+    ->selectRaw('
+        users.id as user_id,
+        COALESCE(SUM(mangs.experience), 0) as xp,
+        MAX(mangs.dt) as last_played,
+        RANK() OVER (ORDER BY COALESCE(SUM(mangs.experience), 0) DESC) as rank
+    ')
+    ->leftJoin('mangs', 'users.id', '=', 'mangs.user_id')
+    ->whereIn('users.id', $userIds)
+    ->groupBy('users.id')
+    ->get();
 
-        foreach($users as $user){
-            $kasutaja_mangud = Mang::orderBy("dt", "desc")->select("experience", "dt")->where("user_id", $user->id)->get();
-            $kokku = 0;
+// Group entries by rank
+$rankGroups = collect($leaderboardRaw)->groupBy('rank')->all();
 
-            foreach($kasutaja_mangud as $mang){
-                $kokku += $mang->experience;
-            }
+// Sort rank groups by rank ASC (1 first), and within each group by perenimi
+ksort($rankGroups); // rank 1, 2, 3...
 
-            array_push($data, ["user"=>$user, "xp"=>$kokku, "place"=>"0", "playedToday"=> count($kasutaja_mangud) <= 0 ? false : (new DateTime($kasutaja_mangud[0]->dt))->format('d.m.Y') == (new DateTime("today"))->format('d.m.Y')]);
-        }
+$data = [];
+foreach ($rankGroups as $rank => $entries) {
+    $sorted = $entries->sort(function ($a, $b) use ($users) {
+        $userA = $users->firstWhere('id', $a->user_id);
+        $userB = $users->firstWhere('id', $b->user_id);
+        return strcmp($userA->perenimi, $userB->perenimi);
+    });
 
-        usort($data, function ($a, $b){
-            return $a["xp"] >= $b["xp"] ? -1 : 1;
-        });
+    $isTied = $entries->count() > 1;
+    foreach ($sorted as $entry) {
+        $user = $users->firstWhere('id', $entry->user_id);
+        $playedToday = $entry->last_played
+            ? Carbon::parse($entry->last_played)->isToday()
+            : false;
 
-        //For testing purposes
-        //$data = [0=>["user"=>"Hermann", "xp"=>100, "place"=>"0"], 1=>["user"=>"Hermann", "xp"=>90, "place"=>"0"], 2=>["user"=>"Hermann", "xp"=>90, "place"=>"0"], 3=>["user"=>"Hermann", "xp"=>90, "place"=>"0"], 4=>["user"=>"Hermann", "xp"=>89, "place"=>"0"], 5=>["user"=>"Hermann", "xp"=>70, "place"=>"0"], 6=>["user"=>"Hermann", "xp"=>70, "place"=>"0"]];
+        $data[] = [
+            'user' => $user,
+            'xp' => $entry->xp,
+            'place' => $isTied ? "T{$rank}" : (string)$rank,
+            'playedToday' => $playedToday
+        ];
+    }
+}
 
-        foreach($data as $i=>$current){
-            $previous = $i > 0 ? $data[$i - 1] : null;
-            $next = ($i + 1) < count($data) ? $data[$i + 1] : null;
-
-
-            if($previous != null){
-                if($previous["xp"] == $current["xp"]){
-                    $data[$i]["place"] = $previous["place"];
-                    continue;
-                }
-            }
-
-            if($next != null){
-                if($next["xp"] == $current["xp"]){
-                    $data[$i]["place"] = "T".($i+1);
-                    continue;
-                }
-            }
-
-            $data[$i]["place"] = strval($i+1);
-        }
-
-        return $data;
+return $data;
     }
 }

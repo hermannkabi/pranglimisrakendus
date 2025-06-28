@@ -17,7 +17,7 @@ export default function AdminPage({auth, data}){
         return map;
       }, {});
 
-    return <Layout title="Admin" auth={auth}>
+    return <Layout title="Klasside haldamine" auth={auth}>
         <div className="two-column-layout">
             <div>
                 <div style={{position:'relative', marginBottom:"16px"}}>
