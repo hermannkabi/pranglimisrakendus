@@ -182,11 +182,11 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                     <div style={{position:"relative"}} className="section clickable">
                         <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
                             <div>
-                                <TwoRowTextButton isActive={competitionData.competition.active} upperText={competitionData.competition.active ? "Käimasolev võistlus" : "Eelmine võistlus"} lowerText={competitionData.competition.name} showArrow={window.innerWidth > 600 && !(window.innerWidth > 1000 && window.innerWidth < 1300)} />
+                                <TwoRowTextButton isActive={competitionData.competition.active} upperText={competitionData.competition.active ? "Käimasolev võistlus" : Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/"))) ? "Tulevane võistlus" : "Eelmine võistlus"} lowerText={competitionData.competition.name} showArrow={window.innerWidth > 600 && !(window.innerWidth > 1000 && window.innerWidth < 1300)} />
                                 <SizedBox height="32px" />
                                 <div style={{margin:"8px"}}>
-                                    {!competitionData.competition.active && <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{competitionData.myPlace + "."} <span style={{color:"var(--grey-color)", marginBlock:"0", fontSize:"24px", fontWeight:"normal"}}>koht</span></h2>}
-                                    {competitionData.competition.active && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
+                                    {!(competitionData.competition.active || Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/")))) && <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{competitionData.myPlace + "."} <span style={{color:"var(--grey-color)", marginBlock:"0", fontSize:"24px", fontWeight:"normal"}}>koht</span></h2>}
+                                    {(competitionData.competition.active) && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
                                         <div>
                                             <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{competitionData.attemptsLeft == 0 ? "Vaata" : "Võistle"}</h2>
                                             <SizedBox height="8px" />
@@ -196,7 +196,7 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                                     </div>}
                                 </div>
                             </div>
-                            {!competitionData.competition.active && <div>
+                            {!(competitionData.competition.active || Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/")))) && <div>
                                 {[0, 1, 2].map(e=>competitionData.threeBest[e] != null && <DashboardLeaderboardWidget key={e} auth={auth} user={competitionData.threeBest[e].user} place={competitionData.threeBest[e].rank_label} />)}
                                 {!["T1", "1", "T2", "2", "T3", "3", "T4", "4"].includes(competitionData.myPlace) && <i translate="no" style={{color:"var(--grey-color)", fontSize:"28px", marginTop:"8px", marginBottom:"0"}} className="material-icons">unfold_more</i>}
                                 {!["T1", "1", "T2", "2", "T3", "3"].includes(competitionData.myPlace) && <DashboardLeaderboardWidget auth={auth} user={auth.user} place={competitionData.myPlace} />}
@@ -204,9 +204,10 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                                 <p style={{color:"var(--grey-color)"}}>Kokku {competitionData.totalParticipants} võistleja{competitionData.totalParticipants == 1 ? "" : "t"}</p>
                             </div>}
 
-                            {competitionData.competition.active && <div>
+                            {(competitionData.competition.active || Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/")))) && <div>
                                 <p>{truncateChars(competitionData.competition.description ?? "Kirjeldust pole lisatud")}</p>
-                                <p><b>Võistlus lõppeb:</b> {getRelativeTime(competitionData.competition.dt_end)} ({formatDateTime(competitionData.competition.dt_end)})</p>
+                                {competitionData.competition.active && <p><b>Võistlus lõppeb:</b> {getRelativeTime(competitionData.competition.dt_end)} ({formatDateTime(competitionData.competition.dt_end)})</p>}
+                                {Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/"))) && <p><b>Võistlus algab:</b> {getRelativeTime(competitionData.competition.dt_start)} ({formatDateTime(competitionData.competition.dt_start)})</p>}
                                 {competitionData.attemptsLeft != -1 && competitionData.attemptsLeft != 0 && <p>Sul on jäänud veel <b>{competitionData.attemptsLeft}</b> mängukord{competitionData.attemptsLeft == 1 ? "" : "a"}</p>}
                                 { competitionData.attemptsLeft == 0 && <p>Oled kõik mängukorrad ära kasutanud</p>}
                                 
@@ -222,7 +223,7 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                         <a style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}} disabled={competitionData.bestRank == null} href={competitionData.bestRank == null ? null : "/competition/"+competitionData.bestRank.competition_id+"/view"}></a>
                     </div>
                     <div onClick={()=>window.location.href = "/profile/"+classData.teacher[0].id} className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
-                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="calendar_month" text="Võistle veel" value={competitionData.nextCompetition ? "Sinu järgmine võistlus algab " + getRelativeTime(competitionData.nextCompetition.dt_start) : "Otsi endale veel võistlusi"} />
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="calendar_month" text="Otsi võistluseid" value={competitionData.nextCompetition ? "Sinu järgmine võistlus algab " + getRelativeTime(competitionData.nextCompetition.dt_start) : "Otsi endale veel võistlusi"} />
                     
                         <a href={route("competitionsView")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>

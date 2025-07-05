@@ -148,13 +148,28 @@ class CompetitionController extends Controller
 
         $competitionToShow = null;
 
-        if ($activeCompetition) {
-            $competitionToShow = $activeCompetition;
-        } else {
-            $competitionToShow = $user->competitions()
+        $pastCompetition = $user->competitions()
             ->where('dt_end', '<', $now)
             ->orderByRaw('ABS(TIMESTAMPDIFF(SECOND, dt_end, ?)) ASC', [$now])
             ->first();
+
+        $upcomingCompetition = $user->competitions()
+            ->where('dt_start', '>', $now)
+            ->orderBy('dt_start', 'asc')
+            ->first();
+
+        if ($activeCompetition) {
+            $competitionToShow = $activeCompetition;
+        } else {
+            if ($pastCompetition && $upcomingCompetition) {
+                $pastDiff = abs(strtotime($pastCompetition->dt_end) - strtotime($now));
+                $upcomingDiff = abs(strtotime($upcomingCompetition->dt_start) - strtotime($now));
+                $competitionToShow = $pastDiff <= $upcomingDiff ? $pastCompetition : $upcomingCompetition;
+            } elseif ($pastCompetition) {
+                $competitionToShow = $pastCompetition;
+            } elseif ($upcomingCompetition) {
+                $competitionToShow = $upcomingCompetition;
+            }
         }
 
         $leaderboard = null;
@@ -205,6 +220,7 @@ class CompetitionController extends Controller
 
     public function competitionJoin($id, $user=null){
         $user = $user ?? Auth::user();
+        if($user->role == "guest") return;
         Competition::findOrFail($id)->participants()->attach($user);
         return 1;
     }

@@ -22,6 +22,7 @@ class Competition extends Model
         "dt_end", 
         "attempt_count",
         "game_data",
+        "public",
     ];
 
     protected $appends = ['active'];

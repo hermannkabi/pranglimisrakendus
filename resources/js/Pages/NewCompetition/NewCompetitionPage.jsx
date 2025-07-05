@@ -79,7 +79,7 @@ export default function NewCompetitionPage({auth, competition}){
             "dt_start":dtStart,
             "dt_end":dtEnd,
             "attempt_count":attemptCount,
-            "public":isPublic,
+            "public":isPublic ? 1 : 0,
             "game_data":JSON.stringify({"mis":gameTypes.join(","), "tyyp":gameMode, "level":levels.join(""), "aeg":gameTime}),
             "competition_id":competition == null ? null : competition.competition_id,
         }).done(function (data){

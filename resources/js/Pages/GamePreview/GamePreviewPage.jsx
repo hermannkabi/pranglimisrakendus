@@ -159,7 +159,7 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
     }
 
     return <>
-        <Layout title="Mängu eelvaade" auth={auth}>
+        <Layout title={competition == null ? "Mängu eelvaade" : "Võistluse eelvaade"} auth={auth}>
             <div className="two-column-layout">
                 <div>
                     {message && <div className="section">

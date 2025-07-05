@@ -116,6 +116,8 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                                 </div>
                             } />
                         </div> 
+                        {auth.user.role == "guest" && <InfoBanner text={"Külaliskontoga ei saa võistlustel osaleda. Palun loo võistlemiseks endale konto"} />}
+
                         {Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && attemptsLeft == 0 && <InfoBanner text={"Oled kõik lubatud mängukorrad sel võistlusel ära kasutanud. Nüüd jääb vaid üle tulemusi oodata!"} />}
                         {Date.now() < (new Date(competition.dt_start.replace(/-/g, "/"))) && <InfoBanner text={"See võistlus pole veel alanud. Tule siia tagasi " + formatDateTime(competition.dt_start)} />}
                         {competition.active && participants.filter((e)=>e.id==auth.user.id).length > 0 && <div className="two-button-layout">
@@ -128,7 +130,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                             <BigButton disabled={!(participants.filter((e)=>e.id==auth.user.id).length > 0 && attemptsLeft != 0 && competition.active)} onClick={()=>window.location.href = "/preview/competition/"+competition.competition_id} title={"Alusta võistlemist!"} subtitle={"Liigu eelvaatesse"}/>
                         </div>}
 
-                        {participants.filter((e)=>e.id==auth.user.id).length == 0 && Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <BigButton onClick={joinCompetition} title="Liitu võistlusega" subtitle={competition.name} />}
+                        {auth.user.role != "guest" && participants.filter((e)=>e.id==auth.user.id).length == 0 && Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <BigButton onClick={joinCompetition} title="Liitu võistlusega" subtitle={competition.name} />}
 
                         {auth.user.role.split(",").includes("admin") && <div className="two-button-layout">
                             <div onClick={()=>window.location.href = "/competition/"+competition.competition_id+"/participants/add"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"8px"}}>
