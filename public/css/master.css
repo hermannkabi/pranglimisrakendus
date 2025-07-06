@@ -8,6 +8,11 @@
     src: url("fonts/SpaceGrotesk-VariableFont_wght.ttf");
 }
 
+@font-face{
+    font-family: "Bricolage Grotesque";
+    src: url("fonts/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf");
+}
+
 @media only screen and (max-width: 1100px){    
     .math-pow-transformed{
         transform: translate(-10px, 10px);

@@ -1,6 +1,6 @@
 :root{
-    --main-font: "Space Grotesk", "Sora", sans-serif;
-    --header-font: "Space Grotesk", "Sora", sans-serif;
+    --main-font: "Bricolage Grotesque", "Space Grotesk", "Sora", sans-serif;
+    --header-font: "Bricolage Grotesque", "Space Grotesk", "Sora", sans-serif;
     --text-color: 0, 0, 0;
     --white: 230,230,230;
     --primary-color: 53, 81, 80;
@@ -32,8 +32,8 @@
     --primary-btn-text-color: var(--white);
     --primary-btn-border-radius: 8px;
     --red-color: #ef8383;
-    --background-color: 31, 31, 32;
-    --section-color: #272727;
+    --background-color: 22, 22, 22;
+    --section-color: #202020;
     --section-transparency: 0.15;
     --input-color: 150, 150, 150;
     --grey-color: #868686;

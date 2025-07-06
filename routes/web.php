@@ -17,14 +17,16 @@ Route::get('/', function () {
     $totalUsers = User::count();
     $totalGames = Mang::count();
     $totalPoints = Mang::sum("score_sum");
-    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
+    $message = optional(DB::table('properties')->where("property", "reaaler_message")->first())->value;
+    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints, "message"=>$message]);
 })->name("welcome");
 
 Route::get('/welcome', function () {
     $totalUsers = User::count();
     $totalGames = Mang::count();
     $totalPoints = Mang::sum("score_sum");
-    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints]);
+    $message = optional(DB::table('properties')->where("property", "reaaler_message")->first())->value;
+    return Inertia::render('Welcome/WelcomePage', ["users"=>$totalUsers, "games"=>$totalGames, "points"=>$totalPoints, "message"=>$message]);
 })->middleware('auth');
 
 Route::get('/teaduskonkurss', function () {
@@ -38,14 +40,8 @@ Route::get("/handleForm", function (){
     return redirect()->route("welcome");
 });
 
-Route::get('/profile', function () {
-    return Inertia::render("Profile/ProfilePage");
-})->name("profilePage")->middleware('auth');
-
 Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['auth'])->group(function() {
     Route::get('/profile', "show")->name("profilePage");
-
-    //Route::get('/checkstreak', "checkStreak")->name("checkstreak");
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
     Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
@@ -109,7 +105,7 @@ Route::get("/preview/{type}", function ($type){
     $supportedTypes = ["liitmine", "lahutamine", "korrutamine", "jagamine", "liitlahutamine", "korrujagamine", "astendamine", "juurimine", "astejuurimine", "võrdlemine", "lünkamine", "murruTaandamine", "kujundid", "jaguvus"];
     if(!in_array($type, $supportedTypes)) abort(404);
     return Inertia::render("GamePreview/GamePreviewPage", ["type"=>$type]);
-})->name("preview")->middleware('auth');
+})->name("preview")->middleware(['auth']);
 
 Route::get("/preview/competition/{id}", function ($id){
     $competition = Competition::findOrFail($id);
@@ -268,10 +264,7 @@ Route::get("/muusika/keelatud", function (Request $request){
 
 Route::get("/down", function (){
     
-    $id = Auth::id();
-    
-    // Minu ja Jarli ID-d (5 on Jarli arvutis tema id)
-    if($id != 1000003 && $id != 9 && $id != 5){
+    if(!in_array("admin", explode(",", Auth::user()->role))){
         abort(404);
         return;
     }
@@ -281,10 +274,8 @@ Route::get("/down", function (){
 });
 
 Route::get("/up", function (){
-
-    $id = Auth::id();
     
-    if($id != 1000003 && $id != 9 && $id != 5){
+    if(!in_array("admin", explode(",", Auth::user()->role))){
         abort(404);
         return;
     }

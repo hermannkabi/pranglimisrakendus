@@ -174,9 +174,8 @@ class LoginRegisterController extends Controller
 
     } 
 
-    //TODO: Needs to be reworked
     public function authenticateGuest(Request $request){
-        Auth::login(User::where("id", "999999")->first());
+        Auth::login(User::where("role", "guest")->first());
 
         return redirect()->route("dashboard");
     }

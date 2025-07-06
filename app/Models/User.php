@@ -25,6 +25,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return !is_null($this->password);
     }
 
+    protected $keyType = 'string'; // because id is now VARCHAR(10)
+    public $incrementing = false;  // disable auto-incrementing
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,6 +54,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Competition::class, 'competition_user', 'user_id', 'competition_id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            do {
+                $randomId = str_pad(mt_rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+            } while (User::where('id', $randomId)->exists());
+
+            $model->id = $randomId;
+        });
+
+        static::saving(function ($user) {
+            $user->eesnimi = ucfirst($user->eesnimi);
+            $user->perenimi = ucfirst($user->perenimi);
+        });
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -70,4 +91,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    
 }

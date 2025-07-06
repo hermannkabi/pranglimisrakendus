@@ -40,14 +40,14 @@ export default function Sidebar({title, auth}){
                 <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
                 <GameSectionDropdown isNew={true} title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} />
             </div>
-            {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"8px"}}>
+            {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", margin:"0", marginBlock:"8px"}}>
                 <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
-                <div>
+                <div style={{textAlign:"start"}}>
                     <p style={{textTransform:"capitalize", marginBottom:"0"}}>{auth.user.eesnimi} {auth.user.perenimi}</p>
                     <p style={{color:"var(--grey-color)", marginTop:"0"}}>Tallinna Reaalkool</p>
                 </div>
             </div></a>}
-            <SizedBox height="16px" />
+            <SizedBox height="8px" />
             <div style={{borderBottom:"1px solid #5A5A5A", width:"100%"}}>
 
             </div>
@@ -78,12 +78,11 @@ export default function Sidebar({title, auth}){
         </div>
         {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0"}}>
             <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
-            <div>
+            <div style={{textAlign:"start"}}>
                 <p style={{textTransform:"capitalize", marginBottom:"0"}}>{auth.user.eesnimi} {auth.user.perenimi}</p>
                 <p style={{color:"var(--grey-color)", marginTop:"0"}}>Tallinna Reaalkool</p>
             </div>
         </div></a>}
-        {auth != null && auth.user != null && <SizedBox height="90px" />}
     </div>
     </>);
 }

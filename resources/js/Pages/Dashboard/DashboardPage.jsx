@@ -98,7 +98,7 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                         </a>}
                     </div>
                 </div>}
-                {psa && <InfoBanner html={psa} />}
+                {psa && <InfoBanner text={psa} />}
                 {auth.user.role != "guest" && <div className="four-stat-row">
                     <StreakWidget streak={stats.streak} active={stats.streak_active} />
                     <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
@@ -180,13 +180,13 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                 {competitionData && <><div className="class-grid competition-grid" style={{}}>
                     {/* Competition overview */}
                     <div style={{position:"relative"}} className="section clickable">
-                        <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)"}}>
+                        <div style={{display:"grid", gridTemplateColumns:window.innerWidth > 800 ? "repeat(2,1fr)" : "repeat(1, 1fr)"}}>
                             <div>
                                 <TwoRowTextButton isActive={competitionData.competition.active} upperText={competitionData.competition.active ? "Käimasolev võistlus" : Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/"))) ? "Tulevane võistlus" : "Eelmine võistlus"} lowerText={competitionData.competition.name} showArrow={window.innerWidth > 600 && !(window.innerWidth > 1000 && window.innerWidth < 1300)} />
                                 <SizedBox height="32px" />
                                 <div style={{margin:"8px"}}>
                                     {!(competitionData.competition.active || Date.now() < (new Date(competitionData.competition.dt_start.replace(/-/g, "/")))) && <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{competitionData.myPlace + "."} <span style={{color:"var(--grey-color)", marginBlock:"0", fontSize:"24px", fontWeight:"normal"}}>koht</span></h2>}
-                                    {(competitionData.competition.active) && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
+                                    {(competitionData.competition.active) && window.innerWidth > 600 && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>
                                         <div>
                                             <h2 style={{color:"rgb(var(--primary-color))", fontSize:"48px", marginBlock:"0"}}>{competitionData.attemptsLeft == 0 ? "Vaata" : "Võistle"}</h2>
                                             <SizedBox height="8px" />
