@@ -76,8 +76,9 @@ export default function Sidebar({title, auth}){
             <GameSectionDropdown isNew={true} title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} />
 
         </div>
-        {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0"}}>
+        {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0", backgroundImage:"url("+auth.user.profile_pic+")", backgroundRepeat:"no-repeat", backgroundSize:"cover", backgroundBlendMode:"soft-light"}}>
             <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
+            {/* <div style={{height:"50px", aspectRatio:"1", borderRadius:"50px", backgroundColor:"var(--section-color)", display:"flex", justifyContent:"center", alignItems:"center"}}><i className="material-icons" style={{fontSize:"32px"}}>person</i></div> */}
             <div style={{textAlign:"start"}}>
                 <p style={{textTransform:"capitalize", marginBottom:"0"}}>{auth.user.eesnimi} {auth.user.perenimi}</p>
                 <p style={{color:"var(--grey-color)", marginTop:"0"}}>Tallinna Reaalkool</p>

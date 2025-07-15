@@ -65,10 +65,10 @@ class ProfileController extends Controller
     public function changeProfilePicture(Request $request){
 
         $request->validate([
-            'image' => 'required|file|max:500|mimes:jpeg,png,jpg,gif'
+            'image' => 'required|file|max:5000|mimes:jpeg,png,jpg,gif'
         ],
         [
-            'image.max' => 'Pilt on liiga suur, maksimaalne suurus on 500kB',
+            'image.max' => 'Pilt on liiga suur, maksimaalne suurus on 5000kB',
             'image.mimes' => 'Pildi formaat peab olema üks järgnevatest: jpg, jpeg, png, gif',
         ]);
         $user = Auth::user();
