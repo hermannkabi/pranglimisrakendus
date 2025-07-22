@@ -3,6 +3,13 @@
 
 :root{
     --margin-inline: 15%;
+    --background-color: #ffffff;
+    --color: #000000;
+}
+
+[data-theme="dark"] {
+    --background-color: #111;
+    --color: #e1e1e1;
 }
 
 @media only screen and (max-width: 600px){
@@ -13,6 +20,8 @@
 
 body{
     font-family: "Inter";
+    background-color: var(--background-color);
+    color: var(--color);
 }
 
 

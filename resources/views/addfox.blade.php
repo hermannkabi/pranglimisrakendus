@@ -22,7 +22,7 @@
     <form action="{{ route("valimised.addFoxPost") }}" method="post" style="margin-inline: var(--margin-inline)">
         @csrf
 
-        <textarea name="foxnames" id="" style="width: min(350px, calc(100% - 16px)); height: 300px;" placeholder="Sisesta või kopeeri rebaste nimed siia (üks nimi rea kohta)"></textarea>
+        <textarea name="foxnames" id="" style="width: min(350px, calc(100% - 16px)); height: 300px; background-color: var(--background-color); color: var(--color)" placeholder="Sisesta või kopeeri rebaste nimed siia (üks nimi rea kohta)"></textarea>
 
         <button type="submit">Lisa</button>
     </form>

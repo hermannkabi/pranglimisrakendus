@@ -14,7 +14,7 @@
         <p style="color: grey; margin-top: 4px">Siin kuvatakse veel lahendamata taotlused</p>
         <br>
         @forelse ($applications as $application)
-        <div style="margin-block: 4px; border-radius: 4px; background-color: transparent; border: 1px solid black; width: min(344px, calc(100% - 16px)); padding: 8px;">
+        <div style="margin-block: 4px; border-radius: 4px; background-color: transparent; border: 1px solid var(--color); width: min(344px, calc(100% - 16px)); padding: 8px;">
             <h3 style="margin-block: 0">{{ $application->application_type == "valimised-basic" ? "Tavalise valimisõiguse" : ($application->application_type == "valimised-vip" ? "VIP valimisõiguse" : ($application->application_type == "valimised-twofox" ? "Kahe rebase valimise" : ("Muu (" . $application->application_type . ")"))) }} taotlus</h3>
             <p style="margin-top: 4px; color: grey">{{$application->created_at->format('d.m.Y')}}</p>
             <p style="margin-bottom: 0">Taotleja: {{ $application->applicantUser->nimi }}</p>

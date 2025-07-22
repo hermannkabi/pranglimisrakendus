@@ -9,3 +9,21 @@
 <link rel="shortcut icon" href="/favicon.png" type="image/png">
 
 <title>{{ $title }} | Rebaste nädal 2025</title>
+
+<script>    
+    if(!window.localStorage.getItem("app-theme")){
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // dark mode
+            localStorage.setItem("app-theme", "dark");
+        }else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){
+            //light mode
+            localStorage.setItem("app-theme", "light");
+        }
+    }
+
+    if(window.localStorage.getItem("app-theme") == "dark"){
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }else{
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+</script>

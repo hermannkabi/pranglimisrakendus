@@ -15,7 +15,7 @@
         @php
             $color = ["pending"=>"#3C72FF", "denied"=>"red", "granted"=>"lime"][$application->status];
         @endphp
-        <div style="margin-block: 8px; border-radius: 4px; background-color: transparent; border: 1px solid black; width: min(344px, calc(100% - 16px)); padding: 8px;">
+        <div style="margin-block: 8px; border-radius: 4px; background-color: transparent; border: 1px solid var(--color); width: min(344px, calc(100% - 16px)); padding: 8px;">
             <h3 style="margin-block: 0">{{ $application->application_type == "valimised-basic" ? "Tavalise valimisõiguse" : ($application->application_type == "valimised-vip" ? "VIP valimisõiguse" : ($application->application_type == "valimised-twofox" ? "Kahe rebase valimise" : ("Muu (" . $application->application_type . ")"))) }} taotlus</h3>
             <p style="margin-top: 4px; color: grey">{{$application->created_at->format('d.m.Y')}} {{ in_array($application->status, ["denied", "granted"]) ? ("· Lahendatud ". $application->updated_at->format('d.m.Y')) : "" }}</p>
             @if ($application->message)
