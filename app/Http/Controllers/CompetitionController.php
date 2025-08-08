@@ -250,7 +250,7 @@ class CompetitionController extends Controller
                         END DESC
                 ) AS rank
             FROM mangs m
-            INNER JOIN competitions c ON c.competition_id = m.competition_id
+            LEFT JOIN competitions c ON c.competition_id = m.competition_id
             WHERE c.dt_end < ?
             GROUP BY m.competition_id, m.user_id, c.attempt_count
         ) as ranked'))
@@ -275,6 +275,7 @@ class CompetitionController extends Controller
                 $competition->rank_label = null;
                 return;
             }
+
 
             $key = $competition->competition_id . '-' . $rankData->rank;
             $isTied = isset($tiedRanks[$key]) && count($tiedRanks[$key]) > 1;

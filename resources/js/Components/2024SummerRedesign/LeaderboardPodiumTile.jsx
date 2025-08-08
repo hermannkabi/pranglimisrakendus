@@ -20,6 +20,8 @@ export default function LeaderboardPodiumTile({auth, e, firstPlace=false}){
                             <span style={{textTransform:"capitalize", marginBlock:"4px", fontWeight:"bold", fontSize:"20px", color: auth.user.id == e.user.id ? "rgb(var(--primary-color))" : null}}>{e.user.eesnimi}</span> <br />
                             <span style={{textTransform:"capitalize", marginTop:"0", marginBottom:"4px", color: auth.user.id == e.user.id ? "rgb(var(--primary-color), 0.6)" : "var(--grey-color)"}}>{e.user.perenimi}</span>
                         </>}
+                        <br />
+                        {window.innerWidth < 600 && <span style={{fontSize: "16px", color:"var(--grey-color)"}}>{e.xp} XP</span>}
                     </div>
                 </a>
             </div>;

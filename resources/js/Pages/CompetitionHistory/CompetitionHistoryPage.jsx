@@ -8,6 +8,9 @@ import SizedBox from "@/Components/SizedBox";
 export default function CompetitionHistoryPage({auth, competitions, stats}){
     
 
+    console.log(competitions.data);
+    
+
     return <>
         <Layout title="Võistluste ajalugu" auth={auth}>
             <div className="four-stat-row">
@@ -19,7 +22,7 @@ export default function CompetitionHistoryPage({auth, competitions, stats}){
             <SizedBox height="16px" />
             <div className="two-column-layout">
                 <div>
-                    {competitions.data.map((e)=><CompetitionTile data={e} key={e.competiton_id} />)}
+                    {competitions.data.map((e)=><CompetitionTile data={e} key={e.competition_id} />)}
                     {competitions.data.length <= 0 && <InfoBanner text="Lõpetatud võistluseid ei leitud. Aeg oma oskused teiste vastu proovile panna!" />}
                 </div>
 
