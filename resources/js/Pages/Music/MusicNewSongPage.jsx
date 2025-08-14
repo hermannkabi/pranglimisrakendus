@@ -3,6 +3,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import { useState } from "react";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 export default function MusicNewSongPage({auth, playlists}){
 
@@ -51,7 +52,8 @@ export default function MusicNewSongPage({auth, playlists}){
         });
     }
 
-    return <>
+    return <Layout auth={auth} title={"Lisa uus teos"}>
+        <>
         <Head title="Lisa uus teos | Muusika kuulamine" />
         <Title title="Lisa uus teos" />
 
@@ -67,5 +69,6 @@ export default function MusicNewSongPage({auth, playlists}){
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
             <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teos</button>
         </div>
-    </>;
+    </>
+    </Layout>;
 }

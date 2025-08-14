@@ -4,6 +4,7 @@ import "/public/css/muusika.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 export default function MusicNew({auth, playlist, songs, providedBy=null}){
 
@@ -271,11 +272,10 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
         return Array.from(artistMap.values()).flat();
     }
 
-    return <div>
+    return <Layout title={playlist.name} auth={auth}>
+        <div>
         <Head title={playlist.name + " | Muusika kuulamiskava"} />
-
-        <Title title={playlist.name} thumbnail={playlist.thumbnail} subtitleUser={providedBy} />
-
+        <SizedBox height={32} />
         <div>
             <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
             <div onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/dumbbell.png" alt="" /> Harjuta</div>
@@ -302,22 +302,25 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
                         </div>
                     </div>
                 </a>}
+
+                {activeSong != null && <SizedBox height="150px"/>}
+
+                {activeSong != null && <div className="active-control" >
+                    <div className="main">
+                        <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:(window.innerWidth <= 800 ? "18px" : "20px"), margin:(window.innerWidth <= 800 ? "0" : "8px 0 0 0")}}>{activeSong.title} <span style={{color:"gray"}}>| {activeSong.artist}</span> </p>
+                        <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
+                            <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(currentTime)}</p>
+                            <input type="range" onChange={handleSeek} value={duration ? Math.round(timeUpdatePrecision*currentTime/duration) : 0} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-border)"}} />
+                            <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(duration)}</p>
+                        </div>
+                    </div>
+
+                    <img className="music-icon" onClick={()=>setIsPlaying(i=>!i)} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img>
+                </div>}
             </div>
             
 
-            {activeSong != null && <SizedBox height="150px"/>}
-
-            {activeSong != null && <div className="active-control" >
-                <div className="main">
-                    <p onClick={()=>setIsPlaying(i=>!i)} style={{textAlign:"start", fontSize:(window.innerWidth <= 800 ? "18px" : "24px"), margin:(window.innerWidth <= 800 ? "0" : "8px 0 0 0")}}>{activeSong.title} <span style={{color:"gray"}}>| {activeSong.artist}</span> </p>
-                    <div style={{display:"flex", flexDirection:'row', alignItems:"center", gap: "8px"}}>
-                        <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(currentTime)}</p>
-                        <input type="range" onChange={handleSeek} value={duration ? Math.round(timeUpdatePrecision*currentTime/duration) : 0} min={0} max={timeUpdatePrecision} style={{width: "100%", margin:"0", paddingTop:"0", accentColor:"var(--button-border)"}} />
-                        <p style={{fontVariantNumeric:"tabular-nums", fontSize:"14px", marginBlock:"0"}}>{humanReadableTime(duration)}</p>
-                    </div>
-                </div>
-
-                <img className="music-icon" onClick={()=>setIsPlaying(i=>!i)} style={{height:"32px", width:"32px"}} src={"/assets/music-icons/"+(isPlaying ? "pause.png" : "play.png")}></img>            </div>}
+            
         </div>
 
         <div className="test-screen" hidden={showPracticeScreen}>
@@ -352,5 +355,6 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
             </div>    
         </div>
 
-    </div>;
+    </div>
+    </Layout>;
 }

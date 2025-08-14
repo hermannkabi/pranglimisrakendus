@@ -4,6 +4,7 @@ import "/public/css/muusika.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 
 export default function MusicNew({auth, playlist, songs}){
@@ -157,7 +158,8 @@ export default function MusicNew({auth, playlist, songs}){
     }
 
 
-    return <>
+    return <Layout auth={auth} title={"Lisa teoseid"}>
+        <>
         <Head title="Lisa teoseid | Muusika kuulamiskava" />
 
         <Title title="Lisa teoseid"/>
@@ -174,5 +176,6 @@ export default function MusicNew({auth, playlist, songs}){
             <a onClick={deletePlaylist} alone="" style={{color:"red"}}> <i className="material-icons no-anim">delete</i> Kustuta kuulamiskava </a>
             <SizedBox height={16} />
         </div>
-    </>;
+    </>
+    </Layout>;
 }

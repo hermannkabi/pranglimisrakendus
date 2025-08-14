@@ -38,7 +38,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                             <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
                         </div>
                         <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
-                        {user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{user.role.split(",").map((e,i)=>i == 0 ? (roles[e] ?? e) : (roles[e] ?? e).toLowerCase()).join(", ")}</span>}
+                        {user.role.split(",").map(e=><span key={roles[e]} style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"4px"}}>{roles[e]}</span>)}
                         
                         <SizedBox height="150px" />
                         <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>Reaaleris alates {(new Date(user.created_at)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>

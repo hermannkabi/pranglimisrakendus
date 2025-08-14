@@ -5,12 +5,10 @@ export default function Title({title, showBack=true, subtitleUser=null}){
 
    const [isValid, setIsValid] = useState(null);
 
-   return <>
-        {showBack && <a style={{all:"unset", cursor:"pointer", display:"flex", margin:"24px"}} onClick={()=>history.back()}><img className="music-icon" src="/assets/music-icons/left-arrow.png" alt="" /></a>}
-        
+   return <>        
         <div style={{margin:"16px 24px", display:"flex", flexDirection:"column", alignItems:"center"}}>
                 {!showBack && <SizedBox height={16} />}
-                <h1 className="big-title" style={{marginBlock:"0"}}>{title}</h1>
+                <h1 className="big-title" style={{marginBlock:"0", color:"rgb(var(--primary-color))"}}>{title}</h1>
                 {subtitleUser && <div style={{display:"flex", flexDirection:"row", gap:"16px", alignItems:'center'}}><img className="profile-pic" style={{height:"32px"}} src={subtitleUser.profile_pic} alt="" /> <p style={{textTransform:"capitalize", marginBlock:"0"}}>{subtitleUser.eesnimi} {subtitleUser.perenimi}</p> </div> }
         </div>
 

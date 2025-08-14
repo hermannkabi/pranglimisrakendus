@@ -78,7 +78,11 @@ export default function StatsPage({auth, stats}){
         }
         ctx.lineTo(stepX * (points.length - 1), scaleY(points[points.length - 1]));
 
-        ctx.strokeStyle = '#476b6b';
+        const primaryColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary-color').trim();
+
+
+        ctx.strokeStyle = `rgb(${primaryColor})`;
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -86,7 +90,7 @@ export default function StatsPage({auth, stats}){
         ctx.lineTo(cssWidth, cssHeight);
         ctx.lineTo(0, cssHeight);
         ctx.closePath();
-        ctx.fillStyle = '#476b6b20';
+        ctx.fillStyle = `rgb(${primaryColor}, 0.2)`;
         ctx.fill();
 
         // Labels
@@ -180,7 +184,7 @@ export default function StatsPage({auth, stats}){
     {`
     .calendar { width: 90%; text-align: center; margin:auto }
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .header button { background: none; border: none; font-size: 18px; cursor: pointer; }
+    .header button { background: none; border: none; font-size: 18px; cursor: pointer; color: rgb(var(--text-color)) }
     .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
     .day { padding: 8px; border-radius: 4px; }
     .highlight { background: rgb(255, 127, 62); color: white; margin-inline: -5px;}
@@ -208,13 +212,13 @@ export default function StatsPage({auth, stats}){
                     </div>
 
                     <div className="section" style={{position:"relative"}}>
-                        <TwoRowTextButton showArrow={false} upperText={"Mängukorrad (" + (stats.gameCount[statsPeriod].reduce((sum, count) => sum + count, 0)) + ")"} lowerText={"Viimane " + periods[statsPeriod]} />
+                        <TwoRowTextButton showArrow={false} upperText={"Mängukorrad"} lowerText={stats.gameCount[statsPeriod].reduce((sum, count) => sum + count, 0) + " mängukord"+(stats.gameCount[statsPeriod].reduce((sum, count) => sum + count, 0) == 1 ? "" : "a")} />
                         {stats.gameCount[statsPeriod].every(e=>e==0) && <p style={{color:"var(--grey-color)", margin:"8px"}}>Sellel ajaperioodil ei ole ühtegi mängu mängitud</p>}
                         {!stats.gameCount[statsPeriod].every(e=>e==0) && <canvas ref={canvasRef} id="chart" style={{width:"90%", height:"200px", margin:"0 16px"}}></canvas>}
                     </div>
 
                     <div className="section">
-                        <TwoRowTextButton showArrow={false} upperText={"Mängutüübid"} lowerText={"Viimane " + periods[statsPeriod]} />
+                        <TwoRowTextButton showArrow={false} upperText={"Mängutüübid"} lowerText={Object.keys(stats.gameTypes[statsPeriod]).length + " mängutüüp" + (Object.keys(stats.gameTypes[statsPeriod]).length == 1 ? "" : "i")} />
 
                         <div className="types" style={{margin:"0 8px"}}>
                              {Object.keys(stats.gameTypes[statsPeriod]).length == 0 && <p style={{color:"var(--grey-color)"}}>Sellel ajaperioodil ei ole ühtegi mängu mängitud</p> }

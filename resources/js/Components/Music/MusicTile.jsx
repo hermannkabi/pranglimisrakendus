@@ -39,7 +39,7 @@ export default function MusicTile({song, isPlaying=false, isActive=false, onClic
                 <div style={{display:"flex"}}>
                     {select && <input value={song.id} onClick={(e)=>e.stopPropagation()} style={{outline:"none"}} type="checkbox" />}
                     <div className="info">
-                        <p className="song-title" style={{transition:"color 100ms", fontWeight: isActive ? "bold" : "normal"}}>{song.title}</p>
+                        <p className="song-title" style={{transition:"color 100ms", fontWeight: isActive ? "bold" : "normal", color:isActive ? "rgb(var(--primary-color))" : "inherit"}}>{song.title}</p>
                         <p className="song-artist">{song.artist}</p>
                     </div>
                 </div>
@@ -48,6 +48,6 @@ export default function MusicTile({song, isPlaying=false, isActive=false, onClic
                     {playlist != null && auth != null && (playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && <p onClick={(e)=>onRemove(e)}><img className="music-icon" style={{height: "24px", width:"24px"}} src={"/assets/music-icons/close.png"}></img></p>}
                     {admin && <p onClick={(e)=>onDelete(e)}><img className="music-icon" style={{height: "24px", width:"24px"}} src={"/assets/music-icons/delete.png"}></img></p>}
                 </div>
-            </div>            
+            </div>         
     </div>;
 }

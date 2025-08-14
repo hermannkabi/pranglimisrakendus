@@ -327,16 +327,52 @@ function getMangStats($userId) {
 
     public function showStats($id=null){
 
-        if($id!=null && User::where("id", $id)->first() == null) return abort(404);
+        $user = User::where("id", $id ?? Auth::id())->first();
+        $logged_in_user = Auth::user();
+        $logged_in_klass = Klass::where("klass_id", $logged_in_user->klass)->first();
 
-        $stats = $this->getOverallStats($id ?? Auth::id());
+        if($user != null){
+            // Kuna mulle siiski tundub, et lasta kõigil näha kasutaja andmeid on ebaõige (eriti nooremate laste puhul), siis teen niimoodi ümber, et näha saavad ainult klassikaaslased ja õpetaja
+            
+            $klass = Klass::where("klass_id", $user->klass)->first();
 
-        $gameStats = $this->getMangStats($id ?? Auth::id());
+            // You can see your own public profile, no matter what
+            if($user->id != $logged_in_user->id && !str_contains($logged_in_user, "admin")){
+                if(str_contains($user->role, "teacher")){
+                    // A teacher can be seen only by their students
+                    if($logged_in_klass==null || $logged_in_klass->teacher_id != $user->id){
+                        abort(403);
+                    }
+                }else if(str_contains($user->role, "student")){
+                    // A student can be seen by their teacher or their classmates
+                    if($klass == null || ($klass->teacher_id != $logged_in_user->id && $klass->klass_id != $logged_in_user->klass)){
+                        abort(403);
+                    }
+                }else{
+                    // Dont show guest account
+                    abort(404);
+                }
+            }
+            
+            
+            $stats = app(GameController::class)->getOverallStats($user->id);
+
+            $lastGames = Mang::where('user_id', $user->id)->orderBy("dt", "desc")->take(3)->get();
+
+        }else{
+            abort(404);
+        }
+
+        if($id!=null && $user == null) return abort(404);
+
+        $stats = $this->getOverallStats($user->id);
+
+        $gameStats = $this->getMangStats($user->id);
 
         $stats["gameCount"] = $gameStats["gameCount"];
         $stats["gameTypes"] = $gameStats["gameTypes"];
-        $stats["streakDays"] = $this->getPlayedDates($id ?? Auth::id());
-        $stats["competitionCount"] = User::where("id", $id ?? Auth::id())->first()->competitions()->where('dt_end', '<', Carbon::now())->count();
+        $stats["streakDays"] = $this->getPlayedDates($user->id);
+        $stats["competitionCount"] = User::where("id", $user->id)->first()->competitions()->where('dt_end', '<', Carbon::now())->count();
 
         return Inertia::render("Stats/StatsPage", ["stats"=>$stats]);
     }

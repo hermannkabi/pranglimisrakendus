@@ -2,10 +2,12 @@ import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
 import Title from "@/Components/Music/Title";
 import SizedBox from "@/Components/SizedBox";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 export default function MusicHomePage({auth, playlists}){
     
-    return <div>
+    return <Layout title={"Muusika kuulamiskavad"} auth={auth}>
+        <div>
         <Head title="Muusika kuulamiskavad | Muusika kuulamine" />
         <Title title="Muusika kuulamiskavad" showBack={false} />
 
@@ -13,7 +15,7 @@ export default function MusicHomePage({auth, playlists}){
             {playlists.map(e=> <a className="playlist-widget" key={e.id} style={{all:"unset", cursor:"pointer"}} href={"/muusika/" + e.id + "/" + e.link_id}><div className="course-widget">
                 <img src={e.thumbnail} alt="" />
                 <div className="content">
-                    <p style={{fontWeight:"bold", color: "var(--text-color)"}}>{e.name}</p>
+                    <p style={{fontWeight:"bold", color: "rgb(var(--text-color))"}}>{e.name}</p>
                     <p style={{color:"gray"}}>{e.songs_count} teos{e.songs_count == 1 ? "" : "t"}</p>
                 </div>
             </div></a>)}
@@ -24,5 +26,6 @@ export default function MusicHomePage({auth, playlists}){
             </div>}
         </div>
         <SizedBox height={32} />
-    </div>;
+    </div>
+    </Layout>;
 }

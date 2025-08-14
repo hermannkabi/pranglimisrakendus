@@ -2,10 +2,12 @@ import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
 import Title from "@/Components/Music/Title";
 import SizedBox from "@/Components/SizedBox";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 export default function MusicHomePage({auth}){
     
-    return <div style={{minHeight:"100vh"}}>
+    return <Layout auth={auth} title={"Ligipääs keelatud"}>
+        <div style={{minHeight:"100vh"}}>
         <Head title="Ligipääs keelatud | Muusika kuulamine" />
         <Title title="Ligipääs keelatud" showBack={false} />
         <SizedBox height={32} />
@@ -17,5 +19,6 @@ export default function MusicHomePage({auth}){
             {!(auth.user.role == "guest") && !(auth.user.email_verified_at == null || auth.user.google_id) && <li>Tundmatu viga. Palun võta ühendust veebilehe halduriga.</li> }
         </ul>
         </div>
-    </div>;
+    </div>
+    </Layout>;
 }

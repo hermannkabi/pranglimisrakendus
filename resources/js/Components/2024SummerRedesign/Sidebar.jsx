@@ -55,7 +55,7 @@ export default function Sidebar({title, auth}){
         
     </div>
 
-    <div className="sidebar" style={{position:"relative", borderRight: "1px solid #5A5A5A", width:"350px", height:"100vh", overflow:"auto", padding:"8px", margin:"-8px", marginRight:"0px", paddingLeft:"16px"}}>
+    <div className="sidebar" style={{position:"relative", borderRight: "1px solid #5A5A5A", width:"350px", minWidth:"350px", height:"100vh", overflow:"auto", padding:"8px", margin:"-8px", marginRight:"0px", paddingLeft:"16px"}}>
         <SizedBox height="8px" />
         <a href="/" style={{all:"unset", cursor:"pointer"}}>
             <div className="topbar" style={{marginLeft:"8px", display:"flex", flexDirection:"row", alignItems:"center"}}>

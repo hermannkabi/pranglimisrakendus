@@ -202,7 +202,7 @@ export default function ProfilePage({auth, className}){
                         </div>
                     </div>
                     <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
-                    {auth.user.role != "student" && <span style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"8px"}}>{auth.user.role.split(",").map((e,i)=>i == 0 ? (roles[e] ?? e) : (roles[e] ?? e).toLowerCase()).join(", ")}</span>}
+                    {auth.user.role.split(",").map(e=><span key={roles[e]} style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"4px"}}>{roles[e]}</span>)}
                     <SizedBox height="32px" />
                     {auth.user.role.includes("student") && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
                         {className != null && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>

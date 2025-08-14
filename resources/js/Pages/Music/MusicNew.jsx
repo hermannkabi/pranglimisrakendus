@@ -4,6 +4,7 @@ import "/public/css/muusika.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
+import Layout from "@/Components/2024SummerRedesign/Layout";
 
 
 export default function MusicNew({auth, songs}){
@@ -101,7 +102,8 @@ export default function MusicNew({auth, songs}){
     }
 
 
-    return <>
+    return <Layout title={"Uus kuulamiskava"} auth={auth}>
+        <>
         <Head title="Uus kuulamiskava | Muusika kuulamiskava" />
 
         <Title title="Uus kuulamiskava"/>
@@ -126,5 +128,6 @@ export default function MusicNew({auth, songs}){
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
             <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Loo kuulamiskava</button>
         </div>
-    </>;
+    </>
+    </Layout>;
 }

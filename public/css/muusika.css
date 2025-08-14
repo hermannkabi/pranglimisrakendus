@@ -2,22 +2,17 @@
 
 
 :root{
-    --background-color: white; 
-    --text-color: black; 
     --button-color: #0077c0;
     --button-text-color: white;
-    --primary-font: "Bricolage Grotesque";
+    --primary-font: var(--main-font);
     --secondary-font: "Inter";
     --button-fill: #D9D9D9;
     --button-border: #949494;
     --music-icon: invert(0);
     --button-fill-blur: #D9D9D930;
-
 }
 
 [data-theme="dark"] {
-    --background-color: rgb(22, 22, 22); 
-    --text-color: #dfdfdf; 
     --button-color: #0077c0;
     --button-text-color: white;
     --button-fill: #252525;
@@ -28,11 +23,10 @@
 }
 
 body, html{
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: rgb(var(--background-color));
+    color: rgb(var(--text-color));
     text-align: center;
     font-family: var(--primary-font);
-    font-size: 20px;
     overflow-x: hidden;
 }
 
@@ -184,7 +178,7 @@ button:hover{
 
 .music-tile .song-title{
     margin-block: 0;
-    font-size: 24px;
+    font-size: 20px;
     margin-bottom: 4px;
 }
 
@@ -212,8 +206,9 @@ button:hover{
     padding: 8px 16px;
     position:fixed;
     bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: calc(50% - 350px/2 - 8px);
+    transform: translateX(50%);
+    width: calc(0.5*(100% - 350px) - 8px);
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -265,7 +260,7 @@ input[type="text"], input[type="file"] {
     object-fit: cover;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1200px) {
 
     body{
         font-size: 20px;
@@ -293,8 +288,8 @@ input[type="text"], input[type="file"] {
     }
 
     .active-control{
-        width: calc(100% - 64px);
-        left: 0;
+        width: calc(100% - 350px - 84px);
+        right: 0;
         transform: none;
     }
 
@@ -315,5 +310,12 @@ input[type="text"], input[type="file"] {
     .big-title{
         font-size: 34px;
         text-align: start;
+    }
+}
+
+
+@media only screen and (max-width: 900px) {
+    .active-control{
+        width: calc(100% - 64px);
     }
 }
