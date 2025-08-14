@@ -88,13 +88,13 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                             <TwoRowTextButton upperText="Tulemused" lowerText={competition.name} showArrow={false} />
                             <SizedBox height="16px" />
                             {leaderboard.length > 0 && <div className="podium" style={{display:"flex", flexDirection:"row", justifyContent:"stretch", alignItems:'end', gap:"8px"}}>
-                                {leaderboard.length > 1 && <LeaderboardPodiumTile auth={auth} e={{place:leaderboard[1].rank_label, xp:leaderboard[1].total_score ?? 0, user:leaderboard[1].user, playedToday:false, }} />}
-                                <LeaderboardPodiumTile auth={auth} e={{place:leaderboard[0].rank_label, xp:leaderboard[0].total_score ?? 0, user:leaderboard[0].user, playedToday:false, }} firstPlace={true} />
-                                {leaderboard.length > 2 && <LeaderboardPodiumTile auth={auth} e={{place:leaderboard[2].rank_label, xp:leaderboard[2].total_score ?? 0, user:leaderboard[2].user, playedToday:false, }} />}
+                                {leaderboard.length > 1 && <LeaderboardPodiumTile customLink={"/competition/"+competition.competition_id+"/view/"+leaderboard[1].user.id} auth={auth} e={{place:leaderboard[1].rank_label, xp:leaderboard[1].total_score ?? 0, user:leaderboard[1].user, playedToday:false, }} />}
+                                <LeaderboardPodiumTile customLink={"/competition/"+competition.competition_id+"/view/"+leaderboard[0].user.id} auth={auth} e={{place:leaderboard[0].rank_label, xp:leaderboard[0].total_score ?? 0, user:leaderboard[0].user, playedToday:false, }} firstPlace={true} />
+                                {leaderboard.length > 2 && <LeaderboardPodiumTile customLink={"/competition/"+competition.competition_id+"/view/"+leaderboard[2].user.id} auth={auth} e={{place:leaderboard[2].rank_label, xp:leaderboard[2].total_score ?? 0, user:leaderboard[2].user, playedToday:false, }} />}
                             </div>}
                             <SizedBox height="16px" />
                         </div>
-                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow place={e.rank_label} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.total_score ?? 0} /> )}
+                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow customLink={"/competition/"+competition.competition_id+"/view/"+e.user.id} place={e.rank_label} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.total_score ?? 0} /> )}
                         {leaderboard.length <= 0 && <InfoBanner text={"Siin võistlusel ei ole (veel) kedagi."} />}</>}
                     </div>
     

@@ -33,7 +33,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
 
             <div className="two-column-layout">
                 <div>
-                    <div className="section" style={{position:"relative", backgroundImage:"url("+user.profile_pic+")", backgroundRepeat:"no-repeat", backgroundSize:"cover", backgroundBlendMode:"soft-light"}}>
+                    <div className="section" style={{position:"relative", backgroundImage:"url("+user.profile_pic+")", backgroundRepeat:"no-repeat", backgroundSize:"cover", backgroundBlendMode:"soft-light", backgroundPosition:"center"}}>
                         <div style={{position:"absolute", right:"24px", top:"24px",}}>
                             <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
                         </div>

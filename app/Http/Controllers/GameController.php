@@ -102,7 +102,7 @@ class GameController extends Controller
         }
 
         //Game history
-        $mangud = DB::table('mangs')->where('user_id', $user->id)->orderBy("dt", "desc")->paginate(10);
+        $mangud = DB::table('mangs')->where('user_id', $user->id)->orderBy("dt", "desc")->paginate(30);
 
         return Inertia::render('GameHistory/GameHistoryPage', ["games"=>$mangud, "stats"=>$this->getOverallStats($user->id)]);
     }

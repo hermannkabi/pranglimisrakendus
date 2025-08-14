@@ -81,7 +81,15 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                 {/* <InfoBanner>
                     <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
                 </InfoBanner> */}
-                {auth.user.role.split(",").includes("admin") && <div className="section" style={{marginBottom:"16px",}}>
+                
+                {psa && <InfoBanner text={psa} />}
+                {auth.user.role != "guest" && <div className="four-stat-row">
+                    <StreakWidget streak={stats.streak} active={stats.streak_active} />
+                    <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
+                    <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
+                    <a style={{textDecoration:"none", filter:"none", cursor:"pointer"}} className="clickable" href={route("stats")}><StatisticsTile clickable={true} stat={"→"} label={"Kogu statistika"} icon={"query_stats"} /></a>
+                </div>}
+                {auth.user.role.split(",").includes("admin") && <div className="section" style={{marginTop:"16px", marginBottom:"0"}}>
                     <TwoRowTextButton upperText={"Admini valikud"} lowerText={"Siin saad hallata klasse ja võistluseid"} showArrow={false} />
                     
                     <div style={{display:"flex", flexDirection: (window.innerWidth <= 600 ? "column" : "row"), justifyContent:"start", gap:"16px"}}>
@@ -100,13 +108,6 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                             </div>
                         </a>}
                     </div>
-                </div>}
-                {psa && <InfoBanner text={psa} />}
-                {auth.user.role != "guest" && <div className="four-stat-row">
-                    <StreakWidget streak={stats.streak} active={stats.streak_active} />
-                    <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
-                    <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
-                    <a style={{textDecoration:"none", filter:"none", cursor:"pointer"}} className="clickable" href={route("stats")}><StatisticsTile clickable={true} stat={"→"} label={"Kogu statistika"} icon={"query_stats"} /></a>
                 </div>}
 
                 {/* Teacher things start here */}

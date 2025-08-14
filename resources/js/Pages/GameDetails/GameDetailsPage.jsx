@@ -92,7 +92,7 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
             <div className="four-stat-row">
                 <StatisticsTile stat={averageTime(game.time)} label={"Aeg"} icon={"hourglass_top"} />
                 <StatisticsTile stat={game.game_count ?? "0"} label={"Tehete arv"} icon={"calculate"} />
-                <StatisticsTile stat={game.score_sum ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"exercise"} compactNumber={true} />
+                <StatisticsTile stat={game.experience ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"exercise"} compactNumber={true} />
                 <StatisticsTile stat={(game.accuracy_sum ?? "0") + "%"} label={"Vastamistäpsus"}icon={"target"} />
             </div>
             <SizedBox height="16px" />

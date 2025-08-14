@@ -63,16 +63,15 @@ export default function WelcomePage({auth, users, games, points, message}){
     return (
         <div style={{textAlign:"center"}}>
             <Head title="Tere tulemast!" />
-            <div className="home-navbar" style={{margin:"16px 24px", paddingInline:"24px", borderRadius:"60px", background:"rgba(255, 255, 255, 0.14)"}}>
+            <div className="home-navbar" style={{margin:"16px 24px", paddingInline:"24px", borderRadius:"60px", width:(window.innerWidth <= 600 ? "inherit" : "60%"), margin:"auto"}}>
                 <div className="title-div">
                     <ApplicationLogo onClick={()=>window.location.href="#"} height={50} />
-                    <p className="title" style={{fontWeight:"bold", fontSize:"24px", color:"var(--primary-header-color)", marginLeft:"16px"}}>Reaaler</p>
                 </div>
 
                 <div style={{display:"flex", alignItems:'center', gap:"24px"}}>
                     {auth.user == null && <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons">{isDarkTheme ? "light_mode" : "brightness_2"}</i>}
                     
-                    <a style={{display:"flex"}} href={route("login")}>{auth.user != null ? <img style={{height:"40px"}} src={auth.user.profile_pic} alt="" className="profile-pic" /> : "Logi sisse"}</a>
+                    <a style={{display:"flex"}} href={route("login")}>{auth.user != null ? <img style={{height:"40px"}} src={auth.user.profile_pic} alt="" className="profile-pic" /> : <i translate="no" style={{fontSize:"24px"}} className="material-icons">login</i> }</a>
                 </div>
             </div>
             <SizedBox height={36} />
@@ -85,7 +84,6 @@ export default function WelcomePage({auth, users, games, points, message}){
                 <div className="buttons">
                     <button className="onboarding-btn" onClick={()=>window.location.href = "#start"}> <i className="material-icons no-anim">waving_hand</i> Alusta kohe</button>
                     <br /><br />
-                    <a style={{display:"flex", justifyContent:"center" }} alone="" href="#statistics"><span translate="no" className="no-anim material-icons">keyboard_arrow_down</span></a>
                 </div>
             </div>
 
@@ -102,7 +100,7 @@ export default function WelcomePage({auth, users, games, points, message}){
                 </div>
 
                 <div className="stat" style={{margin:"8px"}}>
-                    <p style={{color:"var(--primary-header-color)", marginBlock:"0", fontSize:"60px", fontWeight:"bold"}}>{Intl.NumberFormat('en', { notation: 'compact' }).format(points).replace(".", ",")}+</p>
+                    <p style={{color:"var(--primary-header-color)", marginBlock:"0", fontSize:"60px", fontWeight:"bold"}}>{Intl.NumberFormat('en', { notation: 'compact' }).format(points).replace(".", ",")}</p>
                     <p style={{marginBlock:"0", marginTop:"8px", color:"var(--grey-color)"}}>Punkti kokku</p>
                 </div>
             </div>

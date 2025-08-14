@@ -210,6 +210,8 @@ Route::controller(App\Http\Controllers\CompetitionController::class)->middleware
     Route::post('/competition/{id}/remove/self', 'competitionRemoveSelf')->name("competitionRemoveSelf");
     Route::post('/competition/{id}/join', 'competitionJoin')->name("competitionJoin");
     Route::get('/competition/history/{id?}', 'competitionHistory')->name("competitionHistory");
+    Route::get('/competition/{id}/view/{user_id}', 'competitionProfile');
+
 });
 
 

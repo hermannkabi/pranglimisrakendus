@@ -7,6 +7,7 @@ use App\Models\Mang;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Competition;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -269,7 +270,7 @@ class CompetitionController extends Controller
             ->where('dt_end', '<', $now)
             ->paginate(10);
 
-        $pastCompetitions->getCollection()->each(function ($competition) use ($userRanks, $tiedRanks) {
+        $pastCompetitions->getCollection()->each(function ($competition) use ($userRanks, $tiedRanks, $user) {
             $rankData = $userRanks[$competition->competition_id] ?? null;
             if (!$rankData) {
                 $competition->rank_label = null;
@@ -281,6 +282,7 @@ class CompetitionController extends Controller
             $isTied = isset($tiedRanks[$key]) && count($tiedRanks[$key]) > 1;
 
             $competition->rank_label = $isTied ? 'T' . $rankData->rank : (string)$rankData->rank;
+            $competition->user = $user;
         });
 
         $competitionGames = Mang::where("user_id", $user->id)->where("competition_id", "!=", null)->get();
@@ -289,5 +291,34 @@ class CompetitionController extends Controller
         $stats = ["competitionCount"=>count($pastCompetitions), "bestRank"=>$this->getBestRank($user->id), "gamesCount"=>count($competitionGames), "competitionPoints"=>$competitionPoints];
 
         return Inertia::render("CompetitionHistory/CompetitionHistoryPage", ["stats"=>$stats, "competitions"=>$pastCompetitions]);
+    }
+
+
+    public function competitionProfile($id, $user_id){
+        $competition = Competition::where("competition_id", $id)->first();
+        if($competition == null) return abort(404);
+        if(strtotime($competition->dt_end) > strtotime(Carbon::now())) return abort(403);
+
+        $user = User::where("id", $user_id)->first();
+        if($user == null) return abort(404);
+
+        $mangs = Mang::where("competition_id", $competition->competition_id)->where("user_id", $user->id)->orderBy("dt", "DESC")->get();
+
+        $competitions_count = $mangs->count();
+        $avg_accuracy = round($mangs->avg('accuracy_sum'));
+        $avg_time = round($mangs->avg('time')); 
+        $points_total = $mangs->sum('experience');
+
+        $stats = [
+            'competitions_count' => $competitions_count,
+            'avg_accuracy' => $avg_accuracy,
+            'avg_time' => $avg_time,
+            'points_total' => $points_total,
+            "user_rank" => Arr::first($this->getLeaderboard($competition->competition_id, $user->id), function ($value) use ($user) {
+                return $value["user"]->id == $user->id;
+            })["rank_label"],
+        ];
+
+        return Inertia::render("CompetitionProfile/CompetitionProfilePage", ["user"=>$user, "competition"=>$competition, "stats"=>$stats, "games"=>$mangs]);
     }
 }

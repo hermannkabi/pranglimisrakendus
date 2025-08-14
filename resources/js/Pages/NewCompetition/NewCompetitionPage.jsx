@@ -142,7 +142,7 @@ export default function NewCompetitionPage({auth, competition}){
                         <PasswordWidget defaultValue={name} required={true} onChange={(e)=>setName(e.target.value)} style={{marginBlock: "8px"}} isPassword={false} icon="edit" text="Võistluse nimi" />
                         <PasswordWidget defaultValue={description} required={false} onChange={(e)=>setDescription(e.target.value)} style={{marginBlock: "8px"}} isPassword={false} icon="description" text="Võistluse kirjeldus" isTextArea={true} />
 
-                        <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}>
+                        <div style={{display:"grid", gridTemplateColumns:(window.innerWidth <= 600 ? "1fr" : "repeat(2, 1fr)"), gap:"16px"}}>
                             <PasswordWidget defaultValue={dtStart} required={true} onChange={(e)=>setDtStart(e.target.value)} style={{marginBlock: "8px"}} isPassword={false} icon="calendar_clock" text="Algusaeg" type="datetime-local" />
                             <PasswordWidget defaultValue={dtEnd} required={true} onChange={(e)=>setDtEnd(e.target.value)} style={{marginBlock: "8px"}} isPassword={false} icon="calendar_clock" text="Lõpuaeg" type="datetime-local" />
                         </div>

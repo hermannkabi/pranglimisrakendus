@@ -1,6 +1,6 @@
 import TwoRowTextButton from "./2024SummerRedesign/TwoRowTextButton";
 
-export default function GameTile({data}){
+export default function GameTile({data, showPoints=false}){
 
 const typeToReadable = {
     "natural":"Naturaalarvud",
@@ -13,7 +13,7 @@ const typeToReadable = {
     "all":"Erinevad värvid ja suurused"
 };
 
-const isTypeShown = data.game_type != null && data.game_type in typeToReadable;
+const isTypeShown = data.game_type != null && data.game_type in typeToReadable && !showPoints;
 
 const gameNames = {
     "lihtsustamine":"Murru taandamine",
@@ -25,7 +25,7 @@ var gameName = data.game == null ? "Tundmatu" : data.game in gameNames ? gameNam
 
 return <>
     <div style={{position:'relative'}} onClick={()=>window.location.href = "/game/"+data.game_id+"/details"} className="section clickable">
-        <TwoRowTextButton upperText={data.game == null ? "Tundmatu" : decodeURIComponent(gameName)} lowerText={isTypeShown ? typeToReadable[data.game_type] : (data.score_sum+" punkt"+(data.score_sum == 1 ? "" : "i"))} />
+        <TwoRowTextButton upperText={data.game == null ? "Tundmatu" : decodeURIComponent(gameName)} lowerText={isTypeShown ? typeToReadable[data.game_type] : (data.experience+" punkt"+(data.experience == 1 ? "" : "i"))} />
         <p style={{marginBlock:"0", color:"var(--grey-color)", position:"absolute", bottom:"8px", right:"8px"}}>{(new Date(data.dt.replace(/-/g, "/"))).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>
     
         <a href={"/game/"+data.game_id+"/details"} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
