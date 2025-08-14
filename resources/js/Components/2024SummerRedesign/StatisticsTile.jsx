@@ -1,8 +1,8 @@
 import SizedBox from "../SizedBox";
 
-export default function StatisticsTile({stat, label, icon, iconColor=null, disabled=false, oneLabel=null, compactNumber=false, style=null, labelColor=null}){
+export default function StatisticsTile({stat, label, icon, iconColor=null, disabled=false, oneLabel=null, compactNumber=false, style=null, labelColor=null, clickable=false}){
     return <>
-        <div className="section statistics-tile" style={{position:"relative", margin:"0", ...style}}>
+        <div className={"section statistics-tile" + (clickable ? " clickable" : "")} style={{position:"relative", margin:"0", ...style}}>
             <div style={{height:"100%", display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
                 <h2 title={stat + " " + label.toLowerCase()} style={{marginBlock:"0", color: labelColor ?? (disabled ? "var(--grey-color)" : "rgb(var(--primary-color))")}}>{compactNumber ? Intl.NumberFormat('en', { notation: 'compact' }).format(stat).toString().replaceAll(".", ",") : stat}</h2>
                 <SizedBox height={8} />

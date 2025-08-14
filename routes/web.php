@@ -171,6 +171,9 @@ Route::controller(App\Http\Controllers\GameController::class)->middleware(["auth
     Route::post('/game/scoreboard', 'index')->name('gameScoreboard');
     
     Route::get("game/{id}/details", "gameDetails");
+
+    Route::get("/stats", "showStats")->name("stats");
+    Route::get("/stats/{id?}", "showStats")->name("statsPublic");
 });
 
 //Classroom data

@@ -28,7 +28,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                 <StreakWidget streak={stats.streak ?? 0} active={stats.streak_active} />
                 <StatisticsTile stat={stats.total_training_count ?? "0"} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                 <StatisticsTile stat={(stats.accuracy ?? "0") + "%"} label={"Vastamistäpsus"}icon={"percent"} />
-                <StatisticsTile stat={stats.points ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />
+                <a style={{textDecoration:"none", filter:"none", cursor:"pointer"}} className="clickable" href={"/stats/"+user.id}><StatisticsTile clickable={true} stat={"→"} label={"Kogu statistika"} icon={"query_stats"} /></a>
             </div>}
 
             <div className="two-column-layout">

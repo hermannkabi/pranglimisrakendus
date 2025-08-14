@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -151,12 +152,10 @@ class GameController extends Controller
             $accuracy_sum += $mang->accuracy_sum;
             $points_sum += $mang->score_sum;
             if(array_key_exists($mang->game, $proficiency)){
-                $proficiency[$mang->game] += $mang->experience;
-            };
+                $proficiency[$mang->game] = $proficiency[$mang->game] + $mang->experience;
+            }
             $time_sum += $mang->time;
         }
-
-        $proficiency_sorted = asort($proficiency);
 
         //Average accuracy
         $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
@@ -169,7 +168,7 @@ class GameController extends Controller
         $streak_active = User::where("id", $user_id)->first()->streak_active;
 
         //Send all gathered information to frontend
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'proficiency'=>$proficiency_sorted, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'proficiency'=>$proficiency, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
 
     }
 
@@ -244,5 +243,101 @@ class GameController extends Controller
         $mang = Mang::where('user_id', $user_id);
         $mang -> delete();
 
+    }
+
+    
+function getMangStats($userId) {
+    $today = Carbon::today();
+    $periods = [
+        'week' => 7,
+        'month' => 30,
+        'year' => 365,
+    ];
+
+    $stats = [
+        'gameCount' => [],
+        'gameTypes' => [],
+    ];
+
+    foreach ($periods as $key => $days) {
+        $startDate = $today->copy()->subDays($days - 1);
+
+        // --- Game counts per day ---
+        $countsByDate = Mang::select(DB::raw('DATE(dt) as date'), DB::raw('COUNT(*) as total'))
+            ->where('dt', '>=', $startDate->startOfDay())
+            ->where('dt', '<=', $today->endOfDay())
+            ->where("user_id", $userId)
+            ->groupBy(DB::raw('DATE(dt)'))
+            ->pluck('total', 'date');
+
+        $dailyCounts = [];
+        for ($i = 0; $i < $days; $i++) {
+            $date = $startDate->copy()->addDays($i)->toDateString();
+            $dailyCounts[] = $countsByDate->get($date, 0);
+        }
+        $stats['gameCount'][$key] = $dailyCounts;
+
+        // --- Game types percentages ---
+        $totalGames = Mang::where('dt', '>=', $startDate->startOfDay())
+            ->where('dt', '<=', $today->endOfDay())
+            ->where("user_id", $userId)
+            ->count();
+
+        if ($totalGames === 0) {
+            $stats['gameTypes'][$key] = [];
+        } else {
+            $gameTypeCounts = Mang::select('game', DB::raw('COUNT(*) as total'))
+                ->where('dt', '>=', $startDate->startOfDay())
+                ->where('dt', '<=', $today->endOfDay())
+                ->where("user_id", $userId)
+                ->groupBy('game')
+                ->pluck('total', 'game');
+
+            $percentages = [];
+            foreach ($gameTypeCounts as $game => $count) {
+                $percentages[$game] = round(($count / $totalGames) * 100, 2);
+            }
+            arsort($percentages);
+            $stats['gameTypes'][$key] = $percentages;
+        }
+    }
+
+    return $stats;
+}
+
+    function getPlayedDates($userId) {
+        $query = Mang::query();
+
+        $query->where('user_id', $userId);
+
+        // Get distinct dates
+        $dates = $query->selectRaw('DATE(dt) as date')
+            ->distinct()
+            ->orderBy('date', 'asc')
+            ->pluck('date'); // returns ['2025-08-07', '2025-08-14', ...]
+
+        // Convert to [day, month, year]
+        $formatted = $dates->map(function ($date) {
+            $c = Carbon::parse($date);
+            return [$c->day, $c->month, $c->year];
+        });
+
+        return $formatted->toArray();
+    }
+
+    public function showStats($id=null){
+
+        if($id!=null && User::where("id", $id)->first() == null) return abort(404);
+
+        $stats = $this->getOverallStats($id ?? Auth::id());
+
+        $gameStats = $this->getMangStats($id ?? Auth::id());
+
+        $stats["gameCount"] = $gameStats["gameCount"];
+        $stats["gameTypes"] = $gameStats["gameTypes"];
+        $stats["streakDays"] = $this->getPlayedDates($id ?? Auth::id());
+        $stats["competitionCount"] = User::where("id", $id ?? Auth::id())->first()->competitions()->where('dt_end', '<', Carbon::now())->count();
+
+        return Inertia::render("Stats/StatsPage", ["stats"=>$stats]);
     }
 }

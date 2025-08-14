@@ -15,6 +15,9 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
 
     const totalTrainingCount = window.localStorage.getItem("total-training-count") ?? "0";
 
+    console.log(stats);
+    
+
     Mousetrap.bind("c h r i s e t t e", function (){
         $(".easteregg1").fadeIn(50, function (){
             setTimeout(() => {
@@ -103,7 +106,7 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                     <StreakWidget streak={stats.streak} active={stats.streak_active} />
                     <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                     <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
-                    <StatisticsTile stat={stats.points ?? window.localStorage.getItem("total-points") ?? "0"} label={"Punkti kokku"} oneLabel={"Punkt kokku"} icon={"trophy"} compactNumber={true} />
+                    <a style={{textDecoration:"none", filter:"none", cursor:"pointer"}} className="clickable" href={route("stats")}><StatisticsTile clickable={true} stat={"→"} label={"Kogu statistika"} icon={"query_stats"} /></a>
                 </div>}
 
                 {/* Teacher things start here */}
