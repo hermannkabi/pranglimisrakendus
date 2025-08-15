@@ -69,7 +69,7 @@ export default function WelcomePage({auth, users, games, points, message}){
                 </div>
 
                 <div style={{display:"flex", alignItems:'center', gap:"24px"}}>
-                    {auth.user == null && <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons">{isDarkTheme ? "light_mode" : "brightness_2"}</i>}
+                    {auth.user == null && <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons-outlined">{isDarkTheme ? "light_mode" : "brightness_2"}</i>}
                     
                     <a style={{display:"flex"}} href={route("login")}>{auth.user != null ? <img style={{height:"40px"}} src={auth.user.profile_pic} alt="" className="profile-pic" /> : <i translate="no" style={{fontSize:"24px"}} className="material-icons">login</i> }</a>
                 </div>
@@ -79,7 +79,7 @@ export default function WelcomePage({auth, users, games, points, message}){
                 <i translate="no" className="material-icons-outlined">info</i> <span>{message}</span>
             </div>}
             <div className="main-content" style={{textAlign:'center'}}>
-                <ApplicationLogo size={150} />
+                <ApplicationLogo size={150} style={{pointerEvents:"none"}} />
                 <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
                 <div className="buttons">
                     <button className="onboarding-btn" onClick={()=>window.location.href = "#start"}> <i className="material-icons no-anim">waving_hand</i> Alusta kohe</button>

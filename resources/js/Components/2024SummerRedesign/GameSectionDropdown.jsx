@@ -43,7 +43,12 @@ export default function GameSectionDropdown({title, gameTypes=[], isNew=false}){
             <div ref={collapsibleRef}>
                 <SizedBox height="8px" />
                 <div >
-                    {gameTypes.map((e)=><a key={e} href={e in links ? links[e] : "/preview/"+e} style={{all:"unset", fontWeight:decodeURIComponent(window.location.pathname).startsWith(e in links ? links[e] : "/preview/"+e)  ? "bold" : "normal", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>)}
+                    {gameTypes.map((e)=>{
+                        return <div className="sidebar-link" style={{display:"flex", flexDirection:"row", gap:"4px", alignItems:"center"}}>
+                            <a key={e} href={e in links ? links[e] : "/preview/"+e} style={{all:"unset", fontWeight:decodeURIComponent(window.location.pathname).startsWith(e in links ? links[e] : "/preview/"+e)  ? "bold" : "normal", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>
+                            <i className="material-icons">arrow_forward</i>
+                        </div>
+                    })}
                 </div>
             </div>
             <SizedBox height="24px" />

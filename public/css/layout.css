@@ -52,6 +52,19 @@
     font-size: 48px;
 }
 
+
+.sidebar-link .material-icons{
+    font-size: 18px;
+    transform: translateX(-4px);
+    opacity: 0;
+    transition: all 200ms;
+}
+
+.sidebar-link:hover .material-icons{
+    opacity: 1;
+    transform: translateX(0px);
+}
+
 @media only screen and (min-width: 1000px) and (max-width: 1300px){
     .statistics-tile .material-icons-outlined{
         display: none;

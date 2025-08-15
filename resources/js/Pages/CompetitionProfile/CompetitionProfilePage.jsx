@@ -41,8 +41,9 @@ export default function CompetitionProfilePage({auth, user, competition, stats, 
                 <StatisticsTile stat={stats.competitions_count ?? "0"} label={"Võistlusmängu"} oneLabel={"Võistlusmäng"} icon={"joystick"} />
                 <StatisticsTile stat={stats.avg_accuracy + "%"} label={"Vastamistäpsus"} icon={"percent"} />
                 <StatisticsTile stat={averageTime(stats.avg_time)} label={"Keskmine aeg"} icon={"hourglass_bottom"} />
-                <StatisticsTile stat={stats.points_total ?? "0"} label={"Võistluspunkti"} oneLabel={"Võistluspunkt"} icon={"trophy"} compactNumber={true} />
+                <StatisticsTile stat={stats.points_total ?? "0"} label={"Võistluspunkti kokku"} oneLabel={"Võistluspunkt kokku"} icon={"trophy"} compactNumber={true} />
             </div>
+            <SizedBox height={8} />
 
             <div className="two-column-layout">
                 <div>

@@ -123,53 +123,20 @@ class GameController extends Controller
 
     //Show all game related stats like accuracy, game time, points and streak.  
     public function getOverallStats($user_id){
-        $mangud = DB::table('mangs')->where('user_id',$user_id == null ? Auth::id() : $user_id)->orderBy("dt", "desc")->get();
+        $mangud = DB::table('mangs')->where('user_id',$user_id ?? Auth::id())->orderBy("dt", "desc")->get();
+        $count = $mangud->count();
+        $accuracy = round($mangud->avg('accuracy_sum'));
+        $avg_time = round($mangud->avg('time'));
+        $total_time = $mangud->sum('time');
 
-        $accuracy_sum = 0;
-        //Score as points
-        $points_sum = 0;
-        //Game time
-        $time_sum = 0;
-        //Game proficiency
-        $proficiency = array(
-            "liitmine" => 0,
-            "lahutamine" => 0,
-            "korrutamine" => 0,
-            "jagamine" => 0,
-            "astendamine" => 0,
-            "juurimine" => 0,
-            "astejuurimine" => 0,
-            "jaguvus" => 0,
-            "murruTaandamine" => 0,
-            "v%C3%B5rdlemine" => 0,
-            "lünkamine" => 0,
-            "kujundid"  => 0,
-        );
-
-        $count = sizeof($mangud);
-
-        foreach($mangud as $mang){
-            $accuracy_sum += $mang->accuracy_sum;
-            $points_sum += $mang->score_sum;
-            if(array_key_exists($mang->game, $proficiency)){
-                $proficiency[$mang->game] = $proficiency[$mang->game] + $mang->experience;
-            }
-            $time_sum += $mang->time;
-        }
-
-        //Average accuracy
-        $accuracy = $count > 0 ? round($accuracy_sum / $count) : 0;
-        //Average time
-        $avg_time = $count > 0 ? round($time_sum / $count) : 0;
-
+        $points_sum = $mangud->sum('experience');
         //Streak
         $streak = app(ProfileController::class)->viewStreak($user_id);
 
         $streak_active = User::where("id", $user_id)->first()->streak_active;
 
         //Send all gathered information to frontend
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'proficiency'=>$proficiency, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "last_active"=>$count == 0 ? "-" : date_format(date_create($mangud->first()->dt), "d.m.Y")];
-
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "total_time"=>$total_time];
     }
 
     //Get all the game details
@@ -180,11 +147,9 @@ class GameController extends Controller
             $manguAutor = User::where("id", $mang->user_id)->first();
             $competition = $mang->competition_id == null ? null : Competition::find($mang->competition_id);
             return Inertia::render("GameDetails/GameDetailsPage", ["game"=>$mang, "playedBy"=>$manguAutor, "competition"=>$competition]);
+        }else{
+            abort(404);
         }
-
-        abort(404);
-
-        return redirect()->route("dashboard");
     }
 
     //Extra stats (total play time etc)
@@ -331,9 +296,7 @@ function getMangStats($userId) {
         $logged_in_user = Auth::user();
         $logged_in_klass = Klass::where("klass_id", $logged_in_user->klass)->first();
 
-        if($user != null){
-            // Kuna mulle siiski tundub, et lasta kõigil näha kasutaja andmeid on ebaõige (eriti nooremate laste puhul), siis teen niimoodi ümber, et näha saavad ainult klassikaaslased ja õpetaja
-            
+        if($user != null){            
             $klass = Klass::where("klass_id", $user->klass)->first();
 
             // You can see your own public profile, no matter what
@@ -372,7 +335,6 @@ function getMangStats($userId) {
         $stats["gameCount"] = $gameStats["gameCount"];
         $stats["gameTypes"] = $gameStats["gameTypes"];
         $stats["streakDays"] = $this->getPlayedDates($user->id);
-        $stats["competitionCount"] = User::where("id", $user->id)->first()->competitions()->where('dt_end', '<', Carbon::now())->count();
 
         return Inertia::render("Stats/StatsPage", ["stats"=>$stats]);
     }

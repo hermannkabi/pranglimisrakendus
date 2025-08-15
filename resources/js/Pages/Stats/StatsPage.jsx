@@ -8,14 +8,29 @@ import { useEffect, useRef, useState } from "react";
 export default function StatsPage({auth, stats}){
     
     function averageTime(timeInSeconds){
-        var minutes = Math.floor(timeInSeconds / 60);
-        var seconds = timeInSeconds - 60*minutes;
+        var hours = Math.floor(timeInSeconds / 3600);
+        var minutes = Math.floor(timeInSeconds / 60) - hours*60;
+        var seconds = timeInSeconds - 60*minutes - 3600*hours;
 
+        hours = hours <= 9 ? "0"+hours.toString() : hours.toString()
         minutes = minutes <= 9 ? "0"+minutes.toString() : minutes.toString();
         seconds = seconds <= 9 ? "0"+seconds.toString() : seconds.toString();
 
-        return minutes + ":" + seconds;
+        return (hours != 0 ? (hours + ":") : "") + minutes + ":" + seconds;
     }    
+
+    function totalTime(timeInSeconds){
+                var hours = Math.floor(timeInSeconds / 3600);
+        var minutes = Math.floor(timeInSeconds / 60) - hours*60;
+        var seconds = timeInSeconds - 60*minutes - 3600*hours;
+
+        hours = hours <= 9 ? "0"+hours.toString() : hours.toString()
+        minutes = minutes <= 9 ? "0"+minutes.toString() : minutes.toString();
+        seconds = seconds <= 9 ? "0"+seconds.toString() : seconds.toString();
+
+        return (hours != 0 ? (hours + "h ") : "") + minutes + "min";
+
+    }
 
     const [statsPeriod, setStatsPeriod] = useState("week");
     const canvasRef = useRef(null);
@@ -119,7 +134,8 @@ export default function StatsPage({auth, stats}){
             const month = date.getMonth();
             monthYear.textContent = date.toLocaleString('et-EE', { month: 'long', year: 'numeric' });
 
-            const firstDay = new Date(year, month, 1).getDay(); // 0-6
+            let firstDay = new Date(year, month, 1).getDay(); // 0-6
+            firstDay = (firstDay + 6) % 7;
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
             daysContainer.innerHTML = '';
@@ -134,8 +150,8 @@ export default function StatsPage({auth, stats}){
             const dayElem = document.createElement('div');
             dayElem.textContent = day;
             dayElem.classList.add('day');
-                const dayOfWeek = new Date(year, month, day).getDay();
-            if (dayOfWeek === 5 || dayOfWeek === 6) { // Sunday(0) or Saturday(6)
+                const dayOfWeek = (new Date(year, month, day).getDay() + 6) % 7;
+            if (dayOfWeek === 5 || dayOfWeek === 6) {
                 dayElem.classList.add('weekend');
             }
 
@@ -197,7 +213,7 @@ export default function StatsPage({auth, stats}){
                 <StatisticsTile stat={stats.total_training_count ?? totalTrainingCount} label={"Mängu"} oneLabel={"Mäng"} icon={"sports_esports"} />
                 <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
                 <StatisticsTile stat={averageTime(stats.average_time)} label={"Keskmine mänguaeg"}icon={"hourglass_bottom"} />
-                <StatisticsTile stat={stats.competitionCount} label={"Võistlust kokku"} oneLabel={"Võistlus kokku"} icon={"leaderboard"} />
+                <StatisticsTile stat={stats.points} compactNumber={true} label={"Punkti kokku"} icon={"functions"} />
             </div>
 
             <div className="two-column-layout">
@@ -244,7 +260,7 @@ export default function StatsPage({auth, stats}){
 
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}>
                         <StreakWidget streak={stats.streak} active={stats.streak_active} />
-                        <StatisticsTile stat={stats.points} compactNumber={true} label={"Punkti kokku"} icon={"functions"} />
+                        <StatisticsTile stat={totalTime(stats.total_time)} label={"Mänguaeg kokku"}icon={"hourglass_top"} />
                     </div>
                 </div>
             </div>

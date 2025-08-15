@@ -26,7 +26,9 @@ export default function Sidebar({title, auth}){
                 </div>
             </a>
 
-            <div>
+            <div style={{display:"flex", flexDirection:"row", gap:"8px", alignItems:"end", justifyContent:"center"}}>
+                {auth != null && auth.user != null && <a style={{all:'unset', cursor:"pointer"}} href={route("profilePage")}><i className="material-icons-outlined">person_2</i></a>}
+
                 <i onClick={toggleMobileMenu} id="mobile-hamburger-menu" style={{fontSize:'32px', marginLeft: "8px"}} className="material-icons">menu</i>
             </div>
         </div>
@@ -40,13 +42,6 @@ export default function Sidebar({title, auth}){
                 <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
                 <GameSectionDropdown isNew={true} title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} />
             </div>
-            {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", margin:"0", marginBlock:"8px"}}>
-                <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
-                <div style={{textAlign:"start"}}>
-                    <p style={{textTransform:"capitalize", marginBottom:"0"}}>{auth.user.eesnimi} {auth.user.perenimi}</p>
-                    <p style={{color:"var(--grey-color)", marginTop:"0"}}>Tallinna Reaalkool</p>
-                </div>
-            </div></a>}
             <SizedBox height="8px" />
             <div style={{borderBottom:"1px solid #5A5A5A", width:"100%"}}>
 
