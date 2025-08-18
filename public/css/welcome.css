@@ -84,7 +84,7 @@ body, html{
 
 .home-navbar{
     position: sticky;
-    top: 16px;
+    top: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -92,6 +92,7 @@ body, html{
     backdrop-filter: blur(3.4px);
     -webkit-backdrop-filter: blur(3.4px);
     z-index: 10;
+    padding: 16px 24px;
 }
 
 .home-navbar > .title-div{

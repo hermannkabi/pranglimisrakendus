@@ -4,6 +4,8 @@ import "/public/css/auth_layout.css";
 import LoginHeader from "@/Components/LoginHeader";
 import InfoBanner from "@/Components/InfoBanner";
 import { useState } from "react";
+import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
+import BigButton from "@/Components/2024SummerRedesign/BigButton";
 
 export default function ResetPasswordPage(){
     const formChildrenStyle = {width:"100%", boxSizing:"border-box", height:"56px", margin:"8px auto"};
@@ -33,22 +35,22 @@ export default function ResetPasswordPage(){
 
     return <>
         <Head title="Unustasin parooli" />
-        <SizedBox height={36} />
 
         <div className="auth-container">
-            <LoginHeader pageName={"Unustasin parooli"} />
+            <LoginHeader pageName={"Unustasid parooli?"} description="Uue parooli loomiseks sisesta e-posti aadress ja järgi juhiseid" />
 
-            <form onSubmit={submitForm} method="post" action={route("password.store")} autoComplete="off" className="login-container auth-main-content">
-                {Object.keys(errors).length > 0 && <InfoBanner text={errors[Object.keys(errors)[0]] == "Please wait before retrying." ?  "Palun oota pisut, enne kui uuesti proovid!" : errors[Object.keys(errors)[0]] == "We can't find a user with that email address." ? "Sellise e-posti aadressiga kasutajat ei leitud!" : errors[Object.keys(errors)[0]]} />}
-                
-                
-                <input type="hidden" name="_token" value={window.csrfToken}  />
-
-                <input style={formChildrenStyle} type="email" name="email" placeholder="E-posti aadress" />
-                
-                <button style={{width:"100%"}} type="submit">Muuda parooli</button>
-            </form>
-
+            <div className="auth-main-content">
+               <SizedBox height={12} />
+                <form style={{width:"min(100%, 600px)", margin:"auto", textAlign:'start'}} method="post" action={route("password.store")} autoComplete="off" className="login-container">
+                    {Object.keys(errors).length > 0 && <InfoBanner text={errors[Object.keys(errors)[0]] == "Please wait before retrying." ?  "Palun oota pisut, enne kui uuesti proovid!" : errors[Object.keys(errors)[0]] == "We can't find a user with that email address." ? "Sellise e-posti aadressiga kasutajat ei leitud!" : errors[Object.keys(errors)[0]]} />}
+                    
+                    <input type="hidden" name="_token" value={window.csrfToken}  />
+                    <PasswordWidget inputName={"email"} autoComplete="email" text={"E-posti aadress"} isPassword={false} type={"email"} icon={"email"} />
+                    
+                    <BigButton onClick={submitForm} title={"Muuda parooli"} subtitle={"Saada parooli lähtestamise kiri"} />
+                </form>
+                <SizedBox height={12} />
+            </div>
         </div>
     </>;    
 }

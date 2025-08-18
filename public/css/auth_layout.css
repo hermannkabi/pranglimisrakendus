@@ -1,19 +1,25 @@
 .auth-container{
-    margin-top: 100px;
     display: flex;
+    min-height: 100vh;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: center;
-    gap: 20%;
 }
 
 .auth-header{
     text-align: left;
+    background-color: rgb(var(--primary-color));
+    padding: 32px;
+    flex: 4;
+    min-height: calc(100vh - 64px);
 }
 
 .auth-main-content{
-    width: max(20%, 300px);
+    flex: 6;
+    margin: auto 32px;
+    text-align: center;
 }
+
 
 @media only screen and (max-width: 800px) {
     .auth-container{
@@ -23,11 +29,17 @@
     }
 
     .auth-main-content{
-        margin: auto;
+        margin: 8px;
+        padding: 8px;
     }
     
     .auth-header{
         text-align: center;
         margin: auto;
+        display: none !important;
+    }
+
+    .auth-header-mobile{
+        display: block !important;
     }
 }

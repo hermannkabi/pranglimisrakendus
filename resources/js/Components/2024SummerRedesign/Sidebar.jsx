@@ -79,6 +79,13 @@ export default function Sidebar({title, auth}){
                 <p style={{color:"var(--grey-color)", marginTop:"0"}}>Tallinna Reaalkool</p>
             </div>
         </div></a>}
+        {!(auth != null && auth.user != null) && <a style={{all:"unset"}} href={route("login")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0"}}>
+            <div style={{height:"50px", aspectRatio:"1", borderRadius:"50px", backgroundColor:"var(--section-color)", filter:"brightness(85%)", display:"flex", justifyContent:"center", alignItems:"center"}}><i className="material-icons" style={{fontSize:"32px"}}>login</i></div>
+            <div style={{textAlign:"start"}}>
+                <p style={{marginBottom:"0"}}>Logi sisse</p>
+                <p style={{color:"var(--grey-color)", marginTop:"0"}}></p>
+            </div>
+        </div></a>}
     </div>
     </>);
 }

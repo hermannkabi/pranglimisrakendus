@@ -6,6 +6,10 @@ import "/public/css/auth_layout.css";
 import { useState } from "react";
 import InfoBanner from "@/Components/InfoBanner";
 import HorizontalRule from "@/Components/HorizontalRule";
+import BigButton from "@/Components/2024SummerRedesign/BigButton";
+import Chip from "@/Components/2024SummerRedesign/Chip";
+import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
+import SizedBox from "@/Components/SizedBox";
 
 export default function NewRegisterPage({message, errors}){
 
@@ -16,22 +20,7 @@ export default function NewRegisterPage({message, errors}){
 
     const [currentPage, setCurrentPage] = useState(0);
     
-    const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get('email');
-    const name = urlParams.get('name');
-
     const [isTeacher, setIsTeacher] = useState(false);
-
-    if(email){
-        $("#email").val(email);
-    }
-
-    if(name){
-        $("#name").val(name.substring(0, name.lastIndexOf(" ")));
-        $("#famname").val(name.substring(name.lastIndexOf(" ")));
-    }
-
-    
 
     var force = false;
 
@@ -114,19 +103,8 @@ export default function NewRegisterPage({message, errors}){
             email = emailName + "." + emailFamName + host;
         }
 
-        $("#email").val(email);
+        return email;
     }
-
-
-    // $(".register-container").submit(function (e){
-    //     setLoading(true);
-    //     if(!force){
-    //         e.preventDefault();
-    //         trySendData(e);
-    //     }
-    // });
-
-    $("#name, #famname").on("input", generateEmail);
 
     function navigateToNext(e, back=false, force=null){
         if(e != null){
@@ -169,44 +147,56 @@ export default function NewRegisterPage({message, errors}){
 
     return (
         <>
-
             <Head title="Loo konto" />
 
             <div className="auth-container">
 
-                <LoginHeader pageName="Loo konto" />
+                <LoginHeader pageName="Tere tulemast Reaalerisse!" description={"Reaaleri kasutamiseks palun loo konto"} />
                 
                 <div className="auth-main-content">
-                    {errorMessages && <InfoBanner text={errorMessages}/>}
-                    <div className="register-step account-type-container">
-                        <button type="button" secondary="true" onClick={()=>window.location.href =  route('google.redirect') }><img src={googleLogo} /> Google</button>
-                        <HorizontalRule />
-                    
-                        <button onClick={()=>setTeacherStatus(false)}>Õpilane</button>
-                        <button onClick={()=>setTeacherStatus(true)} secondary="">Õpetaja</button>
-                        <a style={{display:"block", textAlign:"right"}} alone="" onClick={()=>window.location.href = route("authenticateGuest")}>Sisene külalisena</a>
-                    </div>
-
-                    <div className="register-step name-email-container" hidden>
-                        <form className="register-container" onSubmit={navigateToNext}>
-                            <div className="register-row">
-                                <input id="name" name="eesnimi" className="row-input" style={{flex:1, marginLeft:"0", textTransform:"capitalize"}} type="text" placeholder="Eesnimi" autoCapitalize="words" required/>
-                                <input id="famname" name="perenimi" className="row-input" style={{flex:1, marginRight:"0", textTransform:"capitalize"}} type="text" placeholder="Perenimi" autoCapitalize="words" required/><br />
+                    <div style={{width:"min(100%, 600px)", margin:"auto", textAlign:'start'}}>
+                        <SizedBox height={12} />
+                        
+                        {errorMessages && <InfoBanner text={errorMessages}/>}
+                        <div className="register-step account-type-container">
+                            <div onClick={()=>window.location.href = route('google.redirect')} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0", background:"linear-gradient(-120deg, #4285f430, #34a85330, #fbbc0530, #ea433530)"}}>
+                                <div style={{display:"flex", flexDirection:"column", justifyContent:"start", alignItems:"start", marginBlock:"8px"}}>
+                                    <img style={{height:"24px"}} src={googleLogo} />
+                                    <p style={{marginTop:"8px", marginBottom:"0"}}>Jätka Google'i kontoga</p>
+                                </div>
                             </div>
-                            <input id="email" name="email" type="email" placeholder="E-posti aadress" required/><br />
-                            <button type="submit" >Edasi</button>
-                            <a style={{display:"block", textAlign:"left"}} alone="" onClick={()=>navigateToNext(null, true)}>Tagasi</a>
-                        </form>
-                    </div>
+                            <HorizontalRule />
+                            
+                            <BigButton onClick={()=>setTeacherStatus(false)} title={"Õpilase konto"} subtitle={"Loo konto"} />
+                            <BigButton secondary={true} onClick={()=>setTeacherStatus(true)} title={"Õpetaja konto"} subtitle={"Loo konto"} />
+                            <Chip icon={"supervisor_account"} label={"Sisene külalisena"} onClick={()=>window.location.href = route("authenticateGuest")} />                        
+                        </div>
 
-                    <div className="register-step password-container" hidden>
-                        <form className="register-container" onSubmit={submitForm}>
-                            <PasswordInput name="password" divstyle={{width:"100%"}} placeholder="Parool" required/><br />
-                            <PasswordInput name="password_confirmation" divstyle={{width:"100%"}} placeholder="Korda parooli" required/>
-                            <button type="submit">Loo konto</button>
-                            <a style={{display:"block", textAlign:"left"}} alone="" onClick={()=>navigateToNext(null, true)}>Tagasi</a>
-                        </form>
+                        <div className="register-step name-email-container" hidden>
+                            <form className="register-container" onSubmit={navigateToNext}>
+                                <PasswordWidget required={true} inputName={"eesnimi"} text={"Eesnimi"} isPassword={false} type={"name"} icon={"person"} />
+                                <SizedBox height={12} />
+                                <PasswordWidget required={true} inputName={"perenimi"} text={"Perekonnanimi"} isPassword={false} type={"name"} icon={"signature"} />
+                                <SizedBox height={12} />
+                                <PasswordWidget required={true} inputName={"email"} text={"E-posti aadress"} isPassword={false} type={"email"} icon={"email"} />
+                                <BigButton onClick={navigateToNext} title={"Edasi"} subtitle={"Loo konto"} />
+                                <Chip icon={"arrow_back"} label={"Tagasi"} onClick={()=>navigateToNext(null, true)} />                        
+                            </form>
+                        </div>
+
+                        <div className="register-step password-container" hidden>
+                            <form className="register-container">
+                                <PasswordWidget inputName={"password"} text={"Parool"} />
+                                <SizedBox height={12} />
+                                <PasswordWidget inputName={"password_confirmation"} text={"Korda parooli"} />
+
+                                <BigButton onClick={submitForm} title={"Lõpeta konto loomine"} subtitle={"Loo konto"} />
+                                <Chip icon={"arrow_back"} label={"Tagasi"} onClick={()=>navigateToNext(null, true)} />                        
+
+                            </form>
+                        </div>
                     </div>
+                    <SizedBox height={12} /> 
                 </div>
 
             </div>
