@@ -79,8 +79,8 @@ export default function NewLoginPage({message, errors}){
                         <BigButton onClick={handleSubmit} title={"Logi sisse"} subtitle={loading ? <LoadingSpinner /> : "Reaaler"} />
                         <SizedBox height={8} />
                         <div style={{textAlign:"left"}}>
-                            <Chip icon={"lock_reset"} label={"Unustasin salasõna"} onClick={()=>window.location.href = route("forgotPassword")} />
-                            <Chip icon={"person_add"} label={"Loo konto"} onClick={()=>window.location.href = route("register")} />
+                            <a style={{all:"unset", cursor:"pointer"}} href={route("forgotPassword")}><Chip icon={"lock_reset"} label={"Unustasin salasõna"} /></a>
+                            <a style={{all:"unset", cursor:"pointer"}} href={route("register")}><Chip icon={"person_add"} label={"Loo konto"} /></a>
                             <Chip icon={"supervisor_account"} label={"Sisene külalisena"} onClick={()=>window.location.href = route("authenticateGuest")} />
                         </div>
                     </form>

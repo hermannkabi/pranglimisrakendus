@@ -72,11 +72,11 @@ body, html{
     scroll-behavior: smooth;
 }
 
-.onboarding-btn > .material-icons{
+.onboarding-btn .material-icons-outlined{
     transition: rotate 100ms;
 }
 
-.onboarding-btn:hover > .material-icons{
+.onboarding-btn:hover .material-icons-outlined{
     animation: wave 500ms;
     animation-iteration-count: 2;
 }

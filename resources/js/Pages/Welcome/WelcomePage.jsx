@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/react";
 import "/public/css/welcome.css";
 import "/public/css/404.css";
 import { useEffect, useState } from "react";
+import Chip from "@/Components/2024SummerRedesign/Chip";
 
 
 export default function WelcomePage({auth, users, games, points, message}){
@@ -82,7 +83,7 @@ export default function WelcomePage({auth, users, games, points, message}){
                 <ApplicationLogo size={150} style={{pointerEvents:"none"}} />
                 <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
                 <div className="buttons">
-                    <button className="onboarding-btn" onClick={()=>window.location.href = "#start"}> <i className="material-icons no-anim">waving_hand</i> Alusta kohe</button>
+                    <Chip onClick={()=>window.location.href = "#start"} active={true} classNames={"onboarding-btn"} icon={"waving_hand"} label="Alusta" />
                     <br /><br />
                 </div>
             </div>
@@ -269,18 +270,18 @@ export default function WelcomePage({auth, users, games, points, message}){
             </div>
 
             <SizedBox height="144px" />
-            <div id="start" className="section onboarding">
+            <div id="start" className="onboarding">
                 <br />
                 <i translate="no" style={{fontSize:"75px", color:"rgb(var(--primary-color))"}} className="material-icons-outlined">check_circle</i>
                 <h2>Hakkame pihta?</h2>
                 <p className="onboarding-text">Hetkel on Reaaler mõeldud vaid Tallinna Reaalkooli õpilastele ja õpetajatele. Aga ka teised ei pea veel pead norgu laskma - põhiline arvutamise funktsionaalsus on läbi külaliskonto saadaval kõigile.</p>
                 <br />
                 {auth.user == null && <div>
-                    <button onClick={()=>window.location.href = route("register")}>Loo konto</button>
-                    <button onClick={()=>window.location.href = route("authenticateGuest")} secondary="true">Sisene külalisena</button>
+                    <Chip icon={"person_add"} active={true} onClick={()=>window.location.href = route("register")} label={"Loo konto"}  />
+                    <Chip icon={"supervisor_account"} onClick={()=>window.location.href = route("authenticateGuest")} label={"Sisene külalisena"}  />
                 </div>}
                 {auth.user != null && <div>
-                    <button onClick={()=>window.location.href = route("dashboard")}>Sisene Reaalerisse</button>
+                    <Chip icon={"door_open"} active={true} onClick={()=>window.location.href = route("dashboard")} label={"Sisene Reaalerisse"}  />
                 </div>}
                 <br /><br />
             </div>
@@ -288,7 +289,7 @@ export default function WelcomePage({auth, users, games, points, message}){
             <SizedBox height="100px" />
 
             <div style={{color:"var(--grey-color)"}}>
-                <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024-2025</p>
+                <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024-{(new Date()).getFullYear()}</p>
                 <p style={{marginTop:"0"}}>Reaaleri arendajad on Hermann Käbi ja Jarl Justus Hellat</p>
             </div>
             <div id="easteregg"></div>

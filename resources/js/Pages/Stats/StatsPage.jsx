@@ -20,16 +20,13 @@ export default function StatsPage({auth, stats}){
     }    
 
     function totalTime(timeInSeconds){
-                var hours = Math.floor(timeInSeconds / 3600);
+        var hours = Math.floor(timeInSeconds / 3600);
         var minutes = Math.floor(timeInSeconds / 60) - hours*60;
-        var seconds = timeInSeconds - 60*minutes - 3600*hours;
 
-        hours = hours <= 9 ? "0"+hours.toString() : hours.toString()
-        minutes = minutes <= 9 ? "0"+minutes.toString() : minutes.toString();
-        seconds = seconds <= 9 ? "0"+seconds.toString() : seconds.toString();
+        hours = hours.toString()
+        minutes = minutes.toString();
 
         return (hours != 0 ? (hours + "h ") : "") + minutes + "min";
-
     }
 
     const [statsPeriod, setStatsPeriod] = useState("week");
