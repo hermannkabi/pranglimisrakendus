@@ -60,7 +60,7 @@
     transition: all 200ms;
 }
 
-.sidebar-link:hover .material-icons{
+.sidebar-link:hover .material-icons, .sidebar-link.active .material-icons{
     opacity: 1;
     transform: translateX(0px);
 }

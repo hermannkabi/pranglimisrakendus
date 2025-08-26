@@ -77,11 +77,7 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                 <img className="easteregg1" style={{position:"fixed", top:"0", left:"0", display:"none", zIndex:"1000", width:"100%"}} src="/assets/eastereggs/chrisette2.jpg" alt="" />
                 {(new URLSearchParams(window.location.search)).get("verified") != null && <div style={{marginBottom:"16px"}} className="section">
                     <InfoBanner type="success" text={"Sinu e-posti aadress on kinnitatud!"} />
-                </div>}
-                {/* <InfoBanner>
-                    <p>Tere tulemast uude Reaalerisse! Palun anna meile tagasisidet <a alone="" href="https://forms.gle/iQWEqL8GBZLJFJom8">siin</a></p>
-                </InfoBanner> */}
-                
+                </div>}                
                 {psa && <InfoBanner text={psa} />}
                 {auth.user.role != "guest" && <div className="four-stat-row">
                     <StreakWidget streak={stats.streak} active={stats.streak_active} />
@@ -89,26 +85,20 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                     <StatisticsTile stat={(stats.accuracy ??(parseInt(window.localStorage.getItem("total-percentage") ?? "0")/parseInt(window.localStorage.getItem("total-training-count") ?? "1")).toFixed(0)) + "%"} label={"Vastamistäpsus"}icon={"percent"} />
                     <a style={{textDecoration:"none", filter:"none", cursor:"pointer"}} className="clickable" href={route("stats")}><StatisticsTile clickable={true} stat={"→"} label={"Kogu statistika"} icon={"query_stats"} /></a>
                 </div>}
-                {auth.user.role.split(",").includes("admin") && <div className="section" style={{marginTop:"16px", marginBottom:"0"}}>
-                    <TwoRowTextButton upperText={"Admini valikud"} lowerText={"Siin saad hallata klasse ja võistluseid"} showArrow={false} />
+
+                {auth.user.role.split(",").includes("admin") && <> <SizedBox height={16} /> <div className="two-column-layout">
+                    <div className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Õpilaste & klasside haldamine" value={"Reaalerit kasutab " + stats.total_students + " õpilast ja " + stats.total_classes + " klassi"} />
                     
-                    <div style={{display:"flex", flexDirection: (window.innerWidth <= 600 ? "column" : "row"), justifyContent:"start", gap:"16px"}}>
-
-                        
-
-
-                        {auth.user.role.split(",").includes("admin") && <a href={route("admin")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
-                            <div className="section clickable">
-                                <TwoRowTextButton upperText={"Klasside haldamine"} lowerText={"Vaata edasi"} />
-                            </div>
-                        </a>}
-                        {auth.user.role.split(",").includes("admin") && <a href={route("manageCompetitions")} style={{all:"unset", cursor:"pointer", display:"inline-flex", flexDirection:"column", justifyContent:"center"}}>
-                            <div className="section clickable">
-                                <TwoRowTextButton upperText={"Võistluste haldamine"} lowerText={"Vaata edasi"} />
-                            </div>
-                        </a>}
+                        <a href={route("admin")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
-                </div>}
+
+                    <div className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Võistluste haldamine" value={"Reaaleris on toimunud " + stats.total_competitions + " võistlus" + (stats.total_competitions == 1 ? "" : "t")} />
+                    
+                        <a href={route("manageCompetitions")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
+                    </div>
+                </div></>}
 
                 {/* Teacher things start here */}
                 {auth.user.role.includes("teacher") && !auth.user.email_verified_at && <div className="section" style={{marginBlock:"16px"}}><InfoBanner type="error" text="Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress" /></div> }
@@ -221,7 +211,9 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                         </div>
                         <a href={"/competition/"+competitionData.competition.competition_id+"/view"} style={{all:"unset", position:"absolute", height:"100%", width:"100%", top:'0', left:"0"}}></a>
                     </div>
-                    <DashboardClassStatTile icon="social_leaderboard" text="Osalemisi kokku" value={competitionData.totalCompetitions} />
+                    <div className="section class-stat">
+                        <DashboardClassStatTile icon="social_leaderboard" text="Osalemisi kokku" value={competitionData.totalCompetitions} />
+                    </div>
                     <div className={"section class-stat " + (competitionData.bestRank == null ? "" : "clickable")} style={{position:"relative"}}>
                         <DashboardClassStatTile icon="trophy" text="Parim tulemus" value={competitionData.bestRank == null ? "-" : competitionData.bestRank.rank + "."} />
                         <a style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}} disabled={competitionData.bestRank == null} href={competitionData.bestRank == null ? null : "/competition/"+competitionData.bestRank.competition_id+"/view"}></a>

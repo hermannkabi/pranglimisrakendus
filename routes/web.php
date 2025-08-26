@@ -48,6 +48,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
 
     Route::get('/profile/{id}', "showPublic")->name("profilePublic");
 
+    Route::post("/profile/{id}/delete", "deleteUser")->name("deleteUser");
 });
 
 
@@ -186,13 +187,10 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::get('/classroom/{id}/join', 'joinLink')->name('joinLink');
     Route::post('/classroom/{id}/join', 'joinLinkPost')->name('joinLinkPost')->middleware(['role:student']);
 
-
     Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher;admin']);
     Route::post('/classroom/{id}/edit', 'edit')->name('classEditPost')->middleware(['role:teacher;admin']);
 
-
     Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
-
 
     Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
     Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']);
@@ -200,7 +198,6 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
 
     Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
-
 });
 
 //Competition routes
@@ -224,7 +221,7 @@ Route::get('/how-to-play', function (){
 })->name("guide");
 
 Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
-    Route::get("/classes/manage", "adminShow")->name("admin");
+    Route::get("/students/manage", "adminShow")->name("admin");
     Route::get("/competitions/manage", "manageCompetitions")->name("manageCompetitions");
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
     Route::post("/competition/new", "competitionAdd")->name("competitionNewPost");

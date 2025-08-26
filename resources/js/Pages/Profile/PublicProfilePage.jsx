@@ -19,6 +19,18 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
         "valimised-admin":"Admin (valimised)",
     };
 
+    function deleteUser(){
+        if(confirm("See tegevus kustutab selle kasutaja ("+user.eesnimi + " " + user.perenimi +") ja kõik temaga seotud andmed Reaalerist. Kas oled kindel, et soovid jätkata?")){
+            $.post("/profile/"+user.id+"/delete", {
+                "_token":window.csrfToken,
+            }).done(function (data){
+                window.location.href = route("dashboard");
+            }).fail(function (data){
+                console.log(data);
+            });
+        }
+    }
+
     return <>
         <Layout title="Avalik profiil" auth={auth}>
             {auth.user.id == user.id && <div className="section" style={{marginBottom:'16px'}}>
@@ -64,6 +76,13 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                         <TwoRowTextButton upperText="Võistluste ajalugu" lowerText="Vaata tulemusi" />
                         <a href={"/competition/history/"+user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
+
+                    {auth.user.role.split(",").includes("admin") && <div onClick={deleteUser} className="section clickable">
+                        <div style={{color:"var(--red-color)",}}>
+                            <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">delete</i>
+                            <p style={{marginTop:"8px", marginBottom:"0"}}>Kustuta konto Reaalerist</p>
+                        </div>
+                    </div>}
                 </div>
             </div>
         </Layout>

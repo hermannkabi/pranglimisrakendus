@@ -44,8 +44,10 @@ export default function GameSectionDropdown({title, gameTypes=[], isNew=false}){
                 <SizedBox height="8px" />
                 <div >
                     {gameTypes.map((e)=>{
-                        return <div className="sidebar-link" style={{display:"flex", flexDirection:"row", gap:"4px", alignItems:"center"}}>
-                            <a key={e} href={e in links ? links[e] : "/preview/"+e} style={{all:"unset", fontWeight:decodeURIComponent(window.location.pathname).startsWith(e in links ? links[e] : "/preview/"+e)  ? "bold" : "normal", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>
+                        var active = decodeURIComponent(window.location.pathname).startsWith(e in links ? links[e] : "/preview/"+e);
+                        
+                        return <div key={e} className={"sidebar-link " + (active ? "active" : "")} style={{display:"flex", flexDirection:"row", gap:"4px", alignItems:"center"}}>
+                            <a href={e in links ? links[e] : "/preview/"+e} style={{all:"unset", fontWeight: active ? "bold" : "normal", cursor:"pointer", display:"block", marginBlock:"6px", textAlign:"left", marginLeft:"16px"}}>{getGameName(e)}</a>
                             <i className="material-icons">arrow_forward</i>
                         </div>
                     })}

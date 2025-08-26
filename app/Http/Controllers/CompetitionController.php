@@ -227,7 +227,7 @@ class CompetitionController extends Controller
     }
 
     public function competitionHistory(?string $id=null){
-        $user = User::where("id", $id ?? Auth::id())->first();
+        $user = User::findOrFail($id ?? Auth::id());
         $now = Carbon::now();
 
         if($user != Auth::user() && (in_array("student", explode(",", $user->role)) && count(array_intersect(["teacher", "admin"], explode(",", Auth::user()->role))) <= 0) && $user->klass != Auth::user()->klass){
@@ -270,7 +270,7 @@ class CompetitionController extends Controller
             ->where('dt_end', '<', $now)
             ->paginate(10);
 
-        $pastCompetitions->getCollection()->each(function ($competition) use ($userRanks, $tiedRanks, $user) {
+        $pastCompetitions->getCollection()->each(function ($competition) use ($userRanks, $tiedRanks) {
             $rankData = $userRanks[$competition->competition_id] ?? null;
             if (!$rankData) {
                 $competition->rank_label = null;
@@ -282,7 +282,6 @@ class CompetitionController extends Controller
             $isTied = isset($tiedRanks[$key]) && count($tiedRanks[$key]) > 1;
 
             $competition->rank_label = $isTied ? 'T' . $rankData->rank : (string)$rankData->rank;
-            $competition->user = $user;
         });
 
         $competitionGames = Mang::where("user_id", $user->id)->where("competition_id", "!=", null)->get();
@@ -290,7 +289,7 @@ class CompetitionController extends Controller
 
         $stats = ["competitionCount"=>count($pastCompetitions), "bestRank"=>$this->getBestRank($user->id), "gamesCount"=>count($competitionGames), "competitionPoints"=>$competitionPoints];
 
-        return Inertia::render("CompetitionHistory/CompetitionHistoryPage", ["stats"=>$stats, "competitions"=>$pastCompetitions]);
+        return Inertia::render("CompetitionHistory/CompetitionHistoryPage", ["stats"=>$stats, "competitions"=>$pastCompetitions, "user"=>$user]);
     }
 
 

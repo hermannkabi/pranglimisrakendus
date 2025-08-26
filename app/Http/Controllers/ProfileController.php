@@ -266,4 +266,17 @@ class ProfileController extends Controller
 
         return Inertia::render("Profile/PublicProfilePage", ["user"=>$user, "stats"=>$stats, "lastGames"=>$lastGames, "klass"=>$klass]);
     }
+
+
+    public function deleteUser(Request $request, $id){
+        $loggedInUser = $request->user();
+
+        if(str_contains($loggedInUser->role, "admin")){
+            User::destroy($id);
+
+            return 0;
+        }else{
+            return abort(403);
+        }
+    }
 }

@@ -135,8 +135,12 @@ class GameController extends Controller
 
         $streak_active = User::where("id", $user_id)->first()->streak_active;
 
+        $total_students = User::where("role", "like", "%student%")->count();
+        $total_classes = Klass::count();
+        $total_competitions = Competition::count();
+        
         //Send all gathered information to frontend
-        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "total_time"=>$total_time];
+        return ["total_training_count"=>$count, "accuracy"=>$accuracy, "points"=>$points_sum, 'streak'=>$streak, "streak_active"=>$streak_active, "average_time"=>$avg_time, "total_time"=>$total_time, "total_students"=>$total_students, "total_classes"=>$total_classes, "total_competitions"=>$total_competitions];
     }
 
     //Get all the game details

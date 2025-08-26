@@ -4,7 +4,8 @@ import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
 import { useState } from "react";
 
-export default function AdminPage({auth, data}){
+// 'Students' here means users who have the user role but are not enrolled to any classes
+export default function AdminPage({auth, data, students}){
 
     const [selectedClass, setSelectedClass] = useState();
     const [search, setSearch] = useState(null);
@@ -17,7 +18,7 @@ export default function AdminPage({auth, data}){
         return map;
       }, {});
 
-    return <Layout title="Klasside haldamine" auth={auth}>
+    return <Layout title="Õpilaste & klasside haldamine" auth={auth}>
         <div className="two-column-layout">
             <div>
                 <div style={{position:'relative', marginBottom:"16px"}}>
@@ -26,12 +27,19 @@ export default function AdminPage({auth, data}){
                 </div>
 
                 {data.filter((e)=> search == null || search.length <= 0 || (e.name+e.teacher.eesnimi+e.teacher.perenimi+allStudentsNames[e.klass.klass_id]).toLowerCase().includes(search.toLowerCase())).map(e=><div key={e.klass.klass_id} onClick={()=>{
+                        const container = document.querySelector(".layout-main-content");
+                        console.log(container);
+                        
+                        container.scrollTo({ top: 0, left: 0, behavior: "smooth" });
                         return setSelectedClass(e);
                     }} class_id={e.klass.klass_id} style={{display:"flex", flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between"}} className="clickable section class-tile">
                     <TwoRowTextButton upperText={e.name} lowerText={e.teacher.eesnimi + " " + e.teacher.perenimi} capitalizeLower={true} showArrow={false} />
                     <p style={{textAlign:"right", color:"var(--grey-color)", marginBottom:"0", marginRight:"8px"}}>{e.students.length} õpilast</p>
                 </div>)}
-                <p style={{color:"var(--grey-color)"}}>Kokku {data.reduce((sum, obj) => sum + obj.students.length, 0)} õpilast</p>
+                {students.filter(e=> search == null || search.length <= 0 || (e.eesnimi+e.perenimi).toLowerCase().includes(search.toLowerCase())).map(e=> <a key={e.id*2} style={{all:"unset", cursor:"pointer"}} href={"/profile/"+e.id}><Chip label={e.eesnimi + " " + e.perenimi} capitalize={true}  /></a> )}
+
+
+                <p style={{color:"var(--grey-color)"}}>Kokku {data.reduce((sum, obj) => sum + obj.students.length, 0) + students.length} õpilast</p>
             </div>
 
             <div>
@@ -44,7 +52,7 @@ export default function AdminPage({auth, data}){
                             </div>
                        </a>
                         <div>
-                            {selectedClass.students.map(e=> <a style={{all:"unset", cursor:"pointer"}} href={'/profile/'+e.id}><Chip key={e.id} label={e.eesnimi} alt={e.perenimi} capitalize={true} /></a> )}
+                            {selectedClass.students.map(e=> <a key={e.id} style={{all:"unset", cursor:"pointer"}} href={'/profile/'+e.id}><Chip label={e.eesnimi} alt={e.perenimi} capitalize={true} /></a> )}
                             {selectedClass.students.length <= 0 && <p style={{color:"var(--grey-color)"}}>Selles klassis ei ole veel kedagi</p> }
                         </div>
                     </div>
