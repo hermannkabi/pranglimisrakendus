@@ -194,7 +194,7 @@ class LoginRegisterController extends Controller
             if($klass && str_contains(Auth::user()->role, "student")){
                 $class = Klass::where("klass_id", Auth::user()->klass)->first();
                 $teacher = User::select(["eesnimi", "perenimi", "profile_pic", "id"])->where("id", $class->teacher_id)->get();
-                $students = User::where("role", "not like", "%teacher%")->where("klass", Auth::user()->klass)->get();
+                $students = User::where("role", "like", "%student%")->where("klass", Auth::user()->klass)->get();
 
                 $total_count = 0;
 
