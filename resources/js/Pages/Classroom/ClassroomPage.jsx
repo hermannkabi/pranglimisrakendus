@@ -55,11 +55,11 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                         <a href={"/profile/"+teacher.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
                     <SizedBox height="8px" />
-                    {isTeacher && <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}>
-                        <div onClick={copyToClipboard} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
+                    {isTeacher && <><div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}>
+                        <div onClick={()=>window.location.href = "./share"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
                             <div>
-                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">link</i>
-                                <p style={{marginTop:"8px", marginBottom:"0"}}>{copyText}</p>
+                                <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">share</i>
+                                <p style={{marginTop:"8px", marginBottom:"0"}}>Jaga klassi</p>
                             </div>
                         </div>
                         <div onClick={()=>window.location.href = "/classroom/"+uuid+"/edit"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0"}}>
@@ -68,7 +68,13 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Muuda klassi</p>
                             </div>
                         </div>
-                    </div>}
+                    </div>
+                    
+                    <SizedBox height={16} />
+                    <a onClick={copyToClipboard} alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons no-anim">link</i>&nbsp; {copyText}</a>
+
+                    </>
+                    }
 
                 </div>}
             </div>

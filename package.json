@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "js-pick-file": "^1.0.13",
-        "marquee": "^0.2.1"
+        "marquee": "^0.2.1",
+        "react-qr-code": "^2.0.18"
     }
 }

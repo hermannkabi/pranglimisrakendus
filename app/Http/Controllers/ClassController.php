@@ -392,4 +392,11 @@ class ClassController extends Controller
 
         return;
     }
+
+    public function share(Request $request, string $id){
+        $klass = Klass::where("uuid", $id)->first();
+        if(!$klass) return abort(404);
+        if(!(str_contains($request->user()->role, "teacher") || str_contains($request->user()->role, "admin"))) return abort(403);
+        return Inertia::render("Classroom/ClassroomShare", ["klass"=>$klass]);
+    }
 }

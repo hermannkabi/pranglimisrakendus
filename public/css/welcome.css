@@ -81,43 +81,140 @@ body, html{
     animation-iteration-count: 2;
 }
 
+.text-button{
+    background-color: var(--section-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 4px;
+    width: fit-content;
+}
 
-.home-navbar{
-    position: sticky;
-    top: 0;
+.text-button.small{
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.text-button.small .material-icons-outlined{
+    font-size: 18px;
+}
+
+.text-button.simple{
+    background-color: transparent;
+    transition: background-color 100ms;
+}
+
+.text-button.simple:hover{
+    background-color: var(--section-color);
+}
+
+.text-button:hover{
+    filter: brightness(var(--hover-brightness));
+}
+
+.welcome-main{
+    width: 75%;
+    text-align: center;
+    margin: auto;
+    margin-top: 32px;
+}
+
+.auth-links{
     display: flex;
     flex-direction: row;
+    margin-left: auto;
+    margin-right: 0;
+    justify-content: space-between;
+}
+
+.title-screen{
+    padding: 64px 8px;
+}
+
+.two-column-welcome{
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(3.4px);
-    -webkit-backdrop-filter: blur(3.4px);
-    z-index: 10;
-    padding: 16px 24px;
+    margin: 24px max(8%, 64px);
 }
 
-.home-navbar > .title-div{
+.two-column-welcome .text-container{
+    text-align: start;
+    flex: 3;
+}
+
+.two-column-welcome .text-container p{
+    max-width: 400px;
+}
+
+.two-column-welcome .img-container{
+    flex: 2;
+    text-align: end;
+}
+
+.stats-section{
     display: flex;
     flex-direction: row;
-    gap: 0px;
-    align-items: center;
-    color: rgb(var(--primary-color));
+    justify-content: stretch;
+    gap: 16px;
 }
 
-.home-navbar a{
-    all: unset;
-    cursor: pointer;
+.stats-section .stat-tile{
+    flex: 1;
+    text-align: center;
+    padding: 16px 8px;
+}
+
+.stat-tile .stat{
+    font-size: 72px;
     font-weight: bold;
+    margin: 0;
 }
 
-.home-navbar a:hover{
-    all: unset;
-    font-weight: bold;
-    cursor: pointer;
+.stat-tile .type{
+    margin-bottom: 0;
+    margin-top: 12px;
 }
 
-.main-content{
+.about-tiles{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 70%;
+    gap: 60px;
+    margin: auto;
+}
+
+.about-tiles .about-tile:nth-child(2n+1):last-child{
+    grid-column: auto / span 2;
+}
+
+.about-tile{
     text-align: start;
-    margin: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.about-tile .title{
+    display: flex;
+    gap: 6px;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+.about-tile .title h3{
+    margin: 0;
+}
+
+.about-tile p{
+    color: var(--grey-color);
 }
 
 h1{
@@ -150,7 +247,6 @@ h1 .shine{
 
 }
 
-
 .sparkle:nth-of-type(2){
     scale: 0.75;
     position: absolute;
@@ -167,88 +263,70 @@ h1 .shine{
     right: 80px;
     rotate: -0;
     animation: size-change2 3000ms infinite;
-
-}
-
-.features{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 75px;
-}
-
-.feature{
-    display: flex;
-    align-items: center;
-    margin: auto;
-    width: max(35%, 250px);
-    gap: 36px;
-}
-
-.feature-left{
-    flex-direction: row;
-    text-align: left;
-}
-
-.feature-right{
-    flex-direction: row-reverse;
-    text-align: right;
-}
-
-.feature > .section{
-    aspect-ratio: 1;
-}
-
-.feature .material-icons, .feature .material-icons-outlined{
-    font-size: 75px;
-}
-
-.feature p{
-    color: var(--grey-color);
-}
-
-.section.onboarding{
-    width: max(300px, 60%);
-    margin: auto;
-}
-
-.onboarding-text{
-    width: max(300px, 40%);
-    margin: auto;
-    color: var(--grey-color);
 }
 
 
 @media only screen and (max-width:1100px){
 
-    .feature{
-        flex-direction: column;
-        text-align: center;
-        gap: 16px;
+    .welcome-main{
+        width: 90%;
     }
 
     .onboarding-btn{
         margin-bottom: 16px;
     }
 
-    .game-img{
-        position: initial;
-        margin-inline: auto;
-        display: block;
-        margin-top: 100px;
-        rotate: 0deg;
-        transform: rotate(8deg);
-        height: 400px;
-    }
-
     h1{
         font-size: 36px;
     }
 
-    #statistics{
-        display: block !important;
+}
+
+
+@media only screen and (max-width:850px){
+    .auth-links{
+        flex-direction: column-reverse;
     }
 
-    .title-div .title{
-        display: none;
+    .two-column-welcome{
+        flex-direction: column-reverse;
+        gap: 0;
+        margin-inline: 24px;
+    }
+
+    .two-column-welcome .text-container, .two-column-welcome .img-container{
+        text-align: center;
+    }
+
+    .title-screen{
+        padding-block: 16px;
+    }
+
+    .stats-section{
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .stat-tile .stat{
+        font-size: 56px;
+    }
+
+    .about-tiles{
+        grid-template-columns: 1fr;
+        gap: 32px;
+        width: 90%;
+    }
+
+    .about-tile{
+        text-align: center;
+    }
+
+    .about-tile .title{
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .about-tile .title .material-icons{
+        font-size: 64px;
     }
 }

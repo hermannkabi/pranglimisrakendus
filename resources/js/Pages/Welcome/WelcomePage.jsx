@@ -5,6 +5,7 @@ import "/public/css/welcome.css";
 import "/public/css/404.css";
 import { useEffect, useState } from "react";
 import Chip from "@/Components/2024SummerRedesign/Chip";
+import WelcomeTile from "@/Components/2024SummerRedesign/WelcomeTile";
 
 
 export default function WelcomePage({auth, users, games, points, message}){
@@ -25,6 +26,8 @@ export default function WelcomePage({auth, users, games, points, message}){
 
     useEffect(()=>{
         $("#easteregg").append('<img loading="lazy" id="priscilla" style="z-index: 1000; transition: transform 1000ms; visibility: hidden; position:fixed; rotate:20deg; height:300px; bottom: -300px; left: -100px" src="/assets/eastereggs/priskilla.png" />');
+        
+        moveShadow();
     }, []);
 
     useEffect(()=>{
@@ -61,238 +64,160 @@ export default function WelcomePage({auth, users, games, points, message}){
 
     }, 350);
 
+    function moveShadow(){
+        document.querySelectorAll('.section').forEach(section => {
+            const shadow = section.querySelector('.shadow');
+
+            if(!shadow) return;
+
+            section.addEventListener('mousemove', (e) => {
+            const rect = section.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            shadow.style.left = `${x - shadow.offsetWidth / 2}px`;
+            shadow.style.top = `${y - shadow.offsetHeight / 2}px`;
+            });
+
+            section.addEventListener('mouseleave', () => {
+            shadow.style.left = '-9999px'; // hide shadow when leaving
+            });
+        });
+    }
+
+    const data = {
+        "Uus tase peastarvutamises":[
+            {icon: "functions", title: "Palju mängutüüpe", message: "Igaüks leiab Reaalerist sobiva mängu, mida harjutada ja seeläbi matemaatikas areneda. Oleme lisanud mänge, mida saavad nautida kõik lapsed alates koolieelikutest gümnasistideni välja."},
+            {icon: "local_fire_department", title: "Mänguline õpe", message: "Reaaler muudab õppimise lõbusaks, kasutades erinevaid mängustamismeetodeid, näiteks klassisisesed edetabelid, lõbusad võistlused ja streak-süsteem."},
+            {icon: "devices", title: "Mõnus igas seadmes", message: "Reaaleri moodne kasutajaliides on täpselt läbi mõeldud ja testitud, tagamaks sujuva ja ilusa kogemuse nii arvutis kui mobiiliekraanil."},
+            {icon: "tune", title: "Täpselt sinu moodi", message: "Reaalerit saab kohandada täpselt selliseks, nagu tahad. Lisaks rakenduse teema vahetamisele saad valida ka endale meelepärase põhivärvi ja palju muud, mida kasutatakse kogu rakenduse vältel."},
+        ],
+        "Kooli jaoks mõeldud":[
+            {icon: "verified",title: "Loodud koostöös õpetajatega", message: "Reaaleri funktsionaalsus ja võimalused on välja töötatud tihedas koostöös Tallinna Reaalkooli matemaatikaõpetajatega, et tagada võimalikult õpisõbralik, aga samas lõbus kogemus kõigile."},
+            {icon: "school", title: "Täpselt nagu koolis!", message: "Õpetajakonto võimaldab luua klasse, millega õpilased ühineda saavad. Klassi juures saab igal ajal muuta selle nime ja turvalisuse tagamiseks parooli, vajadusel saab kutsumata külalised klassist hõlpsasti välja visata."},
+            {icon: "show_chart", title: "Jälgi klassi arengut", message: "Õpetajana saad klassisiseselt jälgida nii üldiseid andmeid kogu klassi kohta, aga ka õpilaste tulemustest reaalajas loodud edetabelit. Samuti saad kiire ülevaate, kes on täna juba Reaalerit kasutanud."},
+            {icon: "person", title: "Iga õpilane loeb!", message: "Õpetaja saab ligipääsu iga õpilase statistikale ja kõikidele mängukordadele. Nii saab ta veenduda, et keegi ei jääks matemaatika põneval retkel teistest maha."},
+        ],
+        "Tehnoloogiline tipptase":[
+            {icon: "lan", title: "Paindlik koodibaas", message: "Reaaler on loodud uute ja vanade veebitehnoloogiate kombinatsioonina. See tagab ühest küljest testitud ja töökorras vundamendi ja teisalt võimaldab kasutada ka uusimaid veebiarenduse võtteid." },
+            {icon: "bolt", title: "Valminud välearendust rakendades", message: "Esimesest päevast on Reaalerit arendatud, pidades kinni välearenduse põhimõtetest - pidevalt on kohtutud õpetajatega, viidud läbi teste õpilastega ja kasutatud muuhulgas paarisprogrammeerimist. Selle tõttu on Reaaleri kood ka tavalisest läbimõeldum." },
+            {icon: "speed", title: "Ülikiire kasutajaliides", message: "Peastarvutamine käib kiiruse peale, mistõttu on oluline, et rakendus suudaks võimalikult kiiresti liidest uuendada ja uus tehe kuvada. Reaaleris kasutatud ülipopulaarne React raamistik just seda võimaldabki" },
+            {icon: "design_services", title: "Käsitööna valminud välimus", message: "Reaaleri kasutajaliideses ei kasutata ühtegi valmiskomponenti, kõik on loodud spetsiaalselt Reaaleri jaoks. Seepärast saavadki kõik elemendid ekraanil ühtseks tervikuks sulanduda, ühtlasi teistest veebilehtedest selgelt eristudes." }
+        ]
+    };
+
+    
+
     return (
-        <div style={{textAlign:"center"}}>
+        <div>
             <Head title="Tere tulemast!" />
-            <div className="home-navbar" style={{margin:"16px 24px", paddingInline:"24px", borderRadius:"60px", width:(window.innerWidth <= 600 ? "inherit" : "60%"), margin:"auto"}}>
-                <div className="title-div">
-                    <ApplicationLogo onClick={()=>window.location.href="#"} height={50} />
-                </div>
-
-                <div style={{display:"flex", alignItems:'center', gap:"24px"}}>
-                    {auth.user == null && <i translate="no" style={{cursor:"pointer"}} onClick={()=>setIsDarkTheme(e=>!e)} className="material-icons-outlined">{isDarkTheme ? "light_mode" : "brightness_2"}</i>}
-                    
-                    <a style={{display:"flex"}} href={route("login")}>{auth.user != null ? <img style={{height:"40px"}} src={auth.user.profile_pic} alt="" className="profile-pic" /> : <i translate="no" style={{fontSize:"24px"}} className="material-icons">login</i> }</a>
-                </div>
+            <div style={{marginLeft:"auto"}} className="text-button small" onClick={()=>setIsDarkTheme(e=>!e)}>
+                <i className="material-icons-outlined">{!isDarkTheme ? "light_mode" : "brightness_2"}</i>
+                <span>{!isDarkTheme ? "Hele" : "Tume"} teema</span>
             </div>
-            <SizedBox height={36} />
-            {message && <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", width:"min(500px, 80%)", margin:"auto", padding:"16px 24px", borderRadius:"30px"}}>
-                <i translate="no" className="material-icons-outlined">info</i> <span>{message}</span>
-            </div>}
-            <div className="main-content" style={{textAlign:'center'}}>
-                <ApplicationLogo size={150} style={{pointerEvents:"none"}} />
-                <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
-                <div className="buttons">
-                    <Chip onClick={()=>window.location.href = "#start"} active={true} classNames={"onboarding-btn"} icon={"waving_hand"} label="Alusta" />
-                    <br /><br />
+            <div className="welcome-main">
+                
+                <div className="auth-links">
+                    {message && <div className="section" style={{display:"flex", alignItems:"center", gap:"8px", padding:"16px 24px", borderRadius:"30px"}}>
+                        <i translate="no" className="material-icons-outlined">info</i> <span>{message}</span>
+                    </div>}
+                    {!message && <div></div>}
+                    {!auth.user && <div style={{display:"flex", flexDirection:"row", justifyContent:"end", alignItems:"center"}}>
+                        <a style={{all:"unset", cursor:"pointer"}} href={route("register")}> 
+                            <div className="text-button simple">
+                                <span>Loo konto</span>
+                            </div>
+                        </a>
+                        
+                        <a style={{all:"unset", cursor:"pointer"}} href={route("login")}>
+                            <div className="text-button">
+                                <i className="material-icons-outlined">account_circle</i>
+                                <span>Logi sisse</span>
+                            </div>
+                        </a>
+                    </div>}
+                    {auth.user && <div style={{display:"flex", justifyContent:"end", alignItems:"center"}}>
+                        <a style={{all:"unset", cursor:"pointer"}} href={route("dashboard")}>
+                            <div className="text-button">
+                                <img style={{width:"30px", height:"30px", borderRadius:"50px", objectFit:"cover", margin:"0"}} src={auth.user.profile_pic} alt="" />
+                                <SizedBox width={2} /><span>{auth.user.eesnimi}</span>
+                            </div>
+                        </a>
+                    </div>}
                 </div>
+
+                <div className="section title-screen" style={{position:"relative"}}>
+                    <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                    <div className="two-column-welcome">
+                        <div className="text-container">
+                            <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
+                            <p>Harjuta peastarvutamist, arene koos klassikaaslastega ja võta mõõtu lõbusatest võistlustest</p>
+                            <Chip onClick={()=>window.location.href = "#start"} active={true} classNames={"onboarding-btn"} icon={"waving_hand"} label="Alusta kohe" />
+                        </div>
+
+                        <div className="img-container">
+                            <ApplicationLogo size={window.innerWidth > 850 ? 300 : 200} style={{pointerEvents:"none"}} />
+                        </div>
+                    </div>
+                </div>
+                <div className="stats-section">
+                    <div className="stat-tile section" style={{position:"relative"}}>
+                        <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                        <p className="stat">{users}</p>
+                        <p className="type">Kasutajat</p>
+                    </div>
+                    <div className="stat-tile section" style={{position:"relative"}}>
+                        <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                        <p className="stat">{games}</p>
+                        <p className="type">Mängu mängitud</p>
+                    </div>
+                    <div className="stat-tile section" style={{position:"relative"}}>
+                        <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                        <p className="stat">{Intl.NumberFormat('en', { notation: 'compact' }).format(points).replace(".", ",")}</p>
+                        <p className="type">Punkti kokku</p>
+                    </div>
+                </div>
+
+                {Object.keys(data).map(title => <div key={title} style={{marginBottom:"16px", position:"relative"}} className="about-section section">
+                    <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                    <h2>{title}</h2>
+                    <SizedBox height={32} />
+
+                    <div className="about-tiles">
+                        {data[title].map(feature => <WelcomeTile key={feature.title} {...feature} /> )}
+                    </div>
+                </div>)}
+
+                <div style={{position:"relative"}} className="section onboarding-screen" id="start">
+                    <div className="shadow" style={{position:"absolute", height:"0", width:"0", boxShadow:"0 0 500px 100px #D9D9D925"}}></div>
+                    <div className="two-column-welcome">
+                        <div className="text-container">
+                            <h1 className="main-title" style={{color:"var(--text-color)"}} >Hakkame pihta?</h1>
+                            <p>Hetkel on Reaaler mõeldud vaid Tallinna  Reaalkooli õpilastele ja õpetajatele. Aga ka teised ei pea veel pead  norgu laskma – põhiline arvutamise funktsionaalsus on läbi külaliskonto  saadaval kõigile.</p>
+                            
+                            {auth.user == null && <div>
+                                <Chip icon={"person_add"} active={true} onClick={()=>window.location.href = route("register")} label={"Loo konto"}  />
+                                <Chip icon={"supervisor_account"} onClick={()=>window.location.href = route("authenticateGuest")} label={"Sisene külalisena"}  />
+                            </div>}
+                            {auth.user != null && <div>
+                                <Chip icon={"door_open"} active={true} onClick={()=>window.location.href = route("dashboard")} label={"Sisene Reaalerisse"}  />
+                            </div>}
+                        </div>
+
+                        <div className="img-container">
+                            <i style={{fontSize:(window.innerWidth > 850 ? "150px" : "80px")}} className="material-icons-outlined">check_circle</i>
+                        </div>
+                    </div>
+                </div>
+
+                <SizedBox height="100px" />
+
+                <div style={{color:"var(--grey-color)", textAlign:"start"}}>
+                    <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024-{(new Date()).getFullYear()}</p>
+                    <p style={{marginTop:"0"}}>Reaaleri arendajad on Hermann Käbi ja Jarl Justus Hellat</p>
+                </div>
+                <div id="easteregg"></div>
             </div>
-
-            <div id="statistics" className="section" style={{width:"max(300px, 60%)", margin:"auto", display:"flex", alignItems:"end", justifyContent:"space-around"}}>
-
-                <div className="stat" style={{margin:"8px"}}>
-                    <p style={{color:"var(--primary-header-color)", marginBlock:"0", fontSize:"60px", fontWeight:"bold"}}>{users}</p>
-                    <p style={{marginBlock:"0", marginTop:"8px", color:"var(--grey-color)"}}>Kasutajat</p>
-                </div>
-
-                <div className="stat" style={{margin:"8px"}}>
-                    <p style={{color:"var(--primary-header-color)", marginBlock:"0", fontSize:"60px", fontWeight:"bold"}}>{games}</p>
-                    <p style={{marginBlock:"0", marginTop:"8px", color:"var(--grey-color)"}}>Mängitud mängu</p>
-                </div>
-
-                <div className="stat" style={{margin:"8px"}}>
-                    <p style={{color:"var(--primary-header-color)", marginBlock:"0", fontSize:"60px", fontWeight:"bold"}}>{Intl.NumberFormat('en', { notation: 'compact' }).format(points).replace(".", ",")}</p>
-                    <p style={{marginBlock:"0", marginTop:"8px", color:"var(--grey-color)"}}>Punkti kokku</p>
-                </div>
-            </div>
-
-            <SizedBox height="72px" />
-
-            <h2 style={{marginInline:"8px"}}>Uus tase peastarvutamises</h2>
-            <SizedBox height="36px" />
-            
-            <div className="features">
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons">functions</i>
-                    </div>
-                    <div>
-                        <h3>Palju mängutüüpe</h3>
-                        <p>Igaüks leiab Reaalerist sobiva mängu, mida harjutada ja seeläbi matemaatikas areneda. Oleme lisanud mänge, mida saavad nautida kõik lapsed alates koolieelikutest gümnasistideni välja.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">local_fire_department</i>
-                    </div>
-                    <div>
-                        <h3>Mänguline õpe</h3>
-                        <p>Reaaler muudab õppimise lõbusaks, kasutades erinevaid mängustamismeetodeid, näiteks klassisisesed edetabelid ja <i>streak</i>-süsteem.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons">groups</i>
-                    </div>
-                    <div>
-                        <h3>Arene koos sõpradega</h3>
-                        <p>Üksi õppimine on igav! Seetõttu oleme Reaalerisse lisanud võimaluse liituda klassiga, kus õpilane saab reaalajas ka teiste tulemusi näha. Kui kõik teised harjutavad, tekib motivatsioon ka ise veidi peastarvutamisega tegeleda!</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons">devices</i>
-                    </div>
-                    <div>
-                        <h3>Mugav igas seadmes</h3>
-                        <p>Reaaleri moodne kasutajaliides on täpselt läbi mõeldud ja testitud, tagamaks sujuva ja ilusa kogemuse nii arvutis kui mobiiliekraanil.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons">tune</i>
-                    </div>
-                    <div>
-                        <h3>Täpselt sinu moodi</h3>
-                        <p>Reaalerit saab kohandada täpselt selliseks, nagu tahad. Lisaks rakenduse teema vahetamisele saad valida ka endale meelepärase põhivärvi, mida kasutatakse kogu rakenduse vältel.</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <SizedBox height="72px" />
-
-            <h2 style={{marginInline:"8px"}}>Kooli jaoks mõeldud</h2>
-            <SizedBox height="36px" />
-
-            <div className="features">
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">verified</i>
-                    </div>
-                    <div>
-                        <h3>Loodud koostöös õpetajatega</h3>
-                        <p>Reaaleri funktsionaalsus ja võimalused on välja töötatud tihedas koostöös Tallinna Reaalkooli matemaatikaõpetajatega, et tagada võimalikult õpisõbralik, aga samas lõbus kogemus kõigile.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">school</i>
-                    </div>
-                    <div>
-                        <h3>Täpselt nagu koolis!</h3>
-                        <p>Õpetajakonto võimaldab luua klasse, millega õpilased ühineda saavad. Klassi juures saab igal ajal muuta selle nime ja turvalisuse tagamiseks parooli, vajadusel saab kutsumata külalised klassist hõlpsasti välja visata.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">monitoring</i>
-                    </div>
-                    <div>
-                        <h3>Jälgi klassi arengut</h3>
-                        <p>Õpetajana saad klassisiseselt jälgida nii üldiseid andmeid kogu klassi kohta, aga ka õpilaste tulemustest reaalajas loodud edetabelit. Samuti saad kiire ülevaate, kes on juba täna Reaalerit kasutanud.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">person</i>
-                    </div>
-                    <div>
-                        <h3>Iga õpilane loeb!</h3>
-                        <p>Õpetaja saab ligipääsu iga õpilase statistikale ja kõikidele mängukordadele. Nii saab ta veenduda, et keegi ei jääks matemaatika põneval retkel teistest maha.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">lock</i>
-                    </div>
-                    <div>
-                        <h3>Turvalisus tagatud</h3>
-                        <p>Koolis õppivate laste ja noorte privaatsus peab Eestis kehtiva õigusruumi kohaselt olema eriti kaitstud. Õpilase Reaaleri konto avalikule vaatele pääsevad ligi vaid tema klassikaaslased ja õpetaja, kõigi teiste eest on andmed peidetud.</p>
-                    </div>
-                </div>
-            </div>
-            <SizedBox height="72px" />
-
-            <h2 style={{marginInline:"8px"}}>Tehnoloogiline tipptase</h2>
-            <SizedBox height="36px" />
-
-            <div className="features">
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">lan</i>
-                    </div>
-                    <div>
-                        <h3>Paindlik koodibaas</h3>
-                        <p>Reaaler on loodud uute ja vanade veebitehnoloogiate kombinatsioonina. See tagab ühest küljest testitud ja töökorras vundamendi ja teisalt võimaldab kasutada ka uusimaid veebiarenduse võtteid.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">bolt</i>
-                    </div>
-                    <div>
-                        <h3>Valminud välearendust rakendades</h3>
-                        <p>Esimesest päevast on Reaalerit arendatud, pidades kinni välearenduse põhimõtetest - pidevalt on kohtutud õpetajatega, viidud läbi teste õpilastega ja kasutatud muuhulgas paarisprogrammeerimist. Selle tõttu on Reaaleri kood ka tavalisest läbimõeldum.</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-left">
-                    <div className="section">
-                        <i translate="no" className="material-icons-outlined">speed</i>
-                    </div>
-                    <div>
-                        <h3>Ülikiire kasutajaliides</h3>
-                        <p>Peastarvutamine käib kiiruse peale, mistõttu on oluline, et rakendus suudaks võimalikult kiiresti liidest uuendada ja uus tehe kuvada. Reaaleris kasutatud ülipopulaarne React raamistik just seda võimaldabki</p>
-                    </div>
-                </div>
-
-                <div className="feature feature-right">
-                    <div className="section">
-                        <i translate="no"  className="material-icons-outlined">design_services</i>
-                    </div>
-                    <div>
-                        <h3>Käsitööna valminud välimus</h3>
-                        <p>Reaaleri kasutajaliideses ei kasutata ühtegi valmiskomponenti, kõik on loodud spetsiaalselt Reaaleri jaoks. Seepärast saavadki kõik elemendid ekraanil ühtseks tervikuks sulanduda, ühtlasi teistest veebilehtedest selgelt eristudes.</p>
-                    </div>
-                </div>
-            </div>
-
-            <SizedBox height="144px" />
-            <div id="start" className="onboarding">
-                <br />
-                <i translate="no" style={{fontSize:"75px", color:"rgb(var(--primary-color))"}} className="material-icons-outlined">check_circle</i>
-                <h2>Hakkame pihta?</h2>
-                <p className="onboarding-text">Hetkel on Reaaler mõeldud vaid Tallinna Reaalkooli õpilastele ja õpetajatele. Aga ka teised ei pea veel pead norgu laskma - põhiline arvutamise funktsionaalsus on läbi külaliskonto saadaval kõigile.</p>
-                <br />
-                {auth.user == null && <div>
-                    <Chip icon={"person_add"} active={true} onClick={()=>window.location.href = route("register")} label={"Loo konto"}  />
-                    <Chip icon={"supervisor_account"} onClick={()=>window.location.href = route("authenticateGuest")} label={"Sisene külalisena"}  />
-                </div>}
-                {auth.user != null && <div>
-                    <Chip icon={"door_open"} active={true} onClick={()=>window.location.href = route("dashboard")} label={"Sisene Reaalerisse"}  />
-                </div>}
-                <br /><br />
-            </div>
-
-            <SizedBox height="100px" />
-
-            <div style={{color:"var(--grey-color)"}}>
-                <p style={{marginBottom:"8px"}}>Reaaler &copy; 2024-{(new Date()).getFullYear()}</p>
-                <p style={{marginTop:"0"}}>Reaaleri arendajad on Hermann Käbi ja Jarl Justus Hellat</p>
-            </div>
-            <div id="easteregg"></div>
         </div>
     );
 }

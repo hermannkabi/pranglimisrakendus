@@ -190,6 +190,8 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::get('/classroom/{id}/edit', 'showEdit')->name('classEdit')->middleware(['role:teacher;admin']);
     Route::post('/classroom/{id}/edit', 'edit')->name('classEditPost')->middleware(['role:teacher;admin']);
 
+    Route::get('/classroom/{id}/share', 'share')->name('classShare');
+
     Route::post('/classroom/remove/{id}', 'classRemove')->name('classRemove');
 
     Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
