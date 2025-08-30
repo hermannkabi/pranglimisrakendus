@@ -265,6 +265,22 @@ a[alone]:hover{
     filter: brightness(85%);
 }
 
+.chip{
+    display: inline-flex;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 4px;
+}
+
+.chip:not(.disabled):hover{
+    filter: brightness(calc(var(--hover-brightness) - 5%));
+}
+
 /* Inputs */
 
 /* Text input */

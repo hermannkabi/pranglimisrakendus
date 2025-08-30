@@ -111,7 +111,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                                     <p><b>Algusaeg:</b> {formatDateTime(competition.dt_start)}</p>
                                     <p><b>Lõpuaeg:</b> {formatDateTime(competition.dt_end)}</p>
                                     <p><b>Lubatud mängukordi:</b> {competition.attempt_count == 0 ? "Piiramatu" : competition.attempt_count} {!competition.active || competition.attempt_count == 0 ? "" : "(" + Math.max(0, attemptsLeft) + " mängukord"+(attemptsLeft == 1 ? "" : "a")+" jäänud)"}</p>
-                                    <span><b>Mängutüübid: </b></span> {JSON.parse(competition.game_data)["mis"].split(",").map(e=><Chip key={e} label={formattedName(e)} />)}
+                                    <span><b>Mängutüübid: </b></span> {JSON.parse(competition.game_data)["mis"].split(",").map(e=><Chip disabled={true} key={e} label={formattedName(e)} />)}
 
                                 </div>
                             } />

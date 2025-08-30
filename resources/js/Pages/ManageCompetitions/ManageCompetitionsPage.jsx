@@ -50,7 +50,7 @@ export default function ManageCompetitionsPage({auth, present, past, future}){
                         <h2>Hetkel toimuvad võistlused</h2>
 
                         {present.map(e=> <div onClick={()=>setSelected(selected == e ? null : e)} key={e.competition_id} style={{display:"flex", flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between"}} className={"clickable section " + (selected == e ? " tile-selected" : "")}>
-                                                    <TwoRowTextButton upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")}  />
+                                                    <TwoRowTextButton showArrow={false} upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")}  />
                                                     <p style={{textAlign:"right", color:"var(--grey-color)", marginBottom:"0", marginRight:"8px"}}>{e.active ? "Lõppeb" : "Algab"} {formatDateTime(e.active ? e.dt_end : e.dt_start)}</p>
                                                 </div>)}
                         {present.length == 0 && <p style={{color:"var(--grey-color)"}}>Hetkel ei toimu ühtegi võistlust</p> }
@@ -62,7 +62,7 @@ export default function ManageCompetitionsPage({auth, present, past, future}){
                         <h2>Tulevased võistlused</h2>
 
                         {future.map(e=><div key={e.competition_id} onClick={()=>setSelected(selected == e ? null : e)} style={{display:"flex", flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between"}} className={"clickable section" + (selected == e ? " tile-selected" : "")}>
-                                                    <TwoRowTextButton upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")} />
+                                                    <TwoRowTextButton showArrow={false} upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")} />
                                                     <p style={{textAlign:"right", color:"var(--grey-color)", marginBottom:"0", marginRight:"8px"}}>{e.active ? "Lõppeb" : "Algab"} {formatDateTime(e.active ? e.dt_end : e.dt_start)}</p>
                                                 </div>)}
                         
@@ -76,7 +76,7 @@ export default function ManageCompetitionsPage({auth, present, past, future}){
                         <h2>Toimunud võistlused</h2>
 
                         {past.map(e=> <div key={e.competition_id} onClick={()=>setSelected(selected == e ? null : e)} style={{display:"flex", flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between"}} className={"clickable section" + (selected == e ? " tile-selected" : "")}>
-                                                    <TwoRowTextButton upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")} />
+                                                    <TwoRowTextButton showArrow={false} upperText={e.name} lowerText={e.participants_count + " võistleja"+(e.participants_count == 1 ? "" : "t")} />
                                                     <p style={{textAlign:"right", color:"var(--grey-color)", marginBottom:"0", marginRight:"8px"}}>Lõppes {formatDateTime(e.dt_end)}</p>
                                                 </div>)}
                         
@@ -94,7 +94,7 @@ export default function ManageCompetitionsPage({auth, present, past, future}){
                                 <p><b>Algusaeg:</b> {formatDateTime(selected.dt_start)}</p>
                                 <p><b>Lõpuaeg:</b> {formatDateTime(selected.dt_end)}</p>
                                 <p><b>Lubatud mängukordi:</b> {selected.attempt_count == 0 ? "Piiramatu" : selected.attempt_count}</p>
-                                <span><b>Mängutüübid: </b></span> {JSON.parse(selected.game_data)["mis"].split(",").map(e=><Chip key={e} label={formattedName(e)} />)}
+                                <span><b>Mängutüübid: </b></span> {JSON.parse(selected.game_data)["mis"].split(",").map(e=><Chip disabled={true} key={e} label={formattedName(e)} />)}
 
                             </div>
                         } />

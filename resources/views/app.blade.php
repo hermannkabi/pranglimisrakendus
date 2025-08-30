@@ -15,12 +15,12 @@
         <title inertia>{{ config('app.name', 'Reaaler') }}</title>
         <link rel="icon" href="{{ URL::asset('favicon.ico') }}">
         <!-- Fonts -->
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/material-icons.css?v=2') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/master.css?v=2') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css?v=2') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/spinner.css?v=2') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/variables.css?v=2') }}">
         <!-- Scripts -->
         @routes
         @viteReactRefresh
