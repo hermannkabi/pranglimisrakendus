@@ -151,7 +151,7 @@ export default function WelcomePage({auth, users, games, points, message}){
                     <div className="two-column-welcome">
                         <div className="text-container">
                             <h1 className="main-title" style={{color:"var(--text-color)"}} >Reaaler muudab <br />matemaatika <span className="shine" style={{userSelect:"none"}} onClick={()=>setClickEaster2((e)=>e+1)}>säravaks<img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /><img alt="Täht" className="sparkle " src="/assets/homepage/sparkle.png" /></span></h1>
-                            <p>Harjuta peastarvutamist, arene koos klassikaaslastega ja võta mõõtu lõbusatest võistlustest</p>
+                            <p>Harjuta peastarvutamist, arene koos klassikaaslastega ja võta mõõtu lõbusatel võistlustel</p>
                             <Chip onClick={()=>window.location.href = "#start"} active={true} classNames={"onboarding-btn"} icon={"waving_hand"} label="Alusta kohe" />
                         </div>
 

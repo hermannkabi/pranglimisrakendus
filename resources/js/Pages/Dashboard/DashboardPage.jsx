@@ -88,13 +88,13 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
 
                 {auth.user.role.split(",").includes("admin") && <> <SizedBox height={16} /> <div className="two-column-layout">
                     <div className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
-                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Õpilaste & klasside haldamine" value={"Reaalerit kasutab " + stats.total_students + " õpilast ja " + stats.total_classes + " klassi"} />
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Admini valikud" value={"Õpilaste & klasside haldamine"} />
                     
                         <a href={route("admin")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
 
                     <div className="section clickable" style={{padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", position:"relative"}}>
-                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Võistluste haldamine" value={"Reaaleris on toimunud " + stats.total_competitions + " võistlus" + (stats.total_competitions == 1 ? "" : "t")} />
+                        <VerticalStatTile padding="8px 0" marginBlock={0} icon="shield" text="Admini valikud" value={"Võistluste haldamine"} />
                     
                         <a href={route("manageCompetitions")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>

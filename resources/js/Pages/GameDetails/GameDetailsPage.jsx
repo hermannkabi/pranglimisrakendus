@@ -13,7 +13,7 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
 
     const [copyText, setCopyText] = useState("Jaga mängu");
     // First is for correct, second incorrect answers;
-    const [filter, setFilter] = useState([true, true]);
+    const [filter, setFilter] = useState("all");
     const [currentlyShownLog, setCurrentlyShownLog] = useState(JSON.parse(game.log));
 
     function averageTime(timeInSeconds){
@@ -64,7 +64,7 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
             opacity: 0,
 
         }, animationTime, function (){
-            setCurrentlyShownLog(JSON.parse(game.log).filter((op) => (filter[0] && op.isCorrect) || (filter[1] && !op.isCorrect)));
+            setCurrentlyShownLog(JSON.parse(game.log).filter((op) => filter == "all" || (filter == "correct" && op.isCorrect) || (filter == "incorrect" && !op.isCorrect)));
 
             $(".detailed-container").animate({
                 opacity: 1,
@@ -72,18 +72,9 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
         });
     }
 
-    function updateChip(index){
-        var newValue = !filter[index];
-        var newFilter = [...filter];
-
-        var shouldNotChange = newFilter.includes(false) && newValue == false;
-
-        newFilter[index] = shouldNotChange ? !newValue : newValue;
-
-        setFilter(newFilter);
-        if(!shouldNotChange){
-            filterOperations(newFilter);
-        }
+    function updateChip(value){
+        setFilter(value);
+        filterOperations(value);
     }
 
     return <>
@@ -107,8 +98,9 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
 
                     {game.accuracy_sum != 0 && game.accuracy_sum != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
                         <div>
-                            <Chip onClick={()=>updateChip(0)} alt={JSON.parse(game.log).filter((op)=>op.isCorrect).length} label={"Õiged vastused"} active={filter[0]} />
-                            <Chip onClick={()=>updateChip(1)} alt={JSON.parse(game.log).filter((op)=>!op.isCorrect).length} label={"Valed vastused"} active={filter[1]} />
+                            <Chip onClick={()=>updateChip("all")} alt={JSON.parse(game.log).length} label={"Näita kõiki"} active={filter == "all"} />
+                            <Chip onClick={()=>updateChip("correct")} alt={JSON.parse(game.log).filter((op)=>op.isCorrect).length} label={"Näita õigeid"} active={filter == "correct"} />
+                            <Chip onClick={()=>updateChip("incorrect")} alt={JSON.parse(game.log).filter((op)=>!op.isCorrect).length} label={"Näita valesid"} active={filter == "incorrect"} />
                         </div>
                     </>} />}
 

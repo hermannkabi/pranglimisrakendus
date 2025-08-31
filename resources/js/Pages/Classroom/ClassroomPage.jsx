@@ -7,10 +7,12 @@ import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import LeaderboardPodiumTile from "@/Components/2024SummerRedesign/LeaderboardPodiumTile";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import InfoBanner from "@/Components/InfoBanner";
+import Chip from "@/Components/2024SummerRedesign/Chip";
 
 export default function ClassroomPage({leaderboard, teacher, auth, className, stats, isTeacher, uuid}){
 
     const [copyText, setCopyText] = useState("Klassiga ühinemise link");
+    const [orderBy, setOrderBy] = useState("leaderboard");
 
     function copyToClipboard(){
         navigator.clipboard.writeText(window.location.origin + "/classroom/" + uuid + "/join");
@@ -32,18 +34,40 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
             <SizedBox height="8px" />
             <div className="two-column-layout">
                 <div>
-                    <div className="section">
-                        <TwoRowTextButton upperText="Edetabel" lowerText={className} showArrow={false} />
-                        <SizedBox height="16px" />
-                        {leaderboard.length > 0 && <div className="podium" style={{display:"flex", flexDirection:"row", justifyContent:"stretch", alignItems:'end', gap:"8px"}}>
-                            {leaderboard.length > 1 && <LeaderboardPodiumTile auth={auth} e={leaderboard[1]} />}
-                            <LeaderboardPodiumTile auth={auth} e={leaderboard[0]} firstPlace={true} />
-                            {leaderboard.length > 2 && <LeaderboardPodiumTile auth={auth} e={leaderboard[2]} />}
-                        </div>}
-                        <SizedBox height="16px" />
-                    </div>
-                    {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow playedToday={e.playedToday} place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
-                    {leaderboard.length <= 0 && <InfoBanner text={"Siin klassis ei ole (veel) kedagi. Kutsu õpilasi klassi, jagades neile klassi nime ja parooli või saates neile klassiga ühinemise link."} />}
+                    {(auth.user.role.split(",").includes("admin") || auth.user.role.split(",").includes("teacher")) &&<VerticalStatTile icon="sort_by_alpha" text="Järjestusalus" customValue={true} value={<>
+                        <div>
+                            <Chip onClick={()=>setOrderBy("leaderboard")} active={orderBy == "leaderboard"} label={"Edetabel"} />
+                            <Chip onClick={()=>setOrderBy("firstName")} active={orderBy == "firstName"} label={"Eesnime järgi"} />
+                            <Chip onClick={()=>setOrderBy("lastName")} active={orderBy == "lastName"} label={"Perekonnanime järgi"} />
+                        </div>
+                    </>} />}
+                    {orderBy == "leaderboard" && <>
+                        <div className="section">
+                            <TwoRowTextButton upperText="Edetabel" lowerText={className} showArrow={false} />
+                            <SizedBox height="16px" />
+                            {leaderboard.length > 0 && <div className="podium" style={{display:"flex", flexDirection:"row", justifyContent:"stretch", alignItems:'end', gap:"8px"}}>
+                                {leaderboard.length > 1 && <LeaderboardPodiumTile auth={auth} e={leaderboard[1]} />}
+                                <LeaderboardPodiumTile auth={auth} e={leaderboard[0]} firstPlace={true} />
+                                {leaderboard.length > 2 && <LeaderboardPodiumTile auth={auth} e={leaderboard[2]} />}
+                            </div>}
+                            <SizedBox height="16px" />
+                        </div>
+                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow playedToday={e.playedToday} place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
+                        {leaderboard.length <= 0 && <InfoBanner text={"Siin klassis ei ole (veel) kedagi. Kutsu õpilasi klassi, jagades neile klassi nime ja parooli või saates neile klassiga ühinemise link."} />}
+                    </>}
+                    {(orderBy == "firstName" || orderBy == "lastName") && <>
+                        {leaderboard.toSorted((a, b) => {
+                        const nameA = (orderBy == "firstName" ? a.user.eesnimi : a.user.perenimi).toLowerCase(); 
+                        const nameB = (orderBy == "firstName" ? b.user.eesnimi : b.user.perenimi).toLowerCase(); 
+                        if (nameA < nameB) {
+                            return -1;
+                        }
+                        if (nameA > nameB) {
+                            return 1;
+                        }
+                        return 0;
+                        }).map((e, index)=> <LeaderboardRow playedToday={e.playedToday} place={e.place} key={e.user.id + orderBy} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} />)}
+                    </>}
                 </div>
 
                 {/* Teine tulp */}

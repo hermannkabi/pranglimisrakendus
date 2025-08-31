@@ -16,7 +16,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     const [currentlyShownLog, setCurrentlyShownLog] = useState(log);
     const [gameSaved, setGameSaved] = useState(auth.user.role == "guest" || total == 0 || false);
     const [showGameSavedDialog, setShowGameSavedDialog] = useState(false);
-    const [filter, setFilter] = useState([true, true]);
+    const [filter, setFilter] = useState("all");
 
 
     const [title, setTitle] = useState(null);
@@ -135,13 +135,13 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         
     }
 
-    function filterOperations(newFilter){
+    function filterOperations(filter){
         const animationTime = 150;
         $(".detailed-container").animate({
             opacity: 0,
 
         }, animationTime, function (){
-            setCurrentlyShownLog(log.filter((op) => (newFilter[0] && op.isCorrect) || (newFilter[1] && !op.isCorrect)));
+            setCurrentlyShownLog(log.filter((op) => filter == "all" || (filter == "correct" && op.isCorrect) || (filter == "incorrect" && !op.isCorrect)));
 
             $(".detailed-container").animate({
                 opacity: 1,
@@ -157,17 +157,9 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
         }
     }
 
-    function updateChip(index){
-        var newValue = !filter[index];
-        var newFilter = [...filter];
-
-        var shouldNotChange = newFilter.includes(false) && newValue == false;
-        newFilter[index] = shouldNotChange ? !newValue : newValue;
-
-        setFilter(newFilter);
-        if(!shouldNotChange){
-            filterOperations(newFilter);
-        }
+    function updateChip(value){
+        setFilter(value);
+        filterOperations(value);
     }
 
     function playAgain(){
@@ -212,8 +204,9 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
                 <div>
                     {accuracy != 0 && accuracy != 100 && <VerticalStatTile icon="filter_alt" text="Filtreeri" customValue={true} value={<>
                         <div>
-                            <Chip onClick={()=>updateChip(0)} alt={log.filter((op)=>op.isCorrect).length} label={"Õiged vastused"} active={filter[0]} />
-                            <Chip onClick={()=>updateChip(1)} alt={log.filter((op)=>!op.isCorrect).length} label={"Valed vastused"} active={filter[1]} />
+                            <Chip onClick={()=>updateChip("all")} alt={log.length} label={"Näita kõiki"} active={filter == "all"} />
+                            <Chip onClick={()=>updateChip("correct")} alt={log.filter((op)=>op.isCorrect).length} label={"Näita õigeid"} active={filter == "correct"} />
+                            <Chip onClick={()=>updateChip("incorrect")} alt={log.filter((op)=>!op.isCorrect).length} label={"Näita valesid"} active={filter == "incorrect"} />
                         </div>
                     </>} />}
 
