@@ -281,7 +281,7 @@ Route::prefix("valimised")->name("valimised.")->middleware(["valimised-time"])->
                     $chosen_by_email = $chosen_by->email;
                 }
     
-                array_push($data, ["fox_name"=>$fox->name, "chosen_by_name"=>$chosen_by_name, "chosen_by_email"=>$chosen_by_email]);
+                array_push($data, ["id"=>$fox->id, "fox_name"=>$fox->name, "chosen_by_name"=>$chosen_by_name, "chosen_by_email"=>$chosen_by_email]);
             }
     
             return view("foxlist", ["data"=>$data]);
