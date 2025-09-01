@@ -54,6 +54,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Competition::class, 'competition_user', 'user_id', 'competition_id');
     }
 
+    public function mangs()
+    {
+        return $this->hasMany(Mang::class, 'user_id', 'id');
+    }
+
     protected static function boot()
     {
         parent::boot();

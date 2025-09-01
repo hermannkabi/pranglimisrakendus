@@ -185,7 +185,7 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
                     {!(typeIndependents.includes(typeState)) && <div className="section" style={{marginTop:"0", padding:"8px 16px", display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                         <VerticalStatTile padding="8px 0" icon="pin" text="Arvuhulk" customValue={true} value={<>
                             {competition == null && <div>
-                                {(typeof data[typeState] == "string" ? data[data[typeState]]["types"] : data[typeState]["types"]).map((e)=> <Chip key={typeof e == "string" ? e : e["value"]} onClick={competition != null ? null : ()=>setSelectedGameMode(typeof e == "string" ? e : e["value"])} label={typeof e == "string" ? typeToName[e] : e["label"]} active={typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]} /> )}
+                                {(typeof data[typeState] == "string" ? data[data[typeState]]["types"] : data[typeState]["types"]).map((e)=> <Chip key={typeof e == "string" ? e : e["value"]} onClick={competition != null ? null : ()=>setSelectedGameMode(typeof e == "string" ? e : e["value"])} label={typeof e == "string" ? typeToName[e] : e["label"]} icon={(typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]) ? "check" : null} active={typeof e == "string" ? selectedGameMode == e : selectedGameMode == e["value"]} /> )}
                             </div>}
                             {competition != null && <p style={{color:"var(--grey-color)", marginBottom:"0", fontWeight:"bold", fontSize:"20px"}}>{typeToName[selectedGameMode]}</p> }
                         </>} />
@@ -211,7 +211,7 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
                                         newLevels.sort();
 
                                         return setLevels(newLevels);
-                                    }} label={(e+1)+". tase"} active={levels.includes(e+1)} /> )}
+                                    }} label={(e+1)+". tase"} icon={levels.includes(e+1) ? "check" : null} active={levels.includes(e+1)} /> )}
                                     <br /><br/>
 
                                     {(typeof data[typeState] != "string" ? data[typeState]["extra"] : data[data[typeState]]["extra"]).map((e, ind)=> <Chip key={ind} icon={"star"} label={(ind + 1) +". tase"} active={levels.includes(e)} onClick={()=>{

@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Klass;
-use App\Models\User;
 use App\Models\Mang;
+use App\Models\User;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\DB;
+use App\Models\Klass;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-use DateTime,DateInterval,DatePeriod;
+use App\Exports\KlassExport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use DateTime,DateInterval,DatePeriod;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\LeaderboardController;
 
@@ -398,5 +400,13 @@ class ClassController extends Controller
         if(!$klass) return abort(404);
         if(!(str_contains($request->user()->role, "teacher") || str_contains($request->user()->role, "admin"))) return abort(403);
         return Inertia::render("Classroom/ClassroomShare", ["klass"=>$klass]);
+    }
+
+    public function exportClass(Request $request, string $id){
+        $klass = Klass::where("uuid", $id)->first();
+        if(!$klass) return abort(404);
+        if(!(str_contains($request->user()->role, "teacher") || str_contains($request->user()->role, "admin"))) return abort(403);
+
+        return Excel::download(new KlassExport($klass->klass_id), $klass->klass_name." - Reaaler - klassi andmed (eksporditud ".date('d.m.Y', time()).").xlsx");
     }
 }

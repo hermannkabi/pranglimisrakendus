@@ -199,6 +199,7 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
 
     Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
 
+    Route::get("/classroom/{id}/export", "exportClass")->name("exportClass");
     Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
 });
 

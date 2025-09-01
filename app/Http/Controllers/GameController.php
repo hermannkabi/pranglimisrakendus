@@ -229,7 +229,7 @@ function getMangStats($userId) {
     ];
 
     foreach ($periods as $key => $days) {
-        $startDate = $today->copy()->subDays($days - 1);
+        $startDate = $today->copy()->subDays($days);
 
         // --- Game counts per day ---
         $countsByDate = Mang::select(DB::raw('DATE(dt) as date'), DB::raw('COUNT(*) as total'))

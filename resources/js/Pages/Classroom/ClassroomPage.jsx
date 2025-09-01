@@ -24,7 +24,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
     }
 
     return <>
-        <Layout title="Minu klass" auth={auth}>
+        <Layout title={className} auth={auth}>
             <div className="four-stat-row">
                 <StatisticsTile stat={stats.gamesToday} label={"Mängu täna"} oneLabel={"Mäng täna"} icon={"schedule"} />
                 <StatisticsTile stat={stats.totalGameCount} label={"Mängu kokku"} oneLabel={"Mäng kokku"} icon={"sports_esports"} />
@@ -95,7 +95,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                     </div>
                     
                     <SizedBox height={16} />
-                    <a onClick={copyToClipboard} alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons no-anim">link</i>&nbsp; {copyText}</a>
+                    <a href="./export" alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons-outlined no-anim">export_notes</i>&nbsp; Ekspordi klassi andmed</a>
 
                     </>
                     }
