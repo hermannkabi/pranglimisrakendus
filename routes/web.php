@@ -211,6 +211,7 @@ Route::controller(App\Http\Controllers\CompetitionController::class)->middleware
     Route::post('/competition/{id}/join', 'competitionJoin')->name("competitionJoin");
     Route::get('/competition/history/{id?}', 'competitionHistory')->name("competitionHistory");
     Route::get('/competition/{id}/view/{user_id}', 'competitionProfile');
+    Route::get('/competition/{id}/export', 'exportCompetition')->middleware(["role:teacher;admin"]);
 
 });
 

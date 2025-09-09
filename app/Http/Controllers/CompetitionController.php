@@ -9,10 +9,12 @@ use Inertia\Inertia;
 use App\Models\Competition;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Exports\CompetitionExport;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompetitionController extends Controller
 {
@@ -319,5 +321,12 @@ class CompetitionController extends Controller
         ];
 
         return Inertia::render("CompetitionProfile/CompetitionProfilePage", ["user"=>$user, "competition"=>$competition, "stats"=>$stats, "games"=>$mangs]);
+    }
+
+    public function exportCompetition(Request $request, string $id){
+        $competition = Competition::findOrFail($id);
+        if(!(str_contains($request->user()->role, "teacher") || str_contains($request->user()->role, "admin"))) return abort(403);
+
+        return Excel::download(new CompetitionExport($competition->competition_id), $competition->name ." - Reaaler - võistluse andmed (eksporditud ".date('d.m.Y', time()).").xlsx");
     }
 }

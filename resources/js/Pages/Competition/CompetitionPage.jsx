@@ -148,6 +148,8 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                             </div>
 
                         </div>}
+                    
+                        {auth.user.role.split(",").includes("admin") &&  <a href="./export" alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons-outlined no-anim">export_notes</i>&nbsp; Ekspordi võistluse andmed</a>}
                     </div>
                 </div>
             </Layout>
