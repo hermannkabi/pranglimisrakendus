@@ -134,8 +134,8 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
     }, [typeState]);
 
     function navigateToGame(){
-        if(selectedGameMode == null || !getAllGameModes().includes(selectedGameMode)){
-            setMessage("Palun vali arvuhulk" + selectedGameMode);
+        if((selectedGameMode == null && !typeIndependents.includes(typeState)) || (!getAllGameModes().includes(selectedGameMode) && !typeIndependents.includes(typeState))){
+            setMessage("Palun vali arvuhulk " + selectedGameMode);
             return;
         }
 
@@ -144,7 +144,7 @@ export default function GamePreviewPage({auth, type, competition=null, attemptsL
             "level": competition != null ? competitionGameData["level"] : levels.join(""),
             "mis": typeState,
             "aeg": gameTime,
-            "tyyp": selectedGameMode,
+            "tyyp": selectedGameMode ?? typeState,
             "competition_id":competition == null ? null : competition.competition_id,
         }).done(function (data){
             window.location.href = "/game";

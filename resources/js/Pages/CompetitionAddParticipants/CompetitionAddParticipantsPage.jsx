@@ -64,8 +64,8 @@ export default function CompetitionAddParticipantsPage({auth, data, others, comp
                     {e.students.every(v => selectedUsers.includes(v)) && e.students.length > 0 && <i className="material-icons" style={{fontSize:'24px', marginRight:"16px"}}>check</i> }
                 </div>)}
 
-                {others.filter((e)=> (search == null || search.length <= 0 || (e.eesnimi+e.perenimi).toLowerCase().includes(search.toLowerCase()))).map(e=> <Chip icon={selectedUsers.includes(e) ? "check" : null} active={selectedUsers.includes(e)} onClick={()=>setSelectedUsers(s=>s.includes(e) ? s.filter(i=>i!=e) : [...s, e])} key={e.id} capitalize={true} label={e.eesnimi +" "+ e.perenimi}/> )}
-                <p style={{color:"var(--grey-color)"}}>Kokku {data.reduce((sum, obj) => sum + obj.students.length, 0) + others.length} õpilast</p>
+                {auth.user.role.split(",").includes("admin") && others.filter((e)=> (search == null || search.length <= 0 || (e.eesnimi+e.perenimi).toLowerCase().includes(search.toLowerCase()))).map(e=> <Chip icon={selectedUsers.includes(e) ? "check" : null} active={selectedUsers.includes(e)} onClick={()=>setSelectedUsers(s=>s.includes(e) ? s.filter(i=>i!=e) : [...s, e])} key={e.id} capitalize={true} label={e.eesnimi +" "+ e.perenimi}/> )}
+                {auth.user.role.split(",").includes("admin") && <p style={{color:"var(--grey-color)"}}>Kokku {data.reduce((sum, obj) => sum + obj.students.length, 0) + others.length} õpilast</p>}
             </div>
 
             <div>

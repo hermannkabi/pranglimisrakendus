@@ -82,6 +82,7 @@ export default function NewCompetitionPage({auth, competition}){
             "public":isPublic ? 1 : 0,
             "game_data":JSON.stringify({"mis":gameTypes.join(","), "tyyp":gameMode, "level":levels.join(""), "aeg":gameTime}),
             "competition_id":competition == null ? null : competition.competition_id,
+            "created_by": competition == null || competition.created_by == null ? auth.user.id : competition.created_by, 
         }).done(function (data){
             window.location.href = "/competition/"+data+"/view";
         }).fail(function (data){
@@ -150,11 +151,11 @@ export default function NewCompetitionPage({auth, competition}){
                             <TwoRowTextButton showArrow={false} upperText="Mängukordade arv" lowerText={attemptCount == 0 ? "Piiramatu kord mängukordi" : attemptCount+" mängukorda lubatud"}/>
                             <TimeSelector simple={true} time={attemptCount} onIncrease={()=>setAttemptCount(t => Math.min(10, t+1))} onDecrease={()=>setAttemptCount(t => Math.max(t-1, 0))} />
                         </div>
-                        <div onClick={()=>setIsPublic(i=>!i)} className="section clickable" style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", padding:"16px 16px 4px 4px"}}>
+                        {auth.user.role.split(",").includes("admin") && <div onClick={()=>setIsPublic(i=>!i)} className="section clickable" style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", padding:"16px 16px 4px 4px"}}>
                             <TwoRowTextButton upperText="Võistluse avalikkus" lowerText={isPublic ? "Võistlus on avalik" : "Ainult admin saab osalejaid lisada"} showArrow={false} />
                             <i translate="no" className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>{isPublic ? "visibility" : "visibility_off"}</i>
                         
-                        </div>
+                        </div>}
                         {message && <div className="section">
                             <InfoBanner type={"error"} text={message} />
                         </div>}

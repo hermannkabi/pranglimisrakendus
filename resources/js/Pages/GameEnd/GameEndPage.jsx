@@ -90,7 +90,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
     function saveGame(){
         // Only save such games that at least tried one operation and are at least 30 sec long
         if(total <= 0) return;
-        if(time < 30){
+        if(time < 30 && competition == null){
             setGameSaved(true);
             return;
         };
@@ -183,7 +183,7 @@ export default function GameEndPage({correct, total, points, time, lastLevel, lo
 
     return <>
         <Layout title={"Lõpeta mäng"} auth={auth}>
-            {time < 30 && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
+            {time < 30 && competition == null && <InfoBanner text="See mäng kestis alla 30 sekundi. Nii lühikesi mänge sinu kontole ei salvestata!" />}
             {showGameSavedDialog && <div className="section" style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"0", marginBottom:"8px"}}>
                 {gameSaved ? <i translate="no" className="material-icons">check</i> : <LoadingSpinner color={true} />}
                 <p style={{marginLeft:"8px"}}>{gameSaved ? "Mäng salvestatud!" : "Salvestan mängu..."}</p>

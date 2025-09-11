@@ -23,6 +23,7 @@ class Competition extends Model
         "attempt_count",
         "game_data",
         "public",
+        "created_by",
     ];
 
     protected $appends = ['active'];

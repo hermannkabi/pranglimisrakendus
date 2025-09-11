@@ -194,15 +194,21 @@ export default function ProfilePage({auth, className}){
             </div>}
             <div className="class-grid">
                 <div className="section" style={{position:"relative"}}>
-                    
-                    <div style={{position:"absolute", right:"24px", top:"24px",}}>
-                        <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
-                            <img src={auth.user.profile_pic} style={{position:"relative", borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
-                            {auth.user.role != "guest" && <span translate="no" style={{cursor:"pointer", position:"absolute", bottom:"4px", left:"12px", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
+
+                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginInline:"8px"}}>
+                        <div>
+                            <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
+                            {auth.user.role.split(",").map(e=><span key={roles[e]} style={{display:"inline-block", backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", margin:"4px", marginTop:"0"}}>{roles[e]}</span>)}
+                        </div>
+                        <div>
+                            <div style={{position:"relative", display:"inline", height:"fit-content"}} onClick={auth.user.role == "guest" ? null : uploadFile}>
+                                <img src={auth.user.profile_pic} style={{position:"relative", borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
+                                {auth.user.role != "guest" && <span translate="no" style={{cursor:"pointer", position:"absolute", bottom:"4px", left:"12px", backgroundColor:"rgb(var(--primary-color), 0.9)", color:"white", borderRadius:"50%", padding:"4px", fontSize:"12px"}} className="material-icons">edit</span>}
+                            </div>
                         </div>
                     </div>
-                    <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={auth.user.eesnimi} lowerText={auth.user.perenimi} />
-                    {auth.user.role.split(",").map(e=><span key={roles[e]} style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"4px"}}>{roles[e]}</span>)}
+                    
+                    
                     <SizedBox height="32px" />
                     {auth.user.role.includes("student") && <div className="section clickable" style={{position:"relative", margin:"8px", display:"inline-flex", gap:"8px", flexDirection:"row", alignItems:"center"}}>
                         {className != null && <div style={{display:"flex", alignItems:'center', gap:"8px"}}>

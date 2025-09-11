@@ -46,11 +46,18 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
             <div className="two-column-layout">
                 <div>
                     <div className="section" style={{position:"relative", backgroundImage:"url("+user.profile_pic+")", backgroundRepeat:"no-repeat", backgroundSize:"cover", backgroundBlendMode:"soft-light", backgroundPosition:"center"}}>
-                        <div style={{position:"absolute", right:"24px", top:"24px",}}>
-                            <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
+                        <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginInline:"8px"}}>
+                            <div>
+                                <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
+                                {user.role.split(",").map(e=><span key={roles[e]} style={{display:"inline-block", backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", margin:"4px", marginTop:"0"}}>{roles[e]}</span>)}
+                            </div>
+
+                            <div>
+                                <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
+                            </div>
                         </div>
-                        <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
-                        {user.role.split(",").map(e=><span key={roles[e]} style={{backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", marginTop:"0", marginInline:"4px"}}>{roles[e]}</span>)}
+                        
+                        
                         
                         <SizedBox height="150px" />
                         <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>Reaaleris alates {(new Date(user.created_at)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>

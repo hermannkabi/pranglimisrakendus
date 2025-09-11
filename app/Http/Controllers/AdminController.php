@@ -25,14 +25,14 @@ class AdminController extends Controller
     }
 
 
-    public function manageCompetitions(){
+    public function manageCompetitions(Request $request){
         $now = Carbon::now();
 
-        $activeCompetitions = Competition::withCount("participants")->where('dt_start', '<', $now)->where('dt_end', '>', $now)->orderBy("dt_end", "ASC")->get();
+        $activeCompetitions = Competition::withCount("participants")->where('dt_start', '<', $now)->where('dt_end', '>', $now)->when(!str_contains($request->user()->role, "admin"), function ($query) use ($request) {$query->where('created_by', $request->user()->id);})->orderBy("dt_end", "ASC")->get();
 
-        $futureCompetitions = Competition::withCount("participants")->where('dt_start', '>', $now)->orderBy("dt_start", "ASC")->get();
+        $futureCompetitions = Competition::withCount("participants")->where('dt_start', '>', $now)->when(!str_contains($request->user()->role, "admin"), function ($query) use ($request) {$query->where('created_by', $request->user()->id);})->orderBy("dt_start", "ASC")->get();
 
-        $pastCompetitions = Competition::withCount("participants")->where('dt_end', '<', $now)->orderBy("dt_end", "DESC")->get();
+        $pastCompetitions = Competition::withCount("participants")->where('dt_end', '<', $now)->when(!str_contains($request->user()->role, "admin"), function ($query) use ($request) {$query->where('created_by', $request->user()->id);})->orderBy("dt_end", "DESC")->get();
 
         return Inertia::render("ManageCompetitions/ManageCompetitionsPage", ["past"=>$pastCompetitions, "present"=>$activeCompetitions, "future"=>$futureCompetitions]);
     }
@@ -66,12 +66,13 @@ class AdminController extends Controller
         return $competition->competition_id;
     }
 
-    public function addParticipants($id){
+    public function addParticipants(Request $request, $id){
         $competition = Competition::findOrFail($id);
 
         $data = array();
+        $classes = str_contains($request->user()->role, "admin") ? Klass::orderBy("klass_name")->get() : Klass::where("teacher_id", $request->user()->id)->get();
 
-        foreach(Klass::orderBy("klass_name")->get() as $klass){
+        foreach($classes as $klass){
             array_push($data, ["name"=>$klass->klass_name, "klass"=>$klass, "students"=>User::where("klass", $klass->klass_id)->where("role", "like", "%student%")->whereDoesntHave('competitions', function ($query) use ($competition) {
                 $query->where('competitions.competition_id', $competition->competition_id);
             })->orderBy("perenimi", "asc")->get()]);

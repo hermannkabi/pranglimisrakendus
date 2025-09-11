@@ -34,7 +34,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
             <SizedBox height="8px" />
             <div className="two-column-layout">
                 <div>
-                    {(auth.user.role.split(",").includes("admin") || auth.user.role.split(",").includes("teacher")) &&<VerticalStatTile icon="sort_by_alpha" text="Järjestusalus" customValue={true} value={<>
+                    {leaderboard.length > 0 && (auth.user.role.split(",").includes("admin") || auth.user.role.split(",").includes("teacher")) &&<VerticalStatTile icon="sort_by_alpha" text="Järjestusalus" customValue={true} value={<>
                         <div>
                             <Chip onClick={()=>setOrderBy("leaderboard")} active={orderBy == "leaderboard"} label={"Edetabel"} />
                             <Chip onClick={()=>setOrderBy("firstName")} active={orderBy == "firstName"} label={"Eesnime järgi"} />
@@ -95,7 +95,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                     </div>
                     
                     <SizedBox height={16} />
-                    <a href="./export" alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons-outlined no-anim">export_notes</i>&nbsp; Ekspordi klassi andmed</a>
+                    {leaderboard.length > 0 && <a href="./export" alone="" style={{color:"var(--grey-color)"}}> <i translate="no" className="material-icons-outlined no-anim">export_notes</i>&nbsp; Ekspordi klassi andmed</a>}
 
                     </>
                     }

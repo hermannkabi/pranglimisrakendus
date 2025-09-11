@@ -104,15 +104,14 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                 {auth.user.role.includes("teacher") && !auth.user.email_verified_at && <div className="section" style={{marginBlock:"16px"}}><InfoBanner type="error" text="Õpetajale lubatud toimingute (nt klasside loomine) tegemiseks palun kinnita profiilivaates e-posti aadress" /></div> }
 
                 {auth.user.role.includes("teacher") && auth.user.email_verified_at && teacherData.length > 0 && <div className="two-column-layout" style={{marginTop:"16px"}}>
-                        <div className="section clickable" style={{marginBlock:"0", position:"relative"}}>
-                            <TwoRowTextButton upperText="Minu klassid" lowerText="Uus klass" showArrow={window.innerWidth > 600} />
-                            <SizedBox height="32px" />
-                            <div style={{margin:"8px"}}>
-                                <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"0"}}>{teacherData.length}</h2>
-                                <p style={{color:"var(--grey-color)", marginBlock:"0"}}>Klassi kokku</p>
+                        <div className="section" style={{marginBlock:"0"}}>
+                            <div onClick={()=>window.location.href = route("newClass")} className="section clickable">
+                                <TwoRowTextButton upperText="Minu klassid" lowerText="Uus klass" showArrow={window.innerWidth > 600} />
+                            </div>
+                            <div onClick={()=>window.location.href = route("manageCompetitions")} className="section clickable">
+                                <TwoRowTextButton upperText={"Halda võistluseid"} lowerText={"Võistlus"} />
                             </div>
                             <SizedBox height="16px" />
-                            <a href={route("newClass")} style={{all:"unset", position:"absolute", height:"100%", width:"100%", top:'0', left:"0"}}></a>
                         </div>
 
                     <div style={{display:"grid", gridTemplateRows:"repeat(2, 1fr)", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}>

@@ -197,7 +197,7 @@ Route::controller(App\Http\Controllers\ClassController::class)->middleware(["aut
     Route::get('/classroom/new', 'newClass')->name('newClass')->middleware(['role:teacher']);
     Route::post('/classroom/new', 'store')->name('classStore')->middleware(['role:teacher']);
 
-    Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:teacher');
+    Route::post('/classroom/{id}/delete', 'destroy')->name('classDelete')->middleware('role:admin;teacher');
 
     Route::get("/classroom/{id}/export", "exportClass")->name("exportClass");
     Route::get('/classroom/all', 'showAll')->name('classAll')->middleware('role:teacher');
@@ -226,6 +226,9 @@ Route::get('/how-to-play', function (){
 
 Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin"])->group(function (){
     Route::get("/students/manage", "adminShow")->name("admin");
+});
+
+Route::controller(App\Http\Controllers\AdminController::class)->middleware(["auth", "role:admin;teacher"])->group(function (){
     Route::get("/competitions/manage", "manageCompetitions")->name("manageCompetitions");
     Route::get("/competition/new", "competitionNew")->name("competitionNew");
     Route::post("/competition/new", "competitionAdd")->name("competitionNewPost");
@@ -234,7 +237,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->middleware(["aut
     Route::get("/competition/{competition_id}/participants/add", "addParticipants")->name("addParticipants");
     Route::post("/competition/{competition_id}/participants/add", "addParticipantsPost")->name("addParticipantsPost");
     Route::post("/competition/{competition_id}/participants/remove", "removeParticipantsPost")->name("removeParticipantsPost");
-
 });
 
 
