@@ -132,7 +132,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
 
                         {auth.user.role != "guest" && participants.filter((e)=>e.id==auth.user.id).length == 0 && Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <BigButton onClick={joinCompetition} title="Liitu võistlusega" subtitle={competition.name} />}
 
-                        {auth.user.role.split(",").includes("admin") || auth.user.role.split(",").includes("teacher") && <div className="two-button-layout">
+                        {(auth.user.role.split(",").includes("admin") || auth.user.role.split(",").includes("teacher")) && <div className="two-button-layout">
                             <div onClick={()=>window.location.href = "/competition/"+competition.competition_id+"/participants/add"} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"8px"}}>
                                 <div>
                                     <i translate="no" style={{fontSize:"32px"}} className="material-icons-outlined">person</i>

@@ -40,7 +40,7 @@ export default function Sidebar({title, auth}){
                 <GameSectionDropdown title={"Keerulisemad tehted"} gameTypes={["astendamine", "juurimine"]}/>
                 <GameSectionDropdown title={"Mitmekülgsed mängud"} gameTypes={["võrdlemine", "lünkamine", "liitlahutamine", "korrujagamine", "astejuurimine"]}/>
                 <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
-                <GameSectionDropdown isNew={true} title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} />
+                {/* <GameSectionDropdown title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} /> */}
             </div>
             <SizedBox height="8px" />
             <div style={{borderBottom:"1px solid #5A5A5A", width:"100%"}}>
@@ -68,10 +68,10 @@ export default function Sidebar({title, auth}){
             <GameSectionDropdown title={"Keerulisemad tehted"} gameTypes={["astendamine", "juurimine"]}/>
             <GameSectionDropdown title={"Mitmekülgsed mängud"} gameTypes={["võrdlemine", "lünkamine", "liitlahutamine", "korrujagamine", "astejuurimine"]}/>
             <GameSectionDropdown title={"Hariv ja lõbus"} gameTypes={["kujundid", "murruTaandamine", "jaguvus"]}/>
-            <GameSectionDropdown isNew={true} title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} />
+            {/* <GameSectionDropdown title={"Muu kui matemaatika"} gameTypes={["muusika", "valimised"]} /> */}
 
         </div>
-        {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0"}}>
+        {auth != null && auth.user != null && <a style={{all:"unset"}} href={route("profilePage")}><div className="clickable section account-tile" style={{display:"flex", alignItems:"center", gap:"12px", justifyContent:"stretch", marginInline:"0", position:"sticky", bottom:"8px", left:"0", right:"0", border:"0.5px solid var(--section-color)", background: "rgba(var(--section-color), 0.2)", boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", backdropFilter: "blur(16px)"}}>
             <img style={{objectFit:"cover", borderRadius:"50%", aspectRatio:"1", height:"50px"}} src={auth.user.profile_pic} alt="" />
             {/* <div style={{height:"50px", aspectRatio:"1", borderRadius:"50px", backgroundColor:"var(--section-color)", display:"flex", justifyContent:"center", alignItems:"center"}}><i className="material-icons" style={{fontSize:"32px"}}>person</i></div> */}
             <div style={{textAlign:"start"}}>

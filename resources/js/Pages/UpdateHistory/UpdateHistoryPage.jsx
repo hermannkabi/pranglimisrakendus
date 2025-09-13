@@ -93,7 +93,8 @@ export default function UpdateHistoryPage({auth}){
         "26.08.2025":["boldAdminitele mõeldud uuendused", "Uuendatud admini töölaua vaade – uus liides sobib ülejäänud disainikeelega paremini", "Klasside haldamisest on saanud klasside & õpilaste haldamine – seal näeb nüüd lisaks klassidele ka kõiki neid õpilasi, kes klassiga liitunud ei ole", "Õpilase avalikul profiilil on adminil nüüd võimalik kasutaja kustutada", "Lisaks parandatud pisivead rakenduse koodis ning välimuses"],
         "30.08.2025":["boldReaaler saab endale uuendatud avalehe", "Värske välimus sobib ülejäänud rakendusega ja omavahel paremini kokku", "Lisaks natuke uuendatud ja ajakohastatud avalehel olevad Reaalerit kirjeldavad tekstid", "Õpetajale klassi vaates lisatud uus leht – jaga klassi", "Klassi jagamise vaates saab näha nii/kopeerida nii ühinemise linki kui skaneerida vastavat QR-koodi. Seega saab õpetaja vaate ekraanile kuvada ja õpilased selle kaudu kiiremini klassiga ühineda", "Uuendatud ka mõne liidese elemendi välimus"],
         "31.08.2025":["Uuenenud, loogilisem tehete filtreerimise süsteem", "Õpetajale ja adminile loodud võimalus järjestada klass lisaks edetabelile ka tähestikulises järjekorras"],
-        "11.09.2025":["Õpetajatel ja adminitel uus võimalus eksportida klassi ja võistluse andmed Excelisse", "Lisaks saavad enda klasside jaoks võistluseid luua nüüd ka õpetajad"],
+        "11.09.2025":["Õpetajatel ja adminitel uus võimalus eksportida klassi ja võistluse andmed Excelisse", "Lisaks saavad enda klasside jaoks võistluseid luua nüüd ka õpetajad", "Uuendatud profiilivaate arhitektuur – nüüd töötab see mobiilseadmetes veel paremini"],
+        "12.09.2025":["Parem kasutajaliides konto osale kõrvalribast", "Uuenenud kasutajaliides töölaua vaates, kui kasutaja pole klassi/võistlusega liitunud"]
     };  
 
     return <>

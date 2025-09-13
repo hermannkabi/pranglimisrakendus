@@ -9,6 +9,7 @@ import DashboardClassStatTile from "@/Components/2024SummerRedesign/DashboardCla
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import ClassWidget from "@/Components/2024SummerRedesign/ClassWidget";
 import StreakWidget from "@/Components/2024SummerRedesign/StreakWidget";
+import Chip from "@/Components/2024SummerRedesign/Chip";
 
 export default function Dashboard({auth, stats, classData, competitionData, teacherData, psa=null}) {
 
@@ -133,10 +134,17 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                 {/* Guest and class data start here */}
                 {auth.user.role == "guest" && <InfoBanner text="Külaliskontoga andmeid ei salvestata ja statistikat näha ei saa. Selleks palun loo endale konto" />}
                 <SizedBox height="16px" />
-                {auth.user.klass == null && teacherData == null && <a style={{all:"unset"}} href={route("classJoin")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px"}}>
-                    <TwoRowTextButton upperText="Liitu klassiga" lowerText="Otsi klassi" />
-                    <p style={{marginInline:"8px", color:"var(--grey-color)", maxWidth:"max(50%, 300px)"}}>Reaaleri kogemus ei ole täielik, kui sa ei ole klassiga liitunud. Küsi klassi andmeid enda õpetajalt ja naudi teiste klassikaaslastega lõbusat võistlemist ja koos arenemist!</p>
-                </div> </a>}
+                {auth.user.klass == null && teacherData == null && <a style={{all:"unset"}} href={route("classJoin")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px", border:"1px solid var(--grey-color)", display:"flex", flexDirection:"column", gap:"8px", justifyContent:"center", alignItems:"center", padding:"16px 8px"}}>
+                    <div style={{backgroundColor:"rgba(var(--primary-color), 0.1)", padding:"4px", display:"inline-flex", justifyContent:"center", alignItems:"center", aspectRatio: "1", height:"50px", borderRadius:"4px"}}>
+                        <i style={{color:"rgb(var(--primary-color))", fontSize:"40px"}} className="material-icons">school</i>
+                    </div>
+                    <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                        <h2 style={{marginBottom:"0"}}>Liitu klassiga</h2>
+                        <p style={{color:"var(--grey-color)", maxWidth:"max(50%, 300px)", textAlign:"center", marginTop:"4px"}}>Reaaleri kogemus ei ole täielik, kui sa ei ole klassiga liitunud. Küsi klassi andmeid enda õpetajalt ja naudi teiste klassikaaslastega lõbusat võistlemist ja koos arenemist!</p>
+
+                        <Chip onClick={()=>window.location.href = route("classJoin")} label={"Otsi klasse"} active={true} />
+                    </div>
+                </div></a>}
                 {auth.user.klass != null && teacherData == null && classData != null && <><div className="class-grid">
                     {/* Class overview */}
                     <div style={{position:"relative"}} className="section clickable">
@@ -222,10 +230,17 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                     </div>
                 </div><SizedBox height="16px" /></>}
 
-                {competitionData == null && <a style={{all:"unset"}} href={route("competitionsView")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px"}}>
-                    <TwoRowTextButton upperText="Hakka võistlema" lowerText="Otsi võistluseid" />
-                    <p style={{marginInline:"8px", color:"var(--grey-color)", maxWidth:"max(50%, 300px)"}}>Efektiivsemaks ja lõbusamaks arenemiseks proovi kindlasti Reaaleri võistluseid, kus saad teistega sõbralikult mõõtu võtta.</p>
-                </div> </a>}
+                {competitionData == null && <a style={{all:"unset"}} href={route("competitionsView")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px", border:"1px solid var(--grey-color)", display:"flex", flexDirection:"column", gap:"8px", justifyContent:"center", alignItems:"center", padding:"16px 8px"}}>
+                    <div style={{backgroundColor:"rgba(var(--primary-color), 0.1)", padding:"4px", display:"inline-flex", justifyContent:"center", alignItems:"center", aspectRatio: "1", height:"50px", borderRadius:"4px"}}>
+                        <i style={{color:"rgb(var(--primary-color))", fontSize:"40px"}} className="material-icons">leaderboard</i>
+                    </div>
+                    <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                        <h2 style={{marginBottom:"0"}}>Hakka võistlema</h2>
+                        <p style={{color:"var(--grey-color)", maxWidth:"max(50%, 300px)", textAlign:"center", marginTop:"4px"}}>Efektiivsemaks ja lõbusamaks arenemiseks proovi kindlasti Reaaleri võistluseid, kus saad teistega sõbralikult mõõtu võtta</p>
+
+                        <Chip onClick={()=>window.location.href = route("competitionsView")} label={"Alusta võistlemist"} active={true} />
+                    </div>
+                </div></a>}
                 
                 <div className="two-column-layout">
                     <a style={{all:"unset"}} href={route('gameHistory')}>

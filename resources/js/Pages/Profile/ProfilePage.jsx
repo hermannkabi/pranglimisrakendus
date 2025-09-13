@@ -8,6 +8,8 @@ import Layout from "@/Components/2024SummerRedesign/Layout";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import InfoBanner from "@/Components/InfoBanner";
 import TimeSelector from "@/Components/2024SummerRedesign/TimeSelector";
+import PasswordInput from "@/Components/PasswordInput";
+import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
 
 export default function ProfilePage({auth, className}){
 
@@ -244,6 +246,9 @@ export default function ProfilePage({auth, className}){
                         <p style={{marginTop:"8px", marginBottom:"0"}}>{auth.user.role == "guest" ? "Lahku külalisvaatest" : "Logi välja"}</p>
                     </div>
                 </div>
+                {/* <div className="section">
+                    <PasswordWidget defaultValue={auth.user.eesnimi + " " + auth.user.perenimi} icon={"edit"} text={"Avalik nimi"} isPassword={false} />
+                </div> */}
                 <div className="section clickable" style={{padding:"16px", position:'relative'}}>
                     <i translate="no" className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>language</i>
                     <TwoRowTextButton upperText="Avalik profiil" lowerText="Vaata, kuidas teised sind näevad" showArrow={false} />
