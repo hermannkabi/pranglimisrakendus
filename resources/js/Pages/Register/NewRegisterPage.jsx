@@ -5,7 +5,6 @@ import "/public/css/register.css";
 import "/public/css/auth_layout.css";
 import { useState } from "react";
 import InfoBanner from "@/Components/InfoBanner";
-import HorizontalRule from "@/Components/HorizontalRule";
 import BigButton from "@/Components/2024SummerRedesign/BigButton";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import PasswordWidget from "@/Components/2024SummerRedesign/PasswordWidget";
@@ -165,7 +164,7 @@ export default function NewRegisterPage({message, errors}){
                                     <p style={{marginTop:"8px", marginBottom:"0"}}>Jätka Google'i kontoga</p>
                                 </div>
                             </div>
-                            <HorizontalRule />
+                            <SizedBox height={16} />
                             
                             <BigButton onClick={()=>setTeacherStatus(false)} title={"Õpilase konto"} subtitle={"Loo konto"} />
                             <BigButton secondary={true} onClick={()=>setTeacherStatus(true)} title={"Õpetaja konto"} subtitle={"Loo konto"} />

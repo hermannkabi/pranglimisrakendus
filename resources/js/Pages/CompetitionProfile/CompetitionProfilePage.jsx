@@ -6,6 +6,7 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import GameTile from "@/Components/GameTile";
 import InfoBanner from "@/Components/InfoBanner";
 import SizedBox from "@/Components/SizedBox";
+import { showFirstName, showPublicName } from "@/utils/display_name";
 
 export default function CompetitionProfilePage({auth, user, competition, stats, games}){
 
@@ -47,7 +48,7 @@ export default function CompetitionProfilePage({auth, user, competition, stats, 
 
             <div className="two-column-layout">
                 <div>
-                    {games.length <= 0 && <InfoBanner text={user.eesnimi + " ei ole veel sellel võistlusel mängida jõudnud"} /> }
+                    {games.length <= 0 && <InfoBanner text={showFirstName(auth.user, user) + " ei ole veel sellel võistlusel mängida jõudnud"} /> }
                     {games.length > 0 && games.map(e=><GameTile data={e} key={e.game_id} showPoints={true} />) }
                 </div>
 
@@ -57,7 +58,8 @@ export default function CompetitionProfilePage({auth, user, competition, stats, 
                             <div style={{position:"absolute", right:"24px", top:"24px",}}>
                                 <img src={user.profile_pic} style={{borderRadius:"50%", aspectRatio:'1', height:"100px", objectFit:"cover"}}/>
                             </div>
-                            <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
+                            {showPublicName(auth.user, user) &&  <p style={{fontSize:"24px", fontWeight:"bold"}}>{user.public_name}</p>}
+                            {!showPublicName(auth.user, user) && <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />}
                             <h2 style={{color:"rgb(var(--primary-color))", fontSize:"56px", marginBlock:"24px 0", marginInline:"8px"}}>{stats.user_rank + "."} <span style={{color:"var(--grey-color)", marginBlock:"0", fontSize:"24px", fontWeight:"normal"}}>koht</span></h2>
                             <SizedBox height="100px" />
                             <p style={{position:"absolute", bottom:"16px", right:"16px", display:"flex", alignItems:'center', marginBlock:"0", color:"var(--grey-color)"}}>Reaaleris alates {(new Date(user.created_at)).toLocaleString("et-EE", {month:"2-digit", day:"2-digit", year:"numeric"}).split(",")[0]}</p>

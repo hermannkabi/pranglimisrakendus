@@ -19,6 +19,7 @@ export default function ProfilePage({auth, className}){
     const [pointsAnimation, setPointsAnimation] = useState(window.localStorage.getItem("points-animation") != "off");
     const [flipKeyboard, setFlipKeyboard] = useState(window.localStorage.getItem("flip-keyboard") == "true");
     const [defaultTime, setDefaultTime] = useState(window.localStorage.getItem("default-time") ?? "0.5");
+    const [buttonIcon, setButtonIcon] = useState("save");
 
 
     const [imageUploadErrors, setImageUploadErrors] = useState(null);    
@@ -180,6 +181,24 @@ export default function ProfilePage({auth, className}){
         });
     }
 
+    function updatePublicName(){
+        $.post(route("updatePublicName"), {
+            "_token":window.csrfToken,
+            'public_name': $("input[name='public_name']").val(),
+        }).done(function (data){
+            console.log("Tehtud!");
+            setButtonIcon("check_circle");
+            setTimeout(function (){setButtonIcon("save")}, 2000);
+        }).fail(function (data){
+            console.log(data);
+            setButtonIcon("error");
+            setTimeout(function (){setButtonIcon("save")}, 2000);
+
+            setImageUploadErrors({"error":"Midagi on valesti. Sinu avaliku nime muutmine ebaõnnestus. Palun proovi hetke pärast uuesti!"})
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
     const roles = {
         "teacher":"Õpetaja",
         "guest":"Külaline",
@@ -187,7 +206,7 @@ export default function ProfilePage({auth, className}){
         "student":"Õpilane",
         "music-admin":"Admin (muusika)",
         "valimised-admin":"Admin (valimised)",
-    };
+    };    
 
     return <>
         <Layout title="Profiil & seaded" auth={auth}>
@@ -246,15 +265,15 @@ export default function ProfilePage({auth, className}){
                         <p style={{marginTop:"8px", marginBottom:"0"}}>{auth.user.role == "guest" ? "Lahku külalisvaatest" : "Logi välja"}</p>
                     </div>
                 </div>
-                {/* <div className="section">
-                    <PasswordWidget defaultValue={auth.user.eesnimi + " " + auth.user.perenimi} icon={"edit"} text={"Avalik nimi"} isPassword={false} />
-                </div> */}
-                <div className="section clickable" style={{padding:"16px", position:'relative'}}>
+                <div className="section">
+                    <PasswordWidget buttonIcon={buttonIcon} inputName="public_name" onComplete={updatePublicName} defaultValue={auth.user.public_name} icon={"edit"} text={"Avalik nimi"} isPassword={false} />
+                </div>
+                {/* <div className="section clickable" style={{padding:"16px", position:'relative'}}>
                     <i translate="no" className="material-icons" style={{fontSize:"32px", marginBottom:"0", marginLeft:"8px"}}>language</i>
                     <TwoRowTextButton upperText="Avalik profiil" lowerText="Vaata, kuidas teised sind näevad" showArrow={false} />
 
                     <a href={"/profile/"+auth.user.id} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
-                </div>
+                </div> */}
             </div>
             <SizedBox height="16px" />
 

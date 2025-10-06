@@ -81,7 +81,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                     <div>
                         {Date.now() < (new Date(competition.dt_end.replace(/-/g, "/"))) && <div className="section">
                             <TwoRowTextButton showArrow={false} upperText={"Võistlejad"} lowerText={competition.name} />
-                            {participants.map((e, index)=> <LeaderboardRow onRemove={auth.user.role.split(",").includes("admin") ? ()=>removeParticipant(e.id) : null} points={e.id==auth.user.id ? leaderboard.filter((i)=>i.user.id==auth.user.id)[0].total_score : null} place={index + 1} key={e.id} index={index} player={auth.user.id == e.id} user={e} /> )}
+                            {participants.map((e, index)=> <LeaderboardRow auth={auth} onRemove={auth.user.role.split(",").includes("admin") ? ()=>removeParticipant(e.id) : null} points={e.id==auth.user.id ? leaderboard.filter((i)=>i.user.id==auth.user.id)[0].total_score : null} place={index + 1} key={e.id} index={index} player={auth.user.id == e.id} user={e} /> )}
                             {participants.length == 0 && <InfoBanner text="Siin ei ole hetkel kedagi..." /> }
                         </div>}
                         {Date.now() >= (new Date(competition.dt_end.replace(/-/g, "/"))) && <><div className="section">
@@ -94,7 +94,7 @@ export default function CompetitionPage({auth, competition, leaderboard, partici
                             </div>}
                             <SizedBox height="16px" />
                         </div>
-                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow customLink={"/competition/"+competition.competition_id+"/view/"+e.user.id} place={e.rank_label} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.total_score ?? 0} /> )}
+                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow auth={auth} customLink={"/competition/"+competition.competition_id+"/view/"+e.user.id} place={e.rank_label} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.total_score ?? 0} /> )}
                         {leaderboard.length <= 0 && <InfoBanner text={"Siin võistlusel ei ole (veel) kedagi."} />}</>}
                     </div>
     

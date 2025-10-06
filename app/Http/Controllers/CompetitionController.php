@@ -72,7 +72,6 @@ class CompetitionController extends Controller
 
         $leaderboardWithUsers = $leaderboard->map(function ($entry) use ($users, $rankCounts) {
             $prefix = $rankCounts[$entry->rank] > 1 ? 'T' : '';
-            
             return [
                 'user' => $users->get($entry->user_id),
                 'total_score' => $entry->total_score,

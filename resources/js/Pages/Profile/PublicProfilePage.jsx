@@ -6,6 +6,7 @@ import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import TwoRowTextButton from "@/Components/2024SummerRedesign/TwoRowTextButton";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import StreakWidget from "@/Components/2024SummerRedesign/StreakWidget";
+import { showFirstName, showPublicName } from "@/utils/display_name";
 
 
 export default function PublicProfilePage({auth, user, klass, stats, lastGames}){
@@ -48,7 +49,8 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                     <div className="section" style={{position:"relative", backgroundImage:"url("+user.profile_pic+")", backgroundRepeat:"no-repeat", backgroundSize:"cover", backgroundBlendMode:"soft-light", backgroundPosition:"center"}}>
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginInline:"8px"}}>
                             <div>
-                                <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />
+                                {showPublicName(auth.user, user) &&  <p style={{fontSize:"24px", fontWeight:"bold"}}>{user.public_name}</p>}
+                                {!showPublicName(auth.user, user) && <TwoRowTextButton showArrow={false} capitalizeUpper={true} capitalizeLower={true} upperText={user.eesnimi} lowerText={user.perenimi} />}
                                 {user.role.split(",").map(e=><span key={roles[e]} style={{display:"inline-block", backgroundColor:"rgb(var(--primary-color))", borderRadius:"4px", color:"white", fontSize:"16px", padding:"4px 6px", fontWeight:"normal", margin:"4px", marginTop:"0"}}>{roles[e]}</span>)}
                             </div>
 
@@ -65,7 +67,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                     <SizedBox height="8px" />
                     {lastGames.map((e, ind)=><GameTile data={e} key={ind} />)}
                     {lastGames.length <= 0 && <div className="section">
-                        <InfoBanner text={user.eesnimi + " ei ole veel mängida jõudnud. Vaata veidi aja pärast uuesti!"} />
+                        <InfoBanner text={showFirstName(auth.user, user) + " ei ole veel mängida jõudnud. Vaata veidi aja pärast uuesti!"} />
                     </div> }
                 </div>
 

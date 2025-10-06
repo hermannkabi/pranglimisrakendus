@@ -45,6 +45,7 @@ Route::controller(App\Http\Controllers\ProfileController::class)->middleware(['a
 
     Route::post('/profile/settings/edit', "settings")->name("settingsAdd");
     Route::post('/profile/avatar/upload', 'changeProfilePicture')->name('changeProfilePicture');
+    Route::post('/profile/public_name/edit', "updatePublicName")->name("updatePublicName");
 
     Route::get('/profile/{id}', "showPublic")->name("profilePublic");
 

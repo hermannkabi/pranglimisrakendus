@@ -1,5 +1,4 @@
 import ApplicationLogo from "../ApplicationLogo";
-import HorizontalRule from "../HorizontalRule";
 import SizedBox from "../SizedBox";
 import GameSectionDropdown from "./GameSectionDropdown";
 

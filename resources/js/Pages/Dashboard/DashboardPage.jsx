@@ -10,6 +10,7 @@ import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import ClassWidget from "@/Components/2024SummerRedesign/ClassWidget";
 import StreakWidget from "@/Components/2024SummerRedesign/StreakWidget";
 import Chip from "@/Components/2024SummerRedesign/Chip";
+import HorizontalRule from "@/Components/HorizontalRule";
 
 export default function Dashboard({auth, stats, classData, competitionData, teacherData, psa=null}) {
 
@@ -229,7 +230,6 @@ export default function Dashboard({auth, stats, classData, competitionData, teac
                         <a href={route("competitionsView")} style={{all:"unset", position:"absolute", top:"0", left:"0", height:"100%", width:"100%"}}></a>
                     </div>
                 </div><SizedBox height="16px" /></>}
-
                 {competitionData == null && <a style={{all:"unset"}} href={route("competitionsView")}><div className="section clickable" style={{marginBlock:"0", marginBottom:"16px", border:"1px solid var(--grey-color)", display:"flex", flexDirection:"column", gap:"8px", justifyContent:"center", alignItems:"center", padding:"16px 8px"}}>
                     <div style={{backgroundColor:"rgba(var(--primary-color), 0.1)", padding:"4px", display:"inline-flex", justifyContent:"center", alignItems:"center", aspectRatio: "1", height:"50px", borderRadius:"4px"}}>
                         <i style={{color:"rgb(var(--primary-color))", fontSize:"40px"}} className="material-icons">leaderboard</i>

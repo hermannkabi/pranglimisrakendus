@@ -52,7 +52,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                             </div>}
                             <SizedBox height="16px" />
                         </div>
-                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow playedToday={e.playedToday} place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
+                        {leaderboard.length > 3 && leaderboard.slice(3).map((e, index)=><LeaderboardRow auth={auth} playedToday={e.playedToday} place={e.place} key={e.user.id} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} /> )}
                         {leaderboard.length <= 0 && <InfoBanner text={"Siin klassis ei ole (veel) kedagi. Kutsu õpilasi klassi, jagades neile klassi nime ja parooli või saates neile klassiga ühinemise link."} />}
                     </>}
                     {(orderBy == "firstName" || orderBy == "lastName") && <>
@@ -66,7 +66,7 @@ export default function ClassroomPage({leaderboard, teacher, auth, className, st
                             return 1;
                         }
                         return 0;
-                        }).map((e, index)=> <LeaderboardRow playedToday={e.playedToday} place={e.place} key={e.user.id + orderBy} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} />)}
+                        }).map((e, index)=> <LeaderboardRow auth={auth} playedToday={e.playedToday} place={e.place} key={e.user.id + orderBy} index={index} player={auth.user.id == e.user.id} user={e.user} points={e.xp} />)}
                     </>}
                 </div>
 

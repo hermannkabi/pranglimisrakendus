@@ -70,6 +70,7 @@ class LoginRegisterController extends Controller
             'remember_token' => $remember,
             'profile_pic' =>  "/assets/logo.png",
             'streak' => 0,
+            "public_name" => $eesnimi,
         ]);
 
         if($googleId != null){

@@ -2,7 +2,7 @@ import { forwardRef, useState } from "react";
 
 const PasswordWidget = forwardRef((props, ref)=>{
 
-    const {onChange, defaultValue=null, text="Sisesta parool", icon="lock", hintText=(text+"..."), isPassword=true, style, inputName, required, isTextArea=false} = props;
+    const {onChange, defaultValue=null, text="Sisesta parool", icon="lock", hintText=(text+"..."), isPassword=true, style, inputName, required, isTextArea=false, onComplete=null, buttonIcon=null} = props;
 
     const [type, setType] = useState(isPassword ? "password" : "text");
         
@@ -12,6 +12,7 @@ const PasswordWidget = forwardRef((props, ref)=>{
         <p style={{marginTop:"6px", marginBottom:'24px'}}>{text} {required && <span style={{color:"#c42121"}}>*</span>}</p>
         {!isTextArea && <input defaultValue={defaultValue} required={required} name={inputName} ref={ref} onChange={onChange} autoComplete={props.autoComplete ?? "new-password"} style={{all:"unset", fontWeight:"bold", width:"100%"}} placeholder={hintText} type={props.type ?? type} />}
         {isPassword && <i translate="no" onClick={()=>setType(t=>t=="password" ? "text" : "password")} className="material-icons" style={{color:"var(--grey-color)", position:"absolute", bottom:"16px", right:"16px", cursor:"pointer"}}>{type == "password" ? "visibility" : "visibility_off"}</i>}
+        {onComplete != null && <i translate="no" onClick={()=>onComplete()} className="material-icons" style={{color:"rgb(var(--primary-color))", position:"absolute", bottom:"16px", right:"16px", cursor:"pointer"}}>{buttonIcon}</i>}
 
         {isTextArea && <textarea defaultValue={defaultValue} required={required} name={inputName} ref={ref} onChange={onChange} style={{all:"unset", fontWeight:"bold", width:"100%", height:"100px", resize:"vertical"}} placeholder={hintText}></textarea>}
     </div>; 

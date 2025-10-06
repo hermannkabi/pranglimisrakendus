@@ -87,6 +87,13 @@ class ProfileController extends Controller
         return;
     }
 
+    public function updatePublicName(Request $request){
+        $user = Auth::user();
+        $user->public_name = $request->public_name;
+        $user->save();
+        return 0;
+    }
+
     /**
      * Verify users streak (is used by Console\Kernel.php)
     */

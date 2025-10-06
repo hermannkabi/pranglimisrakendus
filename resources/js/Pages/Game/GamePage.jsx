@@ -987,8 +987,8 @@ export default function GamePage({mis, tyyp, raw_level, data, time, competition,
 
                 {/* Division law keyboard (yes/no)*/}
                 {divisionLaw && <div style={{display:'grid', gridTemplateColumns:'repeat(2, 1fr)', width:'fit-content', margin:"auto"}}>
-                    <NumberButton icon={true} content="done" onClick={()=>handleDivisionLaw(true)} />
-                    <NumberButton icon={true} content="close" onClick={()=>handleDivisionLaw(false)} />
+                    <NumberButton textColor={"green"} icon={true} content="done" onClick={()=>handleDivisionLaw(true)} />
+                    <NumberButton textColor={"red"} icon={true} content="close" onClick={()=>handleDivisionLaw(false)} />
                 </div>}
 
             </div>

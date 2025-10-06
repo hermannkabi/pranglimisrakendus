@@ -7,6 +7,7 @@ import StatisticsTile from "@/Components/2024SummerRedesign/StatisticsTile";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import VerticalStatTile from "@/Components/2024SummerRedesign/VerticalStatTile";
 import InfoBanner from "@/Components/InfoBanner";
+import { getDisplayName } from "@/utils/display_name";
 
 
 export default function GameDetailsPage({game, auth, playedBy, competition}){
@@ -26,7 +27,7 @@ export default function GameDetailsPage({game, auth, playedBy, competition}){
         return minutes + ":" + seconds;
     }
 
-    const userName = playedBy == null ? null : playedBy.eesnimi + " " + playedBy.perenimi;
+    const userName = playedBy == null ? null : getDisplayName(auth.user, playedBy);
 
     const typeToReadable = {
         "natural":"Naturaalarvud",

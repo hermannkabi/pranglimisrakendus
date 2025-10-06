@@ -48,6 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'settings',
         'profile_pic',
         'streak',
+        "public_name",
     ];
 
     public function competitions(){
@@ -57,6 +58,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function mangs()
     {
         return $this->hasMany(Mang::class, 'user_id', 'id');
+    }
+
+    public function getDisplayNameFor(User $viewer)
+    {
+        if ($viewer->role === 'student' && $viewer->id !== $this->id) {
+            return $this->public_name ?? 'Anonymous';
+        }
+
+        return "{$this->eesnimi} {$this->perenimi}";
     }
 
     protected static function boot()

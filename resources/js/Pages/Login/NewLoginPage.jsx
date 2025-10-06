@@ -3,7 +3,6 @@ import { Head } from "@inertiajs/react";
 import "/public/css/auth_layout.css";
 import PasswordInput from "@/Components/PasswordInput";
 import SizedBox from "@/Components/SizedBox";
-import HorizontalRule from "@/Components/HorizontalRule";
 import { useEffect, useRef, useState } from "react";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import InfoBanner from "@/Components/InfoBanner";
@@ -69,9 +68,7 @@ export default function NewLoginPage({message, errors}){
                                 <p style={{marginTop:"8px", marginBottom:"0"}}>Sisene Google'i kontoga</p>
                             </div>
                         </div>
-                        {/* <HorizontalRule /> */}
-                        <HorizontalRule />
-
+                        <SizedBox height={16} />
                         <input type="hidden" name="_token" value={window.csrfToken} />
                         <PasswordWidget inputName={"email"} autoComplete="email" text={"E-posti aadress"} isPassword={false} type={"email"} icon={"email"} />
                         <SizedBox height={12} />
