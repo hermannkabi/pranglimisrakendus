@@ -61,7 +61,7 @@ export default function NewLoginPage({message, errors}){
                 <div className="auth-main-content">
                     <SizedBox height={12} />
                     <form ref={form} style={{width:"min(100%, 600px)", margin:"auto", textAlign:'start'}} method="post" action={route("authenticate")} className="login-container">
-                        {Object.keys(error).length > 0 && <InfoBanner text={error[Object.keys(error)[0]]} />}
+                        {Object.keys(error).length > 0 && <InfoBanner text={error[Object.keys(error)[0]]} type="error" />}
                         <div onClick={()=>window.location.href = route('google.redirect')} className="section clickable" style={{padding:"16px", display:"flex", justifyContent:"start", alignItems:"center", marginBlock:"0", background:"linear-gradient(-120deg, #4285f430, #34a85330, #fbbc0530, #ea433530)"}}>
                             <div style={{display:"flex", flexDirection:"column", justifyContent:"start", alignItems:"start", marginBlock:"8px"}}>
                                 <img style={{height:"24px"}} src={googleLogo} />

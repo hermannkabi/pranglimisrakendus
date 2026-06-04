@@ -13,7 +13,8 @@ export default function MusicHomePage({auth, playlists}){
 
         <div className="btn-group">
             {playlists.map(e=> <a className="playlist-widget" key={e.id} style={{all:"unset", cursor:"pointer"}} href={"/muusika/" + e.id + "/" + e.link_id}><div className="course-widget">
-                <img src={e.thumbnail} alt="" />
+                {e.thumbnail && <img src={e.thumbnail} alt="" />}
+                {!e.thumbnail && <i style={{fontSize:"50px"}} className="material-icons">music_note</i> }
                 <div className="content">
                     <p style={{fontWeight:"bold", color: "rgb(var(--text-color))"}}>{e.name}</p>
                     <p style={{color:"gray"}}>{e.songs_count} teos{e.songs_count == 1 ? "" : "t"}</p>

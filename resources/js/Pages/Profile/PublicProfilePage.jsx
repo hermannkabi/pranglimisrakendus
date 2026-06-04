@@ -74,7 +74,7 @@ export default function PublicProfilePage({auth, user, klass, stats, lastGames})
                 <div>
                     <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"16px"}}> 
                         <VerticalStatTile icon="school" text="Klass" value={klass == null ? "Klassi pole" : klass.klass_name} />
-                        <VerticalStatTile icon="apartment" text="Kool" value={<><img style={{borderRadius:"50%", objectFit:"cover", height:"24px", aspectRatio:"1", margin:"0"}} src="https://reaaler.real.edu.ee/assets/logo.png" alt="" /> Tallinna Reaalkool</>} />
+                        <VerticalStatTile icon="apartment" text="Kool" value={<><img style={{borderRadius:"50%", objectFit:"cover", height:"24px", aspectRatio:"1", margin:"0"}} src="https://reaaler.ee/assets/logo.png" alt="" /> Tallinna Reaalkool</>} />
                     </div>
 
                     {lastGames.length > 0 && <div onClick={()=>window.location.href = "/game/history/"+user.id} className="section clickable" style={{position:"relative"}}>

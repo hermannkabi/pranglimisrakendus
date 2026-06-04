@@ -8,25 +8,68 @@
     <link rel="stylesheet" href="{{ URL::asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/master.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/404.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/welcome.css') }}">
+
+
 </head>
 <body>
-    <div class="error-section">
-        <p class="operation">VIGA</p>
-        <h1 class="code">503</h1>
-        <p>SERVER ON HOOLDUSES</p>
-    </div>
 
-    <div class="symbs">
-        <span>+</span>
-        <span>-</span>
-        <span>+</span>
-        <span>×</span>
-        <span>÷</span>
-        <span>÷</span>
+    <div style="display: flex; align-items: center; flex-direction: column">
+        <div class="section title-screen">
+
+            <div class="two-column-welcome">
+                <div class="text-container">
+                    <h1 class="error-code" >503</h1>
+                    <p>Reaaler on hetkel hooldustöödega seoses hetkeks kättesaamatu. Proovi mõne aja pärast uuesti.</p>
+
+                    <a href="/" style="all:unset; cursor: pointer;">
+                        <div class="chip" style="background-color:rgb(var(--primary-color)); color: white; cursor: pointer;">
+                            <div style="display:flex, align-items:center, gap:12px">
+                                <span style="font-size:20px; user-select:none; margin-top:2px; text-transform: capitalize">Avalehele</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="img-container">
+                    <svg style="margin-left:-12px" class="application-logo" version="1.0" xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 500 500"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000, 491.000000) scale(0.100000,-0.100000)"
+fill=rgb(var(--text-color)) stroke="none">
+<path d="M2605 3844 c-55 -8 -262 -32 -460 -53 -348 -37 -363 -39 -448 -74
+-48 -19 -109 -52 -137 -72 -48 -35 -110 -104 -110 -121 0 -10 105 -81 158
+-108 32 -16 32 -16 42 8 11 30 60 68 122 95 57 24 61 20 72 -69 4 -30 14 -113
+24 -185 31 -239 19 -648 -24 -821 -8 -30 -11 -30 -84 0 l-59 24 -31 -65 c-50
+-109 -52 -104 35 -138 44 -17 75 -35 75 -44 0 -27 -23 -91 -33 -91 -6 0 -34
+14 -64 30 -29 17 -58 30 -65 30 -11 0 -88 -135 -88 -153 0 -4 27 -20 59 -37
+69 -34 72 -37 60 -67 -13 -34 -34 -28 -111 32 -38 30 -74 55 -78 55 -9 0 -142
+-170 -200 -254 -28 -42 -31 -51 -18 -60 155 -117 294 -222 298 -226 3 -4 27
+-22 55 -41 78 -54 266 -199 312 -241 24 -21 48 -38 55 -38 17 0 268 267 268
+285 0 4 -26 32 -57 61 l-58 52 35 67 c45 86 52 92 93 72 17 -9 64 -28 103 -43
+l72 -26 15 -82 c42 -229 171 -413 334 -477 42 -17 80 -23 138 -23 71 -1 88 3
+146 31 82 40 150 111 190 197 34 72 69 208 69 265 0 35 -3 39 -31 45 -39 8
+-107 8 -135 0 -19 -5 -23 -15 -28 -82 -9 -101 -50 -187 -113 -239 -40 -33 -52
+-37 -97 -37 -114 2 -219 102 -271 259 -22 65 -26 93 -24 177 l2 101 -74 22
+c-41 12 -87 29 -104 38 -16 9 -34 17 -40 17 -26 0 -95 35 -95 48 0 24 42 102
+56 102 6 0 31 -8 55 -19 181 -78 243 -101 249 -94 18 19 71 156 63 163 -4 4
+-48 24 -98 45 -164 68 -205 88 -205 97 0 19 34 68 47 68 8 0 42 -10 76 -22 87
+-30 347 -38 467 -14 298 61 553 280 654 564 29 83 31 94 31 242 0 123 -4 168
+-18 215 -58 188 -177 353 -330 457 -219 149 -439 194 -742 152z m326 -296
+c148 -72 261 -186 297 -300 12 -38 16 -86 16 -168 -1 -130 -31 -264 -85 -377
+-37 -77 -112 -161 -176 -195 -54 -29 -180 -58 -254 -58 -77 0 -200 21 -206 36
+-2 7 3 39 12 71 35 129 66 305 80 457 18 194 19 293 3 441 -6 61 -8 120 -5
+129 6 16 20 17 115 14 104 -3 109 -4 203 -50z"/>
+</g>
+</svg>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ URL::asset('js/jquery.js') }}"></script>
     <script src="{{ URL::asset('js/settings.js') }}" ></script>
-
+    
 </body>
 </html>

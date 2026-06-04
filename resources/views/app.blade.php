@@ -6,10 +6,10 @@
         <meta http-equiv="content-language" content="et" />
         <meta name="description" content="Reaaler muudab matemaatika säravaks. Reealer on Tallinna Reaalkooli arvutusäpp, millega õpilane saab peastarvutamist õppida moodsalt, mugavalt ja motiveeritult."/>
         <meta name="keywords" content="pranglimine, reaaler, arvutusäpp, Tallinna Reaalkool, reaalkool">
-        <meta property="og:image" content="https://reaaler.real.edu.ee/logo.png" />
+        <meta property="og:image" content="https://reaaler.ee/logo.png" />
         <meta property="og:title" content="Reaaler">
         <meta property="og:description" content="Reealer on Tallinna Reaalkooli arvutusäpp, millega saad peastarvutamist õppida moodsalt, mugavalt ja motiveeritult">
-        <meta property="og:url" content="https://reaaler.real.edu.ee">
+        <meta property="og:url" content="https://reaaler.ee">
         <meta property="og:type" content="website">
         
         <title inertia>{{ config('app.name', 'Reaaler') }}</title>

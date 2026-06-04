@@ -62,6 +62,26 @@
     transform: rotate(25deg);
 }
 
+
+.application-logo{
+    height: 300px;
+    width: 300px;
+}
+
+.error-code{
+    color:var(--text-color);
+    font-size: 128px;
+    margin-block: 28px;
+}
+
+.title-screen{
+    width: 90%;
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media only screen and (max-width: 800px){
     .code{
         font-size: 100px;
@@ -99,5 +119,17 @@
         top: 35px;
         right: 20px;
         transform: rotate(25deg);
+    }
+
+
+    .application-logo{
+        height: 150px;
+        width: 150px;
+    }
+
+    .error-code{
+        font-size: 100px;
+        margin-block: 16px;
+        margin-top: 0;
     }
 }   
