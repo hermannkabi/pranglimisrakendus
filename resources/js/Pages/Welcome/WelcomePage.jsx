@@ -2,7 +2,6 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import SizedBox from "@/Components/SizedBox";
 import { Head } from "@inertiajs/react";
 import "/public/css/welcome.css";
-import "/public/css/404.css";
 import { useEffect, useState } from "react";
 import Chip from "@/Components/2024SummerRedesign/Chip";
 import WelcomeTile from "@/Components/2024SummerRedesign/WelcomeTile";
