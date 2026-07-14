@@ -14,9 +14,8 @@
 </head>
 <body>
 
-    <div style="display: flex; align-items: center; flex-direction: column">
+    <div class="error-page-container">
         <div class="section title-screen">
-
             <div class="two-column-welcome">
                 <div class="text-container">
                     <h1 class="error-code" >404</h1>

@@ -14,13 +14,12 @@
 </head>
 <body>
 
-    <div style="display: flex; align-items: center; flex-direction: column">
+    <div class="error-page-container">
         <div class="section title-screen">
-
             <div class="two-column-welcome">
                 <div class="text-container">
                     <h1 class="error-code" >403</h1>
-                    <p>Sellele leheküljele sisenemine ei ole sulle lubatud. Kui usud, et see on viga, kontrolli, mis kontoga sisse logitud oled.</p>
+                    <p>Sellele leheküljele sisenemine ei ole sinu kontole lubatud. Kui usud, et see on viga, kontrolli üle, et oleksid sisse logitud õige kontoga.</p>
 
                     <a href="/" style="all:unset; cursor: pointer;">
                         <div class="chip" style="background-color:rgb(var(--primary-color)); color: white; cursor: pointer;">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>503 - Hooldus | Reaaler</title>
+    <title>503 - Server on hoolduses | Reaaler</title>
     <link rel="stylesheet" href="{{ URL::asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/master.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/404.css') }}">
@@ -14,13 +14,12 @@
 </head>
 <body>
 
-    <div style="display: flex; align-items: center; flex-direction: column">
+    <div class="error-page-container">
         <div class="section title-screen">
-
             <div class="two-column-welcome">
                 <div class="text-container">
                     <h1 class="error-code" >503</h1>
-                    <p>Reaaler on hetkel hooldustöödega seoses hetkeks kättesaamatu. Proovi mõne aja pärast uuesti.</p>
+                    <p>Reaaleri server on hetkeks hooldustööde tõttu kättesaamatu, proovi varsti uuesti.</p>
 
                     <a href="/" style="all:unset; cursor: pointer;">
                         <div class="chip" style="background-color:rgb(var(--primary-color)); color: white; cursor: pointer;">

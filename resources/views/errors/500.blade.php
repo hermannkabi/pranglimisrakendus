@@ -14,13 +14,12 @@
 </head>
 <body>
 
-    <div style="display: flex; align-items: center; flex-direction: column">
+    <div class="error-page-container">
         <div class="section title-screen">
-
             <div class="two-column-welcome">
                 <div class="text-container">
                     <h1 class="error-code" >500</h1>
-                    <p>Serveripoolne viga. See ei ole tõenäoliselt sinu, vaid meie süü. Proovi mõne aja pärast uuesti.</p>
+                    <p>Serveripoolne viga. Ära muretse, see ei ole tõenäoselt sinu, vaid meie süü. Proovi mõne aja pärast uuesti!</p>
 
                     <a href="/" style="all:unset; cursor: pointer;">
                         <div class="chip" style="background-color:rgb(var(--primary-color)); color: white; cursor: pointer;">
