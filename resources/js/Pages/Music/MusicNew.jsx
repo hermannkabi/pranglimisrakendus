@@ -1,6 +1,7 @@
 import Title from "@/Components/Music/Title";
 import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
+import "/public/css/welcome.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
@@ -110,12 +111,10 @@ export default function MusicNew({auth, songs}){
 
         <div className="music-tiles">
             {songs.map(e => <MusicTile admin={auth.user.role.includes("music-admin")} select={true} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
-            {auth.user.role.includes("music-admin") && <a href={route("musicNewSong")} style={{all:"unset", cursor:"pointer"}}>
-                <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"16px"}}>
-                    <span style={{fontSize:"48px"}}>+</span>
-                    <div style={{fontWeight:"bold"}}>
-                        Lisa uus teos
-                    </div>
+            {auth.user.role.includes("music-admin") && <a href={route("musicNewSong")} style={{all:"unset", cursor:"pointer", display:"inline-block"}}>
+                <div className="text-button">
+                    <i className="material-icons-outlined">add</i>
+                    <span>Lisa uus teos</span>
                 </div>
             </a>}
         </div>

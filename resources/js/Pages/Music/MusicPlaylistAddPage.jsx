@@ -1,6 +1,7 @@
 import Title from "@/Components/Music/Title";
 import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
+import "/public/css/welcome.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
@@ -173,7 +174,12 @@ export default function MusicNew({auth, playlist, songs}){
             {error && <p style={{color:"red", textAlign:"start", marginBottom:"0"}}>{error}</p>}
             <button className="nice-btn" onClick={submitForm} style={{width:"100%", paddingBlock:"16px"}}>Lisa teosed</button>
             <SizedBox height={16} />
-            <a onClick={deletePlaylist} alone="" style={{color:"red"}}> <i className="material-icons no-anim">delete</i> Kustuta kuulamiskava </a>
+            <a style={{all:"unset", cursor:"pointer", display:"inline-block", margin:"auto"}} onClick={deletePlaylist}>
+                <div className="text-button" style={{color:"red"}}>
+                    <i className="material-icons-outlined">delete</i>
+                    <span>Kustuta kuulamiskava</span>
+                </div>
+            </a>
             <SizedBox height={16} />
         </div>
     </>

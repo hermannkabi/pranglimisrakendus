@@ -1,6 +1,7 @@
 import Title from "@/Components/Music/Title";
 import { Head } from "@inertiajs/react";
 import "/public/css/muusika.css";
+import "/public/css/welcome.css";
 import MusicTile from "@/Components/Music/MusicTile";
 import { act, useEffect, useRef, useState } from "react";
 import SizedBox from "@/Components/SizedBox";
@@ -272,36 +273,47 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
         return Array.from(artistMap.values()).flat();
     }
 
-    return <Layout title={playlist.name} auth={auth}>
+    return <Layout title={"Kuulamiskava"} auth={auth}>
         <div>
         <Head title={playlist.name + " | Muusika kuulamiskava"} />
-        <SizedBox height={32} />
-        <div>
-            <div onClick={()=>setShowPracticeScreen(true)} className={"mode-choice " + (showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/listen.png" alt="" /> Kuulamiskava</div>
-            <div onClick={()=>setShowPracticeScreen(false)} className={"mode-choice " + (!showPracticeScreen ? " chosen" : "")}><img className="music-icon" src="/assets/music-icons/dumbbell.png" alt="" /> Harjuta</div>
+
+        <div className="music-tiles" style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", borderRadius:"4px", minHeight:"100px", backgroundImage:("linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('"+playlist.thumbnail+"')"), backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
+            <h1 style={{fontSize:"32px", color:"rgb(var(--white))"}}>{playlist.name}</h1>
         </div>
+        <SizedBox height="20px" />
 
-        <SizedBox height={32} />
+        <div style={{display:"flex", justifyContent:"center"}}>
+            <div style={{fontWeight: showPracticeScreen ? "bold" : ""}} onClick={()=>setShowPracticeScreen(true)} className="text-button">
+                <i className="material-icons-outlined">{showPracticeScreen ? "check" : ""}</i>
+                <span>Kuulamiskava</span>
+            </div>
 
+            <div style={{fontWeight: showPracticeScreen ? "" : "bold"}}  onClick={()=>setShowPracticeScreen(false)} className="text-button">
+                <i className="material-icons-outlined">{showPracticeScreen ? "" : "check"}</i>
+                <span>Harjuta</span>
+            </div>
+        </div>
         <div className="practice-screen" hidden={!showPracticeScreen}>
             <div className="music-tiles">
                 {songs.length <= 0 && <p>Siin ei ole veel teoseid...</p> }
                 {songs.length > 0 && Array.from(groupByArtist(songs).keys()).length > 1 && Array.from(groupByArtist(songs).entries()).map(([artist, artistSongs]) => {
                     return  <div key={artist}>
                                 <SizedBox height="50px" />
-                                <h2 style={{textAlign:"start"}}>{artist}</h2>
+                                <a className="playlist-author-link" href={route("artistSongs")+"?nimi="+artist}>
+                                    <h2 style={{textAlign:"start"}}>{artist}</h2>
+                                </a>
                                 {artistSongs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
                             </div>
                 })}
                 {songs.length > 0 && Array.from(groupByArtist(songs).keys()).length <= 1 && songs.map(e => <MusicTile playlist={playlist} auth={auth} key={e.path} isActive={activeSong == e} isPlaying={activeSong == e && isPlaying} song={e} onClick={()=>songClick(e)} />)}
-                {(playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && playlist.id != null && <a href={"/muusika/"+playlist.id+"/"+playlist.link_id+"/lisa"} style={{all:"unset", cursor:"pointer"}}>
-                    <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"16px"}}>
-                        <span style={{fontSize:"48px"}}>+</span>
-                        <div style={{fontWeight:"bold"}}>
-                            Lisa teoseid või halda kuulamiskava
+                {(playlist.owner == auth.user.id || auth.user.role.includes("music-admin")) && playlist.id != null &&
+                    <a style={{all:"unset", cursor:"pointer", display:"inline-block", margin:"auto"}} href={"/muusika/"+playlist.id+"/"+playlist.link_id+"/lisa"}>
+                        <div className="text-button">
+                            <i className="material-icons-outlined">edit</i>
+                            <span>Halda kuulamiskava</span>
                         </div>
-                    </div>
-                </a>}
+                    </a>
+                }
 
                 {activeSong != null && <SizedBox height="150px"/>}
 
@@ -326,7 +338,7 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
         <div className="test-screen" hidden={showPracticeScreen}>
             <br /><br /><br />
             <h2 style={{color:"var(--text-color)"}}>Testi enda teadmisi!</h2>
-            <p style={{maxWidth:"min(50%, 400px)", margin:"auto", display: testShowGame ? "none" : ""}}>Kuula teoseid juhuslikus järjekorras ja katsu arvata, millega on tegu!</p>
+            <p style={{maxWidth:"min(50%, 400px)", margin:"auto", display: testShowGame ? "none" : ""}}>Kuula teoseid juhuslikus järjekorras ja püüa ära arvata, millisega on tegu!</p>
             <br />
             <button style={{display: testShowGame ? "none" : "", color:"var(--text-color)"}} onClick={()=>{changeSong(); setTestShowGame(true);}} className="start-test nice-btn">Alusta</button>
             <div className="game-screen" hidden={!testShowGame}>
@@ -344,7 +356,10 @@ export default function MusicNew({auth, playlist, songs, providedBy=null}){
                 <br /><br />
 
                 <div>
-                    <p onClick={()=>$("#correct-hint").fadeToggle(200)} id="view-correct" style={{color:"grey", cursor:"pointer"}}>Vaata õiget vastust</p>
+                    <div style={{margin:"auto"}} id="view-correct" onClick={()=>$("#correct-hint").fadeToggle(200)} className="text-button">
+                        <i className="material-icons-outlined">help</i>
+                        <span>Vaata õiget vastust</span>
+                    </div>
                     <div hidden className="music-tile" style={{display: "block", pointerEvents: "none"}}>
                         <div className="info" style={{textAlign:"center", display:"none"}} id="correct-hint" hidden>
                             <p id="correct-name" style={{fontWeight:"bold"}}>Loo nimi</p>

@@ -95,7 +95,9 @@ export default function UpdateHistoryPage({auth}){
         "31.08.2025":["Uuenenud, loogilisem tehete filtreerimise süsteem", "Õpetajale ja adminile loodud võimalus järjestada klass lisaks edetabelile ka tähestikulises järjekorras"],
         "11.09.2025":["Õpetajatel ja adminitel uus võimalus eksportida klassi ja võistluse andmed Excelisse", "Lisaks saavad enda klasside jaoks võistluseid luua nüüd ka õpetajad", "Uuendatud profiilivaate arhitektuur – nüüd töötab see mobiilseadmetes veel paremini"],
         "12.09.2025":["Parem kasutajaliides konto osale kõrvalribast", "Uuenenud kasutajaliides töölaua vaates, kui kasutaja pole klassi/võistlusega liitunud"],
-        "06.10.2025":["boldReaaleri kasutajad saavad nüüd seada endale avaliku nime", "Andmekaitselistel põhjustel näevad õpilased teisi õpilasi nüüdsest nende avalike nimedega", "Vaikimisi on avalikuks nimeks kasutaja eesnimi, kuid seda saab profiilivaates hõlpsasti muuta.", "Õpetajad näevad õpilasi endiselt nende tõelise nimega"]
+        "06.10.2025":["boldReaaleri kasutajad saavad nüüd seada endale avaliku nime", "Andmekaitselistel põhjustel näevad õpilased teisi õpilasi nüüdsest nende avalike nimedega", "Vaikimisi on avalikuks nimeks kasutaja eesnimi, kuid seda saab profiilivaates hõlpsasti muuta.", "Õpetajad näevad õpilasi endiselt nende tõelise nimega"],
+        "04.06.2026":["boldReaaler liigub üle uuele domeenile reaaler.ee", "Väikesed uuendused kasutajaliideses ja selle komponentides"],
+        "16.07.2026":["Uuendatud muusikaleht on visuaalselt ühtsem, efektsem ja töötab paremini erineva suurustega seadmetes. Lisaks on nüüd võimalik artisti nime peale vajutades liikuda lehele, kus kuvatakse kõik antud artisti teosed, mis Reaalerisse lisatud on."],
     };  
 
     return <>

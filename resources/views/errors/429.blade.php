@@ -7,7 +7,7 @@
     <title>429 - Liiga palju päringuid | Reaaler</title>
     <link rel="stylesheet" href="{{ URL::asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/master.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('css/404.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/404.css?v=2') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/welcome.css') }}">
 
 
